@@ -39,27 +39,29 @@ func skipNewlines(reader *bufio.Reader) (string, error) {
 	return s, err
 }
 
+func skipUntilContains(reader *bufio.Reader, search string) (string, error) {
+	s, err := skipNewlines(reader)
+	if err == nil && !strings.Contains(s, search) {
+		err = errors.New("Could not find '" + search + "'")
+	}
+	return s, err
+}
+
 func parseHeader(reader *bufio.Reader, header *Header) error {
 	return parseLines(reader, headerRegex, header)
 }
 
 func parseStimResponse(reader *bufio.Reader, sr *StimResponse) error {
 	// Find section header
-	s, err := skipNewlines(reader)
+	s, err := skipUntilContains(reader, "STIMULUS-RESPONSE DATA")
 	if err != nil {
 		return err
-	}
-	if !strings.Contains(s, "STIMULUS-RESPONSE DATA") {
-		return errors.New("Could not find STIMULUS-RESPONSE DATA section")
 	}
 
 	// Find some random string that's there
-	s, err = skipNewlines(reader)
+	s, err = skipUntilContains(reader, "Values are those recorded")
 	if err != nil {
 		return err
-	}
-	if !strings.Contains(s, "Values are those recorded") {
-		return errors.New("Could not find 'Values are those recorded'")
 	}
 
 	// Find Max CMAP
