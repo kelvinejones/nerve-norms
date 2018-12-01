@@ -14,10 +14,11 @@ import (
 func Import(data io.Reader) (Mem, error) {
 	reader := bufio.NewReader(data)
 	mem := Mem{}
+	var err error
 
-	err := parseLines(reader, headerRegex, &mem.Header)
+	err = parseHeader(reader, &mem.Header)
 	if err != nil {
-		return Mem{}, err
+		return mem, err
 	}
 
 	return mem, nil
@@ -31,6 +32,10 @@ func skipNewlines(reader *bufio.Reader) (string, error) {
 	}
 
 	return s, err
+}
+
+func parseHeader(reader *bufio.Reader, header *Header) error {
+	return parseLines(reader, headerRegex, header)
 }
 
 func parseStimResponse(reader *bufio.Reader, sr *StimResponse) error {

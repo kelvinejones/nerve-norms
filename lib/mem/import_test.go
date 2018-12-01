@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const header = ` File:              	n:\Qtrac\Data\Human Normative data\Median nerve raw\FESB70821A.QZD
+const headerString = ` File:              	n:\Qtrac\Data\Human Normative data\Median nerve raw\FESB70821A.QZD
  Name:              	CR21S
  Protocol:          	TRONDNF
  Date:              	21/8/17
@@ -32,9 +32,10 @@ func TestImportEmpty(t *testing.T) {
 }
 
 func TestImportHeader(t *testing.T) {
-	m, err := Import(strings.NewReader(header))
+	header := Header{}
+	err := parseHeader(bufio.NewReader(strings.NewReader(headerString)), &header)
 	assert.NoError(t, err)
-	expected := Mem{Header: Header{
+	expected := Header{
 		File:          `n:\Qtrac\Data\Human Normative data\Median nerve raw\FESB70821A.QZD`,
 		Name:          "CR21S",
 		Protocol:      "TRONDNF",
@@ -47,8 +48,8 @@ func TestImportHeader(t *testing.T) {
 		NormalControl: true,
 		Operator:      "MS",
 		Comment:       "smooth recording",
-	}}
-	assert.Equal(t, expected, m)
+	}
+	assert.Equal(t, expected, header)
 }
 
 const sResponse = `
