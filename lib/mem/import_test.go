@@ -53,7 +53,7 @@ func TestImportHeader(t *testing.T) {
 	assert.Equal(t, headerExpected, header)
 }
 
-const sResponse = `
+const sResponseString = `
 
  STIMULUS-RESPONSE DATA (2.4-1.9m)
 
@@ -68,7 +68,7 @@ var sResponseExpected = StimResponse{
 
 func TestImportSRResponse(t *testing.T) {
 	sResp := StimResponse{}
-	err := parseStimResponse(bufio.NewReader(strings.NewReader(sResponse)), &sResp)
+	err := parseStimResponse(bufio.NewReader(strings.NewReader(sResponseString)), &sResp)
 	assert.NoError(t, err)
 	assert.Equal(t, sResponseExpected, sResp)
 }
