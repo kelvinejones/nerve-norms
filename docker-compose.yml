@@ -26,4 +26,4 @@ services:
         ports:
             - "8000:8000" # This is port exposed from the container
         volumes:
-            - ./resources:/go/src/jitter/resources
+            - ./res:/go/src/jitter/res
