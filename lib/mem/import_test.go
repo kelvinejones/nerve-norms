@@ -62,10 +62,33 @@ Values are those recorded
  Max CMAP  1 ms =  1.161296 mV
 
                     	% Max               	Stimulus(2)
+SR.2                	 2                  	 3.915578
+SR.4                	 4                  	 4.073214
+SR.6                	 6                  	 4.144141
+SR.8                	 8                  	 4.20404
+SR.10               	 10                 	 4.435846
+SR.12               	 12                 	 4.601757
+SR.14               	 14                 	 4.824213
+SR.16               	 16                 	 4.86682
+SR.18               	 18                 	 4.89536
+SR.20               	 20                 	 4.9239
+
 `
 
 var sResponseExpected = StimResponse{
 	MaxCmap: 1.161296,
+	Values: []XY{
+		XY{X: 2, Y: 3.915578},
+		XY{X: 4, Y: 4.073214},
+		XY{X: 6, Y: 4.144141},
+		XY{X: 8, Y: 4.20404},
+		XY{X: 10, Y: 4.435846},
+		XY{X: 12, Y: 4.601757},
+		XY{X: 14, Y: 4.824213},
+		XY{X: 16, Y: 4.86682},
+		XY{X: 18, Y: 4.89536},
+		XY{X: 20, Y: 4.9239},
+	},
 }
 
 func TestImportSRResponse(t *testing.T) {

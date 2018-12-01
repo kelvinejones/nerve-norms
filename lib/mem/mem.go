@@ -27,9 +27,15 @@ type Header struct {
 
 type StimResponse struct {
 	MaxCmap float32
+	Values  []XY
 }
 
 type Mem struct {
 	Header
 	StimResponse
+}
+
+type XY struct {
+	X int
+	Y float32
 }

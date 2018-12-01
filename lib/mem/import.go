@@ -79,6 +79,34 @@ func parseStimResponse(reader *bufio.Reader, sr *StimResponse) error {
 		return err
 	}
 
+	// Now parse the actual SR data
+	return parseLines(reader, srRegex, sr)
+}
+
+var srRegex = regexp.MustCompile(`^SR\.(\d+)\s+(\d+)\s+(.*)`) // TODO change last term to a float
+
+func (sr *StimResponse) Parse(result []string) error {
+	if len(result) != 4 {
+		return errors.New("Incorrect SR line length")
+	}
+	if result[1] != result[2] {
+		return errors.New("SR fields do not match")
+	}
+
+	percentMax, err := strconv.Atoi(result[1])
+	if err != nil {
+		return err
+	}
+	stim, err := strconv.ParseFloat(result[3], 32)
+	if err != nil {
+		return err
+	}
+
+	sr.Values = append(sr.Values, XY{
+		X: percentMax,
+		Y: float32(stim),
+	})
+
 	return nil
 }
 
