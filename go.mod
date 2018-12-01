@@ -1,1 +1,1 @@
-module gogs.bellstone.ca:james/jitter
+module gogs.bellstone.ca/james/jitter
