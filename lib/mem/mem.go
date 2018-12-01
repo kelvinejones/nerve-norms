@@ -5,17 +5,18 @@ import "time"
 type Sex int
 
 const (
-	MaleSex Sex = iota
+	UnknownSex Sex = iota
 	FemaleSex
-	OtherSex
+	MaleSex
 )
 
 type MemHeader struct {
-	File     string
-	Name     string
-	Protocol string
-	Date     time.Time
-	Age      int
+	File      string
+	Name      string
+	Protocol  string
+	Date      time.Time
+	StartTime time.Time // TODO get rid of this field; merge into Date
+	Age       int
 	Sex
 	Temperature   float32
 	SRSites       string

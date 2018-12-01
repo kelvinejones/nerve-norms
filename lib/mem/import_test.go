@@ -37,7 +37,8 @@ func TestImportHeader(t *testing.T) {
 		File:          `n:\Qtrac\Data\Human Normative data\Median nerve raw\FESB70821A.QZD`,
 		Name:          "CR21S",
 		Protocol:      "TRONDNF",
-		Date:          time.Date(2017, time.Month(8), 21, 12, 57, 17, 0, time.UTC), // TODO eventually handle time zones better?
+		Date:          time.Date(2017, time.Month(8), 21, 0, 0, 0, 0, time.UTC),   // TODO eventually handle time zones better?
+		StartTime:     time.Date(2006, time.Month(1), 2, 12, 57, 17, 0, time.UTC), // TODO eventually handle time zones better?
 		Age:           30,
 		Sex:           MaleSex,
 		Temperature:   33.5,
