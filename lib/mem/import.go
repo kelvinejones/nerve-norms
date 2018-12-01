@@ -161,7 +161,7 @@ func parseLines(reader *bufio.Reader, regex *regexp.Regexp, parser Parser) error
 			// Done with section; break!
 			break
 		}
-		result := headerRegex.FindStringSubmatch(s)
+		result := regex.FindStringSubmatch(s)
 
 		err = parser.Parse(result)
 		if err != nil {
