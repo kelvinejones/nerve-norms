@@ -1,0 +1,48 @@
+version: "2"
+
+volumes:
+    database_store:
+
+services:
+    postgres:
+        image: postgres:9.6
+        ports:
+            - "5432" # random available host port will be chosen, same as -P
+        volumes:
+            - database_store:/var/lib/postgresql/data
+        environment: &dbenv
+            - POSTGRES_PASSWORD=jitterpass
+            - POSTGRES_USER=jitter
+            - POSTGRES_DB=jitter
+            - POSTGRES_HOST=postgres
+            - POSTGRES_PORT=5432
+
+    migrations:
+        build: ./db
+        links:
+            - postgres:db
+        volumes:
+            - ./db:/db:ro
+        environment: *dbenv
+
+    jitter:
+        build: .
+        ports:
+            - "8888"
+        environment:
+            # - << : *dbenv
+            - JITTER_SITE_PATH=http://localhost
+            - OAUTH_JSON_CONFIG={"NOT IMPLEMENTED"}
+        command: /go/bin/jitter
+        volumes:
+            - ./resources:/go/src/bellstone.ca/go/barriertek/jitter/resources
+
+    proxy:
+        image: nginx:latest
+        ports:
+            - "80:8123" # host:container
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./assets/static:/assets/static:ro
+            # connect host's ./nginx.conf with container's nginx.conf
+            # :ro == read only perms in container
