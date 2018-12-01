@@ -72,3 +72,16 @@ func TestImportSRResponse(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, sResponseExpected, sResp)
 }
+
+func TestImportAll(t *testing.T) {
+	memString := headerString + sResponseString
+	memExpected := Mem{
+		Header:       headerExpected,
+		StimResponse: sResponseExpected,
+	}
+
+	mem, err := Import(strings.NewReader(memString))
+
+	assert.NoError(t, err)
+	assert.Equal(t, memExpected, mem)
+}

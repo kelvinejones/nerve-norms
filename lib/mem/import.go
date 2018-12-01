@@ -21,6 +21,11 @@ func Import(data io.Reader) (Mem, error) {
 		return mem, err
 	}
 
+	err = parseStimResponse(reader, &mem.StimResponse)
+	if err != nil {
+		return mem, err
+	}
+
 	return mem, nil
 }
 
