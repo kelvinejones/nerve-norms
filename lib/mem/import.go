@@ -1,5 +1,7 @@
 package mem
 
-func Import(data string) (Mem, error) {
+import "io"
+
+func Import(data io.Reader) (Mem, error) {
 	return Mem{}, nil
 }
