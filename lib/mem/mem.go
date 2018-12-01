@@ -10,7 +10,7 @@ const (
 	MaleSex
 )
 
-type MemHeader struct {
+type Header struct {
 	File      string
 	Name      string
 	Protocol  string
@@ -26,5 +26,5 @@ type MemHeader struct {
 }
 
 type Mem struct {
-	MemHeader
+	Header
 }

@@ -33,7 +33,7 @@ func TestImportEmpty(t *testing.T) {
 func TestImportHeader(t *testing.T) {
 	m, err := Import(strings.NewReader(header))
 	assert.NoError(t, err)
-	assert.Equal(t, m, Mem{MemHeader: MemHeader{
+	assert.Equal(t, m, Mem{Header: Header{
 		File:          `n:\Qtrac\Data\Human Normative data\Median nerve raw\FESB70821A.QZD`,
 		Name:          "CR21S",
 		Protocol:      "TRONDNF",

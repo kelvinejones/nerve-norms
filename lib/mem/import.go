@@ -11,9 +11,9 @@ import (
 
 func Import(data io.Reader) (Mem, error) {
 	reader := bufio.NewReader(data)
-
 	mem := Mem{}
-	err := parseLines(reader, headerRegex, &mem.MemHeader)
+
+	err := parseLines(reader, headerRegex, &mem.Header)
 	if err != nil {
 		return Mem{}, err
 	}
@@ -23,7 +23,7 @@ func Import(data io.Reader) (Mem, error) {
 
 var headerRegex = regexp.MustCompile(`^\s+([^:]+):\s+(.*)`)
 
-func (header *MemHeader) Parse(result []string) error {
+func (header *Header) Parse(result []string) error {
 	if len(result) != 3 {
 		return errors.New("Incorrect header line length")
 	}
