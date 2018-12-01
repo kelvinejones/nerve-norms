@@ -74,6 +74,11 @@ func parseStimResponse(reader *bufio.Reader, sr *StimResponse) error {
 		return errors.New("Could not find Max CMAP: " + s)
 	}
 
+	s, err = skipUntilContains(reader, "% Max               	Stimulus")
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

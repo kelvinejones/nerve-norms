@@ -60,6 +60,8 @@ const sResponseString = `
 Values are those recorded
 
  Max CMAP  1 ms =  1.161296 mV
+
+                    	% Max               	Stimulus(2)
 `
 
 var sResponseExpected = StimResponse{
