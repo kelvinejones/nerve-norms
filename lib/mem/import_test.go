@@ -1,6 +1,7 @@
 package mem
 
 import (
+	"bufio"
 	"strings"
 	"testing"
 	"time"
@@ -48,4 +49,23 @@ func TestImportHeader(t *testing.T) {
 		Comment:       "smooth recording",
 	}}
 	assert.Equal(t, expected, m)
+}
+
+const sResponse = `
+
+ STIMULUS-RESPONSE DATA (2.4-1.9m)
+
+Values are those recorded
+
+ Max CMAP  1 ms =  1.161296 mV
+`
+
+func TestImportSRResponse(t *testing.T) {
+	sResp := StimResponse{}
+	err := parseStimResponse(bufio.NewReader(strings.NewReader(sResponse)), &sResp)
+	assert.NoError(t, err)
+	expected := StimResponse{
+		MaxCmap: 1.161296,
+	}
+	assert.Equal(t, expected, sResp)
 }

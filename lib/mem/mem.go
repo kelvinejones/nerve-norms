@@ -25,6 +25,11 @@ type Header struct {
 	Comment       string
 }
 
+type StimResponse struct {
+	MaxCmap float32
+}
+
 type Mem struct {
 	Header
+	StimResponse
 }

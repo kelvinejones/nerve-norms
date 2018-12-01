@@ -3,9 +3,11 @@ package mem
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"io"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -19,6 +21,48 @@ func Import(data io.Reader) (Mem, error) {
 	}
 
 	return mem, nil
+}
+
+func skipNewlines(reader *bufio.Reader) (string, error) {
+	s := "\n"
+	var err error
+	for s == "\n" && err == nil {
+		s, err = reader.ReadString('\n')
+	}
+
+	return s, err
+}
+
+func parseStimResponse(reader *bufio.Reader, sr *StimResponse) error {
+	// Find section header
+	s, err := skipNewlines(reader)
+	if err != nil {
+		return err
+	}
+	if !strings.Contains(s, "STIMULUS-RESPONSE DATA") {
+		return errors.New("Could not find STIMULUS-RESPONSE DATA section")
+	}
+
+	// Find some random string that's there
+	s, err = skipNewlines(reader)
+	if err != nil {
+		return err
+	}
+	if !strings.Contains(s, "Values are those recorded") {
+		return errors.New("Could not find 'Values are those recorded'")
+	}
+
+	// Find Max CMAP
+	s, err = skipNewlines(reader)
+	if err != nil {
+		return err
+	}
+	n, err := fmt.Sscanf(s, " Max CMAP  1 ms =  %f mV\n", &sr.MaxCmap)
+	if n != 1 || err != nil {
+		return errors.New("Could not find Max CMAP: " + s)
+	}
+
+	return nil
 }
 
 var headerRegex = regexp.MustCompile(`^\s+([^:]+):\s+(.*)`)
