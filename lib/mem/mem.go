@@ -30,12 +30,23 @@ type StimResponse struct {
 	Values  []XY
 }
 
+type ChargeDuration struct {
+	Values []XYZ
+}
+
 type Mem struct {
 	Header
 	StimResponse
+	ChargeDuration
 }
 
 type XY struct {
 	X int
 	Y float32
+}
+
+type XYZ struct {
+	X float32
+	Y float32
+	Z float32
 }

@@ -98,11 +98,43 @@ func TestImportSRResponse(t *testing.T) {
 	assert.Equal(t, sResponseExpected, sResp)
 }
 
+const chargeDurationString = `
+
+  CHARGE DURATION DATA (2.4-3.5m)
+
+                    	Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)
+QT.1                	 .2                 	 9.790961           	 1.958192
+QT.2                	 .4                 	 6.905862           	 2.762345
+QT.3                	 .6                 	 5.978864           	 3.587318
+QT.4                	 .8                 	 5.44341            	 4.354728
+QT.5                	 1                  	 5.187509           	 5.187509
+
+
+`
+
+var chargeDurationExpected = ChargeDuration{
+	Values: []XYZ{
+		XYZ{X: .2, Y: 9.790961, Z: 1.958192},
+		XYZ{X: .4, Y: 6.905862, Z: 2.762345},
+		XYZ{X: .6, Y: 5.978864, Z: 3.587318},
+		XYZ{X: .8, Y: 5.44341, Z: 4.354728},
+		XYZ{X: 1., Y: 5.187509, Z: 5.187509},
+	},
+}
+
+func TestImportChargeDuration(t *testing.T) {
+	sResp := ChargeDuration{}
+	err := parseChargeDuration(bufio.NewReader(strings.NewReader(chargeDurationString)), &sResp)
+	assert.NoError(t, err)
+	assert.Equal(t, chargeDurationExpected, sResp)
+}
+
 func TestImportAll(t *testing.T) {
-	memString := headerString + sResponseString
+	memString := headerString + sResponseString + chargeDurationString
 	memExpected := Mem{
-		Header:       headerExpected,
-		StimResponse: sResponseExpected,
+		Header:         headerExpected,
+		StimResponse:   sResponseExpected,
+		ChargeDuration: chargeDurationExpected,
 	}
 
 	mem, err := Import(strings.NewReader(memString))

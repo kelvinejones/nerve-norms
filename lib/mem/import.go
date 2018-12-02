@@ -26,6 +26,11 @@ func Import(data io.Reader) (Mem, error) {
 		return mem, err
 	}
 
+	err = parseChargeDuration(reader, &mem.ChargeDuration)
+	if err != nil {
+		return mem, err
+	}
+
 	return mem, nil
 }
 
@@ -105,6 +110,50 @@ func (sr *StimResponse) Parse(result []string) error {
 	sr.Values = append(sr.Values, XY{
 		X: percentMax,
 		Y: float32(stim),
+	})
+
+	return nil
+}
+
+func parseChargeDuration(reader *bufio.Reader, cd *ChargeDuration) error {
+	// Find section header
+	_, err := skipUntilContains(reader, "CHARGE DURATION DATA")
+	if err != nil {
+		return err
+	}
+
+	_, err = skipUntilContains(reader, "Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)")
+	if err != nil {
+		return err
+	}
+
+	return parseLines(reader, chargeRegex, cd)
+}
+
+var chargeRegex = regexp.MustCompile(`^QT\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
+
+func (cd *ChargeDuration) Parse(result []string) error {
+	if len(result) != 4 {
+		return errors.New("Incorrect CD line length")
+	}
+
+	x, err := strconv.ParseFloat(result[1], 32)
+	if err != nil {
+		return err
+	}
+	y, err := strconv.ParseFloat(result[2], 32)
+	if err != nil {
+		return err
+	}
+	z, err := strconv.ParseFloat(result[3], 32)
+	if err != nil {
+		return err
+	}
+
+	cd.Values = append(cd.Values, XYZ{
+		X: float32(x),
+		Y: float32(y),
+		Z: float32(z),
 	})
 
 	return nil
