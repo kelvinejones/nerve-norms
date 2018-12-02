@@ -83,7 +83,7 @@ func parseStimResponse(reader *bufio.Reader, sr *StimResponse) error {
 	return parseLines(reader, srRegex, sr)
 }
 
-var srRegex = regexp.MustCompile(`^SR\.(\d+)\s+(\d+)\s+(.*)`) // TODO change last term to a float
+var srRegex = regexp.MustCompile(`^SR\.(\d+)\s+(\d+)\s+(\d*\.?\d+)`)
 
 func (sr *StimResponse) Parse(result []string) error {
 	if len(result) != 4 {
