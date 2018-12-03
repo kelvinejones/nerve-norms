@@ -6,6 +6,7 @@ import (
 	"io"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -65,7 +66,7 @@ func (header *Header) Parse(result []string) error {
 	}
 
 	var err error
-	val := result[2]
+	val := strings.TrimSpace(result[2])
 	switch result[1] {
 	case "NC/disease":
 		if val == "NC" {
