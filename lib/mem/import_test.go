@@ -129,12 +129,49 @@ func TestImportChargeDuration(t *testing.T) {
 	assert.Equal(t, chargeDurationExpected, sResp)
 }
 
+const thresholdElectrotonusString = `
+
+  THRESHOLD ELECTROTONUS DATA (3.5-8.8m)
+
+                    	Delay (ms)          	Current (%)         	Thresh redn. (%)
+TE1.1               	 0                  	0                   	0.00
+TE1.2               	 9                  	0                   	0.00
+TE1.3               	 10                 	40                  	40.02
+TE1.4               	 11                 	40                  	42.71
+
+TE2.1               	 0                  	0                   	0.00
+TE2.2               	 9                  	0                   	0.00
+TE2.3               	 10                 	-40                 	-39.34
+TE2.4               	 11                 	-40                 	-40.92
+
+
+`
+
+var thresholdElectrotonusExpected = ThresholdElectrotonusGroup{
+	Sets: []ThresholdElectrotonusSet{
+		ThresholdElectrotonusSet{Values: []XYZ{
+			XYZ{X: 0, Y: 0, Z: 0.00},
+			XYZ{X: 9, Y: 0, Z: 0.00},
+			XYZ{X: 10, Y: 40, Z: 40.02},
+			XYZ{X: 11, Y: 40, Z: 42.71},
+		}},
+	},
+}
+
+func TestImportThresholdElectrotonus(t *testing.T) {
+	actual := ThresholdElectrotonusGroup{}
+	err := parseThresholdElectrotonus(bufio.NewReader(strings.NewReader(thresholdElectrotonusString)), &actual)
+	assert.NoError(t, err)
+	assert.Equal(t, thresholdElectrotonusExpected, actual)
+}
+
 func TestImportAll(t *testing.T) {
-	memString := headerString + sResponseString + chargeDurationString
+	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString
 	memExpected := Mem{
-		Header:         headerExpected,
-		StimResponse:   sResponseExpected,
-		ChargeDuration: chargeDurationExpected,
+		Header:                     headerExpected,
+		StimResponse:               sResponseExpected,
+		ChargeDuration:             chargeDurationExpected,
+		ThresholdElectrotonusGroup: thresholdElectrotonusExpected,
 	}
 
 	mem, err := Import(strings.NewReader(memString))

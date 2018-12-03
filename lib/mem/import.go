@@ -31,6 +31,11 @@ func Import(data io.Reader) (Mem, error) {
 		return mem, err
 	}
 
+	err = parseThresholdElectrotonus(reader, &mem.ThresholdElectrotonusGroup)
+	if err != nil {
+		return mem, err
+	}
+
 	return mem, nil
 }
 
@@ -151,6 +156,67 @@ func (cd *ChargeDuration) Parse(result []string) error {
 	}
 
 	cd.Values = append(cd.Values, XYZ{
+		X: float32(x),
+		Y: float32(y),
+		Z: float32(z),
+	})
+
+	return nil
+}
+
+func parseThresholdElectrotonus(reader *bufio.Reader, te *ThresholdElectrotonusGroup) error {
+	// Find section header
+	_, err := skipUntilContains(reader, "THRESHOLD ELECTROTONUS DATA")
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Theline")
+	s, err := skipUntilContains(reader, "Delay (ms)          	Current (%)         	Thresh redn. (%)")
+	if err != nil {
+		return err
+	}
+	fmt.Println(s)
+	fmt.Println("Thelin2e")
+
+	return parseLines(reader, teRegex, te)
+}
+
+var teRegex = regexp.MustCompile(`^TE(\d+)\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
+
+func (te *ThresholdElectrotonusGroup) Parse(result []string) error {
+	if len(result) != 5 {
+		return errors.New("Incorrect TE line length")
+	}
+
+	set, err := strconv.Atoi(result[1])
+	if err != nil {
+		return err
+	}
+	if set > 100 {
+		// Assume this is a parse error
+		return errors.New("More than 100 sets of TE data are not supported")
+	}
+
+	x, err := strconv.ParseFloat(result[2], 32)
+	if err != nil {
+		return err
+	}
+	y, err := strconv.ParseFloat(result[3], 32)
+	if err != nil {
+		return err
+	}
+	z, err := strconv.ParseFloat(result[4], 32)
+	if err != nil {
+		return err
+	}
+
+	for len(te.Sets) < set {
+		// This would be inefficient for a big difference, but usually this will only run once
+		te.Sets = append(te.Sets, ThresholdElectrotonusSet{})
+	}
+
+	te.Sets[set-1].Values = append(te.Sets[set-1].Values, XYZ{
 		X: float32(x),
 		Y: float32(y),
 		Z: float32(z),

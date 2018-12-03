@@ -34,10 +34,19 @@ type ChargeDuration struct {
 	Values []XYZ
 }
 
+type ThresholdElectrotonusGroup struct {
+	Sets []ThresholdElectrotonusSet
+}
+
+type ThresholdElectrotonusSet struct {
+	Values []XYZ
+}
+
 type Mem struct {
 	Header
 	StimResponse
 	ChargeDuration
+	ThresholdElectrotonusGroup
 }
 
 type XY struct {
