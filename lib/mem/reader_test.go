@@ -14,7 +14,7 @@ I am a test
 `
 
 func TestBasicReader(t *testing.T) {
-	reader := NewStringReader(testString)
+	reader := NewStringReader(toWindows(testString))
 
 	str, err := reader.ReadLine()
 	assert.Equal(t, "Hello", str)
@@ -38,7 +38,7 @@ func TestBasicReader(t *testing.T) {
 }
 
 func TestReaderUnread(t *testing.T) {
-	reader := NewStringReader(testString)
+	reader := NewStringReader(toWindows(testString))
 
 	str, err := reader.ReadLine()
 	assert.Equal(t, "Hello", str)

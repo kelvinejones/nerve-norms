@@ -10,6 +10,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// For readability, all strings in this file are encoded with \n, but the code requires \r\n
+func toWindows(str string) string {
+	return strings.Replace(str, "\n", "\r\n", -1)
+}
+
 const headerString = ` File:              	n:\Short Test\FESB70821A.QZD
  Name:              	SHORTY
  Protocol:          	TRONDNF
@@ -49,7 +54,7 @@ func TestImportEmpty(t *testing.T) {
 
 func TestImportHeader(t *testing.T) {
 	header := Header{}
-	err := parseHeader(NewStringReader(headerString), &header)
+	err := parseHeader(NewStringReader(toWindows(headerString)), &header)
 	assert.NoError(t, err)
 	assert.Equal(t, headerExpected, header)
 }
@@ -94,7 +99,7 @@ var sResponseExpected = StimResponse{
 
 func TestImportSRResponse(t *testing.T) {
 	sResp := StimResponse{}
-	err := parseStimResponse(NewStringReader(sResponseString), &sResp)
+	err := parseStimResponse(NewStringReader(toWindows(sResponseString)), &sResp)
 	assert.NoError(t, err)
 	assert.Equal(t, sResponseExpected, sResp)
 }
@@ -125,7 +130,7 @@ var chargeDurationExpected = ChargeDuration{
 
 func TestImportChargeDuration(t *testing.T) {
 	sResp := ChargeDuration{}
-	err := parseChargeDuration(NewStringReader(chargeDurationString), &sResp)
+	err := parseChargeDuration(NewStringReader(toWindows(chargeDurationString)), &sResp)
 	assert.NoError(t, err)
 	assert.Equal(t, chargeDurationExpected, sResp)
 }
@@ -168,7 +173,7 @@ var thresholdElectrotonusExpected = ThresholdElectrotonusGroup{
 
 func TestImportThresholdElectrotonus(t *testing.T) {
 	actual := ThresholdElectrotonusGroup{}
-	err := parseThresholdElectrotonus(NewStringReader(thresholdElectrotonusString), &actual)
+	err := parseThresholdElectrotonus(NewStringReader(toWindows(thresholdElectrotonusString)), &actual)
 	assert.NoError(t, err)
 	assert.Equal(t, thresholdElectrotonusExpected, actual)
 }
@@ -198,7 +203,7 @@ var recoveryCycleExpected = RecoveryCycle{
 
 func TestImportRecoveryCycle(t *testing.T) {
 	actual := RecoveryCycle{}
-	err := parseRecoveryCycle(NewStringReader(recoveryCycleString), &actual)
+	err := parseRecoveryCycle(NewStringReader(toWindows(recoveryCycleString)), &actual)
 	assert.NoError(t, err)
 	assert.Equal(t, recoveryCycleExpected, actual)
 }
@@ -230,7 +235,7 @@ var thresholdIVExpected = ThresholdIV{
 
 func TestImportThresholdIV(t *testing.T) {
 	actual := ThresholdIV{}
-	err := parseThresholdIV(NewStringReader(thresholdIVString), &actual)
+	err := parseThresholdIV(NewStringReader(toWindows(thresholdIVString)), &actual)
 	assert.NoError(t, err)
 	assert.Equal(t, thresholdIVExpected, actual)
 }
@@ -275,7 +280,7 @@ var excitabilityVariablesExpected = ExcitabilityVariables{
 
 func TestImportExcitabilityVariables(t *testing.T) {
 	actual := ExcitabilityVariables{Values: make(map[string]float64)}
-	err := parseExcitabilityVariables(NewStringReader(excitabilityVariablesString), &actual)
+	err := parseExcitabilityVariables(NewStringReader(toWindows(excitabilityVariablesString)), &actual)
 	assert.NoError(t, err)
 	assert.Equal(t, excitabilityVariablesExpected, actual)
 }
@@ -292,7 +297,7 @@ var completeExpectedMem = Mem{
 
 func TestImportAll(t *testing.T) {
 	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString + recoveryCycleString + thresholdIVString + excitabilityVariablesString
-	mem, err := Import(strings.NewReader(memString))
+	mem, err := Import(strings.NewReader(toWindows(memString)))
 
 	assert.NoError(t, err)
 	assert.Equal(t, completeExpectedMem, mem)

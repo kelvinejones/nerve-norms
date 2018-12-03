@@ -38,7 +38,7 @@ func (rd *Reader) ReadLine() (string, error) {
 		return rd.unreadString, nil
 	} else {
 		str, err := rd.reader.ReadString('\n')
-		return strings.TrimSuffix(str, "\n"), err
+		return strings.TrimSuffix(str, "\r\n"), err
 	}
 }
 
