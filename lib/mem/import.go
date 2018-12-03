@@ -227,7 +227,7 @@ func parseThresholdElectrotonus(reader *Reader, te *ThresholdElectrotonusGroup) 
 	return reader.parseLines(teRegex, te)
 }
 
-var teRegex = regexp.MustCompile(`^TE(\d+)\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
+var teRegex = regexp.MustCompile(`^TE(\d+)\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
 
 func (te *ThresholdElectrotonusGroup) Parse(result []string) error {
 	if len(result) != 5 {
