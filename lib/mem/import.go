@@ -139,7 +139,7 @@ func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	if err != nil {
 		return err
 	}
-	s, err := reader.ReadString('\n')
+	s, err := reader.ReadLine()
 	if err != nil {
 		return err
 	}

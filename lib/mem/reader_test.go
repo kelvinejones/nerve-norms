@@ -16,23 +16,23 @@ I am a test
 func TestBasicReader(t *testing.T) {
 	reader := NewStringReader(testString)
 
-	str, err := reader.ReadString('\n')
+	str, err := reader.ReadLine()
 	assert.Equal(t, "Hello\n", str)
 	assert.NoError(t, err)
 
-	str, err = reader.ReadString('\n')
+	str, err = reader.ReadLine()
 	assert.Equal(t, "Line 2\n", str)
 	assert.NoError(t, err)
 
-	str, err = reader.ReadString('\n')
+	str, err = reader.ReadLine()
 	assert.Equal(t, "\n", str)
 	assert.NoError(t, err)
 
-	str, err = reader.ReadString('\n')
+	str, err = reader.ReadLine()
 	assert.Equal(t, "\n", str)
 	assert.NoError(t, err)
 
-	str, err = reader.ReadString('\n')
+	str, err = reader.ReadLine()
 	assert.Equal(t, "I am a test\n", str)
 	assert.NoError(t, err)
 }
@@ -40,16 +40,16 @@ func TestBasicReader(t *testing.T) {
 func TestReaderUnread(t *testing.T) {
 	reader := NewStringReader(testString)
 
-	str, err := reader.ReadString('\n')
+	str, err := reader.ReadLine()
 	assert.Equal(t, "Hello\n", str)
 	assert.NoError(t, err)
 
 	reader.UnreadString("Another test\n")
-	str, err = reader.ReadString('\n')
+	str, err = reader.ReadLine()
 	assert.Equal(t, "Another test\n", str)
 	assert.NoError(t, err)
 
-	str, err = reader.ReadString('\n')
+	str, err = reader.ReadLine()
 	assert.Equal(t, "Line 2\n", str)
 	assert.NoError(t, err)
 }

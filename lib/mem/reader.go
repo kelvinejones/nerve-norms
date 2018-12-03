@@ -23,27 +23,27 @@ func NewStringReader(str string) *Reader {
 }
 
 func (rd *Reader) UnreadString(str string) error {
-	// If this is called twice without a call to ReadString in between, the next ReadString call will error.
+	// If this is called twice without a call to ReadLine in between, the next ReadLine call will error.
 	if rd.useUnreadString {
-		return errors.New("UnreadString was called twice before ReadString was called")
+		return errors.New("UnreadString was called twice before ReadLine was called")
 	}
 	rd.unreadString = str
 	rd.useUnreadString = true
 	return nil
 }
 
-func (rd *Reader) ReadString(delim byte) (string, error) {
+func (rd *Reader) ReadLine() (string, error) {
 	if rd.useUnreadString {
 		rd.useUnreadString = false
 		return rd.unreadString, nil
 	} else {
-		return rd.reader.ReadString(delim)
+		return rd.reader.ReadString('\n')
 	}
 }
 
 // ReadLineExtractingString expects to receive a regex which finds a single string
 func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
-	s, err := rd.ReadString('\n')
+	s, err := rd.ReadLine()
 	if err != nil {
 		return "", err
 	}
@@ -60,7 +60,7 @@ func (rd *Reader) skipNewlines() error {
 	s := "\n"
 	var err error
 	for s == "\n" && err == nil {
-		s, err = rd.ReadString('\n')
+		s, err = rd.ReadLine()
 	}
 	if err != nil {
 		return err
@@ -75,7 +75,7 @@ func (rd *Reader) skipPast(search string) error {
 		return err
 	}
 
-	s, err := rd.ReadString('\n')
+	s, err := rd.ReadLine()
 	if err == nil && !strings.Contains(s, search) {
 		err = errors.New("Could not find '" + search + "'")
 	}
@@ -97,7 +97,7 @@ func (rd *Reader) parseLines(regex *regexp.Regexp, parser Parser) error {
 			return nil
 		}
 
-		s, err := rd.ReadString('\n')
+		s, err := rd.ReadLine()
 		if err != nil {
 			// We reached EOF
 			return nil
