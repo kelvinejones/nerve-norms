@@ -6,7 +6,6 @@ import (
 	"io"
 	"regexp"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -38,49 +37,25 @@ func Import(data io.Reader) (Mem, error) {
 	return mem, nil
 }
 
-func skipNewlines(reader *Reader) error {
-	s := "\n"
-	var err error
-	for s == "\n" && err == nil {
-		s, err = reader.ReadString('\n')
-	}
-	reader.UnreadString(s)
-
-	return err
-}
-
-func skipPast(reader *Reader, search string) error {
-	err := skipNewlines(reader)
-	if err != nil {
-		return err
-	}
-
-	s, err := reader.ReadString('\n')
-	if err == nil && !strings.Contains(s, search) {
-		err = errors.New("Could not find '" + search + "'")
-	}
-	return err
-}
-
 func parseHeader(reader *Reader, header *Header) error {
-	return parseLines(reader, headerRegex, header)
+	return reader.parseLines(headerRegex, header)
 }
 
 func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	// Find section header
-	err := skipPast(reader, "STIMULUS-RESPONSE DATA")
+	err := reader.skipPast("STIMULUS-RESPONSE DATA")
 	if err != nil {
 		return err
 	}
 
 	// Find some random string that's there
-	err = skipPast(reader, "Values are those recorded")
+	err = reader.skipPast("Values are those recorded")
 	if err != nil {
 		return err
 	}
 
 	// Find Max CMAP
-	err = skipNewlines(reader)
+	err = reader.skipNewlines()
 	if err != nil {
 		return err
 	}
@@ -93,13 +68,13 @@ func parseStimResponse(reader *Reader, sr *StimResponse) error {
 		return errors.New("Could not find Max CMAP: " + s)
 	}
 
-	err = skipPast(reader, "% Max               	Stimulus")
+	err = reader.skipPast("% Max               	Stimulus")
 	if err != nil {
 		return err
 	}
 
 	// Now parse the actual SR data
-	return parseLines(reader, srRegex, sr)
+	return reader.parseLines(srRegex, sr)
 }
 
 var srRegex = regexp.MustCompile(`^SR\.(\d+)\s+(\d+)\s+(\d*\.?\d+)`)
@@ -131,17 +106,17 @@ func (sr *StimResponse) Parse(result []string) error {
 
 func parseChargeDuration(reader *Reader, cd *ChargeDuration) error {
 	// Find section header
-	err := skipPast(reader, "CHARGE DURATION DATA")
+	err := reader.skipPast("CHARGE DURATION DATA")
 	if err != nil {
 		return err
 	}
 
-	err = skipPast(reader, "Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)")
+	err = reader.skipPast("Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)")
 	if err != nil {
 		return err
 	}
 
-	return parseLines(reader, chargeRegex, cd)
+	return reader.parseLines(chargeRegex, cd)
 }
 
 var chargeRegex = regexp.MustCompile(`^QT\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
@@ -175,17 +150,17 @@ func (cd *ChargeDuration) Parse(result []string) error {
 
 func parseThresholdElectrotonus(reader *Reader, te *ThresholdElectrotonusGroup) error {
 	// Find section header
-	err := skipPast(reader, "THRESHOLD ELECTROTONUS DATA")
+	err := reader.skipPast("THRESHOLD ELECTROTONUS DATA")
 	if err != nil {
 		return err
 	}
 
-	err = skipPast(reader, "Delay (ms)          	Current (%)         	Thresh redn. (%)")
+	err = reader.skipPast("Delay (ms)          	Current (%)         	Thresh redn. (%)")
 	if err != nil {
 		return err
 	}
 
-	return parseLines(reader, teRegex, te)
+	return reader.parseLines(teRegex, te)
 }
 
 var teRegex = regexp.MustCompile(`^TE(\d+)\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
@@ -290,37 +265,6 @@ func (header *Header) Parse(result []string) error {
 		header.Operator = val
 	case "Comments":
 		header.Comment = val
-	}
-
-	return nil
-}
-
-type Parser interface {
-	Parse([]string) error
-}
-
-func parseLines(reader *Reader, regex *regexp.Regexp, parser Parser) error {
-	err := skipNewlines(reader)
-	if err != nil {
-		return err
-	}
-
-	for {
-		s, err := reader.ReadString('\n')
-		if err != nil {
-			return err
-		}
-
-		if len(s) == 1 {
-			// Done with section; break!
-			break
-		}
-		result := regex.FindStringSubmatch(s)
-
-		err = parser.Parse(result)
-		if err != nil {
-			return errors.New(err.Error() + ": '" + s + "'")
-		}
 	}
 
 	return nil
