@@ -340,7 +340,7 @@ func parseThresholdIV(reader *Reader, tiv *ThresholdIV) error {
 	return reader.parseLines(tivRegex, tiv)
 }
 
-var tivRegex = regexp.MustCompile(`^IV\d+\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
+var tivRegex = regexp.MustCompile(`^IV\d+\.\d+\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
 
 func (tiv *ThresholdIV) Parse(result []string) error {
 	if len(result) != 3 {
