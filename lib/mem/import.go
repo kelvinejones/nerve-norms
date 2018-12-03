@@ -38,18 +38,24 @@ func Import(data io.Reader) (Mem, error) {
 	return mem, nil
 }
 
-func skipNewlines(reader *Reader) (string, error) {
+func skipNewlines(reader *Reader) error {
 	s := "\n"
 	var err error
 	for s == "\n" && err == nil {
 		s, err = reader.ReadString('\n')
 	}
+	reader.UnreadString(s)
 
-	return s, err
+	return err
 }
 
 func skipPast(reader *Reader, search string) error {
-	s, err := skipNewlines(reader)
+	err := skipNewlines(reader)
+	if err != nil {
+		return err
+	}
+
+	s, err := reader.ReadString('\n')
 	if err == nil && !strings.Contains(s, search) {
 		err = errors.New("Could not find '" + search + "'")
 	}
@@ -74,7 +80,11 @@ func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	}
 
 	// Find Max CMAP
-	s, err := skipNewlines(reader)
+	err = skipNewlines(reader)
+	if err != nil {
+		return err
+	}
+	s, err := reader.ReadString('\n')
 	if err != nil {
 		return err
 	}
