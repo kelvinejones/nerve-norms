@@ -41,6 +41,70 @@ func parseHeader(reader *Reader, header *Header) error {
 	return reader.parseLines(headerRegex, header)
 }
 
+var headerRegex = regexp.MustCompile(`^\s+([^:]+):\s+(.*)`)
+
+func (header *Header) Parse(result []string) error {
+	if len(result) != 3 {
+		return errors.New("Incorrect header line length")
+	}
+
+	var err error
+	val := result[2]
+	switch result[1] {
+	case "NC/disease":
+		if val == "NC" {
+			header.NormalControl = true
+		}
+		// TODO update for other options? Currently disease is the default, which I suppose excludes an uncertain ones from the control database
+	case "Sex":
+		switch val {
+		case "M":
+			header.Sex = MaleSex
+		case "F":
+			header.Sex = FemaleSex
+		default:
+			header.Sex = UnknownSex
+		}
+	case "Temperature":
+		temp, err := strconv.ParseFloat(val, 32)
+		if err != nil {
+			return err
+		}
+		header.Temperature = float32(temp)
+	case "Age":
+		header.Age, err = strconv.Atoi(val)
+		if err != nil {
+			return err
+		}
+	case "Date":
+		layout := "2/1/06"
+		header.Date, err = time.Parse(layout, val)
+		if err != nil {
+			return err
+		}
+	case "Start time":
+		layout := "2/1/06 15:04:05"
+		header.StartTime, err = time.Parse(layout, "2/1/06 "+val)
+		if err != nil {
+			return err
+		}
+	case "File":
+		header.File = val
+	case "Name":
+		header.Name = val
+	case "Protocol":
+		header.Protocol = val
+	case "S/R sites":
+		header.SRSites = val
+	case "Operator":
+		header.Operator = val
+	case "Comments":
+		header.Comment = val
+	}
+
+	return nil
+}
+
 func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	// Find section header
 	err := reader.skipPast("STIMULUS-RESPONSE DATA")
@@ -202,70 +266,6 @@ func (te *ThresholdElectrotonusGroup) Parse(result []string) error {
 		Y: float32(y),
 		Z: float32(z),
 	})
-
-	return nil
-}
-
-var headerRegex = regexp.MustCompile(`^\s+([^:]+):\s+(.*)`)
-
-func (header *Header) Parse(result []string) error {
-	if len(result) != 3 {
-		return errors.New("Incorrect header line length")
-	}
-
-	var err error
-	val := result[2]
-	switch result[1] {
-	case "NC/disease":
-		if val == "NC" {
-			header.NormalControl = true
-		}
-		// TODO update for other options? Currently disease is the default, which I suppose excludes an uncertain ones from the control database
-	case "Sex":
-		switch val {
-		case "M":
-			header.Sex = MaleSex
-		case "F":
-			header.Sex = FemaleSex
-		default:
-			header.Sex = UnknownSex
-		}
-	case "Temperature":
-		temp, err := strconv.ParseFloat(val, 32)
-		if err != nil {
-			return err
-		}
-		header.Temperature = float32(temp)
-	case "Age":
-		header.Age, err = strconv.Atoi(val)
-		if err != nil {
-			return err
-		}
-	case "Date":
-		layout := "2/1/06"
-		header.Date, err = time.Parse(layout, val)
-		if err != nil {
-			return err
-		}
-	case "Start time":
-		layout := "2/1/06 15:04:05"
-		header.StartTime, err = time.Parse(layout, "2/1/06 "+val)
-		if err != nil {
-			return err
-		}
-	case "File":
-		header.File = val
-	case "Name":
-		header.Name = val
-	case "Protocol":
-		header.Protocol = val
-	case "S/R sites":
-		header.SRSites = val
-	case "Operator":
-		header.Operator = val
-	case "Comments":
-		header.Comment = val
-	}
 
 	return nil
 }
