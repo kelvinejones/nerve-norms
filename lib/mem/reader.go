@@ -78,7 +78,7 @@ func (rd *Reader) skipPast(search string) error {
 
 	s, err := rd.ReadLine()
 	if err == nil && !strings.Contains(s, search) {
-		err = errors.New("Could not find '" + search + "'")
+		err = errors.New("Could not find '" + search + "'" + " in line: " + s)
 	}
 	return err
 }
