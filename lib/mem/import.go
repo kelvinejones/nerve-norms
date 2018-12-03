@@ -34,6 +34,11 @@ func Import(data io.Reader) (Mem, error) {
 		return mem, err
 	}
 
+	err = parseRecoveryCycle(reader, &mem.RecoveryCycle)
+	if err != nil {
+		return mem, err
+	}
+
 	return mem, nil
 }
 
@@ -265,6 +270,45 @@ func (te *ThresholdElectrotonusGroup) Parse(result []string) error {
 		X: x,
 		Y: y,
 		Z: z,
+	})
+
+	return nil
+}
+
+func parseRecoveryCycle(reader *Reader, rc *RecoveryCycle) error {
+	// Find section header
+	err := reader.skipPast("RECOVERY CYCLE DATA")
+	if err != nil {
+		return err
+	}
+
+	err = reader.skipPast("Interval (ms)       	  Threshold change (%)")
+	if err != nil {
+		return err
+	}
+
+	return reader.parseLines(rcRegex, rc)
+}
+
+var rcRegex = regexp.MustCompile(`^RC\d+\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
+
+func (rc *RecoveryCycle) Parse(result []string) error {
+	if len(result) != 3 {
+		return errors.New("Incorrect RC line length")
+	}
+
+	x, err := strconv.ParseFloat(result[1], 64)
+	if err != nil {
+		return err
+	}
+	y, err := strconv.ParseFloat(result[2], 64)
+	if err != nil {
+		return err
+	}
+
+	rc.Values = append(rc.Values, XY{
+		X: x,
+		Y: y,
 	})
 
 	return nil

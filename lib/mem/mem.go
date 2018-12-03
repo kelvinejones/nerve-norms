@@ -42,11 +42,16 @@ type ThresholdElectrotonusSet struct {
 	Values []XYZ
 }
 
+type RecoveryCycle struct {
+	Values []XY
+}
+
 type Mem struct {
 	Header
 	StimResponse
 	ChargeDuration
 	ThresholdElectrotonusGroup
+	RecoveryCycle
 }
 
 type XY struct {

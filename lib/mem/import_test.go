@@ -171,13 +171,44 @@ func TestImportThresholdElectrotonus(t *testing.T) {
 	assert.Equal(t, thresholdElectrotonusExpected, actual)
 }
 
+const recoveryCycleString = `
+
+  RECOVERY CYCLE DATA (11.1-15.3m)
+
+                    	Interval (ms)       	  Threshold change (%)
+RC1.1               	 3.2                	4.99
+RC1.2               	 4                  	-12.75
+RC1.3               	 5                  	-22.24
+RC1.4               	 6.3                	-24.45
+RC1.5               	 7.9                	-24.05
+
+`
+
+var recoveryCycleExpected = RecoveryCycle{
+	Values: []XY{
+		XY{X: 3.2, Y: 4.99},
+		XY{X: 4, Y: -12.75},
+		XY{X: 5, Y: -22.24},
+		XY{X: 6.3, Y: -24.45},
+		XY{X: 7.9, Y: -24.05},
+	},
+}
+
+func TestImportRecoveryCycle(t *testing.T) {
+	actual := RecoveryCycle{}
+	err := parseRecoveryCycle(NewStringReader(recoveryCycleString), &actual)
+	assert.NoError(t, err)
+	assert.Equal(t, recoveryCycleExpected, actual)
+}
+
 func TestImportAll(t *testing.T) {
-	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString
+	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString + recoveryCycleString
 	memExpected := Mem{
 		Header:                     headerExpected,
 		StimResponse:               sResponseExpected,
 		ChargeDuration:             chargeDurationExpected,
 		ThresholdElectrotonusGroup: thresholdElectrotonusExpected,
+		RecoveryCycle:              recoveryCycleExpected,
 	}
 
 	mem, err := Import(strings.NewReader(memString))
