@@ -278,20 +278,20 @@ func TestImportExcitabilityVariables(t *testing.T) {
 	assert.Equal(t, excitabilityVariablesExpected, actual)
 }
 
+var completeExpectedMem = Mem{
+	Header:                     headerExpected,
+	StimResponse:               sResponseExpected,
+	ChargeDuration:             chargeDurationExpected,
+	ThresholdElectrotonusGroup: thresholdElectrotonusExpected,
+	RecoveryCycle:              recoveryCycleExpected,
+	ThresholdIV:                thresholdIVExpected,
+	ExcitabilityVariables:      excitabilityVariablesExpected,
+}
+
 func TestImportAll(t *testing.T) {
 	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString + recoveryCycleString + thresholdIVString + excitabilityVariablesString
-	memExpected := Mem{
-		Header:                     headerExpected,
-		StimResponse:               sResponseExpected,
-		ChargeDuration:             chargeDurationExpected,
-		ThresholdElectrotonusGroup: thresholdElectrotonusExpected,
-		RecoveryCycle:              recoveryCycleExpected,
-		ThresholdIV:                thresholdIVExpected,
-		ExcitabilityVariables:      excitabilityVariablesExpected,
-	}
-
 	mem, err := Import(strings.NewReader(memString))
 
 	assert.NoError(t, err)
-	assert.Equal(t, memExpected, mem)
+	assert.Equal(t, completeExpectedMem, mem)
 }
