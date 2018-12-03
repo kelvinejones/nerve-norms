@@ -36,3 +36,20 @@ func TestBasicReader(t *testing.T) {
 	assert.Equal(t, "I am a test\n", str)
 	assert.NoError(t, err)
 }
+
+func TestReaderUnread(t *testing.T) {
+	reader := NewStringReader(testString)
+
+	str, err := reader.ReadString('\n')
+	assert.Equal(t, "Hello\n", str)
+	assert.NoError(t, err)
+
+	reader.UnreadString("Another test\n")
+	str, err = reader.ReadString('\n')
+	assert.Equal(t, "Another test\n", str)
+	assert.NoError(t, err)
+
+	str, err = reader.ReadString('\n')
+	assert.Equal(t, "Line 2\n", str)
+	assert.NoError(t, err)
+}

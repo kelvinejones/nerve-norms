@@ -36,6 +36,7 @@ func (rd *Reader) ReadString(delim byte) (string, error) {
 		return rd.unreadString, errors.New("UnreadString was called twice before ReadString was called")
 	}
 	if rd.useUnreadString {
+		rd.useUnreadString = false
 		return rd.unreadString, nil
 	} else {
 		return rd.reader.ReadString(delim)
