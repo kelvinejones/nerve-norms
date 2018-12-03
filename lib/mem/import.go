@@ -66,11 +66,11 @@ func (header *Header) Parse(result []string) error {
 			header.Sex = UnknownSex
 		}
 	case "Temperature":
-		temp, err := strconv.ParseFloat(val, 32)
+		temp, err := strconv.ParseFloat(val, 64)
 		if err != nil {
 			return err
 		}
-		header.Temperature = float32(temp)
+		header.Temperature = temp
 	case "Age":
 		header.Age, err = strconv.Atoi(val)
 		if err != nil {
@@ -155,14 +155,14 @@ func (sr *StimResponse) Parse(result []string) error {
 	if err != nil {
 		return err
 	}
-	stim, err := strconv.ParseFloat(result[3], 32)
+	stim, err := strconv.ParseFloat(result[3], 64)
 	if err != nil {
 		return err
 	}
 
 	sr.Values = append(sr.Values, XY{
 		X: percentMax,
-		Y: float32(stim),
+		Y: stim,
 	})
 
 	return nil
@@ -190,23 +190,23 @@ func (cd *ChargeDuration) Parse(result []string) error {
 		return errors.New("Incorrect CD line length")
 	}
 
-	x, err := strconv.ParseFloat(result[1], 32)
+	x, err := strconv.ParseFloat(result[1], 64)
 	if err != nil {
 		return err
 	}
-	y, err := strconv.ParseFloat(result[2], 32)
+	y, err := strconv.ParseFloat(result[2], 64)
 	if err != nil {
 		return err
 	}
-	z, err := strconv.ParseFloat(result[3], 32)
+	z, err := strconv.ParseFloat(result[3], 64)
 	if err != nil {
 		return err
 	}
 
 	cd.Values = append(cd.Values, XYZ{
-		X: float32(x),
-		Y: float32(y),
-		Z: float32(z),
+		X: x,
+		Y: y,
+		Z: z,
 	})
 
 	return nil
@@ -243,15 +243,15 @@ func (te *ThresholdElectrotonusGroup) Parse(result []string) error {
 		return errors.New("More than 100 sets of TE data are not supported")
 	}
 
-	x, err := strconv.ParseFloat(result[2], 32)
+	x, err := strconv.ParseFloat(result[2], 64)
 	if err != nil {
 		return err
 	}
-	y, err := strconv.ParseFloat(result[3], 32)
+	y, err := strconv.ParseFloat(result[3], 64)
 	if err != nil {
 		return err
 	}
-	z, err := strconv.ParseFloat(result[4], 32)
+	z, err := strconv.ParseFloat(result[4], 64)
 	if err != nil {
 		return err
 	}
@@ -262,9 +262,9 @@ func (te *ThresholdElectrotonusGroup) Parse(result []string) error {
 	}
 
 	te.Sets[set-1].Values = append(te.Sets[set-1].Values, XYZ{
-		X: float32(x),
-		Y: float32(y),
-		Z: float32(z),
+		X: x,
+		Y: y,
+		Z: z,
 	})
 
 	return nil

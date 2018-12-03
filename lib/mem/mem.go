@@ -18,7 +18,7 @@ type Header struct {
 	StartTime time.Time // TODO get rid of this field; merge into Date
 	Age       int
 	Sex
-	Temperature   float32
+	Temperature   float64
 	SRSites       string
 	NormalControl bool
 	Operator      string
@@ -26,7 +26,7 @@ type Header struct {
 }
 
 type StimResponse struct {
-	MaxCmap float32
+	MaxCmap float64
 	Values  []XY
 }
 
@@ -51,11 +51,11 @@ type Mem struct {
 
 type XY struct {
 	X int
-	Y float32
+	Y float64
 }
 
 type XYZ struct {
-	X float32
-	Y float32
-	Z float32
+	X float64
+	Y float64
+	Z float64
 }
