@@ -1,6 +1,8 @@
 package mem
 
 import (
+	"bufio"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -291,6 +293,16 @@ var completeExpectedMem = Mem{
 func TestImportAll(t *testing.T) {
 	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString + recoveryCycleString + thresholdIVString + excitabilityVariablesString
 	mem, err := Import(strings.NewReader(memString))
+
+	assert.NoError(t, err)
+	assert.Equal(t, completeExpectedMem, mem)
+}
+
+func TestImportFile(t *testing.T) {
+	file, err := os.Open("../../res/data/short_test.MEM")
+	assert.NoError(t, err)
+
+	mem, err := Import(bufio.NewReader(file))
 
 	assert.NoError(t, err)
 	assert.Equal(t, completeExpectedMem, mem)
