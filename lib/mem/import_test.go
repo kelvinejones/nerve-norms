@@ -328,6 +328,16 @@ func TestImportAll(t *testing.T) {
 	assert.Equal(t, completeExpectedMem, mem)
 }
 
+func TestImportAllMixed(t *testing.T) {
+	memString := headerString + thresholdElectrotonusHeaderString + thresholdElectrotonusString + chargeDurationHeaderString +
+		chargeDurationString + thresholdIVHeaderString + thresholdIVString + recoveryCycleHeaderString + recoveryCycleString +
+		sResponseHeaderString + sResponseString + excitabilityVariablesHeaderString + excitabilityVariablesString
+	mem, err := Import(strings.NewReader(toWindows(memString)))
+
+	assert.NoError(t, err)
+	assert.Equal(t, completeExpectedMem, mem)
+}
+
 func TestImportFile(t *testing.T) {
 	file, err := os.Open("../../res/data/short_test.MEM")
 	assert.NoError(t, err)
