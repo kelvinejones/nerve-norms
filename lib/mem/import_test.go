@@ -139,6 +139,10 @@ TE1.3               	 10                 	40                  	40.02
 TE1.4               	 11                 	40                  	42.71
 TE1.5               	 11                 	40                  	-42.71
 
+TE2.1               	 0                  	0                   	0.00
+TE2.2               	 9                  	0                   	0.00
+TE2.3               	 10                 	-40                 	-39.34
+TE2.4               	 11                 	-40                 	-40.92
 
 `
 
@@ -150,6 +154,12 @@ var thresholdElectrotonusExpected = ThresholdElectrotonusGroup{
 			XYZ{X: 10, Y: 40, Z: 40.02},
 			XYZ{X: 11, Y: 40, Z: 42.71},
 			XYZ{X: 11, Y: 40, Z: -42.71},
+		}},
+		ThresholdElectrotonusSet{Values: []XYZ{
+			XYZ{X: 0, Y: 0, Z: 0.00},
+			XYZ{X: 9, Y: 0, Z: 0.00},
+			XYZ{X: 10, Y: -40, Z: -39.34},
+			XYZ{X: 11, Y: -40, Z: -40.92},
 		}},
 	},
 }
