@@ -26,8 +26,9 @@ type Header struct {
 }
 
 type StimResponse struct {
-	MaxCmap float64
-	Values  []XY
+	MaxCmap   float64
+	Values    []XY
+	ValueType string
 }
 
 type ChargeDuration struct {

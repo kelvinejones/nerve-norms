@@ -82,7 +82,8 @@ SR.20               	 20                 	 4.9239
 `
 
 var sResponseExpected = StimResponse{
-	MaxCmap: 1.161296,
+	MaxCmap:   1.161296,
+	ValueType: "are those recorded",
 	Values: []XY{
 		XY{X: 2, Y: 3.915578},
 		XY{X: 4, Y: 4.073214},

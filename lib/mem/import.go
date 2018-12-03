@@ -130,7 +130,7 @@ func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	}
 
 	// Find some random string that's there
-	err = reader.skipPast("Values are those recorded")
+	sr.ValueType, err = reader.ReadLineExtractingString(`^Values (.*)`)
 	if err != nil {
 		return err
 	}

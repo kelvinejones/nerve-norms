@@ -44,6 +44,11 @@ func (rd *Reader) ReadLine() (string, error) {
 
 // ReadLineExtractingString expects to receive a regex which finds a single string
 func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
+	err := rd.skipNewlines()
+	if err != nil {
+		return "", err
+	}
+
 	s, err := rd.ReadLine()
 	if err != nil {
 		return "", err
