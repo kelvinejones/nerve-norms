@@ -170,13 +170,10 @@ func parseThresholdElectrotonus(reader *Reader, te *ThresholdElectrotonusGroup) 
 		return err
 	}
 
-	fmt.Println("Theline")
-	s, err := skipUntilContains(reader, "Delay (ms)          	Current (%)         	Thresh redn. (%)")
+	_, err = skipUntilContains(reader, "Delay (ms)          	Current (%)         	Thresh redn. (%)")
 	if err != nil {
 		return err
 	}
-	fmt.Println(s)
-	fmt.Println("Thelin2e")
 
 	return parseLines(reader, teRegex, te)
 }
