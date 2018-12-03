@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const headerString = ` File:              	n:\Qtrac\Data\Human Normative data\Median nerve raw\FESB70821A.QZD
- Name:              	CR21S
+const headerString = ` File:              	n:\Short Test\FESB70821A.QZD
+ Name:              	SHORTY
  Protocol:          	TRONDNF
  Date:              	21/8/17
  Start time:        	12:57:17
@@ -26,8 +26,8 @@ const headerString = ` File:              	n:\Qtrac\Data\Human Normative data\Me
 `
 
 var headerExpected = Header{
-	File:          `n:\Qtrac\Data\Human Normative data\Median nerve raw\FESB70821A.QZD`,
-	Name:          "CR21S",
+	File:          `n:\Short Test\FESB70821A.QZD`,
+	Name:          "SHORTY",
 	Protocol:      "TRONDNF",
 	Date:          time.Date(2017, time.Month(8), 21, 0, 0, 0, 0, time.UTC),   // TODO eventually handle time zones better?
 	StartTime:     time.Date(2006, time.Month(1), 2, 12, 57, 17, 0, time.UTC), // TODO eventually handle time zones better?
