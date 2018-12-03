@@ -50,7 +50,7 @@ type Mem struct {
 }
 
 type XY struct {
-	X int
+	X float64
 	Y float64
 }
 

@@ -151,7 +151,7 @@ func (sr *StimResponse) Parse(result []string) error {
 		return errors.New("SR fields do not match")
 	}
 
-	percentMax, err := strconv.Atoi(result[1])
+	percentMax, err := strconv.ParseFloat(result[1], 64)
 	if err != nil {
 		return err
 	}
