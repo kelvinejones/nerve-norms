@@ -364,7 +364,7 @@ func (tiv *ThresholdIV) Parse(result []string) error {
 	return nil
 }
 
-func parseExcitabilityVariables(reader *Reader, exvar *ExcitabilityVariables) error {
+func parseExcitabilityVariables(reader *Reader, exciteVar *ExcitabilityVariables) error {
 	// Find section header
 	err := reader.skipPast("DERIVED EXCITABILITY VARIABLES")
 	if err != nil {
@@ -377,7 +377,7 @@ func parseExcitabilityVariables(reader *Reader, exvar *ExcitabilityVariables) er
 		return err
 	}
 
-	exvar.Program, err = reader.ReadLineExtractingString(`^Program = (.*)\n`)
+	exciteVar.Program, err = reader.ReadLineExtractingString(`^Program = (.*)\n`)
 	if err != nil {
 		return err
 	}
@@ -386,7 +386,7 @@ func parseExcitabilityVariables(reader *Reader, exvar *ExcitabilityVariables) er
 	if err != nil {
 		return err
 	}
-	exvar.ThresholdMethod, err = strconv.Atoi(val)
+	exciteVar.ThresholdMethod, err = strconv.Atoi(val)
 	if err != nil {
 		return err
 	}
@@ -395,17 +395,17 @@ func parseExcitabilityVariables(reader *Reader, exvar *ExcitabilityVariables) er
 	if err != nil {
 		return err
 	}
-	exvar.SRMethod, err = strconv.Atoi(val)
+	exciteVar.SRMethod, err = strconv.Atoi(val)
 	if err != nil {
 		return err
 	}
 
-	return reader.parseLines(exvarRegex, exvar)
+	return reader.parseLines(exciteVarRegex, exciteVar)
 }
 
-var exvarRegex = regexp.MustCompile(`^ \d+\.\s+([-+]?\d*\.?\d+)\s+(.+)`)
+var exciteVarRegex = regexp.MustCompile(`^ \d+\.\s+([-+]?\d*\.?\d+)\s+(.+)`)
 
-func (exvar *ExcitabilityVariables) Parse(result []string) error {
+func (exciteVar *ExcitabilityVariables) Parse(result []string) error {
 	if len(result) != 3 {
 		return errors.New("Incorrect ExVar line length")
 	}
@@ -415,7 +415,7 @@ func (exvar *ExcitabilityVariables) Parse(result []string) error {
 		return err
 	}
 
-	exvar.Values[result[2]] = val
+	exciteVar.Values[result[2]] = val
 
 	return nil
 }
