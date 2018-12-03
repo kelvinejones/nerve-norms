@@ -247,6 +247,12 @@ SR method = 1 (using actual data values)
  18.                	1                   	Sex (M=1, F=2)
  22.                	-64.192             	TEh(10-20ms)
 
+  EXTRA VARIABLES (add here as required, e.g. Potassium = 4.5)
+
+TEd40(Accom) = 19.6
+TEd20(10-20ms) = 30.8
+TEh20(10-20ms) = -32.2
+
 `
 
 var excitabilityVariablesExpected = ExcitabilityVariables{
@@ -256,6 +262,9 @@ var excitabilityVariablesExpected = ExcitabilityVariables{
 		`Polarizing current\(mA)`:              0.000,
 		`Sex (M=1, F=2)`:                       1,
 		`TEh(10-20ms)`:                         -64.192,
+		`TEd40(Accom)`:                         19.6,
+		`TEd20(10-20ms)`:                       30.8,
+		`TEh20(10-20ms)`:                       -32.2,
 	},
 	Program:         "QTracP 9/12/2016",
 	ThresholdMethod: 6,

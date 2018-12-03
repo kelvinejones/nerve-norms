@@ -400,7 +400,28 @@ func parseExcitabilityVariables(reader *Reader, exciteVar *ExcitabilityVariables
 		return err
 	}
 
-	return reader.parseLines(exciteVarRegex, exciteVar)
+	// Read the main variables
+	err = reader.parseLines(exciteVarRegex, exciteVar)
+	if err != nil {
+		return err
+	}
+
+	// Now find any extra variables
+	err = reader.skipNewlines()
+	if err != nil {
+		return err
+	}
+	err = reader.skipPast("EXTRA VARIABLES")
+	if err != nil {
+		return err
+	}
+	err = reader.skipNewlines()
+	if err != nil {
+		return err
+	}
+
+	err = reader.parseLines(extraVarRegex, &ExtraVariables{exciteVar})
+	return err
 }
 
 var exciteVarRegex = regexp.MustCompile(`^ \d+\.\s+([-+]?\d*\.?\d+)\s+(.+)`)
@@ -416,6 +437,27 @@ func (exciteVar *ExcitabilityVariables) Parse(result []string) error {
 	}
 
 	exciteVar.Values[result[2]] = val
+
+	return nil
+}
+
+type ExtraVariables struct {
+	*ExcitabilityVariables
+}
+
+var extraVarRegex = regexp.MustCompile(`^(.+) = ([-+]?\d*\.?\d+)`)
+
+func (extraVar *ExtraVariables) Parse(result []string) error {
+	if len(result) != 3 {
+		return errors.New("Incorrect ExtraVar line length")
+	}
+
+	val, err := strconv.ParseFloat(result[2], 64)
+	if err != nil {
+		return err
+	}
+
+	extraVar.Values[result[1]] = val
 
 	return nil
 }
