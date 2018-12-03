@@ -62,19 +62,19 @@ func parseHeader(reader *Reader, header *Header) error {
 
 func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	// Find section header
-	s, err := skipUntilContains(reader, "STIMULUS-RESPONSE DATA")
+	_, err := skipUntilContains(reader, "STIMULUS-RESPONSE DATA")
 	if err != nil {
 		return err
 	}
 
 	// Find some random string that's there
-	s, err = skipUntilContains(reader, "Values are those recorded")
+	_, err = skipUntilContains(reader, "Values are those recorded")
 	if err != nil {
 		return err
 	}
 
 	// Find Max CMAP
-	s, err = skipNewlines(reader)
+	s, err := skipNewlines(reader)
 	if err != nil {
 		return err
 	}
@@ -83,7 +83,7 @@ func parseStimResponse(reader *Reader, sr *StimResponse) error {
 		return errors.New("Could not find Max CMAP: " + s)
 	}
 
-	s, err = skipUntilContains(reader, "% Max               	Stimulus")
+	_, err = skipUntilContains(reader, "% Max               	Stimulus")
 	if err != nil {
 		return err
 	}
