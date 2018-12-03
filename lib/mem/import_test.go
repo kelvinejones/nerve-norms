@@ -233,8 +233,44 @@ func TestImportThresholdIV(t *testing.T) {
 	assert.Equal(t, thresholdIVExpected, actual)
 }
 
+const excitabilityVariablesString = `
+
+  DERIVED EXCITABILITY VARIABLES
+
+Program = QTracP 9/12/2016
+Threshold method = 6 (optimised for CAP, using data for present condition only)
+SR method = 1 (using actual data values)
+
+ 1.                 	5.307               	Stimulus (mA) for 50% max response
+ 3.                 	0.287               	Strength-duration\time constant (ms)
+ 16.                	0.000               	Polarizing current\(mA)
+ 18.                	1                   	Sex (M=1, F=2)
+ 22.                	-64.192             	TEh(10-20ms)
+
+`
+
+var excitabilityVariablesExpected = ExcitabilityVariables{
+	Values: map[string]float64{
+		`Stimulus (mA) for 50% max response`:   5.307,
+		`Strength-duration\time constant (ms)`: 0.287,
+		`Polarizing current\(mA)`:              0.000,
+		`Sex (M=1, F=2)`:                       1,
+		`TEh(10-20ms)`:                         -64.192,
+	},
+	Program:         "QTracP 9/12/2016",
+	ThresholdMethod: 6,
+	SRMethod:        1,
+}
+
+func TestImportExcitabilityVariables(t *testing.T) {
+	actual := ExcitabilityVariables{Values: make(map[string]float64)}
+	err := parseExcitabilityVariables(NewStringReader(excitabilityVariablesString), &actual)
+	assert.NoError(t, err)
+	assert.Equal(t, excitabilityVariablesExpected, actual)
+}
+
 func TestImportAll(t *testing.T) {
-	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString + recoveryCycleString + thresholdIVString
+	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString + recoveryCycleString + thresholdIVString + excitabilityVariablesString
 	memExpected := Mem{
 		Header:                     headerExpected,
 		StimResponse:               sResponseExpected,
@@ -242,6 +278,7 @@ func TestImportAll(t *testing.T) {
 		ThresholdElectrotonusGroup: thresholdElectrotonusExpected,
 		RecoveryCycle:              recoveryCycleExpected,
 		ThresholdIV:                thresholdIVExpected,
+		ExcitabilityVariables:      excitabilityVariablesExpected,
 	}
 
 	mem, err := Import(strings.NewReader(memString))

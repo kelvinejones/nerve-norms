@@ -50,6 +50,13 @@ type ThresholdIV struct {
 	Values []XY
 }
 
+type ExcitabilityVariables struct {
+	Values          map[string]float64
+	Program         string
+	ThresholdMethod int
+	SRMethod        int
+}
+
 type Mem struct {
 	Header
 	StimResponse
@@ -57,6 +64,7 @@ type Mem struct {
 	ThresholdElectrotonusGroup
 	RecoveryCycle
 	ThresholdIV
+	ExcitabilityVariables
 }
 
 type XY struct {

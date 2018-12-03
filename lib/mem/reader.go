@@ -41,6 +41,21 @@ func (rd *Reader) ReadString(delim byte) (string, error) {
 	}
 }
 
+// ReadLineExtractingString expects to receive a regex which finds a single string
+func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
+	s, err := rd.ReadString('\n')
+	if err != nil {
+		return "", err
+	}
+
+	result := regexp.MustCompile(regstring).FindStringSubmatch(s)
+	if len(result) != 2 {
+		return "", errors.New("Incorrect ReadLineExtractingString length")
+	}
+
+	return result[1], nil
+}
+
 func (rd *Reader) skipNewlines() error {
 	s := "\n"
 	var err error

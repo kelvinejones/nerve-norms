@@ -44,6 +44,12 @@ func Import(data io.Reader) (Mem, error) {
 		return mem, err
 	}
 
+	mem.ExcitabilityVariables.Values = make(map[string]float64)
+	err = parseExcitabilityVariables(reader, &mem.ExcitabilityVariables)
+	if err != nil {
+		return mem, err
+	}
+
 	return mem, nil
 }
 
@@ -354,6 +360,62 @@ func (tiv *ThresholdIV) Parse(result []string) error {
 		X: x,
 		Y: y,
 	})
+
+	return nil
+}
+
+func parseExcitabilityVariables(reader *Reader, exvar *ExcitabilityVariables) error {
+	// Find section header
+	err := reader.skipPast("DERIVED EXCITABILITY VARIABLES")
+	if err != nil {
+		return err
+	}
+
+	// Find settings
+	err = reader.skipNewlines()
+	if err != nil {
+		return err
+	}
+
+	exvar.Program, err = reader.ReadLineExtractingString(`^Program = (.*)\n`)
+	if err != nil {
+		return err
+	}
+
+	val, err := reader.ReadLineExtractingString(`^Threshold method = (\d+).*\n`)
+	if err != nil {
+		return err
+	}
+	exvar.ThresholdMethod, err = strconv.Atoi(val)
+	if err != nil {
+		return err
+	}
+
+	val, err = reader.ReadLineExtractingString(`^SR method = (\d+).*\n`)
+	if err != nil {
+		return err
+	}
+	exvar.SRMethod, err = strconv.Atoi(val)
+	if err != nil {
+		return err
+	}
+
+	return reader.parseLines(exvarRegex, exvar)
+}
+
+var exvarRegex = regexp.MustCompile(`^ \d+\.\s+([-+]?\d*\.?\d+)\s+(.+)`)
+
+func (exvar *ExcitabilityVariables) Parse(result []string) error {
+	if len(result) != 3 {
+		return errors.New("Incorrect ExVar line length")
+	}
+
+	val, err := strconv.ParseFloat(result[1], 64)
+	if err != nil {
+		return err
+	}
+
+	exvar.Values[result[2]] = val
 
 	return nil
 }
