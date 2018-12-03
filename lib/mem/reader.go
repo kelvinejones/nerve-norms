@@ -3,6 +3,7 @@ package mem
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"io"
 	"regexp"
 	"strings"
@@ -56,7 +57,7 @@ func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
 
 	result := regexp.MustCompile(regstring).FindStringSubmatch(s)
 	if len(result) != 2 {
-		return "", errors.New("Incorrect ReadLineExtractingString length")
+		return "", fmt.Errorf("Incorrect ReadLineExtractingString length (%d) for '"+regstring+"'", len(result))
 	}
 
 	return result[1], nil
@@ -84,6 +85,7 @@ func (rd *Reader) skipPast(search string) error {
 	s, err := rd.ReadLine()
 	if err == nil && !strings.Contains(s, search) {
 		err = errors.New("Could not find '" + search + "'" + " in line: " + s)
+		rd.UnreadString(s)
 	}
 	return err
 }

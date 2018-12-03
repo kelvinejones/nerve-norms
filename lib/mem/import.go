@@ -12,45 +12,64 @@ import (
 func Import(data io.Reader) (Mem, error) {
 	reader := NewReader(data)
 	mem := Mem{}
-	var err error
-
-	err = parseHeader(reader, &mem.Header)
-	if err != nil {
-		return mem, err
-	}
-
-	err = parseStimResponse(reader, &mem.StimResponse)
-	if err != nil {
-		return mem, err
-	}
-
-	err = parseChargeDuration(reader, &mem.ChargeDuration)
-	if err != nil {
-		return mem, err
-	}
-
-	err = parseThresholdElectrotonus(reader, &mem.ThresholdElectrotonusGroup)
-	if err != nil {
-		return mem, err
-	}
-
-	err = parseRecoveryCycle(reader, &mem.RecoveryCycle)
-	if err != nil {
-		return mem, err
-	}
-
-	err = parseThresholdIV(reader, &mem.ThresholdIV)
-	if err != nil {
-		return mem, err
-	}
-
 	mem.ExcitabilityVariables.Values = make(map[string]float64)
-	err = parseExcitabilityVariables(reader, &mem.ExcitabilityVariables)
+
+	err := parseHeader(reader, &mem.Header)
 	if err != nil {
 		return mem, err
+	}
+
+	for err == nil {
+		err = mem.importSection(reader)
+	}
+
+	if err != io.EOF {
+		return mem, errors.New("Error encountered before EOF: " + err.Error())
 	}
 
 	return mem, nil
+}
+
+func (mem *Mem) importSection(reader *Reader) error {
+	var err error
+	switch {
+	case reader.skipPast(mem.StimResponse.Header()) == nil:
+		err = parseStimResponse(reader, &mem.StimResponse)
+		if err != nil {
+			return err
+		}
+	case reader.skipPast(mem.ChargeDuration.Header()) == nil:
+		err = parseChargeDuration(reader, &mem.ChargeDuration)
+		if err != nil {
+			return err
+		}
+	case reader.skipPast(mem.ThresholdElectrotonusGroup.Header()) == nil:
+		err = parseThresholdElectrotonus(reader, &mem.ThresholdElectrotonusGroup)
+		if err != nil {
+			return err
+		}
+	case reader.skipPast(mem.RecoveryCycle.Header()) == nil:
+		err = parseRecoveryCycle(reader, &mem.RecoveryCycle)
+		if err != nil {
+			return err
+		}
+	case reader.skipPast(mem.ThresholdIV.Header()) == nil:
+		err = parseThresholdIV(reader, &mem.ThresholdIV)
+		if err != nil {
+			return err
+		}
+	case reader.skipPast(mem.ExcitabilityVariables.Header()) == nil:
+		err = parseExcitabilityVariables(reader, &mem.ExcitabilityVariables)
+		if err != nil {
+			return err
+		}
+	default:
+		var str string
+		str, err = reader.ReadLine()
+		reader.UnreadString(str)
+	}
+
+	return err
 }
 
 func parseHeader(reader *Reader, header *Header) error {
@@ -122,13 +141,7 @@ func (header *Header) Parse(result []string) error {
 }
 
 func parseStimResponse(reader *Reader, sr *StimResponse) error {
-	// Find section header
-	err := reader.skipPast(sr.Header())
-	if err != nil {
-		return err
-	}
-
-	// Find some random string that's there
+	var err error
 	sr.ValueType, err = reader.ReadLineExtractingString(`^Values (.*)`)
 	if err != nil {
 		return err
@@ -201,13 +214,7 @@ func (cmaps *MaxCmaps) Parse(result []string) error {
 }
 
 func parseChargeDuration(reader *Reader, cd *ChargeDuration) error {
-	// Find section header
-	err := reader.skipPast(cd.Header())
-	if err != nil {
-		return err
-	}
-
-	err = reader.skipPast("Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)")
+	err := reader.skipPast("Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)")
 	if err != nil {
 		return err
 	}
@@ -245,13 +252,7 @@ func (cd *ChargeDuration) Parse(result []string) error {
 }
 
 func parseThresholdElectrotonus(reader *Reader, te *ThresholdElectrotonusGroup) error {
-	// Find section header
-	err := reader.skipPast(te.Header())
-	if err != nil {
-		return err
-	}
-
-	err = reader.skipPast("Delay (ms)          	Current (%)         	Thresh redn. (%)")
+	err := reader.skipPast("Delay (ms)          	Current (%)         	Thresh redn. (%)")
 	if err != nil {
 		return err
 	}
@@ -303,13 +304,7 @@ func (te *ThresholdElectrotonusGroup) Parse(result []string) error {
 }
 
 func parseRecoveryCycle(reader *Reader, rc *RecoveryCycle) error {
-	// Find section header
-	err := reader.skipPast(rc.Header())
-	if err != nil {
-		return err
-	}
-
-	err = reader.skipPast("Interval (ms)       	  Threshold change (%)")
+	err := reader.skipPast("Interval (ms)       	  Threshold change (%)")
 	if err != nil {
 		return err
 	}
@@ -342,13 +337,7 @@ func (rc *RecoveryCycle) Parse(result []string) error {
 }
 
 func parseThresholdIV(reader *Reader, tiv *ThresholdIV) error {
-	// Find section header
-	err := reader.skipPast(tiv.Header())
-	if err != nil {
-		return err
-	}
-
-	err = reader.skipPast("Current (%)         	  Threshold redn. (%)")
+	err := reader.skipPast("Current (%)         	  Threshold redn. (%)")
 	if err != nil {
 		return err
 	}
@@ -381,14 +370,8 @@ func (tiv *ThresholdIV) Parse(result []string) error {
 }
 
 func parseExcitabilityVariables(reader *Reader, exciteVar *ExcitabilityVariables) error {
-	// Find section header
-	err := reader.skipPast(exciteVar.Header())
-	if err != nil {
-		return err
-	}
-
 	// Find settings
-	err = reader.skipNewlines()
+	err := reader.skipNewlines()
 	if err != nil {
 		return err
 	}

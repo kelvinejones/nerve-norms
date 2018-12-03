@@ -59,10 +59,11 @@ func TestImportHeader(t *testing.T) {
 	assert.Equal(t, headerExpected, header)
 }
 
+const sResponseHeaderString = `
+
+ STIMULUS-RESPONSE DATA (2.4-1.9
+`
 const sResponseString = `
-
- STIMULUS-RESPONSE DATA (2.4-1.9m)
-
 Values are those recorded
 
  Max CMAP  .2 ms =  61.36306 uV
@@ -117,10 +118,11 @@ func TestImportSRResponse(t *testing.T) {
 	assert.Equal(t, sResponseExpected, sResp)
 }
 
-const chargeDurationString = `
+const chargeDurationHeaderString = `
 
   CHARGE DURATION DATA (2.4-3.5m)
-
+`
+const chargeDurationString = `
                     	Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)
 QT.1                	 .2                 	 9.790961           	 1.958192
 QT.2                	 .4                 	 6.905862           	 2.762345
@@ -148,10 +150,11 @@ func TestImportChargeDuration(t *testing.T) {
 	assert.Equal(t, chargeDurationExpected, sResp)
 }
 
-const thresholdElectrotonusString = `
+const thresholdElectrotonusHeaderString = `
 
   THRESHOLD ELECTROTONUS DATA (3.5-8.8m)
-
+`
+const thresholdElectrotonusString = `
                     	Delay (ms)          	Current (%)         	Thresh redn. (%)
 TE1.1               	 0                  	0                   	0.00
 TE1.2               	 9                  	0                   	0.00
@@ -191,10 +194,11 @@ func TestImportThresholdElectrotonus(t *testing.T) {
 	assert.Equal(t, thresholdElectrotonusExpected, actual)
 }
 
-const recoveryCycleString = `
+const recoveryCycleHeaderString = `
 
   RECOVERY CYCLE DATA (11.1-15.3m)
-
+`
+const recoveryCycleString = `
                     	Interval (ms)       	  Threshold change (%)
 RC1.1               	 3.2                	4.99
 RC1.2               	 4                  	-12.75
@@ -221,10 +225,11 @@ func TestImportRecoveryCycle(t *testing.T) {
 	assert.Equal(t, recoveryCycleExpected, actual)
 }
 
-const thresholdIVString = `
+const thresholdIVHeaderString = `
 
   THRESHOLD I/V DATA (8.9-11m)
-
+`
+const thresholdIVString = `
                     	Current (%)         	  Threshold redn. (%)
 IV1.1               	 50                 	49.28
 IV1.2               	 40                 	39.01
@@ -257,10 +262,11 @@ func TestImportThresholdIV(t *testing.T) {
 	assert.Equal(t, thresholdIVExpected, actual)
 }
 
-const excitabilityVariablesString = `
+const excitabilityVariablesHeaderString = `
 
   DERIVED EXCITABILITY VARIABLES
-
+`
+const excitabilityVariablesString = `
 Program = QTracP 9/12/2016
 Threshold method = 6 (optimised for CAP, using data for present condition only)
 SR method = 1 (using actual data values)
@@ -313,7 +319,9 @@ var completeExpectedMem = Mem{
 }
 
 func TestImportAll(t *testing.T) {
-	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString + recoveryCycleString + thresholdIVString + excitabilityVariablesString
+	memString := headerString + sResponseHeaderString + sResponseString + chargeDurationHeaderString + chargeDurationString +
+		thresholdElectrotonusHeaderString + thresholdElectrotonusString + recoveryCycleHeaderString + recoveryCycleString +
+		thresholdIVHeaderString + thresholdIVString + excitabilityVariablesHeaderString + excitabilityVariablesString
 	mem, err := Import(strings.NewReader(toWindows(memString)))
 
 	assert.NoError(t, err)
