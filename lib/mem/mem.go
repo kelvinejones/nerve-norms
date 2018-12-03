@@ -25,8 +25,16 @@ type Header struct {
 	Comment       string
 }
 
+type MaxCmap struct {
+	Val   float64
+	Time  float64
+	Units byte
+}
+
+type MaxCmaps []MaxCmap
+
 type StimResponse struct {
-	MaxCmap   float64
+	MaxCmaps
 	Values    []XY
 	ValueType string
 }

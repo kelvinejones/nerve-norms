@@ -2,7 +2,6 @@ package mem
 
 import (
 	"errors"
-	"fmt"
 	"io"
 	"regexp"
 	"strconv"
@@ -136,17 +135,9 @@ func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	}
 
 	// Find Max CMAP
-	err = reader.skipNewlines()
+	err = reader.parseLines(maxCmapRegex, &sr.MaxCmaps)
 	if err != nil {
 		return err
-	}
-	s, err := reader.ReadLine()
-	if err != nil {
-		return err
-	}
-	n, err := fmt.Sscanf(s, " Max CMAP  1 ms =  %f mV", &sr.MaxCmap)
-	if n != 1 || err != nil {
-		return errors.New("Could not find Max CMAP: " + s)
 	}
 
 	err = reader.skipPast("% Max               	Stimulus")
@@ -181,6 +172,30 @@ func (sr *StimResponse) Parse(result []string) error {
 		X: percentMax,
 		Y: stim,
 	})
+
+	return nil
+}
+
+var maxCmapRegex = regexp.MustCompile(`^ Max CMAP  (\d*\.?\d+) ms =  (\d*\.?\d+) (.)V`)
+
+func (cmaps *MaxCmaps) Parse(result []string) error {
+	if len(result) != 4 {
+		return errors.New("Incorrect CMAP line length")
+	}
+
+	cmap := MaxCmap{}
+	var err error
+	cmap.Time, err = strconv.ParseFloat(result[1], 64)
+	if err != nil {
+		return err
+	}
+	cmap.Val, err = strconv.ParseFloat(result[2], 64)
+	if err != nil {
+		return err
+	}
+	cmap.Units = result[3][0]
+
+	*cmaps = append(*cmaps, cmap)
 
 	return nil
 }

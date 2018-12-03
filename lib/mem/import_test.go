@@ -65,6 +65,7 @@ const sResponseString = `
 
 Values are those recorded
 
+ Max CMAP  .2 ms =  61.36306 uV
  Max CMAP  1 ms =  1.161296 mV
 
                     	% Max               	Stimulus(2)
@@ -82,7 +83,18 @@ SR.20               	 20                 	 4.9239
 `
 
 var sResponseExpected = StimResponse{
-	MaxCmap:   1.161296,
+	MaxCmaps: []MaxCmap{
+		MaxCmap{
+			Val:   61.36306,
+			Time:  .2,
+			Units: 'u',
+		},
+		MaxCmap{
+			Val:   1.161296,
+			Time:  1,
+			Units: 'm',
+		},
+	},
 	ValueType: "are those recorded",
 	Values: []XY{
 		XY{X: 2, Y: 3.915578},
