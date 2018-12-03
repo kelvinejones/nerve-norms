@@ -12,7 +12,6 @@ type Reader struct {
 	reader          *bufio.Reader
 	unreadString    string
 	useUnreadString bool
-	writeError      bool
 }
 
 func NewReader(rd io.Reader) *Reader {
@@ -23,19 +22,17 @@ func NewStringReader(str string) *Reader {
 	return &Reader{reader: bufio.NewReader(strings.NewReader(str))}
 }
 
-func (rd *Reader) UnreadString(str string) {
+func (rd *Reader) UnreadString(str string) error {
 	// If this is called twice without a call to ReadString in between, the next ReadString call will error.
 	if rd.useUnreadString {
-		rd.writeError = true
+		return errors.New("UnreadString was called twice before ReadString was called")
 	}
 	rd.unreadString = str
 	rd.useUnreadString = true
+	return nil
 }
 
 func (rd *Reader) ReadString(delim byte) (string, error) {
-	if rd.writeError {
-		return rd.unreadString, errors.New("UnreadString was called twice before ReadString was called")
-	}
 	if rd.useUnreadString {
 		rd.useUnreadString = false
 		return rd.unreadString, nil
@@ -50,9 +47,11 @@ func (rd *Reader) skipNewlines() error {
 	for s == "\n" && err == nil {
 		s, err = rd.ReadString('\n')
 	}
-	rd.UnreadString(s)
+	if err != nil {
+		return err
+	}
 
-	return err
+	return rd.UnreadString(s)
 }
 
 func (rd *Reader) skipPast(search string) error {
@@ -72,27 +71,29 @@ type Parser interface {
 	Parse([]string) error
 }
 
+// parseLines keeps reading as long as the input is empty lines and Parse doesn't return an error.
+// Once Parse can't read a line, we're done (but it's not an error). Back up one line and return.
+// Even EOF isn't an error here. We let the caller decide that.
 func (rd *Reader) parseLines(regex *regexp.Regexp, parser Parser) error {
-	err := rd.skipNewlines()
-	if err != nil {
-		return err
-	}
-
 	for {
+		err := rd.skipNewlines()
+		if err != nil {
+			// We reached EOF
+			return nil
+		}
+
 		s, err := rd.ReadString('\n')
 		if err != nil {
-			return err
+			// We reached EOF
+			return nil
 		}
 
-		if len(s) == 1 {
-			// Done with section; break!
-			break
-		}
 		result := regex.FindStringSubmatch(s)
 
 		err = parser.Parse(result)
 		if err != nil {
-			return errors.New(err.Error() + ": '" + s + "'")
+			// The string couldn't be parsed. That's not an error; it just means we're done parsing this regex.
+			return rd.UnreadString(s)
 		}
 	}
 
