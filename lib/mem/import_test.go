@@ -201,14 +201,47 @@ func TestImportRecoveryCycle(t *testing.T) {
 	assert.Equal(t, recoveryCycleExpected, actual)
 }
 
+const thresholdIVString = `
+
+  THRESHOLD I/V DATA (8.9-11m)
+
+                    	Current (%)         	  Threshold redn. (%)
+IV1.1               	 50                 	49.28
+IV1.2               	 40                 	39.01
+IV1.3               	 30                 	31.59
+IV1.4               	 20                 	22.58
+IV1.5               	 10                 	13.06
+IV1.6               	 0                  	-0.78
+
+`
+
+var thresholdIVExpected = ThresholdIV{
+	Values: []XY{
+		XY{X: 50, Y: 49.28},
+		XY{X: 40, Y: 39.01},
+		XY{X: 30, Y: 31.59},
+		XY{X: 20, Y: 22.58},
+		XY{X: 10, Y: 13.06},
+		XY{X: 0, Y: -0.78},
+	},
+}
+
+func TestImportThresholdIV(t *testing.T) {
+	actual := ThresholdIV{}
+	err := parseThresholdIV(NewStringReader(thresholdIVString), &actual)
+	assert.NoError(t, err)
+	assert.Equal(t, thresholdIVExpected, actual)
+}
+
 func TestImportAll(t *testing.T) {
-	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString + recoveryCycleString
+	memString := headerString + sResponseString + chargeDurationString + thresholdElectrotonusString + recoveryCycleString + thresholdIVString
 	memExpected := Mem{
 		Header:                     headerExpected,
 		StimResponse:               sResponseExpected,
 		ChargeDuration:             chargeDurationExpected,
 		ThresholdElectrotonusGroup: thresholdElectrotonusExpected,
 		RecoveryCycle:              recoveryCycleExpected,
+		ThresholdIV:                thresholdIVExpected,
 	}
 
 	mem, err := Import(strings.NewReader(memString))

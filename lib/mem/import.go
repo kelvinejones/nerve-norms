@@ -39,6 +39,11 @@ func Import(data io.Reader) (Mem, error) {
 		return mem, err
 	}
 
+	err = parseThresholdIV(reader, &mem.ThresholdIV)
+	if err != nil {
+		return mem, err
+	}
+
 	return mem, nil
 }
 
@@ -307,6 +312,45 @@ func (rc *RecoveryCycle) Parse(result []string) error {
 	}
 
 	rc.Values = append(rc.Values, XY{
+		X: x,
+		Y: y,
+	})
+
+	return nil
+}
+
+func parseThresholdIV(reader *Reader, tiv *ThresholdIV) error {
+	// Find section header
+	err := reader.skipPast("THRESHOLD I/V DATA")
+	if err != nil {
+		return err
+	}
+
+	err = reader.skipPast("Current (%)         	  Threshold redn. (%)")
+	if err != nil {
+		return err
+	}
+
+	return reader.parseLines(tivRegex, tiv)
+}
+
+var tivRegex = regexp.MustCompile(`^IV\d+\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
+
+func (tiv *ThresholdIV) Parse(result []string) error {
+	if len(result) != 3 {
+		return errors.New("Incorrect TIV line length")
+	}
+
+	x, err := strconv.ParseFloat(result[1], 64)
+	if err != nil {
+		return err
+	}
+	y, err := strconv.ParseFloat(result[2], 64)
+	if err != nil {
+		return err
+	}
+
+	tiv.Values = append(tiv.Values, XY{
 		X: x,
 		Y: y,
 	})

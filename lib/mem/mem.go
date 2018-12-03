@@ -46,12 +46,17 @@ type RecoveryCycle struct {
 	Values []XY
 }
 
+type ThresholdIV struct {
+	Values []XY
+}
+
 type Mem struct {
 	Header
 	StimResponse
 	ChargeDuration
 	ThresholdElectrotonusGroup
 	RecoveryCycle
+	ThresholdIV
 }
 
 type XY struct {
