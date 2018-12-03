@@ -86,3 +86,40 @@ type XYZ struct {
 	Y float64
 	Z float64
 }
+
+type section interface {
+	Header() string
+	Parser
+}
+
+func (section StimResponse) Header() string {
+	return "STIMULUS-RESPONSE DATA"
+}
+
+func (section ChargeDuration) Header() string {
+	return "CHARGE DURATION DATA"
+}
+
+func (section ThresholdElectrotonusGroup) Header() string {
+	return "THRESHOLD ELECTROTONUS DATA"
+}
+
+func (section RecoveryCycle) Header() string {
+	return "RECOVERY CYCLE DATA"
+}
+
+func (section ThresholdIV) Header() string {
+	return "THRESHOLD I/V DATA"
+}
+
+func (section ExcitabilityVariables) Header() string {
+	return "DERIVED EXCITABILITY VARIABLES"
+}
+
+type ExtraVariables struct {
+	*ExcitabilityVariables
+}
+
+func (section ExtraVariables) Header() string {
+	return "EXTRA VARIABLES"
+}

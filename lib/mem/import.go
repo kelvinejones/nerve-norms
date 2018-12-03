@@ -123,7 +123,7 @@ func (header *Header) Parse(result []string) error {
 
 func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	// Find section header
-	err := reader.skipPast("STIMULUS-RESPONSE DATA")
+	err := reader.skipPast(sr.Header())
 	if err != nil {
 		return err
 	}
@@ -202,7 +202,7 @@ func (cmaps *MaxCmaps) Parse(result []string) error {
 
 func parseChargeDuration(reader *Reader, cd *ChargeDuration) error {
 	// Find section header
-	err := reader.skipPast("CHARGE DURATION DATA")
+	err := reader.skipPast(cd.Header())
 	if err != nil {
 		return err
 	}
@@ -246,7 +246,7 @@ func (cd *ChargeDuration) Parse(result []string) error {
 
 func parseThresholdElectrotonus(reader *Reader, te *ThresholdElectrotonusGroup) error {
 	// Find section header
-	err := reader.skipPast("THRESHOLD ELECTROTONUS DATA")
+	err := reader.skipPast(te.Header())
 	if err != nil {
 		return err
 	}
@@ -304,7 +304,7 @@ func (te *ThresholdElectrotonusGroup) Parse(result []string) error {
 
 func parseRecoveryCycle(reader *Reader, rc *RecoveryCycle) error {
 	// Find section header
-	err := reader.skipPast("RECOVERY CYCLE DATA")
+	err := reader.skipPast(rc.Header())
 	if err != nil {
 		return err
 	}
@@ -343,7 +343,7 @@ func (rc *RecoveryCycle) Parse(result []string) error {
 
 func parseThresholdIV(reader *Reader, tiv *ThresholdIV) error {
 	// Find section header
-	err := reader.skipPast("THRESHOLD I/V DATA")
+	err := reader.skipPast(tiv.Header())
 	if err != nil {
 		return err
 	}
@@ -382,7 +382,7 @@ func (tiv *ThresholdIV) Parse(result []string) error {
 
 func parseExcitabilityVariables(reader *Reader, exciteVar *ExcitabilityVariables) error {
 	// Find section header
-	err := reader.skipPast("DERIVED EXCITABILITY VARIABLES")
+	err := reader.skipPast(exciteVar.Header())
 	if err != nil {
 		return err
 	}
@@ -427,7 +427,7 @@ func parseExcitabilityVariables(reader *Reader, exciteVar *ExcitabilityVariables
 	if err != nil {
 		return err
 	}
-	err = reader.skipPast("EXTRA VARIABLES")
+	err = reader.skipPast(ExtraVariables{}.Header())
 	if err != nil {
 		return err
 	}
@@ -455,10 +455,6 @@ func (exciteVar *ExcitabilityVariables) Parse(result []string) error {
 	exciteVar.Values[result[2]] = val
 
 	return nil
-}
-
-type ExtraVariables struct {
-	*ExcitabilityVariables
 }
 
 var extraVarRegex = regexp.MustCompile(`^(.+) = ([-+]?\d*\.?\d+)`)
