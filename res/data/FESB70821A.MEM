@@ -1,15 +1,15 @@
  File:              	n:\Qtrac\Data\Human Normative data\Median nerve raw\FESB70821A.QZD
- Name:              	CR21S                  
- Protocol:          	TRONDNF 
- Date:              	21/8/17  
- Start time:        	12:57:17 
+ Name:              	CR21S
+ Protocol:          	TRONDNF
+ Date:              	21/8/17
+ Start time:        	12:57:17
  Age:               	30
- Sex:               	M 
- Temperature:       	33.5 
- S/R sites:         	Median Wr-APB 
- NC/disease:        	NC      
+ Sex:               	M
+ Temperature:       	33.5
+ S/R sites:         	Median Wr-APB
+ NC/disease:        	NC
  Operator:          	MS
- Comments:          	smooth recording        
+ Comments:          	smooth recording
 
  STIMULUS-RESPONSE DATA (2.4-1.9m)
 
@@ -82,7 +82,7 @@ QT.5                	 1                  	 5.187509           	 5.187509
   THRESHOLD ELECTROTONUS DATA (3.5-8.8m)
 
                     	Delay (ms)          	Current (%)         	Thresh redn. (%)
-  
+
 TE1.1               	 0                  	0                   	0.00
 TE1.2               	 9                  	0                   	0.00
 TE1.3               	 10                 	40                  	40.02
@@ -111,7 +111,7 @@ TE1.25              	 180                	0                   	-11.23
 TE1.26              	 190                	0                   	-8.13
 TE1.27              	 200                	0                   	-4.79
 TE1.28              	 210                	0                   	-4.03
-  
+
 TE2.1               	 0                  	0                   	0.00
 TE2.2               	 9                  	0                   	0.00
 TE2.3               	 10                 	-40                 	-39.34
@@ -138,7 +138,7 @@ TE2.23              	 180                	0                   	10.56
 TE2.24              	 190                	0                   	11.14
 TE2.25              	 200                	0                   	9.79
 TE2.26              	 210                	0                   	8.78
-  
+
 TE3.1               	 0                  	0                   	0.00
 TE3.2               	 9                  	0                   	0.00
 TE3.3               	 10                 	20                  	20.15
@@ -165,7 +165,7 @@ TE3.23              	 180                	0                   	-4.9
 TE3.24              	 190                	0                   	-3.72
 TE3.25              	 200                	0                   	-3.3
 TE3.26              	 210                	0                   	-1.99
-  
+
 TE4.1               	 0                  	0                   	0.00
 TE4.2               	 9                  	0                   	0.00
 TE4.3               	 10                 	-20                 	-19.39

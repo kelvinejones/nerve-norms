@@ -1,15 +1,15 @@
  File:              	n:\Qtrac\Data\Human Normative data\CP nerve raw\FESB70821B.QZD
- Name:              	CR21S                  
- Protocol:          	TRONDNF 
- Date:              	21/8/17  
- Start time:        	15:51:21 
+ Name:              	CR21S
+ Protocol:          	TRONDNF
+ Date:              	21/8/17
+ Start time:        	15:51:21
  Age:               	30
- Sex:               	M 
- Temperature:       	33.3 
- S/R sites:         	CP-TA         
- NC/disease:        	NC      
+ Sex:               	M
+ Temperature:       	33.3
+ S/R sites:         	CP-TA
+ NC/disease:        	NC
  Operator:          	MS
- Comments:          	smooth recording        
+ Comments:          	smooth recording
 
  STIMULUS-RESPONSE DATA (3.7-3m)
 
@@ -82,7 +82,7 @@ QT.5                	 1                  	 9.409294           	 9.409294
   THRESHOLD ELECTROTONUS DATA (4.6-8.7m)
 
                     	Delay (ms)          	Current (%)         	Thresh redn. (%)
-  
+
 TE1.1               	 0                  	0                   	0.00
 TE1.2               	 9                  	0                   	0.00
 TE1.3               	 10                 	40                  	40.28
@@ -111,7 +111,7 @@ TE1.25              	 180                	0                   	-7.42
 TE1.26              	 190                	0                   	-6.07
 TE1.27              	 200                	0                   	-4.3
 TE1.28              	 210                	0                   	-3.04
-  
+
 TE2.1               	 0                  	0                   	0.00
 TE2.2               	 9                  	0                   	0.00
 TE2.3               	 10                 	-40                 	-41.94
@@ -138,7 +138,7 @@ TE2.23              	 180                	0                   	5.2
 TE2.24              	 190                	0                   	7.75
 TE2.25              	 200                	0                   	8.97
 TE2.26              	 210                	0                   	8.6
-  
+
 TE3.1               	 0                  	0                   	0.00
 TE3.2               	 9                  	0                   	0.00
 TE3.3               	 10                 	20                  	18.58
@@ -165,7 +165,7 @@ TE3.23              	 180                	0                   	-5.99
 TE3.24              	 190                	0                   	-2.95
 TE3.25              	 200                	0                   	-3.19
 TE3.26              	 210                	0                   	-1.62
-  
+
 TE4.1               	 0                  	0                   	0.00
 TE4.2               	 9                  	0                   	0.00
 TE4.3               	 10                 	-20                 	-20.52
@@ -196,7 +196,7 @@ TE4.26              	 210                	0                   	2.8
   RECOVERY CYCLE DATA (10-13.6m)
 
                     	Interval (ms)       	  Threshold change (%)
-RC1.1               	                 	
+RC1.1
 RC1.2               	 2.5                	27.82
 RC1.3               	 3.2                	-9.04
 RC1.4               	 4                  	-20.84
