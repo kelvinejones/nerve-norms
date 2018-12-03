@@ -1,7 +1,6 @@
 package mem
 
 import (
-	"bufio"
 	"strings"
 	"testing"
 	"time"
@@ -48,7 +47,7 @@ func TestImportEmpty(t *testing.T) {
 
 func TestImportHeader(t *testing.T) {
 	header := Header{}
-	err := parseHeader(bufio.NewReader(strings.NewReader(headerString)), &header)
+	err := parseHeader(NewStringReader(headerString), &header)
 	assert.NoError(t, err)
 	assert.Equal(t, headerExpected, header)
 }
@@ -93,7 +92,7 @@ var sResponseExpected = StimResponse{
 
 func TestImportSRResponse(t *testing.T) {
 	sResp := StimResponse{}
-	err := parseStimResponse(bufio.NewReader(strings.NewReader(sResponseString)), &sResp)
+	err := parseStimResponse(NewStringReader(sResponseString), &sResp)
 	assert.NoError(t, err)
 	assert.Equal(t, sResponseExpected, sResp)
 }
@@ -124,7 +123,7 @@ var chargeDurationExpected = ChargeDuration{
 
 func TestImportChargeDuration(t *testing.T) {
 	sResp := ChargeDuration{}
-	err := parseChargeDuration(bufio.NewReader(strings.NewReader(chargeDurationString)), &sResp)
+	err := parseChargeDuration(NewStringReader(chargeDurationString), &sResp)
 	assert.NoError(t, err)
 	assert.Equal(t, chargeDurationExpected, sResp)
 }
@@ -160,7 +159,7 @@ var thresholdElectrotonusExpected = ThresholdElectrotonusGroup{
 
 func TestImportThresholdElectrotonus(t *testing.T) {
 	actual := ThresholdElectrotonusGroup{}
-	err := parseThresholdElectrotonus(bufio.NewReader(strings.NewReader(thresholdElectrotonusString)), &actual)
+	err := parseThresholdElectrotonus(NewStringReader(thresholdElectrotonusString), &actual)
 	assert.NoError(t, err)
 	assert.Equal(t, thresholdElectrotonusExpected, actual)
 }

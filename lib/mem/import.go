@@ -1,7 +1,6 @@
 package mem
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"io"
@@ -12,7 +11,7 @@ import (
 )
 
 func Import(data io.Reader) (Mem, error) {
-	reader := bufio.NewReader(data)
+	reader := NewReader(data)
 	mem := Mem{}
 	var err error
 
@@ -39,7 +38,7 @@ func Import(data io.Reader) (Mem, error) {
 	return mem, nil
 }
 
-func skipNewlines(reader *bufio.Reader) (string, error) {
+func skipNewlines(reader *Reader) (string, error) {
 	s := "\n"
 	var err error
 	for s == "\n" && err == nil {
@@ -49,7 +48,7 @@ func skipNewlines(reader *bufio.Reader) (string, error) {
 	return s, err
 }
 
-func skipUntilContains(reader *bufio.Reader, search string) (string, error) {
+func skipUntilContains(reader *Reader, search string) (string, error) {
 	s, err := skipNewlines(reader)
 	if err == nil && !strings.Contains(s, search) {
 		err = errors.New("Could not find '" + search + "'")
@@ -57,11 +56,11 @@ func skipUntilContains(reader *bufio.Reader, search string) (string, error) {
 	return s, err
 }
 
-func parseHeader(reader *bufio.Reader, header *Header) error {
+func parseHeader(reader *Reader, header *Header) error {
 	return parseLines(reader, headerRegex, header)
 }
 
-func parseStimResponse(reader *bufio.Reader, sr *StimResponse) error {
+func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	// Find section header
 	s, err := skipUntilContains(reader, "STIMULUS-RESPONSE DATA")
 	if err != nil {
@@ -120,7 +119,7 @@ func (sr *StimResponse) Parse(result []string) error {
 	return nil
 }
 
-func parseChargeDuration(reader *bufio.Reader, cd *ChargeDuration) error {
+func parseChargeDuration(reader *Reader, cd *ChargeDuration) error {
 	// Find section header
 	_, err := skipUntilContains(reader, "CHARGE DURATION DATA")
 	if err != nil {
@@ -164,7 +163,7 @@ func (cd *ChargeDuration) Parse(result []string) error {
 	return nil
 }
 
-func parseThresholdElectrotonus(reader *bufio.Reader, te *ThresholdElectrotonusGroup) error {
+func parseThresholdElectrotonus(reader *Reader, te *ThresholdElectrotonusGroup) error {
 	// Find section header
 	_, err := skipUntilContains(reader, "THRESHOLD ELECTROTONUS DATA")
 	if err != nil {
@@ -293,7 +292,7 @@ type Parser interface {
 	Parse([]string) error
 }
 
-func parseLines(reader *bufio.Reader, regex *regexp.Regexp, parser Parser) error {
+func parseLines(reader *Reader, regex *regexp.Regexp, parser Parser) error {
 	for {
 		s, err := reader.ReadString('\n')
 		if err != nil {
