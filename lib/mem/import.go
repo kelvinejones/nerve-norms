@@ -48,12 +48,12 @@ func skipNewlines(reader *Reader) (string, error) {
 	return s, err
 }
 
-func skipUntilContains(reader *Reader, search string) (string, error) {
+func skipPast(reader *Reader, search string) error {
 	s, err := skipNewlines(reader)
 	if err == nil && !strings.Contains(s, search) {
 		err = errors.New("Could not find '" + search + "'")
 	}
-	return s, err
+	return err
 }
 
 func parseHeader(reader *Reader, header *Header) error {
@@ -62,13 +62,13 @@ func parseHeader(reader *Reader, header *Header) error {
 
 func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	// Find section header
-	_, err := skipUntilContains(reader, "STIMULUS-RESPONSE DATA")
+	err := skipPast(reader, "STIMULUS-RESPONSE DATA")
 	if err != nil {
 		return err
 	}
 
 	// Find some random string that's there
-	_, err = skipUntilContains(reader, "Values are those recorded")
+	err = skipPast(reader, "Values are those recorded")
 	if err != nil {
 		return err
 	}
@@ -83,7 +83,7 @@ func parseStimResponse(reader *Reader, sr *StimResponse) error {
 		return errors.New("Could not find Max CMAP: " + s)
 	}
 
-	_, err = skipUntilContains(reader, "% Max               	Stimulus")
+	err = skipPast(reader, "% Max               	Stimulus")
 	if err != nil {
 		return err
 	}
@@ -121,12 +121,12 @@ func (sr *StimResponse) Parse(result []string) error {
 
 func parseChargeDuration(reader *Reader, cd *ChargeDuration) error {
 	// Find section header
-	_, err := skipUntilContains(reader, "CHARGE DURATION DATA")
+	err := skipPast(reader, "CHARGE DURATION DATA")
 	if err != nil {
 		return err
 	}
 
-	_, err = skipUntilContains(reader, "Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)")
+	err = skipPast(reader, "Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)")
 	if err != nil {
 		return err
 	}
@@ -165,12 +165,12 @@ func (cd *ChargeDuration) Parse(result []string) error {
 
 func parseThresholdElectrotonus(reader *Reader, te *ThresholdElectrotonusGroup) error {
 	// Find section header
-	_, err := skipUntilContains(reader, "THRESHOLD ELECTROTONUS DATA")
+	err := skipPast(reader, "THRESHOLD ELECTROTONUS DATA")
 	if err != nil {
 		return err
 	}
 
-	_, err = skipUntilContains(reader, "Delay (ms)          	Current (%)         	Thresh redn. (%)")
+	err = skipPast(reader, "Delay (ms)          	Current (%)         	Thresh redn. (%)")
 	if err != nil {
 		return err
 	}
