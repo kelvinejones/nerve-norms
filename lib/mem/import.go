@@ -300,6 +300,11 @@ type Parser interface {
 }
 
 func parseLines(reader *Reader, regex *regexp.Regexp, parser Parser) error {
+	err := skipNewlines(reader)
+	if err != nil {
+		return err
+	}
+
 	for {
 		s, err := reader.ReadString('\n')
 		if err != nil {
