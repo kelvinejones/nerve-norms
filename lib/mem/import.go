@@ -143,7 +143,7 @@ func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	if err != nil {
 		return err
 	}
-	n, err := fmt.Sscanf(s, " Max CMAP  1 ms =  %f mV\n", &sr.MaxCmap)
+	n, err := fmt.Sscanf(s, " Max CMAP  1 ms =  %f mV", &sr.MaxCmap)
 	if n != 1 || err != nil {
 		return errors.New("Could not find Max CMAP: " + s)
 	}
@@ -377,12 +377,12 @@ func parseExcitabilityVariables(reader *Reader, exciteVar *ExcitabilityVariables
 		return err
 	}
 
-	exciteVar.Program, err = reader.ReadLineExtractingString(`^Program = (.*)\n`)
+	exciteVar.Program, err = reader.ReadLineExtractingString(`^Program = (.*)`)
 	if err != nil {
 		return err
 	}
 
-	val, err := reader.ReadLineExtractingString(`^Threshold method = (\d+).*\n`)
+	val, err := reader.ReadLineExtractingString(`^Threshold method = (\d+).*`)
 	if err != nil {
 		return err
 	}
@@ -391,7 +391,7 @@ func parseExcitabilityVariables(reader *Reader, exciteVar *ExcitabilityVariables
 		return err
 	}
 
-	val, err = reader.ReadLineExtractingString(`^SR method = (\d+).*\n`)
+	val, err = reader.ReadLineExtractingString(`^SR method = (\d+).*`)
 	if err != nil {
 		return err
 	}

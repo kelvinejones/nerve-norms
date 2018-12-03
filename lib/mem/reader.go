@@ -37,7 +37,8 @@ func (rd *Reader) ReadLine() (string, error) {
 		rd.useUnreadString = false
 		return rd.unreadString, nil
 	} else {
-		return rd.reader.ReadString('\n')
+		str, err := rd.reader.ReadString('\n')
+		return strings.TrimSuffix(str, "\n"), err
 	}
 }
 
@@ -57,9 +58,9 @@ func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
 }
 
 func (rd *Reader) skipNewlines() error {
-	s := "\n"
+	s := ""
 	var err error
-	for s == "\n" && err == nil {
+	for s == "" && err == nil {
 		s, err = rd.ReadLine()
 	}
 	if err != nil {
