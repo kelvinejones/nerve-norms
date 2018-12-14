@@ -54,7 +54,7 @@ func TestImportEmpty(t *testing.T) {
 
 func TestImportHeader(t *testing.T) {
 	header := Header{}
-	err := parseHeader(NewStringReader(toWindows(headerString)), &header)
+	err := header.Parse(NewStringReader(toWindows(headerString)))
 	assert.NoError(t, err)
 	assert.Equal(t, headerExpected, header)
 }
@@ -113,7 +113,7 @@ var sResponseExpected = StimResponse{
 
 func TestImportSRResponse(t *testing.T) {
 	sResp := StimResponse{}
-	err := parseStimResponse(NewStringReader(toWindows(sResponseString)), &sResp)
+	err := sResp.Parse(NewStringReader(toWindows(sResponseString)))
 	assert.NoError(t, err)
 	assert.Equal(t, sResponseExpected, sResp)
 }
@@ -145,7 +145,7 @@ var chargeDurationExpected = ChargeDuration{
 
 func TestImportChargeDuration(t *testing.T) {
 	sResp := ChargeDuration{}
-	err := parseChargeDuration(NewStringReader(toWindows(chargeDurationString)), &sResp)
+	err := sResp.Parse(NewStringReader(toWindows(chargeDurationString)))
 	assert.NoError(t, err)
 	assert.Equal(t, chargeDurationExpected, sResp)
 }
@@ -189,7 +189,7 @@ var thresholdElectrotonusExpected = ThresholdElectrotonusGroup{
 
 func TestImportThresholdElectrotonus(t *testing.T) {
 	actual := ThresholdElectrotonusGroup{}
-	err := parseThresholdElectrotonus(NewStringReader(toWindows(thresholdElectrotonusString)), &actual)
+	err := actual.Parse(NewStringReader(toWindows(thresholdElectrotonusString)))
 	assert.NoError(t, err)
 	assert.Equal(t, thresholdElectrotonusExpected, actual)
 }
@@ -220,7 +220,7 @@ var recoveryCycleExpected = RecoveryCycle{
 
 func TestImportRecoveryCycle(t *testing.T) {
 	actual := RecoveryCycle{}
-	err := parseRecoveryCycle(NewStringReader(toWindows(recoveryCycleString)), &actual)
+	err := actual.Parse(NewStringReader(toWindows(recoveryCycleString)))
 	assert.NoError(t, err)
 	assert.Equal(t, recoveryCycleExpected, actual)
 }
@@ -257,7 +257,7 @@ var thresholdIVExpected = ThresholdIV{
 
 func TestImportThresholdIV(t *testing.T) {
 	actual := ThresholdIV{}
-	err := parseThresholdIV(NewStringReader(toWindows(thresholdIVString)), &actual)
+	err := actual.Parse(NewStringReader(toWindows(thresholdIVString)))
 	assert.NoError(t, err)
 	assert.Equal(t, thresholdIVExpected, actual)
 }
@@ -303,7 +303,7 @@ var excitabilityVariablesExpected = ExcitabilityVariables{
 
 func TestImportExcitabilityVariables(t *testing.T) {
 	actual := ExcitabilityVariables{Values: make(map[string]float64)}
-	err := parseExcitabilityVariables(NewStringReader(toWindows(excitabilityVariablesString)), &actual)
+	err := actual.Parse(NewStringReader(toWindows(excitabilityVariablesString)))
 	assert.NoError(t, err)
 	assert.Equal(t, excitabilityVariablesExpected, actual)
 }
