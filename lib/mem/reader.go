@@ -59,6 +59,7 @@ func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
 
 	result := regexp.MustCompile(regstring).FindStringSubmatch(s)
 	if len(result) != 2 {
+		rd.UnreadString(s)
 		return "", fmt.Errorf("Incorrect ReadLineExtractingString length (%d) for '"+regstring+"'", len(result))
 	}
 
