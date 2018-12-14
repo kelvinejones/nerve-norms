@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"strings"
 )
 
 type Mem struct {
@@ -46,37 +45,37 @@ func (mem *Mem) importSection(reader *Reader) error {
 	}
 
 	switch {
-	case strings.Contains(str, mem.StimResponse.Header()):
+	case sectionHeaderMatches(&mem.StimResponse, str):
 		err = mem.StimResponse.Parse(reader)
 		if err != nil {
 			return err
 		}
-	case strings.Contains(str, mem.ChargeDuration.Header()):
+	case sectionHeaderMatches(&mem.ChargeDuration, str):
 		err = mem.ChargeDuration.Parse(reader)
 		if err != nil {
 			return err
 		}
-	case strings.Contains(str, mem.ThresholdElectrotonusGroup.Header()):
+	case sectionHeaderMatches(&mem.ThresholdElectrotonusGroup, str):
 		err = mem.ThresholdElectrotonusGroup.Parse(reader)
 		if err != nil {
 			return err
 		}
-	case strings.Contains(str, mem.RecoveryCycle.Header()):
+	case sectionHeaderMatches(&mem.RecoveryCycle, str):
 		err = mem.RecoveryCycle.Parse(reader)
 		if err != nil {
 			return err
 		}
-	case strings.Contains(str, mem.ThresholdIV.Header()):
+	case sectionHeaderMatches(&mem.ThresholdIV, str):
 		err = mem.ThresholdIV.Parse(reader)
 		if err != nil {
 			return err
 		}
-	case strings.Contains(str, mem.ExcitabilityVariables.Header()):
+	case sectionHeaderMatches(&mem.ExcitabilityVariables, str):
 		err = mem.ExcitabilityVariables.Parse(reader)
 		if err != nil {
 			return err
 		}
-	case strings.Contains(str, mem.StrengthDuration.Header()):
+	case sectionHeaderMatches(&mem.StrengthDuration, str):
 		err = mem.StrengthDuration.Parse(reader)
 		if err != nil {
 			return err

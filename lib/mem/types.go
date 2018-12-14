@@ -1,6 +1,9 @@
 package mem
 
-import "regexp"
+import (
+	"regexp"
+	"strings"
+)
 
 type XY struct {
 	X float64
@@ -28,4 +31,9 @@ type section interface {
 	Header() string
 	LineParser
 	Parse(reader *Reader) error
+}
+
+// sectionHeaderMatches returns true if the section's header matches this string.
+func sectionHeaderMatches(sec section, str string) bool {
+	return strings.Contains(str, sec.Header())
 }
