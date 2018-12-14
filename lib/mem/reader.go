@@ -61,14 +61,9 @@ func (rd *Reader) ReadLine() (string, error) {
 
 // ReadLineExtractingString expects to receive a regex which finds a single string
 func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
-	err := rd.skipNewlines()
+	s, err := rd.skipNewlines()
 	if err != nil {
-		return "", err
-	}
-
-	s, err := rd.ReadLine()
-	if err != nil {
-		return "", err
+		return s, err
 	}
 
 	result := regexp.MustCompile(regstring).FindStringSubmatch(s)
@@ -79,27 +74,23 @@ func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
 	return result[1], nil
 }
 
-func (rd *Reader) skipNewlines() error {
+func (rd *Reader) skipNewlines() (string, error) {
 	s := ""
 	var err error
 	for s == "" && err == nil {
 		s, err = rd.ReadLine()
 	}
-	if err != nil {
-		return err
-	}
 
-	return rd.UnreadString(s)
+	return s, err
 }
 
 func (rd *Reader) skipPast(search string) error {
-	err := rd.skipNewlines()
+	s, err := rd.skipNewlines()
 	if err != nil {
 		return err
 	}
 
-	s, err := rd.ReadLine()
-	if err == nil && !strings.Contains(s, search) {
+	if !strings.Contains(s, search) {
 		err = errors.New("Could not find '" + search + "'" + " in line: " + s)
 		rd.UnreadString(s)
 	}
@@ -111,13 +102,7 @@ func (rd *Reader) skipPast(search string) error {
 // Even EOF isn't an error here. We let the caller decide that.
 func (rd *Reader) parseLines(parser LineParser) error {
 	for {
-		err := rd.skipNewlines()
-		if err != nil {
-			// We reached EOF
-			return nil
-		}
-
-		s, err := rd.ReadLine()
+		s, err := rd.skipNewlines()
 		if err != nil {
 			// We reached EOF
 			return nil
