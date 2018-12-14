@@ -30,6 +30,21 @@ const headerString = ` File:              	n:\Short Test\FESB70821A.QZD
 
 `
 
+const dualHeaderString = ` File:              	n:\Short Test\FESB70821A.QZD
+ Name:              	SHORTY
+ Protocol:          	TRONDNF
+ Date:              	21/8/17 / 28/9/18
+ Start time:        	12:57:17 / 14:58:00
+ Age:               	30 / 31
+ Sex:               	M
+ Temperature:       	33.5 / 33.6
+ S/R sites:         	Median Wr-APB
+ NC/disease:        	NC
+ Operator:          	MS
+ Comments:          	smooth recording
+
+`
+
 var headerExpected = Header{
 	File:          `n:\Short Test\FESB70821A.QZD`,
 	Name:          "SHORTY",
@@ -55,6 +70,13 @@ func TestImportEmpty(t *testing.T) {
 func TestImportHeader(t *testing.T) {
 	header := Header{}
 	err := header.Parse(NewStringReader(toWindows(headerString)))
+	assert.NoError(t, err)
+	assert.Equal(t, headerExpected, header)
+}
+
+func TestImportDualHeader(t *testing.T) {
+	header := Header{}
+	err := header.Parse(NewStringReader(toWindows(dualHeaderString)))
 	assert.NoError(t, err)
 	assert.Equal(t, headerExpected, header)
 }

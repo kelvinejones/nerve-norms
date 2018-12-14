@@ -71,24 +71,24 @@ func (header *Header) ParseLine(result []string) error {
 			header.Sex = UnknownSex
 		}
 	case "Temperature":
-		header.Temperature, err = strconv.ParseFloat(val, 64)
+		header.Temperature, err = strconv.ParseFloat(extractPotentialDoubleValue(val), 64)
 		if err != nil {
 			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
 		}
 	case "Age":
-		header.Age, err = strconv.Atoi(val)
+		header.Age, err = strconv.Atoi(extractPotentialDoubleValue(val))
 		if err != nil {
 			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
 		}
 	case "Date":
 		layout := "2/1/06"
-		header.Date, err = time.Parse(layout, val)
+		header.Date, err = time.Parse(layout, extractPotentialDoubleValue(val))
 		if err != nil {
 			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
 		}
 	case "Start time":
 		layout := "2/1/06 15:04:05"
-		header.StartTime, err = time.Parse(layout, "2/1/06 "+val)
+		header.StartTime, err = time.Parse(layout, "2/1/06 "+extractPotentialDoubleValue(val))
 		if err != nil {
 			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
 		}
@@ -107,4 +107,15 @@ func (header *Header) ParseLine(result []string) error {
 	}
 
 	return nil
+}
+
+// extractPotentialDoubleValue will check if the input string was two parameters separated by " / ". If so, only the first is used.
+func extractPotentialDoubleValue(str string) string {
+	if strings.Contains(str, " / ") {
+		strs := strings.SplitN(str, " / ", 2)
+		return strs[0]
+	} else {
+		// There's no slash splitting it.
+		return str
+	}
 }
