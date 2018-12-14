@@ -21,4 +21,5 @@ type LineParser interface {
 type section interface {
 	Header() string
 	LineParser
+	Parse(reader *Reader) error
 }
