@@ -5,107 +5,6 @@ import (
 	"time"
 )
 
-type Sex int
-
-const (
-	UnknownSex Sex = iota
-	FemaleSex
-	MaleSex
-)
-
-type Header struct {
-	File      string
-	Name      string
-	Protocol  string
-	Date      time.Time
-	StartTime time.Time // TODO get rid of this field; merge into Date
-	Age       int
-	Sex
-	Temperature   float64
-	SRSites       string
-	NormalControl bool
-	Operator      string
-	Comment       string
-}
-
-func (header Header) String() string {
-	return "Header{File{\"" + header.File + "\"}, Name{\"" + header.Name + "\"} }"
-}
-
-type MaxCmap struct {
-	Val   float64
-	Time  float64
-	Units byte
-}
-
-type MaxCmaps []MaxCmap
-
-type StimResponse struct {
-	MaxCmaps
-	Values    []XY
-	ValueType string
-}
-
-func (sr StimResponse) String() string {
-	return fmt.Sprintf("StimResponse{%d MaxCmaps, %d values}", len(sr.MaxCmaps), len(sr.Values))
-}
-
-type ChargeDuration struct {
-	Values []XYZ
-}
-
-func (cd ChargeDuration) String() string {
-	return fmt.Sprintf("ChargeDuration{%d values}", len(cd.Values))
-}
-
-type ThresholdElectrotonusGroup struct {
-	Sets []ThresholdElectrotonusSet
-}
-
-func (teg ThresholdElectrotonusGroup) String() string {
-	str := "ThresholdElectrotonusGroup{"
-	for _, tes := range teg.Sets {
-		str += tes.String() + ","
-	}
-	str += "}"
-	return str
-}
-
-type ThresholdElectrotonusSet struct {
-	Values []XYZ
-}
-
-func (tes ThresholdElectrotonusSet) String() string {
-	return fmt.Sprintf("ThresholdElectrotonusSet{%d values}", len(tes.Values))
-}
-
-type RecoveryCycle struct {
-	Values []XY
-}
-
-func (rc RecoveryCycle) String() string {
-	return fmt.Sprintf("RecoveryCycle{%d values}", len(rc.Values))
-}
-
-type ThresholdIV struct {
-	Values []XY
-}
-
-func (tiv ThresholdIV) String() string {
-	return fmt.Sprintf("ThresholdIV{%d values}", len(tiv.Values))
-}
-
-type ExcitabilityVariables struct {
-	Values          map[string]float64
-	Program         string
-	ThresholdMethod int
-	SRMethod        int
-}
-
-func (ev ExcitabilityVariables) String() string {
-	return fmt.Sprintf("ExcitabilityVariables{%d values}", len(ev.Values))
-}
-
 type Mem struct {
 	Header
 	StimResponse
@@ -147,28 +46,129 @@ type section interface {
 	Parser
 }
 
+type Sex int
+
+const (
+	UnknownSex Sex = iota
+	FemaleSex
+	MaleSex
+)
+
+type Header struct {
+	File      string
+	Name      string
+	Protocol  string
+	Date      time.Time
+	StartTime time.Time // TODO get rid of this field; merge into Date
+	Age       int
+	Sex
+	Temperature   float64
+	SRSites       string
+	NormalControl bool
+	Operator      string
+	Comment       string
+}
+
 func (section StimResponse) Header() string {
 	return "STIMULUS-RESPONSE DATA"
+}
+
+func (header Header) String() string {
+	return "Header{File{\"" + header.File + "\"}, Name{\"" + header.Name + "\"} }"
+}
+
+type MaxCmap struct {
+	Val   float64
+	Time  float64
+	Units byte
+}
+
+type MaxCmaps []MaxCmap
+
+type StimResponse struct {
+	MaxCmaps
+	Values    []XY
+	ValueType string
+}
+
+func (sr StimResponse) String() string {
+	return fmt.Sprintf("StimResponse{%d MaxCmaps, %d values}", len(sr.MaxCmaps), len(sr.Values))
+}
+
+type ChargeDuration struct {
+	Values []XYZ
 }
 
 func (section ChargeDuration) Header() string {
 	return "CHARGE DURATION DATA"
 }
 
+func (cd ChargeDuration) String() string {
+	return fmt.Sprintf("ChargeDuration{%d values}", len(cd.Values))
+}
+
+type ThresholdElectrotonusGroup struct {
+	Sets []ThresholdElectrotonusSet
+}
+
+func (teg ThresholdElectrotonusGroup) String() string {
+	str := "ThresholdElectrotonusGroup{"
+	for _, tes := range teg.Sets {
+		str += tes.String() + ","
+	}
+	str += "}"
+	return str
+}
+
 func (section ThresholdElectrotonusGroup) Header() string {
 	return "THRESHOLD ELECTROTONUS DATA"
+}
+
+type ThresholdElectrotonusSet struct {
+	Values []XYZ
+}
+
+func (tes ThresholdElectrotonusSet) String() string {
+	return fmt.Sprintf("ThresholdElectrotonusSet{%d values}", len(tes.Values))
+}
+
+type RecoveryCycle struct {
+	Values []XY
 }
 
 func (section RecoveryCycle) Header() string {
 	return "RECOVERY CYCLE DATA"
 }
 
+func (rc RecoveryCycle) String() string {
+	return fmt.Sprintf("RecoveryCycle{%d values}", len(rc.Values))
+}
+
+type ThresholdIV struct {
+	Values []XY
+}
+
 func (section ThresholdIV) Header() string {
 	return "THRESHOLD I/V DATA"
 }
 
+func (tiv ThresholdIV) String() string {
+	return fmt.Sprintf("ThresholdIV{%d values}", len(tiv.Values))
+}
+
+type ExcitabilityVariables struct {
+	Values          map[string]float64
+	Program         string
+	ThresholdMethod int
+	SRMethod        int
+}
+
 func (section ExcitabilityVariables) Header() string {
 	return "DERIVED EXCITABILITY VARIABLES"
+}
+
+func (ev ExcitabilityVariables) String() string {
+	return fmt.Sprintf("ExcitabilityVariables{%d values}", len(ev.Values))
 }
 
 type ExtraVariables struct {
