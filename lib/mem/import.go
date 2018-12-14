@@ -84,7 +84,7 @@ func parseHeader(reader *Reader, header *Header) error {
 	return reader.parseLines(headerRegex, header)
 }
 
-var headerRegex = regexp.MustCompile(`^\s+([^:]+):\s+(.*)`)
+var headerRegex = regexp.MustCompile(`^\s+([^:]+):\s*(.*)`)
 
 func (header *Header) Parse(result []string) error {
 	if len(result) != 3 {
