@@ -456,3 +456,18 @@ func (extraVar *ExtraVariables) Parse(result []string) error {
 
 	return nil
 }
+
+func parseStrengthDuration(reader *Reader, section *StrengthDuration) error {
+	err := reader.skipPast(`%CMAP              	Threshold`)
+	if err != nil {
+		return err
+	}
+
+	return reader.parseLines(strengthDurationRegex, section)
+}
+
+var strengthDurationRegex = regexp.MustCompile(`^SD\.\d+.*`)
+
+func (section *StrengthDuration) Parse(result []string) error {
+	return nil
+}

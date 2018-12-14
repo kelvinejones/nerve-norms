@@ -123,3 +123,10 @@ type ExtraVariables struct {
 func (section ExtraVariables) Header() string {
 	return "EXTRA VARIABLES"
 }
+
+// This section has not been implemented, so skip it
+type StrengthDuration struct{}
+
+func (section StrengthDuration) Header() string {
+	return "STRENGTH-DURATION DATA"
+}
