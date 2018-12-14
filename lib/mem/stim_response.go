@@ -59,7 +59,8 @@ func (sr *StimResponse) Parse(reader *Reader) error {
 	var err error
 	sr.ValueType, err = reader.ReadLineExtractingString(`^Values (.*)`)
 	if err != nil {
-		return err
+		fmt.Println("WARNING: Could not parse value type for stim-response")
+		sr.ValueType = ""
 	}
 
 	// Find Max CMAP
