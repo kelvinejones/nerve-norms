@@ -20,11 +20,7 @@ func (section ExcitabilityVariables) Header() string {
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
 	// Find settings
-	err := reader.skipNewlines()
-	if err != nil {
-		return err
-	}
-
+	var err error
 	exciteVar.Program, err = reader.ReadLineExtractingString(`^Program = (.*)`)
 	if err != nil {
 		return err
@@ -55,15 +51,7 @@ func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
 	}
 
 	// Now find any extra variables
-	err = reader.skipNewlines()
-	if err != nil {
-		return err
-	}
 	err = reader.skipPast(ExtraVariables{}.Header())
-	if err != nil {
-		return err
-	}
-	err = reader.skipNewlines()
 	if err != nil {
 		return err
 	}
