@@ -3,6 +3,7 @@ package mem
 import (
 	"errors"
 	"io"
+	"log"
 	"regexp"
 	"strconv"
 	"strings"
@@ -31,42 +32,44 @@ func Import(data io.Reader) (Mem, error) {
 }
 
 func (mem *Mem) importSection(reader *Reader) error {
-	var err error
+	str, err := reader.ReadLine()
+	if err != nil {
+		return err
+	}
+
 	switch {
-	case reader.skipPast(mem.StimResponse.Header()) == nil:
+	case strings.Contains(str, mem.StimResponse.Header()):
 		err = parseStimResponse(reader, &mem.StimResponse)
 		if err != nil {
 			return err
 		}
-	case reader.skipPast(mem.ChargeDuration.Header()) == nil:
+	case strings.Contains(str, mem.ChargeDuration.Header()):
 		err = parseChargeDuration(reader, &mem.ChargeDuration)
 		if err != nil {
 			return err
 		}
-	case reader.skipPast(mem.ThresholdElectrotonusGroup.Header()) == nil:
+	case strings.Contains(str, mem.ThresholdElectrotonusGroup.Header()):
 		err = parseThresholdElectrotonus(reader, &mem.ThresholdElectrotonusGroup)
 		if err != nil {
 			return err
 		}
-	case reader.skipPast(mem.RecoveryCycle.Header()) == nil:
+	case strings.Contains(str, mem.RecoveryCycle.Header()):
 		err = parseRecoveryCycle(reader, &mem.RecoveryCycle)
 		if err != nil {
 			return err
 		}
-	case reader.skipPast(mem.ThresholdIV.Header()) == nil:
+	case strings.Contains(str, mem.ThresholdIV.Header()):
 		err = parseThresholdIV(reader, &mem.ThresholdIV)
 		if err != nil {
 			return err
 		}
-	case reader.skipPast(mem.ExcitabilityVariables.Header()) == nil:
+	case strings.Contains(str, mem.ExcitabilityVariables.Header()):
 		err = parseExcitabilityVariables(reader, &mem.ExcitabilityVariables)
 		if err != nil {
 			return err
 		}
 	default:
-		var str string
-		str, err = reader.ReadLine()
-		reader.UnreadString(str)
+		log.Println("WARNING: Line could not be parsed: " + str)
 	}
 
 	return err
