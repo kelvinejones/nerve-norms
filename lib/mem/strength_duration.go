@@ -1,13 +1,15 @@
 package mem
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
+	"strconv"
 )
 
-// This section has not been implemented, so skip it
-
-type StrengthDuration struct{}
+type StrengthDuration struct {
+	Values []XY
+}
 
 func (section StrengthDuration) Header() string {
 	return "STRENGTH-DURATION DATA"
@@ -23,13 +25,33 @@ func (section *StrengthDuration) Parse(reader *Reader) error {
 }
 
 func (sd StrengthDuration) String() string {
-	return fmt.Sprintf("StrengthDuration{Import not implemented}")
+	return fmt.Sprintf("StrengthDuration{%d values partially imported}", len(sd.Values))
 }
 
 func (sd StrengthDuration) ParseRegex() *regexp.Regexp {
-	return regexp.MustCompile(`^SD\.\d+.*`)
+	return regexp.MustCompile(`^SD\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
 }
 
-func (section *StrengthDuration) ParseLine(result []string) error {
+func (sd *StrengthDuration) ParseLine(result []string) error {
+	if len(result) != 6 {
+		return errors.New("Incorrect SD line length")
+	}
+
+	// Only import the first two columns
+
+	x, err := strconv.ParseFloat(result[1], 64)
+	if err != nil {
+		return err
+	}
+	y, err := strconv.ParseFloat(result[2], 64)
+	if err != nil {
+		return err
+	}
+
+	sd.Values = append(sd.Values, XY{
+		X: x,
+		Y: y,
+	})
+
 	return nil
 }
