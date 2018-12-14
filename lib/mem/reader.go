@@ -42,20 +42,11 @@ func (rd *Reader) ReadLine() (string, error) {
 		rd.useUnreadString = false
 		return rd.unreadString, nil
 	} else {
-		str := ""
-		var err error
-
-		// Skip past blank lines
-		for str == "" {
-			if str, err = rd.reader.ReadString('\n'); err != nil {
-				if err == io.EOF {
-					rd.isEof = true
-				}
-				return str, err
-			}
-			str = strings.TrimSuffix(str, "\r\n")
+		str, err := rd.reader.ReadString('\n')
+		if err == io.EOF {
+			rd.isEof = true
 		}
-		return str, err
+		return strings.TrimSuffix(str, "\r\n"), err
 	}
 }
 

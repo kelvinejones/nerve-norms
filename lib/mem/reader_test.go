@@ -25,6 +25,14 @@ func TestBasicReader(t *testing.T) {
 	assert.NoError(t, err)
 
 	str, err = reader.ReadLine()
+	assert.Equal(t, "", str)
+	assert.NoError(t, err)
+
+	str, err = reader.ReadLine()
+	assert.Equal(t, "", str)
+	assert.NoError(t, err)
+
+	str, err = reader.ReadLine()
 	assert.Equal(t, "I am a test", str)
 	assert.NoError(t, err)
 }
