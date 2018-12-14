@@ -28,12 +28,17 @@ type LineParser interface {
 }
 
 type section interface {
-	Header() string
+	Header() []string
 	LineParser
 	Parse(reader *Reader) error
 }
 
-// sectionHeaderMatches returns true if the section's header matches this string.
+// sectionHeaderMatches returns true if one of the section's headers matches this string.
 func sectionHeaderMatches(sec section, str string) bool {
-	return strings.Contains(str, sec.Header())
+	for _, hd := range sec.Header() {
+		if strings.Contains(str, hd) {
+			return true
+		}
+	}
+	return false
 }

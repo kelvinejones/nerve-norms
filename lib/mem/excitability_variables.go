@@ -14,8 +14,8 @@ type ExcitabilityVariables struct {
 	SRMethod        int
 }
 
-func (section ExcitabilityVariables) Header() string {
-	return "DERIVED EXCITABILITY VARIABLES"
+func (section ExcitabilityVariables) Header() []string {
+	return []string{"DERIVED EXCITABILITY VARIABLES"}
 }
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
@@ -51,12 +51,18 @@ func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
 	}
 
 	// Now find any extra variables
-	err = reader.skipPast(ExtraVariables{}.Header())
+	str, err := reader.skipNewlines()
 	if err != nil {
 		return err
 	}
 
-	err = reader.parseLines(&ExtraVariables{exciteVar})
+	if sectionHeaderMatches(&ExtraVariables{}, str) {
+		err = reader.parseLines(&ExtraVariables{exciteVar})
+	} else {
+		// It looks like this header doesn't belong to us, so give it back
+		reader.UnreadString(str)
+	}
+
 	return err
 }
 

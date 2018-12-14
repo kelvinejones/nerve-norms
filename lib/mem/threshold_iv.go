@@ -11,8 +11,8 @@ type ThresholdIV struct {
 	Values []XY
 }
 
-func (section ThresholdIV) Header() string {
-	return "THRESHOLD I/V DATA"
+func (section ThresholdIV) Header() []string {
+	return []string{"THRESHOLD I/V DATA"}
 }
 
 func (tiv *ThresholdIV) Parse(reader *Reader) error {

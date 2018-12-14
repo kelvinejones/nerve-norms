@@ -11,8 +11,8 @@ type ChargeDuration struct {
 	Values []XYZ
 }
 
-func (section ChargeDuration) Header() string {
-	return "CHARGE DURATION DATA"
+func (section ChargeDuration) Header() []string {
+	return []string{"CHARGE DURATION DATA"}
 }
 
 func (cd *ChargeDuration) Parse(reader *Reader) error {

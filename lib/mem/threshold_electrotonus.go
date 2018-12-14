@@ -28,8 +28,8 @@ func (teg ThresholdElectrotonusGroup) String() string {
 	return str
 }
 
-func (section ThresholdElectrotonusGroup) Header() string {
-	return "THRESHOLD ELECTROTONUS DATA"
+func (section ThresholdElectrotonusGroup) Header() []string {
+	return []string{"THRESHOLD ELECTROTONUS DATA"}
 }
 
 func (te *ThresholdElectrotonusGroup) Parse(reader *Reader) error {

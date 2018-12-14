@@ -11,8 +11,8 @@ type RecoveryCycle struct {
 	Values []XY
 }
 
-func (section RecoveryCycle) Header() string {
-	return "RECOVERY CYCLE DATA"
+func (section RecoveryCycle) Header() []string {
+	return []string{"RECOVERY CYCLE DATA"}
 }
 
 func (rc *RecoveryCycle) Parse(reader *Reader) error {

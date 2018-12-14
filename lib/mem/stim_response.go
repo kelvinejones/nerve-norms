@@ -51,8 +51,8 @@ type StimResponse struct {
 	ValueType string
 }
 
-func (section StimResponse) Header() string {
-	return "STIMULUS-RESPONSE DATA"
+func (section StimResponse) Header() []string {
+	return []string{"STIMULUS-RESPONSE DATA"}
 }
 
 func (sr *StimResponse) Parse(reader *Reader) error {

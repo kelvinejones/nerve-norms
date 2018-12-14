@@ -10,8 +10,8 @@ type ExtraVariables struct {
 	*ExcitabilityVariables
 }
 
-func (section ExtraVariables) Header() string {
-	return "EXTRA VARIABLES"
+func (section ExtraVariables) Header() []string {
+	return []string{"EXTRA VARIABLES"}
 }
 
 func (extraVar ExtraVariables) LinePrefix() string {

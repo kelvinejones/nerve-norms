@@ -11,8 +11,8 @@ type StrengthDuration struct {
 	Values []XY
 }
 
-func (section StrengthDuration) Header() string {
-	return "STRENGTH-DURATION DATA"
+func (section StrengthDuration) Header() []string {
+	return []string{"STRENGTH-DURATION DATA"}
 }
 
 func (section *StrengthDuration) Parse(reader *Reader) error {
