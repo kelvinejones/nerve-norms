@@ -52,7 +52,7 @@ type StimResponse struct {
 }
 
 func (section StimResponse) Header() []string {
-	return []string{"STIMULUS-RESPONSE DATA"}
+	return []string{"STIMULUS-RESPONSE DATA", "STIMULUS RESPONSE DATA"}
 }
 
 func (sr *StimResponse) Parse(reader *Reader) error {
