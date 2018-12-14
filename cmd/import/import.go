@@ -14,14 +14,24 @@ var path = flag.String("path", "res/data/short_test.MEM", "path to the file that
 func main() {
 	flag.Parse()
 
-	file, err := os.Open(*path)
+	err := printMem(*path)
 	if err != nil {
-		panic(err)
+		fmt.Println("Could not parse '" + *path + "' due to error: " + err.Error())
+	}
+}
+
+func printMem(path string) error {
+	file, err := os.Open(path)
+	if err != nil {
+		return err
 	}
 
 	memData, err := mem.Import(bufio.NewReader(file))
 	if err != nil {
-		panic(err)
+		return err
 	}
+
 	fmt.Printf("%v\n", memData)
+
+	return nil
 }
