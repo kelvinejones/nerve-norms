@@ -74,6 +74,7 @@ type Mem struct {
 	RecoveryCycle
 	ThresholdIV
 	ExcitabilityVariables
+	StrengthDuration
 }
 
 type XY struct {

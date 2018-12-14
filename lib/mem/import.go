@@ -68,6 +68,11 @@ func (mem *Mem) importSection(reader *Reader) error {
 		if err != nil {
 			return err
 		}
+	case strings.Contains(str, mem.StrengthDuration.Header()):
+		err = parseStrengthDuration(reader, &mem.StrengthDuration)
+		if err != nil {
+			return err
+		}
 	default:
 		log.Println("WARNING: Line could not be parsed: " + str)
 	}
