@@ -106,14 +106,10 @@ func (rd *Reader) skipPast(search string) error {
 	return err
 }
 
-type Parser interface {
-	Parse([]string) error
-}
-
 // parseLines keeps reading as long as the input is empty lines and Parse doesn't return an error.
 // Once Parse can't read a line, we're done (but it's not an error). Back up one line and return.
 // Even EOF isn't an error here. We let the caller decide that.
-func (rd *Reader) parseLines(regex *regexp.Regexp, parser Parser) error {
+func (rd *Reader) parseLines(parser LineParser) error {
 	for {
 		err := rd.skipNewlines()
 		if err != nil {
@@ -127,9 +123,9 @@ func (rd *Reader) parseLines(regex *regexp.Regexp, parser Parser) error {
 			return nil
 		}
 
-		result := regex.FindStringSubmatch(s)
+		result := parser.ParseRegex().FindStringSubmatch(s)
 
-		err = parser.Parse(result)
+		err = parser.ParseLine(result)
 		if err != nil {
 			// The string couldn't be parsed. That's not an error; it just means we're done parsing this regex.
 			return rd.UnreadString(s)

@@ -1,5 +1,7 @@
 package mem
 
+import "regexp"
+
 type XY struct {
 	X float64
 	Y float64
@@ -11,7 +13,12 @@ type XYZ struct {
 	Z float64
 }
 
+type LineParser interface {
+	ParseRegex() *regexp.Regexp
+	ParseLine([]string) error
+}
+
 type section interface {
 	Header() string
-	Parser
+	LineParser
 }

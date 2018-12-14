@@ -3,6 +3,7 @@ package mem
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strconv"
 )
 
@@ -21,7 +22,11 @@ func (ev ExcitabilityVariables) String() string {
 	return fmt.Sprintf("ExcitabilityVariables{%d values}", len(ev.Values))
 }
 
-func (exciteVar *ExcitabilityVariables) Parse(result []string) error {
+func (exciteVar ExcitabilityVariables) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^ \d+\.\s+([-+]?\d*\.?\d+)\s+(.+)`)
+}
+
+func (exciteVar *ExcitabilityVariables) ParseLine(result []string) error {
 	if len(result) != 3 {
 		return errors.New("Incorrect ExVar line length")
 	}

@@ -3,6 +3,7 @@ package mem
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strconv"
 )
 
@@ -18,7 +19,11 @@ func (cd ChargeDuration) String() string {
 	return fmt.Sprintf("ChargeDuration{%d values}", len(cd.Values))
 }
 
-func (cd *ChargeDuration) Parse(result []string) error {
+func (cd ChargeDuration) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^QT\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
+}
+
+func (cd *ChargeDuration) ParseLine(result []string) error {
 	if len(result) != 4 {
 		return errors.New("Incorrect CD line length")
 	}

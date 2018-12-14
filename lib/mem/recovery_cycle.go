@@ -3,6 +3,7 @@ package mem
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strconv"
 )
 
@@ -18,7 +19,11 @@ func (rc RecoveryCycle) String() string {
 	return fmt.Sprintf("RecoveryCycle{%d values}", len(rc.Values))
 }
 
-func (rc *RecoveryCycle) Parse(result []string) error {
+func (rc RecoveryCycle) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^RC\d+\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
+}
+
+func (rc *RecoveryCycle) ParseLine(result []string) error {
 	if len(result) != 3 {
 		return errors.New("Incorrect RC line length")
 	}

@@ -3,6 +3,7 @@ package mem
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strconv"
 )
 
@@ -31,7 +32,11 @@ func (section ThresholdElectrotonusGroup) Header() string {
 	return "THRESHOLD ELECTROTONUS DATA"
 }
 
-func (te *ThresholdElectrotonusGroup) Parse(result []string) error {
+func (teg ThresholdElectrotonusGroup) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^TE(\d+)\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
+}
+
+func (te *ThresholdElectrotonusGroup) ParseLine(result []string) error {
 	if len(result) != 5 {
 		return errors.New("Incorrect TE line length")
 	}

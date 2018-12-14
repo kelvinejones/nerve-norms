@@ -3,6 +3,7 @@ package mem
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strconv"
 )
 
@@ -18,7 +19,11 @@ func (tiv ThresholdIV) String() string {
 	return fmt.Sprintf("ThresholdIV{%d values}", len(tiv.Values))
 }
 
-func (tiv *ThresholdIV) Parse(result []string) error {
+func (tiv ThresholdIV) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^IV\d+\.\d+\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
+}
+
+func (tiv *ThresholdIV) ParseLine(result []string) error {
 	if len(result) != 3 {
 		return errors.New("Incorrect TIV line length")
 	}

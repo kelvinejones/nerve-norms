@@ -2,6 +2,7 @@ package mem
 
 import (
 	"errors"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -34,7 +35,11 @@ func (header Header) String() string {
 	return "Header{File{\"" + header.File + "\"}, Name{\"" + header.Name + "\"} }"
 }
 
-func (header *Header) Parse(result []string) error {
+func (header Header) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^\s+([^:]+):\s*(.*)`)
+}
+
+func (header *Header) ParseLine(result []string) error {
 	if len(result) != 3 {
 		return errors.New("Incorrect header line length")
 	}

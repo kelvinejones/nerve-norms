@@ -3,6 +3,7 @@ package mem
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strconv"
 )
 
@@ -14,7 +15,11 @@ type MaxCmap struct {
 
 type MaxCmaps []MaxCmap
 
-func (cmaps *MaxCmaps) Parse(result []string) error {
+func (cmaps MaxCmaps) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^ Max CMAP  (\d*\.?\d+) ms =  (\d*\.?\d+) (.)V`)
+}
+
+func (cmaps *MaxCmaps) ParseLine(result []string) error {
 	if len(result) != 4 {
 		return errors.New("Incorrect CMAP line length")
 	}
@@ -50,7 +55,11 @@ func (sr StimResponse) String() string {
 	return fmt.Sprintf("StimResponse{%d MaxCmaps, %d values}", len(sr.MaxCmaps), len(sr.Values))
 }
 
-func (sr *StimResponse) Parse(result []string) error {
+func (sr StimResponse) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^SR\.(\d+)\s+(\d+)\s+(\d*\.?\d+)`)
+}
+
+func (sr *StimResponse) ParseLine(result []string) error {
 	if len(result) != 4 {
 		return errors.New("Incorrect SR line length")
 	}

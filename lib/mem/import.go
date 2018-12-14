@@ -4,7 +4,6 @@ import (
 	"errors"
 	"io"
 	"log"
-	"regexp"
 	"strconv"
 	"strings"
 )
@@ -80,10 +79,8 @@ func (mem *Mem) importSection(reader *Reader) error {
 }
 
 func parseHeader(reader *Reader, header *Header) error {
-	return reader.parseLines(headerRegex, header)
+	return reader.parseLines(header)
 }
-
-var headerRegex = regexp.MustCompile(`^\s+([^:]+):\s*(.*)`)
 
 func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	var err error
@@ -93,7 +90,7 @@ func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	}
 
 	// Find Max CMAP
-	err = reader.parseLines(maxCmapRegex, &sr.MaxCmaps)
+	err = reader.parseLines(&sr.MaxCmaps)
 	if err != nil {
 		return err
 	}
@@ -104,12 +101,8 @@ func parseStimResponse(reader *Reader, sr *StimResponse) error {
 	}
 
 	// Now parse the actual SR data
-	return reader.parseLines(srRegex, sr)
+	return reader.parseLines(sr)
 }
-
-var srRegex = regexp.MustCompile(`^SR\.(\d+)\s+(\d+)\s+(\d*\.?\d+)`)
-
-var maxCmapRegex = regexp.MustCompile(`^ Max CMAP  (\d*\.?\d+) ms =  (\d*\.?\d+) (.)V`)
 
 func parseChargeDuration(reader *Reader, cd *ChargeDuration) error {
 	err := reader.skipPast("Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)")
@@ -117,10 +110,8 @@ func parseChargeDuration(reader *Reader, cd *ChargeDuration) error {
 		return err
 	}
 
-	return reader.parseLines(chargeRegex, cd)
+	return reader.parseLines(cd)
 }
-
-var chargeRegex = regexp.MustCompile(`^QT\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
 
 func parseThresholdElectrotonus(reader *Reader, te *ThresholdElectrotonusGroup) error {
 	err := reader.skipPast("Delay (ms)          	Current (%)         	Thresh redn. (%)")
@@ -128,10 +119,8 @@ func parseThresholdElectrotonus(reader *Reader, te *ThresholdElectrotonusGroup) 
 		return err
 	}
 
-	return reader.parseLines(teRegex, te)
+	return reader.parseLines(te)
 }
-
-var teRegex = regexp.MustCompile(`^TE(\d+)\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
 
 func parseRecoveryCycle(reader *Reader, rc *RecoveryCycle) error {
 	err := reader.skipPast("Interval (ms)       	  Threshold change (%)")
@@ -139,10 +128,8 @@ func parseRecoveryCycle(reader *Reader, rc *RecoveryCycle) error {
 		return err
 	}
 
-	return reader.parseLines(rcRegex, rc)
+	return reader.parseLines(rc)
 }
-
-var rcRegex = regexp.MustCompile(`^RC\d+\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
 
 func parseThresholdIV(reader *Reader, tiv *ThresholdIV) error {
 	err := reader.skipPast("Current (%)         	  Threshold redn. (%)")
@@ -150,10 +137,8 @@ func parseThresholdIV(reader *Reader, tiv *ThresholdIV) error {
 		return err
 	}
 
-	return reader.parseLines(tivRegex, tiv)
+	return reader.parseLines(tiv)
 }
-
-var tivRegex = regexp.MustCompile(`^IV\d+\.\d+\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
 
 func parseExcitabilityVariables(reader *Reader, exciteVar *ExcitabilityVariables) error {
 	// Find settings
@@ -186,7 +171,7 @@ func parseExcitabilityVariables(reader *Reader, exciteVar *ExcitabilityVariables
 	}
 
 	// Read the main variables
-	err = reader.parseLines(exciteVarRegex, exciteVar)
+	err = reader.parseLines(exciteVar)
 	if err != nil {
 		return err
 	}
@@ -205,13 +190,9 @@ func parseExcitabilityVariables(reader *Reader, exciteVar *ExcitabilityVariables
 		return err
 	}
 
-	err = reader.parseLines(extraVarRegex, &ExtraVariables{exciteVar})
+	err = reader.parseLines(&ExtraVariables{exciteVar})
 	return err
 }
-
-var exciteVarRegex = regexp.MustCompile(`^ \d+\.\s+([-+]?\d*\.?\d+)\s+(.+)`)
-
-var extraVarRegex = regexp.MustCompile(`^(.+) = ([-+]?\d*\.?\d+)`)
 
 func parseStrengthDuration(reader *Reader, section *StrengthDuration) error {
 	err := reader.skipPast(`%CMAP              	Threshold`)
@@ -219,7 +200,5 @@ func parseStrengthDuration(reader *Reader, section *StrengthDuration) error {
 		return err
 	}
 
-	return reader.parseLines(strengthDurationRegex, section)
+	return reader.parseLines(section)
 }
-
-var strengthDurationRegex = regexp.MustCompile(`^SD\.\d+.*`)

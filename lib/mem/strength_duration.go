@@ -1,6 +1,9 @@
 package mem
 
-import "fmt"
+import (
+	"fmt"
+	"regexp"
+)
 
 // This section has not been implemented, so skip it
 
@@ -14,6 +17,10 @@ func (sd StrengthDuration) String() string {
 	return fmt.Sprintf("StrengthDuration{Import not implemented}")
 }
 
-func (section *StrengthDuration) Parse(result []string) error {
+func (sd StrengthDuration) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^SD\.\d+.*`)
+}
+
+func (section *StrengthDuration) ParseLine(result []string) error {
 	return nil
 }
