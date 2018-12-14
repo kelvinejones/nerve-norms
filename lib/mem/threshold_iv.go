@@ -28,6 +28,10 @@ func (tiv ThresholdIV) String() string {
 	return fmt.Sprintf("ThresholdIV{%d values}", len(tiv.Values))
 }
 
+func (tiv ThresholdIV) LinePrefix() string {
+	return "IV"
+}
+
 func (tiv ThresholdIV) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^IV\d+\.\d+\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
 }

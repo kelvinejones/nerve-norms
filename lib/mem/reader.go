@@ -127,7 +127,16 @@ func (rd *Reader) parseLines(parser LineParser) error {
 
 		err = parser.ParseLine(result)
 		if err != nil {
-			// The string couldn't be parsed. That's not an error; it just means we're done parsing this regex.
+			// The string couldn't be parsed.
+			prefix := parser.LinePrefix()
+			if prefix != "" && strings.HasPrefix(s, prefix) {
+				// The line has the correct prefix, but it couldn't be parsed.
+				// We'll skip this line and keep going.
+				fmt.Println("WARNING: Line \"" + s + "\" was skipped: " + err.Error())
+				continue
+			}
+
+			// Otherwise, this still isn't error; it just means we're done parsing this regex.
 			return rd.UnreadString(s)
 		}
 	}

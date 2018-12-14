@@ -14,6 +14,7 @@ type XYZ struct {
 }
 
 type LineParser interface {
+	LinePrefix() string
 	ParseRegex() *regexp.Regexp
 	ParseLine([]string) error
 }

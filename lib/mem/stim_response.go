@@ -15,6 +15,10 @@ type MaxCmap struct {
 
 type MaxCmaps []MaxCmap
 
+func (cmaps MaxCmaps) LinePrefix() string {
+	return " Max CMAP"
+}
+
 func (cmaps MaxCmaps) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^ Max CMAP  (\d*\.?\d+) ms =  (\d*\.?\d+) (.)V`)
 }
@@ -75,6 +79,10 @@ func (sr *StimResponse) Parse(reader *Reader) error {
 
 func (sr StimResponse) String() string {
 	return fmt.Sprintf("StimResponse{%d MaxCmaps, %d values}", len(sr.MaxCmaps), len(sr.Values))
+}
+
+func (sr StimResponse) LinePrefix() string {
+	return "SR"
 }
 
 func (sr StimResponse) ParseRegex() *regexp.Regexp {

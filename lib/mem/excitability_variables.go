@@ -76,6 +76,10 @@ func (ev ExcitabilityVariables) String() string {
 	return fmt.Sprintf("ExcitabilityVariables{%d values}", len(ev.Values))
 }
 
+func (exciteVar ExcitabilityVariables) LinePrefix() string {
+	return ""
+}
+
 func (exciteVar ExcitabilityVariables) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^ \d+\.\s+([-+]?\d*\.?\d+)\s+(.+)`)
 }

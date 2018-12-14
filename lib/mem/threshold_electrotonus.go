@@ -41,6 +41,10 @@ func (te *ThresholdElectrotonusGroup) Parse(reader *Reader) error {
 	return reader.parseLines(te)
 }
 
+func (teg ThresholdElectrotonusGroup) LinePrefix() string {
+	return "TE"
+}
+
 func (teg ThresholdElectrotonusGroup) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^TE(\d+)\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
 }

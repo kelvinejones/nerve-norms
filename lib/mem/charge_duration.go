@@ -28,6 +28,10 @@ func (cd ChargeDuration) String() string {
 	return fmt.Sprintf("ChargeDuration{%d values}", len(cd.Values))
 }
 
+func (cd ChargeDuration) LinePrefix() string {
+	return "QT"
+}
+
 func (cd ChargeDuration) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^QT\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
 }

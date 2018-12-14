@@ -39,6 +39,10 @@ func (header Header) String() string {
 	return "Header{File{\"" + header.File + "\"}, Name{\"" + header.Name + "\"} }"
 }
 
+func (header Header) LinePrefix() string {
+	return ""
+}
+
 func (header Header) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^\s+([^:]+):\s*(.*)`)
 }

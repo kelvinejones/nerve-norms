@@ -14,6 +14,10 @@ func (section ExtraVariables) Header() string {
 	return "EXTRA VARIABLES"
 }
 
+func (extraVar ExtraVariables) LinePrefix() string {
+	return ""
+}
+
 func (extraVar ExtraVariables) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^(.+) = ([-+]?\d*\.?\d+)`)
 }

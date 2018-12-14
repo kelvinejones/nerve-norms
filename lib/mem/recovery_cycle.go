@@ -28,6 +28,10 @@ func (rc RecoveryCycle) String() string {
 	return fmt.Sprintf("RecoveryCycle{%d values}", len(rc.Values))
 }
 
+func (rc RecoveryCycle) LinePrefix() string {
+	return "RC"
+}
+
 func (rc RecoveryCycle) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^RC\d+\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
 }

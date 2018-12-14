@@ -28,6 +28,10 @@ func (sd StrengthDuration) String() string {
 	return fmt.Sprintf("StrengthDuration{%d values partially imported}", len(sd.Values))
 }
 
+func (sd StrengthDuration) LinePrefix() string {
+	return "SD"
+}
+
 func (sd StrengthDuration) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^SD\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
 }
