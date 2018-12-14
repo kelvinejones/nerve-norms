@@ -2,8 +2,8 @@ package mem
 
 import (
 	"errors"
+	"fmt"
 	"io"
-	"log"
 	"strings"
 )
 
@@ -82,7 +82,7 @@ func (mem *Mem) importSection(reader *Reader) error {
 			return err
 		}
 	default:
-		log.Println("WARNING: Line could not be parsed: " + str)
+		fmt.Println("WARNING: Line could not be parsed: " + str)
 	}
 
 	return err
