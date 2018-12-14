@@ -2,6 +2,7 @@ package mem
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -70,27 +71,26 @@ func (header *Header) ParseLine(result []string) error {
 			header.Sex = UnknownSex
 		}
 	case "Temperature":
-		temp, err := strconv.ParseFloat(val, 64)
+		header.Temperature, err = strconv.ParseFloat(val, 64)
 		if err != nil {
-			return err
+			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
 		}
-		header.Temperature = temp
 	case "Age":
 		header.Age, err = strconv.Atoi(val)
 		if err != nil {
-			return err
+			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
 		}
 	case "Date":
 		layout := "2/1/06"
 		header.Date, err = time.Parse(layout, val)
 		if err != nil {
-			return err
+			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
 		}
 	case "Start time":
 		layout := "2/1/06 15:04:05"
 		header.StartTime, err = time.Parse(layout, "2/1/06 "+val)
 		if err != nil {
-			return err
+			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
 		}
 	case "File":
 		header.File = val
