@@ -51,6 +51,28 @@ func (section StimResponse) Header() string {
 	return "STIMULUS-RESPONSE DATA"
 }
 
+func (sr *StimResponse) Parse(reader *Reader) error {
+	var err error
+	sr.ValueType, err = reader.ReadLineExtractingString(`^Values (.*)`)
+	if err != nil {
+		return err
+	}
+
+	// Find Max CMAP
+	err = reader.parseLines(&sr.MaxCmaps)
+	if err != nil {
+		return err
+	}
+
+	err = reader.skipPast("% Max               	Stimulus")
+	if err != nil {
+		return err
+	}
+
+	// Now parse the actual SR data
+	return reader.parseLines(sr)
+}
+
 func (sr StimResponse) String() string {
 	return fmt.Sprintf("StimResponse{%d MaxCmaps, %d values}", len(sr.MaxCmaps), len(sr.Values))
 }

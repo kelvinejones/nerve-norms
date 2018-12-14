@@ -15,6 +15,15 @@ func (section ChargeDuration) Header() string {
 	return "CHARGE DURATION DATA"
 }
 
+func (cd *ChargeDuration) Parse(reader *Reader) error {
+	err := reader.skipPast("Duration (ms)       	 Threshold (mA)     	  Threshold charge (mA.mS)")
+	if err != nil {
+		return err
+	}
+
+	return reader.parseLines(cd)
+}
+
 func (cd ChargeDuration) String() string {
 	return fmt.Sprintf("ChargeDuration{%d values}", len(cd.Values))
 }

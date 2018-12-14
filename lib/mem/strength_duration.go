@@ -13,6 +13,15 @@ func (section StrengthDuration) Header() string {
 	return "STRENGTH-DURATION DATA"
 }
 
+func (section *StrengthDuration) Parse(reader *Reader) error {
+	err := reader.skipPast(`%CMAP              	Threshold`)
+	if err != nil {
+		return err
+	}
+
+	return reader.parseLines(section)
+}
+
 func (sd StrengthDuration) String() string {
 	return fmt.Sprintf("StrengthDuration{Import not implemented}")
 }

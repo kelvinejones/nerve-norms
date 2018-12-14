@@ -32,6 +32,15 @@ func (section ThresholdElectrotonusGroup) Header() string {
 	return "THRESHOLD ELECTROTONUS DATA"
 }
 
+func (te *ThresholdElectrotonusGroup) Parse(reader *Reader) error {
+	err := reader.skipPast("Delay (ms)          	Current (%)         	Thresh redn. (%)")
+	if err != nil {
+		return err
+	}
+
+	return reader.parseLines(te)
+}
+
 func (teg ThresholdElectrotonusGroup) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^TE(\d+)\.\d+\s+(\d*\.?\d+)\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)`)
 }

@@ -15,6 +15,15 @@ func (section RecoveryCycle) Header() string {
 	return "RECOVERY CYCLE DATA"
 }
 
+func (rc *RecoveryCycle) Parse(reader *Reader) error {
+	err := reader.skipPast("Interval (ms)       	  Threshold change (%)")
+	if err != nil {
+		return err
+	}
+
+	return reader.parseLines(rc)
+}
+
 func (rc RecoveryCycle) String() string {
 	return fmt.Sprintf("RecoveryCycle{%d values}", len(rc.Values))
 }

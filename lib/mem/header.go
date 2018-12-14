@@ -31,6 +31,10 @@ type Header struct {
 	Comment       string
 }
 
+func (header *Header) Parse(reader *Reader) error {
+	return reader.parseLines(header)
+}
+
 func (header Header) String() string {
 	return "Header{File{\"" + header.File + "\"}, Name{\"" + header.Name + "\"} }"
 }

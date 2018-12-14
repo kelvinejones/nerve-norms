@@ -15,6 +15,15 @@ func (section ThresholdIV) Header() string {
 	return "THRESHOLD I/V DATA"
 }
 
+func (tiv *ThresholdIV) Parse(reader *Reader) error {
+	err := reader.skipPast("Current (%)         	  Threshold redn. (%)")
+	if err != nil {
+		return err
+	}
+
+	return reader.parseLines(tiv)
+}
+
 func (tiv ThresholdIV) String() string {
 	return fmt.Sprintf("ThresholdIV{%d values}", len(tiv.Values))
 }
