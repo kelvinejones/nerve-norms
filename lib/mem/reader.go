@@ -13,6 +13,7 @@ type Reader struct {
 	reader          *bufio.Reader
 	unreadString    string
 	useUnreadString bool
+	isEof           bool
 }
 
 func NewReader(rd io.Reader) *Reader {
@@ -35,10 +36,16 @@ func (rd *Reader) UnreadString(str string) error {
 
 func (rd *Reader) ReadLine() (string, error) {
 	if rd.useUnreadString {
+		if rd.isEof {
+			return "", io.EOF
+		}
 		rd.useUnreadString = false
 		return rd.unreadString, nil
 	} else {
 		str, err := rd.reader.ReadString('\n')
+		if err == io.EOF {
+			rd.isEof = true
+		}
 		return strings.TrimSuffix(str, "\r\n"), err
 	}
 }
