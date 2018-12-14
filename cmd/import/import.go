@@ -23,6 +23,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%#v\n", memData)
 	fmt.Printf("%v\n", memData)
 }
