@@ -87,22 +87,19 @@ func (sr StimResponse) LinePrefix() string {
 }
 
 func (sr StimResponse) ParseRegex() *regexp.Regexp {
-	return regexp.MustCompile(`^SR\.(\d+)\s+(\d+)\s+(\d*\.?\d+)`)
+	return regexp.MustCompile(`^SR\.\d+\s+(\d+)\s+(\d*\.?\d+)`)
 }
 
 func (sr *StimResponse) ParseLine(result []string) error {
-	if len(result) != 4 {
+	if len(result) != 3 {
 		return errors.New("Incorrect SR line length")
-	}
-	if result[1] != result[2] {
-		return errors.New("SR fields do not match")
 	}
 
 	percentMax, err := strconv.ParseFloat(result[1], 64)
 	if err != nil {
 		return err
 	}
-	stim, err := strconv.ParseFloat(result[3], 64)
+	stim, err := strconv.ParseFloat(result[2], 64)
 	if err != nil {
 		return err
 	}
