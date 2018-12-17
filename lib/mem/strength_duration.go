@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 type StrengthDuration struct {
@@ -12,13 +13,20 @@ type StrengthDuration struct {
 }
 
 func (section StrengthDuration) Header() []string {
-	return []string{"STRENGTH-DURATION DATA"}
+	return []string{
+		"STRENGTH-DURATION DATA",
+		"STRENGTH DURATION DATA",
+	}
 }
 
 func (section *StrengthDuration) Parse(reader *Reader) error {
-	err := reader.skipPast(`%CMAP              	Threshold`)
+	s, err := reader.skipNewlines()
 	if err != nil {
 		return err
+	}
+
+	if !strings.Contains(s, "%CMAP") || !strings.Contains(s, "Threshold") {
+		return errors.New("Could not find '%CMAP     Threshold' header line")
 	}
 
 	return reader.parseLines(section)
@@ -33,7 +41,7 @@ func (sd StrengthDuration) LinePrefix() string {
 }
 
 func (sd StrengthDuration) ParseRegex() *regexp.Regexp {
-	return regexp.MustCompile(`^SD\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)`)
+	return regexp.MustCompile(`^SD\.\d+\s+(\d*\.?\d+)\s+(\d*\.?\d+)`) // The line might be longer, but we don't care
 }
 
 func (sd *StrengthDuration) ParseLine(result []string) error {
