@@ -67,3 +67,14 @@ func (mem Mem) String() string {
 	str += "}"
 	return str
 }
+
+// sectionContainingHeader returns a section containing the provided header.
+// Dashes are replaced with spaces for a slightly less sensitive search.
+func (mem Mem) sectionContainingHeader(header string) (Section, error) {
+	for _, sec := range mem.Sections {
+		if strings.Contains(strings.Replace(sec.Header, "-", " ", -1), header) {
+			return sec, nil
+		}
+	}
+	return Section{}, errors.New("MEM does not contain section '" + header + "'")
+}
