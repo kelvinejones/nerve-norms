@@ -108,7 +108,6 @@ SR.20               	 20                 	 4.9239
 
 var sResponsePercentMaxColumn = Column{2., 4., 6., 8., 10., 12., 14., 16., 18., 20.}
 var sResponseStimulusColumn = Column{3.915578, 4.073214, 4.144141, 4.20404, 4.435846, 4.601757, 4.824213, 4.86682, 4.89536, 4.9239}
-
 var sResponseExpected = Section{
 	Header: "STIMULUS-RESPONSE DATA (2.4-1.9m)",
 	TableSet: TableSet{
@@ -125,39 +124,29 @@ var sResponseExpected = Section{
 		"Max CMAP  1 ms =  1.161296 mV",
 	},
 }
+var expectedSR = StimResponse{
+	MaxCmaps: []MaxCmap{
+		MaxCmap{
+			Time:  .2,
+			Val:   61.36306,
+			Units: 'u',
+		},
+		MaxCmap{
+			Time:  1.,
+			Val:   1.161296,
+			Units: 'm',
+		},
+	},
+	ValueType:  "are those recorded",
+	PercentMax: sResponsePercentMaxColumn,
+	Stimulus:   sResponseStimulusColumn,
+}
 
 func TestImportSRResponse(t *testing.T) {
 	sec := Section{Header: sResponseExpected.Header}
 	err := sec.parse(NewStringReader(toWindows(sResponseString)))
 	assert.Equal(t, io.EOF, err)
 	assert.Equal(t, sResponseExpected, sec)
-}
-
-func TestExtractSRResponse(t *testing.T) {
-	mem, err := Import(strings.NewReader(toWindows(memString)))
-	assert.NoError(t, err)
-
-	expectedSR := StimResponse{
-		MaxCmaps: []MaxCmap{
-			MaxCmap{
-				Time:  .2,
-				Val:   61.36306,
-				Units: 'u',
-			},
-			MaxCmap{
-				Time:  1.,
-				Val:   1.161296,
-				Units: 'm',
-			},
-		},
-		ValueType:  "are those recorded",
-		PercentMax: sResponsePercentMaxColumn,
-		Stimulus:   sResponseStimulusColumn,
-	}
-
-	sr, err := mem.StimulusResponse()
-	assert.NoError(t, err)
-	assert.Equal(t, expectedSR, sr)
 }
 
 const chargeDurationHeaderString = `
@@ -372,9 +361,18 @@ var memString = headerString + sResponseHeaderString + sResponseString + chargeD
 	thresholdIVHeaderString + thresholdIVString + excitabilityVariablesHeaderString + excitabilityVariablesString
 
 func TestImportAll(t *testing.T) {
+	// This common setup should fail in one place for all of these tests.
 	mem, err := Import(strings.NewReader(toWindows(memString)))
 	assert.NoError(t, err)
-	assert.Equal(t, completeExpectedMem, mem)
+
+	t.Run("MemStruct", func(t *testing.T) {
+		assert.Equal(t, completeExpectedMem, mem)
+	})
+	t.Run("StimulusResponse", func(t *testing.T) {
+		sr, err := mem.StimulusResponse()
+		assert.NoError(t, err)
+		assert.Equal(t, expectedSR, sr)
+	})
 }
 
 func TestImportFile(t *testing.T) {
