@@ -106,14 +106,17 @@ SR.20               	 20                 	 4.9239
 
 `
 
+var sResponsePercentMaxColumn = Column{2., 4., 6., 8., 10., 12., 14., 16., 18., 20.}
+var sResponseStimulusColumn = Column{3.915578, 4.073214, 4.144141, 4.20404, 4.435846, 4.601757, 4.824213, 4.86682, 4.89536, 4.9239}
+
 var sResponseExpected = Section{
 	Header: "STIMULUS-RESPONSE DATA (2.4-1.9m)",
 	TableSet: TableSet{
 		ColCount: 2,
 		Names:    []string{"% Max", "Stimulus(2)"},
 		Tables: []Table{Table{
-			Column{2., 4., 6., 8., 10., 12., 14., 16., 18., 20.},
-			Column{3.915578, 4.073214, 4.144141, 4.20404, 4.435846, 4.601757, 4.824213, 4.86682, 4.89536, 4.9239},
+			sResponsePercentMaxColumn,
+			sResponseStimulusColumn,
 		}},
 	},
 	ExtraLines: []string{
@@ -337,12 +340,12 @@ var completeExpectedMem = Mem{
 	ExcitabilityVariables: excitabilityVariablesExpected,
 }
 
-func TestImportAll(t *testing.T) {
-	memString := headerString + sResponseHeaderString + sResponseString + chargeDurationHeaderString + chargeDurationString +
-		thresholdElectrotonusHeaderString + thresholdElectrotonusString + recoveryCycleHeaderString + recoveryCycleString +
-		thresholdIVHeaderString + thresholdIVString + excitabilityVariablesHeaderString + excitabilityVariablesString
-	mem, err := Import(strings.NewReader(toWindows(memString)))
+var memString = headerString + sResponseHeaderString + sResponseString + chargeDurationHeaderString + chargeDurationString +
+	thresholdElectrotonusHeaderString + thresholdElectrotonusString + recoveryCycleHeaderString + recoveryCycleString +
+	thresholdIVHeaderString + thresholdIVString + excitabilityVariablesHeaderString + excitabilityVariablesString
 
+func TestImportAll(t *testing.T) {
+	mem, err := Import(strings.NewReader(toWindows(memString)))
 	assert.NoError(t, err)
 	assert.Equal(t, completeExpectedMem, mem)
 }
