@@ -100,15 +100,10 @@ func (rd *Reader) parseLines(parser LineParser) error {
 			return nil
 		}
 
-		result := parser.ParseRegex().FindStringSubmatch(s)
-
-		err = parser.ParseLine(result)
-		if err != nil {
+		if parser.ParseLine(parser.ParseRegex().FindStringSubmatch(s)) != nil {
 			// The string couldn't be parsed. This isn't an error;
 			// it just means we're done parsing this regex.
 			return rd.UnreadString(s)
 		}
 	}
-
-	return nil
 }
