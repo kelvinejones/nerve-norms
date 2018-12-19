@@ -202,6 +202,10 @@ TE2.4               	 11                 	-40                 	-40.92
 
 `
 
+var thresholdElectrotonusHyp40DelayColumn = Column{0., 9., 10., 11., 11.}
+var thresholdElectrotonusHyp40ThreshReductionColumn = Column{0.00, 0.00, 40.02, 42.71, -42.71}
+var thresholdElectrotonusDep40DelayColumn = Column{0., 9., 10., 11.}
+var thresholdElectrotonusDep40ThreshReductionColumn = Column{0.00, 0.00, -39.34, -40.92}
 var thresholdElectrotonusExpected = Section{
 	Header: "THRESHOLD ELECTROTONUS DATA (3.5-8.8m)",
 	TableSet: TableSet{
@@ -209,16 +213,26 @@ var thresholdElectrotonusExpected = Section{
 		Names:    []string{"Delay (ms)", "Current (%)", "Thresh redn. (%)"},
 		Tables: []Table{
 			Table{
-				Column{0., 9., 10., 11., 11.},
+				thresholdElectrotonusHyp40DelayColumn,
 				Column{0., 0., 40., 40., 40.},
-				Column{0.00, 0.00, 40.02, 42.71, -42.71},
+				thresholdElectrotonusHyp40ThreshReductionColumn,
 			},
 			Table{
-				Column{0., 9., 10., 11.},
+				thresholdElectrotonusDep40DelayColumn,
 				Column{0., 0., -40., -40.},
-				Column{0.00, 0.00, -39.34, -40.92},
+				thresholdElectrotonusDep40ThreshReductionColumn,
 			},
 		},
+	},
+}
+var thresholdElectrotonusParsed = ThresholdElectrotonus{
+	Hyperpol40: &TEPair{
+		Delay:           thresholdElectrotonusHyp40DelayColumn,
+		ThreshReduction: thresholdElectrotonusHyp40ThreshReductionColumn,
+	},
+	Depol40: &TEPair{
+		Delay:           thresholdElectrotonusDep40DelayColumn,
+		ThreshReduction: thresholdElectrotonusDep40ThreshReductionColumn,
 	},
 }
 
@@ -369,9 +383,14 @@ func TestImportAll(t *testing.T) {
 		assert.Equal(t, completeExpectedMem, mem)
 	})
 	t.Run("StimulusResponse", func(t *testing.T) {
-		sr, err := mem.StimulusResponse()
+		actualParsed, err := mem.StimulusResponse()
 		assert.NoError(t, err)
-		assert.Equal(t, sResponseParsed, sr)
+		assert.Equal(t, sResponseParsed, actualParsed)
+	})
+	t.Run("ThresholdElectrotonus", func(t *testing.T) {
+		actualParsed, err := mem.ThresholdElectrotonus()
+		assert.NoError(t, err)
+		assert.Equal(t, thresholdElectrotonusParsed, actualParsed)
 	})
 }
 
