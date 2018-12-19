@@ -3,6 +3,7 @@ package mem
 import (
 	"errors"
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -176,4 +177,24 @@ func (ts TableSet) String() string {
 		return fmt.Sprintf("TableSet{%d x ?}", ts.ColCount)
 	}
 	return fmt.Sprintf("TableSet{%dx%d}", ts.ColCount, len(ts.Tables[0][0]))
+}
+
+func (col Column) Maximum() float64 {
+	max := math.Inf(-1)
+	for _, val := range col {
+		if val > max {
+			max = val
+		}
+	}
+	return max
+}
+
+func (col Column) Minimum() float64 {
+	min := math.Inf(1)
+	for _, val := range col {
+		if val < min {
+			min = val
+		}
+	}
+	return min
 }
