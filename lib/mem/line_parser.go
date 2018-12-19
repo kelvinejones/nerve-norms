@@ -5,8 +5,6 @@ import (
 )
 
 type LineParser interface {
-	LinePrefix() string
-
 	// ParseRegex provides a regexp used to split a line.
 	ParseRegex() *regexp.Regexp
 

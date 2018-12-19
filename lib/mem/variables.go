@@ -67,10 +67,6 @@ func (ev ExcitabilityVariables) String() string {
 	return fmt.Sprintf("ExcitabilityVariables{%d values}", len(ev.Values))
 }
 
-func (exciteVar ExcitabilityVariables) LinePrefix() string {
-	return ""
-}
-
 func (exciteVar ExcitabilityVariables) ParseRegex() *regexp.Regexp {
 	return regexp.MustCompile(`^ \d+\.\s+([-+]?\d*\.?\d+)\s+(.+)`)
 }
@@ -92,10 +88,6 @@ func (exciteVar *ExcitabilityVariables) ParseLine(result []string) error {
 
 type ExtraVariables struct {
 	*ExcitabilityVariables
-}
-
-func (extraVar ExtraVariables) LinePrefix() string {
-	return ""
 }
 
 func (extraVar ExtraVariables) ParseRegex() *regexp.Regexp {
