@@ -32,6 +32,21 @@ type Section struct {
 	ExtraLines []string
 }
 
+// columnContainsName returns the first column containing the provided name.
+func (sec Section) columnContainsName(name string, table int) (Column, error) {
+	if table > len(sec.Tables) {
+		return Column{}, errors.New("Attempt to access table out of range in section '" + sec.Header + "'")
+	}
+
+	for i, str := range sec.Names {
+		if strings.Contains(str, name) {
+			return sec.Tables[table][i], nil
+		}
+	}
+
+	return Column{}, errors.New("Column '" + name + "' was not found in '" + sec.Header + "'")
+}
+
 func (tab *Table) appendRow(row []string) error {
 	// By this point we know the number of columns matches
 	for i, str := range row {
