@@ -2,19 +2,14 @@ package mem
 
 import (
 	"errors"
-	"fmt"
 	"io"
+	"strings"
 )
 
 type Mem struct {
 	Header
-	StimResponse
-	ChargeDuration
-	ThresholdElectrotonusGroup
-	RecoveryCycle
-	ThresholdIV
+	Sections []Section
 	ExcitabilityVariables
-	StrengthDuration
 }
 
 func Import(data io.Reader) (Mem, error) {
@@ -31,7 +26,7 @@ func Import(data io.Reader) (Mem, error) {
 		err = mem.importSection(reader)
 	}
 
-	if err != io.EOF {
+	if err != io.EOF && err != nil {
 		return mem, errors.New("Error encountered before EOF: " + err.Error())
 	}
 
@@ -39,64 +34,36 @@ func Import(data io.Reader) (Mem, error) {
 }
 
 func (mem *Mem) importSection(reader *Reader) error {
-	str, err := reader.ReadLine()
+	str, err := reader.skipNewlines()
 	if err != nil {
 		return err
 	}
 
-	switch {
-	case sectionHeaderMatches(&mem.StimResponse, str):
-		err = mem.StimResponse.Parse(reader)
-		if err != nil {
-			return err
-		}
-	case sectionHeaderMatches(&mem.ChargeDuration, str):
-		err = mem.ChargeDuration.Parse(reader)
-		if err != nil {
-			return err
-		}
-	case sectionHeaderMatches(&mem.ThresholdElectrotonusGroup, str):
-		err = mem.ThresholdElectrotonusGroup.Parse(reader)
-		if err != nil {
-			return err
-		}
-	case sectionHeaderMatches(&mem.RecoveryCycle, str):
-		err = mem.RecoveryCycle.Parse(reader)
-		if err != nil {
-			return err
-		}
-	case sectionHeaderMatches(&mem.ThresholdIV, str):
-		err = mem.ThresholdIV.Parse(reader)
-		if err != nil {
-			return err
-		}
-	case sectionHeaderMatches(&mem.ExcitabilityVariables, str):
-		err = mem.ExcitabilityVariables.Parse(reader)
-		if err != nil {
-			return err
-		}
-	case sectionHeaderMatches(&mem.StrengthDuration, str):
-		err = mem.StrengthDuration.Parse(reader)
-		if err != nil {
-			return err
-		}
-	default:
-		fmt.Println("WARNING: Line could not be parsed: " + str)
+	if len(str) < 2 || str[0] != ' ' {
+		return errors.New("Could not parse invalid section: '" + str + "'")
 	}
 
-	return err
+	if strings.Contains(str, "DERIVED EXCITABILITY VARIABLES") {
+		return mem.ExcitabilityVariables.Parse(reader)
+	}
+
+	sec := Section{Header: strings.TrimSpace(str)}
+	err = sec.parse(reader)
+	if err != nil {
+		return err
+	}
+	mem.Sections = append(mem.Sections, sec)
+
+	return nil
 }
 
 func (mem Mem) String() string {
 	str := "Mem{\n"
 	str += "\t" + mem.Header.String() + ",\n"
-	str += "\t" + mem.StimResponse.String() + ",\n"
-	str += "\t" + mem.ChargeDuration.String() + ",\n"
-	str += "\t" + mem.ThresholdElectrotonusGroup.String() + ",\n"
-	str += "\t" + mem.RecoveryCycle.String() + ",\n"
-	str += "\t" + mem.ThresholdIV.String() + ",\n"
+	for _, sec := range mem.Sections {
+		str += "\t" + sec.String() + ",\n"
+	}
 	str += "\t" + mem.ExcitabilityVariables.String() + ",\n"
-	str += "\t" + mem.StrengthDuration.String() + ",\n"
 	str += "}"
 	return str
 }

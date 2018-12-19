@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 type ExcitabilityVariables struct {
@@ -12,10 +13,6 @@ type ExcitabilityVariables struct {
 	Program         string
 	ThresholdMethod int
 	SRMethod        int
-}
-
-func (section ExcitabilityVariables) Header() []string {
-	return []string{"DERIVED EXCITABILITY VARIABLES"}
 }
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
@@ -56,7 +53,7 @@ func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
 		return err
 	}
 
-	if sectionHeaderMatches(&ExtraVariables{}, str) {
+	if strings.Contains(str, "EXTRA VARIABLES") {
 		err = reader.parseLines(&ExtraVariables{exciteVar})
 	} else {
 		// It looks like this header doesn't belong to us, so give it back
@@ -89,6 +86,33 @@ func (exciteVar *ExcitabilityVariables) ParseLine(result []string) error {
 	}
 
 	exciteVar.Values[result[2]] = val
+
+	return nil
+}
+
+type ExtraVariables struct {
+	*ExcitabilityVariables
+}
+
+func (extraVar ExtraVariables) LinePrefix() string {
+	return ""
+}
+
+func (extraVar ExtraVariables) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^(.+) = ([-+]?\d*\.?\d+)`)
+}
+
+func (extraVar *ExtraVariables) ParseLine(result []string) error {
+	if len(result) != 3 {
+		return errors.New("Incorrect ExtraVar line length")
+	}
+
+	val, err := strconv.ParseFloat(result[2], 64)
+	if err != nil {
+		return err
+	}
+
+	extraVar.Values[result[1]] = val
 
 	return nil
 }
