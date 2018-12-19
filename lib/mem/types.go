@@ -14,9 +14,3 @@ type LineParser interface {
 	// `err` might be non-nil even if `keepParsing` is true; it's not a terminating error.
 	ParseLine([]string) error
 }
-
-type section interface {
-	Header() []string
-	LineParser
-	Parse(reader *Reader) error
-}
