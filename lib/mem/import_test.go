@@ -133,6 +133,33 @@ func TestImportSRResponse(t *testing.T) {
 	assert.Equal(t, sResponseExpected, sec)
 }
 
+func TestExtractSRResponse(t *testing.T) {
+	mem, err := Import(strings.NewReader(toWindows(memString)))
+	assert.NoError(t, err)
+
+	expectedSR := StimResponse{
+		MaxCmaps: []MaxCmap{
+			MaxCmap{
+				Time:  .2,
+				Val:   61.36306,
+				Units: 'u',
+			},
+			MaxCmap{
+				Time:  1.,
+				Val:   1.161296,
+				Units: 'm',
+			},
+		},
+		ValueType:  "are those recorded",
+		PercentMax: sResponsePercentMaxColumn,
+		Stimulus:   sResponseStimulusColumn,
+	}
+
+	sr, err := mem.StimulusResponse()
+	assert.NoError(t, err)
+	assert.Equal(t, expectedSR, sr)
+}
+
 const chargeDurationHeaderString = `
 
   CHARGE DURATION DATA (2.4-3.5m)

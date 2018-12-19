@@ -9,6 +9,7 @@ The mem package is used to load and store MEM files.
 * `variables.go` imports variables from the MEM.
 * `reader.go` reads a MEM file line by line.
 * `types.go` contains miscellaneous types.
+* `stimulus_response.go` contains API for convenient access to stimulus-response results.
 
 This package currently exports a lot of things that shouldn't be exported.
 
