@@ -2,6 +2,7 @@ package mem
 
 import (
 	"bufio"
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -83,7 +84,7 @@ func TestImportDualHeader(t *testing.T) {
 
 const sResponseHeaderString = `
 
- STIMULUS-RESPONSE DATA (2.4-1.9
+ STIMULUS-RESPONSE DATA (2.4-1.9m)
 `
 const sResponseString = `
 Values are those recorded
@@ -105,39 +106,28 @@ SR.20               	 20                 	 4.9239
 
 `
 
-var sResponseExpected = StimResponse{
-	MaxCmaps: []MaxCmap{
-		MaxCmap{
-			Val:   61.36306,
-			Time:  .2,
-			Units: 'u',
-		},
-		MaxCmap{
-			Val:   1.161296,
-			Time:  1,
-			Units: 'm',
-		},
+var sResponseExpected = Section{
+	Header: "STIMULUS-RESPONSE DATA (2.4-1.9m)",
+	TableSet: TableSet{
+		ColCount: 2,
+		Names:    []string{"% Max", "Stimulus(2)"},
+		Tables: []Table{Table{
+			Column{2., 4., 6., 8., 10., 12., 14., 16., 18., 20.},
+			Column{3.915578, 4.073214, 4.144141, 4.20404, 4.435846, 4.601757, 4.824213, 4.86682, 4.89536, 4.9239},
+		}},
 	},
-	ValueType: "are those recorded",
-	Values: []XY{
-		XY{X: 2, Y: 3.915578},
-		XY{X: 4, Y: 4.073214},
-		XY{X: 6, Y: 4.144141},
-		XY{X: 8, Y: 4.20404},
-		XY{X: 10, Y: 4.435846},
-		XY{X: 12, Y: 4.601757},
-		XY{X: 14, Y: 4.824213},
-		XY{X: 16, Y: 4.86682},
-		XY{X: 18, Y: 4.89536},
-		XY{X: 20, Y: 4.9239},
+	ExtraLines: []string{
+		"Values are those recorded",
+		"Max CMAP  .2 ms =  61.36306 uV",
+		"Max CMAP  1 ms =  1.161296 mV",
 	},
 }
 
 func TestImportSRResponse(t *testing.T) {
-	sResp := StimResponse{}
-	err := sResp.Parse(NewStringReader(toWindows(sResponseString)))
-	assert.NoError(t, err)
-	assert.Equal(t, sResponseExpected, sResp)
+	sec := Section{Header: sResponseExpected.Header}
+	err := sec.parse(NewStringReader(toWindows(sResponseString)))
+	assert.Equal(t, io.EOF, err)
+	assert.Equal(t, sResponseExpected, sec)
 }
 
 const chargeDurationHeaderString = `
@@ -152,24 +142,26 @@ QT.3                	 .6                 	 5.978864           	 3.587318
 QT.4                	 .8                 	 5.44341            	 4.354728
 QT.5                	 1                  	 5.187509           	 5.187509
 
-
 `
 
-var chargeDurationExpected = ChargeDuration{
-	Values: []XYZ{
-		XYZ{X: .2, Y: 9.790961, Z: 1.958192},
-		XYZ{X: .4, Y: 6.905862, Z: 2.762345},
-		XYZ{X: .6, Y: 5.978864, Z: 3.587318},
-		XYZ{X: .8, Y: 5.44341, Z: 4.354728},
-		XYZ{X: 1., Y: 5.187509, Z: 5.187509},
+var chargeDurationExpected = Section{
+	Header: "CHARGE DURATION DATA (2.4-3.5m)",
+	TableSet: TableSet{
+		ColCount: 3,
+		Names:    []string{"Duration (ms)", "Threshold (mA)", "Threshold charge (mA.mS)"},
+		Tables: []Table{Table{
+			Column{.2, .4, .6, .8, 1.},
+			Column{9.790961, 6.905862, 5.978864, 5.44341, 5.187509},
+			Column{1.958192, 2.762345, 3.587318, 4.354728, 5.187509},
+		}},
 	},
 }
 
 func TestImportChargeDuration(t *testing.T) {
-	sResp := ChargeDuration{}
-	err := sResp.Parse(NewStringReader(toWindows(chargeDurationString)))
-	assert.NoError(t, err)
-	assert.Equal(t, chargeDurationExpected, sResp)
+	sec := Section{Header: chargeDurationExpected.Header}
+	err := sec.parse(NewStringReader(toWindows(chargeDurationString)))
+	assert.Equal(t, io.EOF, err)
+	assert.Equal(t, chargeDurationExpected, sec)
 }
 
 const thresholdElectrotonusHeaderString = `
@@ -191,29 +183,31 @@ TE2.4               	 11                 	-40                 	-40.92
 
 `
 
-var thresholdElectrotonusExpected = ThresholdElectrotonusGroup{
-	Sets: []ThresholdElectrotonusSet{
-		ThresholdElectrotonusSet{Values: []XYZ{
-			XYZ{X: 0, Y: 0, Z: 0.00},
-			XYZ{X: 9, Y: 0, Z: 0.00},
-			XYZ{X: 10, Y: 40, Z: 40.02},
-			XYZ{X: 11, Y: 40, Z: 42.71},
-			XYZ{X: 11, Y: 40, Z: -42.71},
-		}},
-		ThresholdElectrotonusSet{Values: []XYZ{
-			XYZ{X: 0, Y: 0, Z: 0.00},
-			XYZ{X: 9, Y: 0, Z: 0.00},
-			XYZ{X: 10, Y: -40, Z: -39.34},
-			XYZ{X: 11, Y: -40, Z: -40.92},
-		}},
+var thresholdElectrotonusExpected = Section{
+	Header: "THRESHOLD ELECTROTONUS DATA (3.5-8.8m)",
+	TableSet: TableSet{
+		ColCount: 3,
+		Names:    []string{"Delay (ms)", "Current (%)", "Thresh redn. (%)"},
+		Tables: []Table{
+			Table{
+				Column{0., 9., 10., 11., 11.},
+				Column{0., 0., 40., 40., 40.},
+				Column{0.00, 0.00, 40.02, 42.71, -42.71},
+			},
+			Table{
+				Column{0., 9., 10., 11.},
+				Column{0., 0., -40., -40.},
+				Column{0.00, 0.00, -39.34, -40.92},
+			},
+		},
 	},
 }
 
 func TestImportThresholdElectrotonus(t *testing.T) {
-	actual := ThresholdElectrotonusGroup{}
-	err := actual.Parse(NewStringReader(toWindows(thresholdElectrotonusString)))
-	assert.NoError(t, err)
-	assert.Equal(t, thresholdElectrotonusExpected, actual)
+	sec := Section{Header: thresholdElectrotonusExpected.Header}
+	err := sec.parse(NewStringReader(toWindows(thresholdElectrotonusString)))
+	assert.Equal(t, io.EOF, err)
+	assert.Equal(t, thresholdElectrotonusExpected, sec)
 }
 
 const recoveryCycleHeaderString = `
@@ -230,21 +224,23 @@ RC1.5               	 7.9                	-24.05
 
 `
 
-var recoveryCycleExpected = RecoveryCycle{
-	Values: []XY{
-		XY{X: 3.2, Y: 4.99},
-		XY{X: 4, Y: -12.75},
-		XY{X: 5, Y: -22.24},
-		XY{X: 6.3, Y: -24.45},
-		XY{X: 7.9, Y: -24.05},
+var recoveryCycleExpected = Section{
+	Header: "RECOVERY CYCLE DATA (11.1-15.3m)",
+	TableSet: TableSet{
+		ColCount: 2,
+		Names:    []string{"Interval (ms)", "Threshold change (%)"},
+		Tables: []Table{Table{
+			Column{3.2, 4., 5., 6.3, 7.9},
+			Column{4.99, -12.75, -22.24, -24.45, -24.05},
+		}},
 	},
 }
 
 func TestImportRecoveryCycle(t *testing.T) {
-	actual := RecoveryCycle{}
-	err := actual.Parse(NewStringReader(toWindows(recoveryCycleString)))
-	assert.NoError(t, err)
-	assert.Equal(t, recoveryCycleExpected, actual)
+	sec := Section{Header: recoveryCycleExpected.Header}
+	err := sec.parse(NewStringReader(toWindows(recoveryCycleString)))
+	assert.Equal(t, io.EOF, err)
+	assert.Equal(t, recoveryCycleExpected, sec)
 }
 
 const thresholdIVHeaderString = `
@@ -264,24 +260,23 @@ IV1.8               	-20                 	-39.31
 
 `
 
-var thresholdIVExpected = ThresholdIV{
-	Values: []XY{
-		XY{X: 50, Y: 49.28},
-		XY{X: 40, Y: 39.01},
-		XY{X: 30, Y: 31.59},
-		XY{X: 20, Y: 22.58},
-		XY{X: 10, Y: 13.06},
-		XY{X: 0, Y: -0.78},
-		XY{X: -10, Y: -17.58},
-		XY{X: -20, Y: -39.31},
+var thresholdIVExpected = Section{
+	Header: "THRESHOLD I/V DATA (8.9-11m)",
+	TableSet: TableSet{
+		ColCount: 2,
+		Names:    []string{"Current (%)", "Threshold redn. (%)"},
+		Tables: []Table{Table{
+			Column{50., 40., 30., 20., 10., 0., -10., -20.},
+			Column{49.28, 39.01, 31.59, 22.58, 13.06, -0.78, -17.58, -39.31},
+		}},
 	},
 }
 
 func TestImportThresholdIV(t *testing.T) {
-	actual := ThresholdIV{}
-	err := actual.Parse(NewStringReader(toWindows(thresholdIVString)))
-	assert.NoError(t, err)
-	assert.Equal(t, thresholdIVExpected, actual)
+	sec := Section{Header: thresholdIVExpected.Header}
+	err := sec.parse(NewStringReader(toWindows(thresholdIVString)))
+	assert.Equal(t, io.EOF, err)
+	assert.Equal(t, thresholdIVExpected, sec)
 }
 
 const excitabilityVariablesHeaderString = `
@@ -331,29 +326,21 @@ func TestImportExcitabilityVariables(t *testing.T) {
 }
 
 var completeExpectedMem = Mem{
-	Header:                     headerExpected,
-	StimResponse:               sResponseExpected,
-	ChargeDuration:             chargeDurationExpected,
-	ThresholdElectrotonusGroup: thresholdElectrotonusExpected,
-	RecoveryCycle:              recoveryCycleExpected,
-	ThresholdIV:                thresholdIVExpected,
-	ExcitabilityVariables:      excitabilityVariablesExpected,
+	Header: headerExpected,
+	Sections: []Section{
+		sResponseExpected,
+		chargeDurationExpected,
+		thresholdElectrotonusExpected,
+		recoveryCycleExpected,
+		thresholdIVExpected,
+	},
+	ExcitabilityVariables: excitabilityVariablesExpected,
 }
 
 func TestImportAll(t *testing.T) {
 	memString := headerString + sResponseHeaderString + sResponseString + chargeDurationHeaderString + chargeDurationString +
 		thresholdElectrotonusHeaderString + thresholdElectrotonusString + recoveryCycleHeaderString + recoveryCycleString +
 		thresholdIVHeaderString + thresholdIVString + excitabilityVariablesHeaderString + excitabilityVariablesString
-	mem, err := Import(strings.NewReader(toWindows(memString)))
-
-	assert.NoError(t, err)
-	assert.Equal(t, completeExpectedMem, mem)
-}
-
-func TestImportAllMixed(t *testing.T) {
-	memString := headerString + thresholdElectrotonusHeaderString + thresholdElectrotonusString + chargeDurationHeaderString +
-		chargeDurationString + thresholdIVHeaderString + thresholdIVString + recoveryCycleHeaderString + recoveryCycleString +
-		sResponseHeaderString + sResponseString + excitabilityVariablesHeaderString + excitabilityVariablesString
 	mem, err := Import(strings.NewReader(toWindows(memString)))
 
 	assert.NoError(t, err)

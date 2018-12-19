@@ -2,19 +2,7 @@ package mem
 
 import (
 	"regexp"
-	"strings"
 )
-
-type XY struct {
-	X float64
-	Y float64
-}
-
-type XYZ struct {
-	X float64
-	Y float64
-	Z float64
-}
 
 type LineParser interface {
 	LinePrefix() string
@@ -31,14 +19,4 @@ type section interface {
 	Header() []string
 	LineParser
 	Parse(reader *Reader) error
-}
-
-// sectionHeaderMatches returns true if one of the section's headers matches this string.
-func sectionHeaderMatches(sec section, str string) bool {
-	for _, hd := range sec.Header() {
-		if strings.Contains(str, hd) {
-			return true
-		}
-	}
-	return false
 }

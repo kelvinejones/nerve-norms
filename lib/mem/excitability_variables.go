@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 type ExcitabilityVariables struct {
@@ -12,10 +13,6 @@ type ExcitabilityVariables struct {
 	Program         string
 	ThresholdMethod int
 	SRMethod        int
-}
-
-func (section ExcitabilityVariables) Header() []string {
-	return []string{"DERIVED EXCITABILITY VARIABLES"}
 }
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
@@ -56,7 +53,7 @@ func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
 		return err
 	}
 
-	if sectionHeaderMatches(&ExtraVariables{}, str) {
+	if strings.Contains(str, "EXTRA VARIABLES") {
 		err = reader.parseLines(&ExtraVariables{exciteVar})
 	} else {
 		// It looks like this header doesn't belong to us, so give it back
