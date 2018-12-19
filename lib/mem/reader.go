@@ -110,11 +110,10 @@ func (rd *Reader) parseLines(parser LineParser) error {
 				// The line has the correct prefix, but it couldn't be parsed.
 				// We'll skip this line and keep going.
 				fmt.Println("WARNING: Line \"" + s + "\" was skipped: " + err.Error())
-				continue
+			} else {
+				// Otherwise, this still isn't error; it just means we're done parsing this regex.
+				return rd.UnreadString(s)
 			}
-
-			// Otherwise, this still isn't error; it just means we're done parsing this regex.
-			return rd.UnreadString(s)
 		}
 	}
 
