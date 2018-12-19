@@ -124,7 +124,7 @@ var sResponseExpected = Section{
 		"Max CMAP  1 ms =  1.161296 mV",
 	},
 }
-var expectedSR = StimResponse{
+var sResponseParsed = StimResponse{
 	MaxCmaps: []MaxCmap{
 		MaxCmap{
 			Time:  .2,
@@ -371,7 +371,7 @@ func TestImportAll(t *testing.T) {
 	t.Run("StimulusResponse", func(t *testing.T) {
 		sr, err := mem.StimulusResponse()
 		assert.NoError(t, err)
-		assert.Equal(t, expectedSR, sr)
+		assert.Equal(t, sResponseParsed, sr)
 	})
 }
 
