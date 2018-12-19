@@ -293,16 +293,22 @@ IV1.8               	-20                 	-39.31
 
 `
 
+var thresholdIVCurrentColumn = Column{50., 40., 30., 20., 10., 0., -10., -20.}
+var thresholdIVThreshReductionColumn = Column{49.28, 39.01, 31.59, 22.58, 13.06, -0.78, -17.58, -39.31}
 var thresholdIVExpected = Section{
 	Header: "THRESHOLD I/V DATA (8.9-11m)",
 	TableSet: TableSet{
 		ColCount: 2,
 		Names:    []string{"Current (%)", "Threshold redn. (%)"},
 		Tables: []Table{Table{
-			Column{50., 40., 30., 20., 10., 0., -10., -20.},
-			Column{49.28, 39.01, 31.59, 22.58, 13.06, -0.78, -17.58, -39.31},
+			thresholdIVCurrentColumn,
+			thresholdIVThreshReductionColumn,
 		}},
 	},
+}
+var thresholdIVParsed = ThresholdIV{
+	Current:         thresholdIVCurrentColumn,
+	ThreshReduction: thresholdIVThreshReductionColumn,
 }
 
 func TestImportThresholdIV(t *testing.T) {
@@ -391,6 +397,11 @@ func TestImportAll(t *testing.T) {
 		actualParsed, err := mem.ThresholdElectrotonus()
 		assert.NoError(t, err)
 		assert.Equal(t, thresholdElectrotonusParsed, actualParsed)
+	})
+	t.Run("ThresholdIV", func(t *testing.T) {
+		actualParsed, err := mem.ThresholdIV()
+		assert.NoError(t, err)
+		assert.Equal(t, thresholdIVParsed, actualParsed)
 	})
 }
 
