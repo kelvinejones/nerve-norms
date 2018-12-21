@@ -352,9 +352,11 @@ var excitabilityVariablesExpected = ExcitabilityVariables{
 		`TEd20(10-20ms)`:                       30.8,
 		`TEh20(10-20ms)`:                       -32.2,
 	},
-	Program:         "QTracP 9/12/2016",
-	ThresholdMethod: 6,
-	SRMethod:        1,
+	ExcitabilitySettings: map[string]string{
+		"Program":          "QTracP 9/12/2016",
+		"Threshold method": "6 (optimised for CAP, using data for present condition only)",
+		"SR method":        "1 (using actual data values)",
+	},
 }
 
 func TestImportExcitabilityVariables(t *testing.T) {
