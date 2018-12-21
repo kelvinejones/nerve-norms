@@ -338,6 +338,7 @@ SR method = 1 (using actual data values)
 TEd40(Accom) = 19.6
 TEd20(10-20ms) = 30.8
 TEh20(10-20ms) = -32.2
+TESTINGxTABx                  	=  23.7
 
 `
 
@@ -351,6 +352,7 @@ var excitabilityVariablesExpected = ExcitabilityVariables{
 		`TEd40(Accom)`:                         19.6,
 		`TEd20(10-20ms)`:                       30.8,
 		`TEh20(10-20ms)`:                       -32.2,
+		`TESTINGxTABx`:                         23.7,
 	},
 	ExcitabilitySettings: map[string]string{
 		"Program":          "QTracP 9/12/2016",

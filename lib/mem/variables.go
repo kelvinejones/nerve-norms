@@ -78,7 +78,7 @@ type ExtraVariables struct {
 }
 
 func (extraVar ExtraVariables) ParseRegex() *regexp.Regexp {
-	return regexp.MustCompile(`^(.+) = ([-+]?\d*\.?\d+)`)
+	return regexp.MustCompile(`^(.+)\s+=\s+([-+]?\d*\.?\d+)`)
 }
 
 func (extraVar *ExtraVariables) ParseLine(result []string) error {
@@ -91,7 +91,7 @@ func (extraVar *ExtraVariables) ParseLine(result []string) error {
 		return err
 	}
 
-	extraVar.Values[result[1]] = val
+	extraVar.Values[strings.TrimSpace(result[1])] = val
 
 	return nil
 }
