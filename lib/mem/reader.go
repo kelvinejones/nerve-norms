@@ -14,6 +14,7 @@ type Reader struct {
 	unreadString    string
 	useUnreadString bool
 	isEof           bool
+	lastReadLineNum int
 }
 
 func NewReader(rd io.Reader) *Reader {
@@ -46,8 +47,13 @@ func (rd *Reader) ReadLine() (string, error) {
 		if err == io.EOF {
 			rd.isEof = true
 		}
+		rd.lastReadLineNum++
 		return strings.TrimSuffix(str, "\r\n"), err
 	}
+}
+
+func (rd *Reader) GetLastLineNumber() int {
+	return rd.lastReadLineNum
 }
 
 // ReadLineExtractingString expects to receive a regex which finds a single string

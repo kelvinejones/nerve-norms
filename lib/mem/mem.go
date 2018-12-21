@@ -2,6 +2,7 @@ package mem
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"strings"
 )
@@ -27,7 +28,7 @@ func Import(data io.Reader) (Mem, error) {
 	}
 
 	if err != io.EOF && err != nil {
-		return mem, errors.New("Error encountered before EOF: " + err.Error())
+		return mem, fmt.Errorf("Error encountered at line %d: %s", reader.GetLastLineNumber(), err.Error())
 	}
 
 	return mem, nil
