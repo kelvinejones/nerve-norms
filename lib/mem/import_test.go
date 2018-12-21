@@ -163,17 +163,23 @@ QT.5                	 1                  	 5.187509           	 5.187509
 
 `
 
+var chargeDurationDurationColumn = Column{.2, .4, .6, .8, 1.}
+var chargeDurationThreshChargeColumn = Column{1.958192, 2.762345, 3.587318, 4.354728, 5.187509}
 var chargeDurationExpected = Section{
 	Header: "CHARGE DURATION DATA (2.4-3.5m)",
 	TableSet: TableSet{
 		ColCount: 3,
 		Names:    []string{"Duration (ms)", "Threshold (mA)", "Threshold charge (mA.mS)"},
 		Tables: []Table{Table{
-			Column{.2, .4, .6, .8, 1.},
+			chargeDurationDurationColumn,
 			Column{9.790961, 6.905862, 5.978864, 5.44341, 5.187509},
-			Column{1.958192, 2.762345, 3.587318, 4.354728, 5.187509},
+			chargeDurationThreshChargeColumn,
 		}},
 	},
+}
+var chargeDurationParsed = ChargeDuration{
+	Duration:     chargeDurationDurationColumn,
+	ThreshCharge: chargeDurationThreshChargeColumn,
 }
 
 func TestImportChargeDuration(t *testing.T) {
@@ -417,6 +423,11 @@ func TestImportAll(t *testing.T) {
 		actualParsed, err := mem.RecoveryCycle()
 		assert.NoError(t, err)
 		assert.Equal(t, recoveryCycleParsed, actualParsed)
+	})
+	t.Run("ChargeDuration", func(t *testing.T) {
+		actualParsed, err := mem.ChargeDuration()
+		assert.NoError(t, err)
+		assert.Equal(t, chargeDurationParsed, actualParsed)
 	})
 }
 
