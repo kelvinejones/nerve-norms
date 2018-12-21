@@ -2,6 +2,7 @@ package mem
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"strings"
 )
@@ -27,14 +28,14 @@ func Import(data io.Reader) (Mem, error) {
 	}
 
 	if err != io.EOF && err != nil {
-		return mem, errors.New("Error encountered before EOF: " + err.Error())
+		return mem, fmt.Errorf("Error encountered at line %d: %s", reader.GetLastLineNumber(), err.Error())
 	}
 
 	return mem, nil
 }
 
 func (mem *Mem) importSection(reader *Reader) error {
-	str, err := reader.skipNewlines()
+	str, err := reader.skipEmptyLines()
 	if err != nil {
 		return err
 	}
@@ -66,4 +67,15 @@ func (mem Mem) String() string {
 	str += "\t" + mem.ExcitabilityVariables.String() + ",\n"
 	str += "}"
 	return str
+}
+
+// sectionContainingHeader returns a section containing the provided header.
+// Dashes are replaced with spaces for a slightly less sensitive search.
+func (mem Mem) sectionContainingHeader(header string) (Section, error) {
+	for _, sec := range mem.Sections {
+		if strings.Contains(strings.Replace(sec.Header, "-", " ", -1), header) {
+			return sec, nil
+		}
+	}
+	return Section{}, errors.New("MEM does not contain section '" + header + "'")
 }

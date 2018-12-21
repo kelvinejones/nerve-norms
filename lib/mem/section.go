@@ -3,6 +3,7 @@ package mem
 import (
 	"errors"
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -30,6 +31,21 @@ type Section struct {
 
 	// ExtraLines are extra lines which couldn't be parsed (e.g. Max CMAP).
 	ExtraLines []string
+}
+
+// columnContainsName returns the first column containing the provided name.
+func (sec Section) columnContainsName(name string, table int) (Column, error) {
+	if table > len(sec.Tables) {
+		return Column{}, errors.New("Attempt to access table out of range in section '" + sec.Header + "'")
+	}
+
+	for i, str := range sec.Names {
+		if strings.Contains(str, name) {
+			return sec.Tables[table][i], nil
+		}
+	}
+
+	return Column{}, errors.New("Column '" + name + "' was not found in '" + sec.Header + "'")
 }
 
 func (tab *Table) appendRow(row []string) error {
@@ -77,7 +93,7 @@ func (ts *TableSet) appendRow(row []string) error {
 func (sec *Section) parse(reader *Reader) error {
 	// Keep parsing extra lines until we get a valid table header
 	for sec.ColCount == 0 {
-		str, err := reader.skipNewlines()
+		str, err := reader.skipEmptyLines()
 		if err != nil {
 			return err
 		}
@@ -96,7 +112,7 @@ func (sec *Section) parse(reader *Reader) error {
 	}
 
 	// Now that there's a valid table header, parse the remaining lines
-	str, err := reader.skipNewlines()
+	str, err := reader.skipEmptyLines()
 	cols := splitColumns(str)
 	for err == nil {
 		// Parse a line
@@ -106,7 +122,7 @@ func (sec *Section) parse(reader *Reader) error {
 		}
 		sec.TableSet.appendRow(cols)
 
-		str, err = reader.skipNewlines()
+		str, err = reader.skipEmptyLines()
 		cols = splitColumns(str)
 	}
 	if err != nil {
@@ -161,4 +177,24 @@ func (ts TableSet) String() string {
 		return fmt.Sprintf("TableSet{%d x ?}", ts.ColCount)
 	}
 	return fmt.Sprintf("TableSet{%dx%d}", ts.ColCount, len(ts.Tables[0][0]))
+}
+
+func (col Column) Maximum() float64 {
+	max := math.Inf(-1)
+	for _, val := range col {
+		if val > max {
+			max = val
+		}
+	}
+	return max
+}
+
+func (col Column) Minimum() float64 {
+	min := math.Inf(1)
+	for _, val := range col {
+		if val < min {
+			min = val
+		}
+	}
+	return min
 }

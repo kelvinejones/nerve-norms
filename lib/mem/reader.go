@@ -14,6 +14,7 @@ type Reader struct {
 	unreadString    string
 	useUnreadString bool
 	isEof           bool
+	lastReadLineNum int
 }
 
 func NewReader(rd io.Reader) *Reader {
@@ -46,13 +47,18 @@ func (rd *Reader) ReadLine() (string, error) {
 		if err == io.EOF {
 			rd.isEof = true
 		}
+		rd.lastReadLineNum++
 		return strings.TrimSuffix(str, "\r\n"), err
 	}
 }
 
+func (rd *Reader) GetLastLineNumber() int {
+	return rd.lastReadLineNum
+}
+
 // ReadLineExtractingString expects to receive a regex which finds a single string
 func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
-	s, err := rd.skipNewlines()
+	s, err := rd.skipEmptyLines()
 	if err != nil {
 		return s, err
 	}
@@ -66,10 +72,12 @@ func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
 	return result[1], nil
 }
 
-func (rd *Reader) skipNewlines() (string, error) {
+// skipEmptyLines reads lines until it finds one that's not empty.
+// Whitespace is considered empty.
+func (rd *Reader) skipEmptyLines() (string, error) {
 	s := ""
 	var err error
-	for s == "" && err == nil {
+	for strings.TrimSpace(s) == "" && err == nil {
 		s, err = rd.ReadLine()
 	}
 
@@ -77,7 +85,7 @@ func (rd *Reader) skipNewlines() (string, error) {
 }
 
 func (rd *Reader) skipPast(search string) error {
-	s, err := rd.skipNewlines()
+	s, err := rd.skipEmptyLines()
 	if err != nil {
 		return err
 	}
@@ -94,29 +102,16 @@ func (rd *Reader) skipPast(search string) error {
 // Even EOF isn't an error here. We let the caller decide that.
 func (rd *Reader) parseLines(parser LineParser) error {
 	for {
-		s, err := rd.skipNewlines()
+		s, err := rd.skipEmptyLines()
 		if err != nil {
 			// We reached EOF
 			return nil
 		}
 
-		result := parser.ParseRegex().FindStringSubmatch(s)
-
-		err = parser.ParseLine(result)
-		if err != nil {
-			// The string couldn't be parsed.
-			prefix := parser.LinePrefix()
-			if prefix != "" && strings.HasPrefix(s, prefix) {
-				// The line has the correct prefix, but it couldn't be parsed.
-				// We'll skip this line and keep going.
-				fmt.Println("WARNING: Line \"" + s + "\" was skipped: " + err.Error())
-				continue
-			}
-
-			// Otherwise, this still isn't error; it just means we're done parsing this regex.
+		if parser.ParseLine(parser.ParseRegex().FindStringSubmatch(s)) != nil {
+			// The string couldn't be parsed. This isn't an error;
+			// it just means we're done parsing this regex.
 			return rd.UnreadString(s)
 		}
 	}
-
-	return nil
 }

@@ -8,35 +8,22 @@ import (
 	"strings"
 )
 
+type ExcitabilitySettings map[string]string
+
 type ExcitabilityVariables struct {
-	Values          map[string]float64
-	Program         string
-	ThresholdMethod int
-	SRMethod        int
+	Values map[string]float64
+	ExcitabilitySettings
 }
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
-	// Find settings
-	var err error
-	exciteVar.Program, err = reader.ReadLineExtractingString(`^Program = (.*)`)
-	if err != nil {
-		return err
+	if exciteVar.Values == nil {
+		exciteVar.Values = map[string]float64{}
 	}
-
-	val, err := reader.ReadLineExtractingString(`^Threshold method = (\d+).*`)
-	if err != nil {
-		return err
+	if exciteVar.ExcitabilitySettings == nil {
+		exciteVar.ExcitabilitySettings = map[string]string{}
 	}
-	exciteVar.ThresholdMethod, err = strconv.Atoi(val)
-	if err != nil {
-		return err
-	}
-
-	val, err = reader.ReadLineExtractingString(`^SR method = (\d+).*`)
-	if err != nil {
-		return err
-	}
-	exciteVar.SRMethod, err = strconv.Atoi(val)
+	// Until a line matches the regex, allow parsing of other things
+	err := reader.parseLines(&exciteVar.ExcitabilitySettings)
 	if err != nil {
 		return err
 	}
@@ -48,7 +35,7 @@ func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
 	}
 
 	// Now find any extra variables
-	str, err := reader.skipNewlines()
+	str, err := reader.skipEmptyLines()
 	if err != nil {
 		return err
 	}
@@ -65,10 +52,6 @@ func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
 
 func (ev ExcitabilityVariables) String() string {
 	return fmt.Sprintf("ExcitabilityVariables{%d values}", len(ev.Values))
-}
-
-func (exciteVar ExcitabilityVariables) LinePrefix() string {
-	return ""
 }
 
 func (exciteVar ExcitabilityVariables) ParseRegex() *regexp.Regexp {
@@ -94,12 +77,8 @@ type ExtraVariables struct {
 	*ExcitabilityVariables
 }
 
-func (extraVar ExtraVariables) LinePrefix() string {
-	return ""
-}
-
 func (extraVar ExtraVariables) ParseRegex() *regexp.Regexp {
-	return regexp.MustCompile(`^(.+) = ([-+]?\d*\.?\d+)`)
+	return regexp.MustCompile(`^(.+)\s+=\s+([-+]?\d*\.?\d+)`)
 }
 
 func (extraVar *ExtraVariables) ParseLine(result []string) error {
@@ -112,7 +91,21 @@ func (extraVar *ExtraVariables) ParseLine(result []string) error {
 		return err
 	}
 
-	extraVar.Values[result[1]] = val
+	extraVar.Values[strings.TrimSpace(result[1])] = val
+
+	return nil
+}
+
+func (es ExcitabilitySettings) ParseRegex() *regexp.Regexp {
+	return regexp.MustCompile(`^(.+) = (.+)`)
+}
+
+func (es *ExcitabilitySettings) ParseLine(result []string) error {
+	if len(result) != 3 {
+		return errors.New("Incorrect ExcitabilitySettings line length")
+	}
+
+	(*es)[result[1]] = result[2]
 
 	return nil
 }

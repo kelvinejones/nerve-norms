@@ -106,14 +106,16 @@ SR.20               	 20                 	 4.9239
 
 `
 
+var sResponsePercentMaxColumn = Column{2., 4., 6., 8., 10., 12., 14., 16., 18., 20.}
+var sResponseStimulusColumn = Column{3.915578, 4.073214, 4.144141, 4.20404, 4.435846, 4.601757, 4.824213, 4.86682, 4.89536, 4.9239}
 var sResponseExpected = Section{
 	Header: "STIMULUS-RESPONSE DATA (2.4-1.9m)",
 	TableSet: TableSet{
 		ColCount: 2,
 		Names:    []string{"% Max", "Stimulus(2)"},
 		Tables: []Table{Table{
-			Column{2., 4., 6., 8., 10., 12., 14., 16., 18., 20.},
-			Column{3.915578, 4.073214, 4.144141, 4.20404, 4.435846, 4.601757, 4.824213, 4.86682, 4.89536, 4.9239},
+			sResponsePercentMaxColumn,
+			sResponseStimulusColumn,
 		}},
 	},
 	ExtraLines: []string{
@@ -121,6 +123,23 @@ var sResponseExpected = Section{
 		"Max CMAP  .2 ms =  61.36306 uV",
 		"Max CMAP  1 ms =  1.161296 mV",
 	},
+}
+var sResponseParsed = StimResponse{
+	MaxCmaps: []MaxCmap{
+		MaxCmap{
+			Time:  .2,
+			Val:   61.36306,
+			Units: 'u',
+		},
+		MaxCmap{
+			Time:  1.,
+			Val:   1.161296,
+			Units: 'm',
+		},
+	},
+	ValueType:  "are those recorded",
+	PercentMax: sResponsePercentMaxColumn,
+	Stimulus:   sResponseStimulusColumn,
 }
 
 func TestImportSRResponse(t *testing.T) {
@@ -144,17 +163,23 @@ QT.5                	 1                  	 5.187509           	 5.187509
 
 `
 
+var chargeDurationDurationColumn = Column{.2, .4, .6, .8, 1.}
+var chargeDurationThreshChargeColumn = Column{1.958192, 2.762345, 3.587318, 4.354728, 5.187509}
 var chargeDurationExpected = Section{
 	Header: "CHARGE DURATION DATA (2.4-3.5m)",
 	TableSet: TableSet{
 		ColCount: 3,
 		Names:    []string{"Duration (ms)", "Threshold (mA)", "Threshold charge (mA.mS)"},
 		Tables: []Table{Table{
-			Column{.2, .4, .6, .8, 1.},
+			chargeDurationDurationColumn,
 			Column{9.790961, 6.905862, 5.978864, 5.44341, 5.187509},
-			Column{1.958192, 2.762345, 3.587318, 4.354728, 5.187509},
+			chargeDurationThreshChargeColumn,
 		}},
 	},
+}
+var chargeDurationParsed = ChargeDuration{
+	Duration:     chargeDurationDurationColumn,
+	ThreshCharge: chargeDurationThreshChargeColumn,
 }
 
 func TestImportChargeDuration(t *testing.T) {
@@ -183,6 +208,10 @@ TE2.4               	 11                 	-40                 	-40.92
 
 `
 
+var thresholdElectrotonusHyp40DelayColumn = Column{0., 9., 10., 11., 11.}
+var thresholdElectrotonusHyp40ThreshReductionColumn = Column{0.00, 0.00, 40.02, 42.71, -42.71}
+var thresholdElectrotonusDep40DelayColumn = Column{0., 9., 10., 11.}
+var thresholdElectrotonusDep40ThreshReductionColumn = Column{0.00, 0.00, -39.34, -40.92}
 var thresholdElectrotonusExpected = Section{
 	Header: "THRESHOLD ELECTROTONUS DATA (3.5-8.8m)",
 	TableSet: TableSet{
@@ -190,16 +219,26 @@ var thresholdElectrotonusExpected = Section{
 		Names:    []string{"Delay (ms)", "Current (%)", "Thresh redn. (%)"},
 		Tables: []Table{
 			Table{
-				Column{0., 9., 10., 11., 11.},
+				thresholdElectrotonusHyp40DelayColumn,
 				Column{0., 0., 40., 40., 40.},
-				Column{0.00, 0.00, 40.02, 42.71, -42.71},
+				thresholdElectrotonusHyp40ThreshReductionColumn,
 			},
 			Table{
-				Column{0., 9., 10., 11.},
+				thresholdElectrotonusDep40DelayColumn,
 				Column{0., 0., -40., -40.},
-				Column{0.00, 0.00, -39.34, -40.92},
+				thresholdElectrotonusDep40ThreshReductionColumn,
 			},
 		},
+	},
+}
+var thresholdElectrotonusParsed = ThresholdElectrotonus{
+	Hyperpol40: &TEPair{
+		Delay:           thresholdElectrotonusHyp40DelayColumn,
+		ThreshReduction: thresholdElectrotonusHyp40ThreshReductionColumn,
+	},
+	Depol40: &TEPair{
+		Delay:           thresholdElectrotonusDep40DelayColumn,
+		ThreshReduction: thresholdElectrotonusDep40ThreshReductionColumn,
 	},
 }
 
@@ -224,16 +263,22 @@ RC1.5               	 7.9                	-24.05
 
 `
 
+var recoveryCycleIntervalColumn = Column{3.2, 4., 5., 6.3, 7.9}
+var recoveryCycleThreshChangeColumn = Column{4.99, -12.75, -22.24, -24.45, -24.05}
 var recoveryCycleExpected = Section{
 	Header: "RECOVERY CYCLE DATA (11.1-15.3m)",
 	TableSet: TableSet{
 		ColCount: 2,
 		Names:    []string{"Interval (ms)", "Threshold change (%)"},
 		Tables: []Table{Table{
-			Column{3.2, 4., 5., 6.3, 7.9},
-			Column{4.99, -12.75, -22.24, -24.45, -24.05},
+			recoveryCycleIntervalColumn,
+			recoveryCycleThreshChangeColumn,
 		}},
 	},
+}
+var recoveryCycleParsed = RecoveryCycle{
+	Interval:     recoveryCycleIntervalColumn,
+	ThreshChange: recoveryCycleThreshChangeColumn,
 }
 
 func TestImportRecoveryCycle(t *testing.T) {
@@ -260,16 +305,22 @@ IV1.8               	-20                 	-39.31
 
 `
 
+var thresholdIVCurrentColumn = Column{50., 40., 30., 20., 10., 0., -10., -20.}
+var thresholdIVThreshReductionColumn = Column{49.28, 39.01, 31.59, 22.58, 13.06, -0.78, -17.58, -39.31}
 var thresholdIVExpected = Section{
 	Header: "THRESHOLD I/V DATA (8.9-11m)",
 	TableSet: TableSet{
 		ColCount: 2,
 		Names:    []string{"Current (%)", "Threshold redn. (%)"},
 		Tables: []Table{Table{
-			Column{50., 40., 30., 20., 10., 0., -10., -20.},
-			Column{49.28, 39.01, 31.59, 22.58, 13.06, -0.78, -17.58, -39.31},
+			thresholdIVCurrentColumn,
+			thresholdIVThreshReductionColumn,
 		}},
 	},
+}
+var thresholdIVParsed = ThresholdIV{
+	Current:         thresholdIVCurrentColumn,
+	ThreshReduction: thresholdIVThreshReductionColumn,
 }
 
 func TestImportThresholdIV(t *testing.T) {
@@ -299,6 +350,7 @@ SR method = 1 (using actual data values)
 TEd40(Accom) = 19.6
 TEd20(10-20ms) = 30.8
 TEh20(10-20ms) = -32.2
+TESTINGxTABx                  	=  23.7
 
 `
 
@@ -312,10 +364,13 @@ var excitabilityVariablesExpected = ExcitabilityVariables{
 		`TEd40(Accom)`:                         19.6,
 		`TEd20(10-20ms)`:                       30.8,
 		`TEh20(10-20ms)`:                       -32.2,
+		`TESTINGxTABx`:                         23.7,
 	},
-	Program:         "QTracP 9/12/2016",
-	ThresholdMethod: 6,
-	SRMethod:        1,
+	ExcitabilitySettings: map[string]string{
+		"Program":          "QTracP 9/12/2016",
+		"Threshold method": "6 (optimised for CAP, using data for present condition only)",
+		"SR method":        "1 (using actual data values)",
+	},
 }
 
 func TestImportExcitabilityVariables(t *testing.T) {
@@ -337,14 +392,43 @@ var completeExpectedMem = Mem{
 	ExcitabilityVariables: excitabilityVariablesExpected,
 }
 
-func TestImportAll(t *testing.T) {
-	memString := headerString + sResponseHeaderString + sResponseString + chargeDurationHeaderString + chargeDurationString +
-		thresholdElectrotonusHeaderString + thresholdElectrotonusString + recoveryCycleHeaderString + recoveryCycleString +
-		thresholdIVHeaderString + thresholdIVString + excitabilityVariablesHeaderString + excitabilityVariablesString
-	mem, err := Import(strings.NewReader(toWindows(memString)))
+var memString = headerString + sResponseHeaderString + sResponseString + chargeDurationHeaderString + chargeDurationString +
+	thresholdElectrotonusHeaderString + thresholdElectrotonusString + recoveryCycleHeaderString + recoveryCycleString +
+	thresholdIVHeaderString + thresholdIVString + excitabilityVariablesHeaderString + excitabilityVariablesString
 
+func TestImportAll(t *testing.T) {
+	// This common setup should fail in one place for all of these tests.
+	mem, err := Import(strings.NewReader(toWindows(memString)))
 	assert.NoError(t, err)
-	assert.Equal(t, completeExpectedMem, mem)
+
+	t.Run("MemStruct", func(t *testing.T) {
+		assert.Equal(t, completeExpectedMem, mem)
+	})
+	t.Run("StimulusResponse", func(t *testing.T) {
+		actualParsed, err := mem.StimulusResponse()
+		assert.NoError(t, err)
+		assert.Equal(t, sResponseParsed, actualParsed)
+	})
+	t.Run("ThresholdElectrotonus", func(t *testing.T) {
+		actualParsed, err := mem.ThresholdElectrotonus()
+		assert.NoError(t, err)
+		assert.Equal(t, thresholdElectrotonusParsed, actualParsed)
+	})
+	t.Run("ThresholdIV", func(t *testing.T) {
+		actualParsed, err := mem.ThresholdIV()
+		assert.NoError(t, err)
+		assert.Equal(t, thresholdIVParsed, actualParsed)
+	})
+	t.Run("RecoveryCycle", func(t *testing.T) {
+		actualParsed, err := mem.RecoveryCycle()
+		assert.NoError(t, err)
+		assert.Equal(t, recoveryCycleParsed, actualParsed)
+	})
+	t.Run("ChargeDuration", func(t *testing.T) {
+		actualParsed, err := mem.ChargeDuration()
+		assert.NoError(t, err)
+		assert.Equal(t, chargeDurationParsed, actualParsed)
+	})
 }
 
 func TestImportFile(t *testing.T) {
