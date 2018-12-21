@@ -257,16 +257,22 @@ RC1.5               	 7.9                	-24.05
 
 `
 
+var recoveryCycleIntervalColumn = Column{3.2, 4., 5., 6.3, 7.9}
+var recoveryCycleThreshChangeColumn = Column{4.99, -12.75, -22.24, -24.45, -24.05}
 var recoveryCycleExpected = Section{
 	Header: "RECOVERY CYCLE DATA (11.1-15.3m)",
 	TableSet: TableSet{
 		ColCount: 2,
 		Names:    []string{"Interval (ms)", "Threshold change (%)"},
 		Tables: []Table{Table{
-			Column{3.2, 4., 5., 6.3, 7.9},
-			Column{4.99, -12.75, -22.24, -24.45, -24.05},
+			recoveryCycleIntervalColumn,
+			recoveryCycleThreshChangeColumn,
 		}},
 	},
+}
+var recoveryCycleParsed = RecoveryCycle{
+	Interval:     recoveryCycleIntervalColumn,
+	ThreshChange: recoveryCycleThreshChangeColumn,
 }
 
 func TestImportRecoveryCycle(t *testing.T) {
@@ -406,6 +412,11 @@ func TestImportAll(t *testing.T) {
 		actualParsed, err := mem.ThresholdIV()
 		assert.NoError(t, err)
 		assert.Equal(t, thresholdIVParsed, actualParsed)
+	})
+	t.Run("RecoveryCycle", func(t *testing.T) {
+		actualParsed, err := mem.RecoveryCycle()
+		assert.NoError(t, err)
+		assert.Equal(t, recoveryCycleParsed, actualParsed)
 	})
 }
 
