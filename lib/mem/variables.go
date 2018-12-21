@@ -35,7 +35,7 @@ func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
 	}
 
 	// Now find any extra variables
-	str, err := reader.skipNewlines()
+	str, err := reader.skipEmptyLines()
 	if err != nil {
 		return err
 	}

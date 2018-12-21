@@ -35,7 +35,7 @@ func Import(data io.Reader) (Mem, error) {
 }
 
 func (mem *Mem) importSection(reader *Reader) error {
-	str, err := reader.skipNewlines()
+	str, err := reader.skipEmptyLines()
 	if err != nil {
 		return err
 	}

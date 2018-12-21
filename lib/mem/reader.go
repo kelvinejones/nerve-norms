@@ -58,7 +58,7 @@ func (rd *Reader) GetLastLineNumber() int {
 
 // ReadLineExtractingString expects to receive a regex which finds a single string
 func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
-	s, err := rd.skipNewlines()
+	s, err := rd.skipEmptyLines()
 	if err != nil {
 		return s, err
 	}
@@ -72,10 +72,12 @@ func (rd *Reader) ReadLineExtractingString(regstring string) (string, error) {
 	return result[1], nil
 }
 
-func (rd *Reader) skipNewlines() (string, error) {
+// skipEmptyLines reads lines until it finds one that's not empty.
+// Whitespace is considered empty.
+func (rd *Reader) skipEmptyLines() (string, error) {
 	s := ""
 	var err error
-	for s == "" && err == nil {
+	for strings.TrimSpace(s) == "" && err == nil {
 		s, err = rd.ReadLine()
 	}
 
@@ -83,7 +85,7 @@ func (rd *Reader) skipNewlines() (string, error) {
 }
 
 func (rd *Reader) skipPast(search string) error {
-	s, err := rd.skipNewlines()
+	s, err := rd.skipEmptyLines()
 	if err != nil {
 		return err
 	}
@@ -100,7 +102,7 @@ func (rd *Reader) skipPast(search string) error {
 // Even EOF isn't an error here. We let the caller decide that.
 func (rd *Reader) parseLines(parser LineParser) error {
 	for {
-		s, err := rd.skipNewlines()
+		s, err := rd.skipEmptyLines()
 		if err != nil {
 			// We reached EOF
 			return nil

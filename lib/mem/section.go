@@ -93,7 +93,7 @@ func (ts *TableSet) appendRow(row []string) error {
 func (sec *Section) parse(reader *Reader) error {
 	// Keep parsing extra lines until we get a valid table header
 	for sec.ColCount == 0 {
-		str, err := reader.skipNewlines()
+		str, err := reader.skipEmptyLines()
 		if err != nil {
 			return err
 		}
@@ -112,7 +112,7 @@ func (sec *Section) parse(reader *Reader) error {
 	}
 
 	// Now that there's a valid table header, parse the remaining lines
-	str, err := reader.skipNewlines()
+	str, err := reader.skipEmptyLines()
 	cols := splitColumns(str)
 	for err == nil {
 		// Parse a line
@@ -122,7 +122,7 @@ func (sec *Section) parse(reader *Reader) error {
 		}
 		sec.TableSet.appendRow(cols)
 
-		str, err = reader.skipNewlines()
+		str, err = reader.skipEmptyLines()
 		cols = splitColumns(str)
 	}
 	if err != nil {
