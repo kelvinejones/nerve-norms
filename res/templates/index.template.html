@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- D3 -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <!-- D3 Legend -->
+    <script src="{% static 'dataviewer/js/d3-legend.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  </head>
+  <body class="bg-light">
+    <div class="alert alert-success">
+      <h1>Jitter - Nerve Data Explorer</h1>
+      <p>Developed by <a href="https://bellstone.ca">Bellstone Engineering</a> for (Dr. Jones' lab link).</p>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-3 col-sm-12">
+        <ul class="list-group rounded d-sm-block d-md-none">
+          <li class="list-group-item list-group-item-primary">Filter</li>
+          <li class="list-group-item">Expand on clicky</li>
+          <li class="list-group-item list-group-item-primary">Partipant</li>
+          <li class="list-group-item">Expand on clicky</li>
+        </ul>
+        <ul class="list-group rounded">
+          <li class="list-group-item list-group-item-primary">Recovery Cycle</li>
+          <li class="list-group-item">Graph here</li>
+          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
+        </ul>
+        <ul class="list-group rounded">
+          <li class="list-group-item list-group-item-primary">Threshold Electrotonus</li>
+          <li class="list-group-item">Graph here</li>
+          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
+        </ul>
+        <ul class="list-group rounded">
+          <li class="list-group-item list-group-item-primary">Small QT</li>
+          <li class="list-group-item">Graph here</li>
+          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
+        </ul>
+        <ul class="list-group rounded">
+          <li class="list-group-item list-group-item-primary">SR</li>
+          <li class="list-group-item">Graph here</li>
+          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
+        </ul>
+        <ul class="list-group rounded">
+          <li class="list-group-item list-group-item-primary">SR</li>
+          <li class="list-group-item">Graph here</li>
+          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
+        </ul>
+      </div>
+
+      <div class="col-md-9 d-sm-none d-md-block">
+        <div>Filter</div>
+        <div class="bg-white">
+          <svg style="background-color: white"></svg>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-md-12">Participant</div>
+          <div class="col-lg-6 col-md-12">Data</div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
