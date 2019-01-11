@@ -1,0 +1,20 @@
+var recoveryCycle = [
+	{ "interval": 2, "change": 59.6966991239381 },
+	{ "interval": 2.5, "change": 19.838119686414 },
+	{ "interval": 3.20000004768372, "change": -7.67264462896615 },
+	{ "interval": 4, "change": -20.6769833407126 },
+	{ "interval": 5, "change": -25.0211156655934 },
+	{ "interval": 6.30000019073486, "change": -24.2730165119013 },
+	{ "interval": 7.90000009536743, "change": -19.9587189855654 },
+	{ "interval": 10, "change": -13.8628099128943 },
+	{ "interval": 13, "change": -7.25235541214135 },
+	{ "interval": 18, "change": 2.3025620055408 },
+	{ "interval": 24, "change": 10.2332231225061 },
+	{ "interval": 32, "change": 14.9512809948488 },
+	{ "interval": 42, "change": 16.4567355951987 },
+	{ "interval": 56, "change": 14.9835950776565 },
+	{ "interval": 75, "change": 10.2311157007848 },
+	{ "interval": 100, "change": 3.90429751833608 },
+	{ "interval": 140, "change": 0.231776862089668 },
+	{ "interval": 200, "change": 0.273223136082168 }
+]

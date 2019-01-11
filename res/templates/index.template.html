@@ -8,13 +8,22 @@
     <!-- D3 -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <!-- D3 Legend -->
-    <script src="{% static 'dataviewer/js/d3-legend.min.js' %}"></script>
+    <!-- <script src="{% static 'dataviewer/js/d3-legend.min.js' %}"></script> -->
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <script src="data/recoveryCycle.js"></script>
+    <style type="text/css">
+      .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px;
+      }
+    </style>
   </head>
   <body class="bg-light">
     <div class="alert alert-success">
@@ -61,7 +70,70 @@
       <div class="col-md-9 d-sm-none d-md-block">
         <div>Filter</div>
         <div class="bg-white">
-          <svg style="background-color: white"></svg>
+          <svg id="bigpanel" style="background-color: white"></svg>
+          <script>
+
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+// parse the date / time
+var parseTime = d3.timeParse("%d-%b-%y");
+
+// set the ranges
+var x = d3.scaleLog().range([0, width]);
+
+var y = d3.scaleLinear().range([height, 0]);
+
+// define the line
+var valueline = d3.line()
+    .x(function(d) { return x(d.interval); })
+    .y(function(d) { return y(d.change); });
+
+// append the svg obgect to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("#bigpanel")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+  // format the data
+  // data.forEach(function(d) {
+  //     d.date = parseTime(d.date);
+  //     d.close = +d.close;
+  // });
+
+  // Scale the range of the data
+  x.domain([1, 200]);
+  y.domain([-50, 100]);
+
+  // Add the valueline path.
+  svg.append("path")
+      .data([recoveryCycle])
+      .attr("class", "line")
+      .attr("d", valueline);
+
+  svg.append("path")
+      .data([[{"interval": 1, "change":0},{"interval": 200, "change":0}]])
+      .attr("class", "line")
+      .attr("d", valueline);
+
+  // Add the X Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  // Add the Y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
+
+
+
+</script>
         </div>
         <div class="row">
           <div class="col-lg-6 col-md-12">Participant</div>
