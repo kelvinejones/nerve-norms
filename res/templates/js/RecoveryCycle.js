@@ -14,8 +14,8 @@ class RecoveryCycle extends Chart {
 
 		// define the line
 		const valueline = d3.line()
-			.x(function(d) { return self.x(d.interval); })
-			.y(function(d) { return self.y(d.change); });
+			.x(function(d) { return self.x(d.delay); })
+			.y(function(d) { return self.y(d.value); });
 
 		// Add the valueline path.
 		svg.append("path")
@@ -25,7 +25,7 @@ class RecoveryCycle extends Chart {
 
 		svg.append("path")
 			.data([
-				[{ "interval": 1, "change": 0 }, { "interval": 200, "change": 0 }]
+				[{ "delay": 1, "value": 0 }, { "delay": 200, "value": 0 }]
 			])
 			.attr("class", "line")
 			.attr("d", valueline);
@@ -34,8 +34,8 @@ class RecoveryCycle extends Chart {
 			.data(this.data)
 			.enter()
 			.append("circle");
-		circles.attr("cx", function(d) { return self.x(d.interval); })
-			.attr("cy", function(d) { return self.y(d.change); })
+		circles.attr("cx", function(d) { return self.x(d.delay); })
+			.attr("cy", function(d) { return self.y(d.value); })
 			.attr("r", 5)
 			.style("fill", "black");
 	}

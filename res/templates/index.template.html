@@ -15,7 +15,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
     <!-- Application Code -->
-    <script src="data/recoveryCycle.js"></script>
+    <script src="data/example-CR21S.json"></script>
     <script src="js/Chart.js"></script>
     <script src="js/RecoveryCycle.js"></script>
 
@@ -75,7 +75,7 @@
           <svg id="bigpanel" style="background-color: white; width: 100%" viewbox="0 0 600 300"></svg>
         </div>
           <script>
-            var rc = new RecoveryCycle(recoveryCycle)
+            var rc = new RecoveryCycle(data.plots[7].data)
             rc.draw(d3.select("#bigpanel"))
             rc.draw(d3.select("#recoveryCycle"), true)
           </script>
