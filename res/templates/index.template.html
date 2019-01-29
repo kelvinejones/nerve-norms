@@ -17,6 +17,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
     <script src="data/recoveryCycle.js"></script>
+    <script src="js/Chart.js"></script>
+    <script src="js/RecoveryCycle.js"></script>
     <style type="text/css">
       .line {
         fill: none;
@@ -42,7 +44,7 @@
         </ul>
         <ul class="list-group rounded">
           <li class="list-group-item list-group-item-primary">Recovery Cycle</li>
-          <li class="list-group-item">Graph here</li>
+          <li class="list-group-item"><svg id="recoveryCycle" style="background-color: white; width: 100%" viewbox="0 0 600 300"></svg></li>
           <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
         </ul>
         <ul class="list-group rounded">
@@ -70,78 +72,13 @@
       <div class="col-md-9 d-sm-none d-md-block">
         <div>Filter</div>
         <div class="bg-white">
-          <svg id="bigpanel" style="background-color: white"></svg>
-          <script>
-
-// set the dimensions and margins of the graph
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-// parse the date / time
-var parseTime = d3.timeParse("%d-%b-%y");
-
-// set the ranges
-var x = d3.scaleLog().range([0, width]);
-
-var y = d3.scaleLinear().range([height, 0]);
-
-// define the line
-var valueline = d3.line()
-    .x(function(d) { return x(d.interval); })
-    .y(function(d) { return y(d.change); });
-
-// append the svg obgect to the body of the page
-// appends a 'group' element to 'svg'
-// moves the 'group' element to the top left margin
-var svg = d3.select("#bigpanel")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
-
-  // Scale the range of the data
-  x.domain([1, 200]);
-  y.domain([-50, 100]);
-
-  // Add the valueline path.
-  svg.append("path")
-      .data([recoveryCycle])
-      .attr("class", "line")
-      .attr("d", valueline);
-
-  svg.append("path")
-      .data([[{"interval": 1, "change":0},{"interval": 200, "change":0}]])
-      .attr("class", "line")
-      .attr("d", valueline);
-
-  // Add the X Axis
-  svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-
-  // Add the Y Axis
-  svg.append("g")
-      .call(d3.axisLeft(y));
-
-  var circles = svg.selectAll("circle")
-      .data(recoveryCycle)
-      .enter()
-      .append("circle");
-  circles.attr("cx", function (d) { return x(d.interval); })
-      .attr("cy", function (d) { return y(d.change); })
-      .attr("r", 5 )
-      .style("fill", "black");
-
-
-
-
-</script>
+          <svg id="bigpanel" style="background-color: white; width: 100%" viewbox="0 0 600 300"></svg>
         </div>
-        <div class="row">
-          <div class="col-lg-6 col-md-12">Participant</div>
-          <div class="col-lg-6 col-md-12">Data</div>
+          <script>
+            var rc = new RecoveryCycle(recoveryCycle)
+            rc.draw(d3.select("#bigpanel"))
+            rc.draw(d3.select("#recoveryCycle"), true)
+          </script>
         </div>
       </div>
 
