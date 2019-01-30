@@ -13,55 +13,75 @@ class RecoveryCycle extends Chart {
 
 	drawLines(svg) {
 		const self = this
+		const delayTime = 750
+		const transitionTime = 2500
 
 		// define the line
-		const valueline = d3.line()
-			.x(function(d) { return self.x(d.delay); })
-			.y(function(d) { return self.y(d.value); });
+		const valueData = this.data.map(function(d) { return { x: d.delay, y: d.value } })
+		const meanData = this.data.map(function(d) { return { x: d.delay, y: d.mean } })
 
-		const meanline = d3.line()
-			.x(function(d) { return self.x(d.delay); })
-			.y(function(d) { return self.y(d.mean); });
+		const normativeRange = (Array.from(this.data)
+				.map(function(d) { return { x: d.delay, y: d.mean + 2 * d.SD } }))
+			.concat(Array.from(this.data).reverse().map(function(d) { return { x: d.delay, y: d.mean - 2 * d.SD } }))
 
-		const intervalData = (Array.from(this.data)
-				.map(function(d) { return { x: d.delay, y: d.mean + 3 * d.SD } }))
-			.concat(Array.from(this.data).reverse().map(function(d) { return { x: d.delay, y: d.mean - 3 * d.SD } }))
-		const interval = d3.line()
-			.x(function(d) { console.log(d); return self.x(d.x); })
-			.y(function(d) { return self.y(d.y); });
+		const xyDrawer = d3.line()
+			.x(d => self.x(d.x))
+			.y(d => self.y(0))
+
+		const xyTransition = d3.line()
+			.x(d => self.x(d.x))
+			.y(d => self.y(d.y));
 
 		// Draw the confidence interval
 		svg.append("path")
-			.data([intervalData])
+			.data([normativeRange])
 			.attr("class", "confidenceinterval")
-			.attr("d", interval);
+			.attr("d", xyDrawer)
+			.transition()
+			.delay(delayTime)
+			.duration(transitionTime)
+			.attr("d", xyTransition);
 
 		svg.append("path")
-			.data([this.data])
+			.data([meanData])
 			.attr("class", "meanline")
-			.attr("d", meanline);
+			.attr("d", xyDrawer)
+			.transition()
+			.delay(delayTime)
+			.duration(transitionTime)
+			.attr("d", xyTransition);
 
 		// Add a reference line for 0
 		svg.append("path")
 			.data([
-				[{ "delay": 1, "value": 0 }, { "delay": 200, "value": 0 }]
+				[{ x: 1, y: 0 }, { x: 200, y: 0 }]
 			])
 			.attr("class", "meanline")
-			.attr("d", valueline);
+			.attr("d", xyDrawer);
 
 		// Add the valueline path.
 		svg.append("path")
-			.data([this.data])
+			.data([valueData])
 			.attr("class", "line")
-			.attr("d", valueline);
+			.attr("d", xyDrawer)
+			.transition()
+			.delay(delayTime)
+			.duration(transitionTime)
+			.attr("d", xyTransition);
 
 		const circles = svg.selectAll("circle")
 			.data(this.data)
 			.enter()
 			.append("circle");
-		circles.attr("cx", function(d) { return self.x(d.delay); })
-			.attr("cy", function(d) { return self.y(d.value); })
-			.attr("r", 5)
-			.style("fill", "black");
+		circles.attr("cx", d => self.x(d.delay))
+			.attr("cy", self.y(0))
+			.attr("r", d => d.wasImputed ? 3 : 5)
+			.style("fill", d => d.wasImputed ? "red" : "black");
+		circles
+			.transition()
+			.delay(delayTime)
+			.duration(transitionTime)
+			.attr("cy", d => self.y(d.value))
 	}
+
 }
