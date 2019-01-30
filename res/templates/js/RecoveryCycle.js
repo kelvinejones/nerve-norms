@@ -1,8 +1,10 @@
 class RecoveryCycle extends Chart {
 	constructor(data) {
 		super()
-
 		this.data = data
+
+		this.x = d3.scaleLog().range([0, this.width]);
+		this.y = d3.scaleLinear().range([this.height, 0]);
 	}
 
 	get name() { return "Recovery Cycle" }

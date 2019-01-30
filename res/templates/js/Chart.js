@@ -3,9 +3,6 @@ class Chart {
 		this.margin = { top: 20, right: 20, bottom: 50, left: 50 };
 		this.width = 600 - this.margin.left - this.margin.right;
 		this.height = 300 - this.margin.top - this.margin.bottom;
-
-		this.x = d3.scaleLog().range([0, this.width]);
-		this.y = d3.scaleLinear().range([this.height, 0]);
 	}
 
 	get name() { throw new Error("A Chart must implement name()") }
@@ -24,12 +21,12 @@ class Chart {
 
 		// Scale the range of the data
 		this.x.domain([1, 200]);
-		this.y.domain([-50, 100]);
+		this.y.domain([-50, 110]);
 
 		// Add the X Axis
 		var xelements = svg.append("g")
 			.attr("transform", "translate(0," + this.height + ")")
-			.call(d3.axisBottom(this.x).ticks(10)
+			.call(d3.axisBottom(this.x).ticks(2)
 				.tickFormat(d3.format("")));
 
 		// Add the Y Axis
