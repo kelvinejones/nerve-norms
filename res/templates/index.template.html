@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- D3 -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <!-- Application Code -->
+    <script src="data/example-CR21S.json"></script>
+    <script src="js/Chart.js"></script>
+    <script src="js/RecoveryCycle.js"></script>
+
+    <style type="text/css">
+      .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px;
+      }
+      .meanline {
+        fill: none;
+        stroke: darkgrey;
+        stroke-width: 1px;
+      }
+      .confidenceinterval  {
+        fill: lightgrey;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="alert alert-success">
+      <h1>Jitter - Nerve Data Explorer</h1>
+      <div>Developed by <a href="https://bellstone.ca">Bellstone Engineering</a> for (Dr. Jones' lab link).</div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-3 col-sm-12">
+        <ul class="list-group rounded d-sm-block d-md-none">
+          <li class="list-group-item list-group-item-primary">Filter</li>
+          <li class="list-group-item">Expand on clicky</li>
+          <li class="list-group-item list-group-item-primary">Partipant</li>
+          <li class="list-group-item">Expand on clicky</li>
+        </ul>
+        <ul class="list-group rounded">
+          <li class="list-group-item list-group-item-primary">Recovery Cycle</li>
+          <li class="list-group-item"><svg id="recoveryCycle" style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></li>
+          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
+        </ul>
+        <ul class="list-group rounded">
+          <li class="list-group-item list-group-item-primary">Threshold Electrotonus</li>
+          <li class="list-group-item">Graph here</li>
+          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
+        </ul>
+        <ul class="list-group rounded">
+          <li class="list-group-item list-group-item-primary">Small QT</li>
+          <li class="list-group-item">Graph here</li>
+          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
+        </ul>
+        <ul class="list-group rounded">
+          <li class="list-group-item list-group-item-primary">SR</li>
+          <li class="list-group-item">Graph here</li>
+          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
+        </ul>
+        <ul class="list-group rounded">
+          <li class="list-group-item list-group-item-primary">SR</li>
+          <li class="list-group-item">Graph here</li>
+          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
+        </ul>
+      </div>
+
+      <div class="col-md-9 d-sm-none d-md-block">
+        <div>Filter</div>
+        <div class="bg-white">
+          <svg id="bigpanel" style="background-color: white; width: 100%" viewbox="0 0 600 300"></svg>
+        </div>
+          <script>
+            var rc = new RecoveryCycle(data.plots[7].data)
+            rc.draw(d3.select("#bigpanel"))
+            rc.draw(d3.select("#recoveryCycle"), true)
+          </script>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
