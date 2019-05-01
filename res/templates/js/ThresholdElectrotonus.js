@@ -12,8 +12,8 @@ class ThresholdElectrotonus extends Chart {
 	}
 
 	get name() { return "Threshold Electrotonus" }
-	get xLabel() { return "??Threshold Change (%)" }
-	get yLabel() { return "??Interstimulus Interval (ms)" }
+	get xLabel() { return "Threshold Reduction (%)" }
+	get yLabel() { return "Delay (ms)" }
 
 	drawLines(svg) {
 		this.animateXYLineWithMean(this.hy40, "hy40")
