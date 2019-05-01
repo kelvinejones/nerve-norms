@@ -19,6 +19,7 @@
     <script src="js/Chart.js"></script>
     <script src="js/RecoveryCycle.js"></script>
     <script src="js/ThresholdElectrotonus.js"></script>
+    <script src="js/ChargeDuration.js"></script>
 
     <style type="text/css">
       .line {
@@ -131,7 +132,7 @@
 
       <div id="chargeDuration" class="card border-success">
         <div class="card-header bg-success text-white">Charge Duration</div>
-        <div class="card-body"><img src="QT.png" style="width:100%;"></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             Discrete Measures
@@ -208,6 +209,9 @@
 
       var te = new ThresholdElectrotonus(data.plots[2].data, data.plots[3].data, data.plots[4].data, data.plots[5].data)
       te.draw(d3.select("#thresholdElectrotonus svg"), true)
+
+      var rc = new ChargeDuration(data.plots[1].data)
+      rc.draw(d3.select("#chargeDuration svg"), true)
     </script>
   </body>
 </html>
