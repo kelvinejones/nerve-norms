@@ -13,15 +13,7 @@ class RecoveryCycle extends Chart {
 	drawLines(svg) {
 		const self = this
 
-		// Draw the confidence interval
-		svg.append("path")
-			.data([Chart.normativeRange(this.data)])
-			.attr("class", "confidenceinterval")
-			.attr("d", this.xZeroLine())
-			.transition()
-			.delay(Chart.delayTime)
-			.duration(Chart.transitionTime)
-			.attr("d", this.xyLine());
+		this.drawCI(svg, [Chart.normativeRange(this.data)])
 
 		svg.append("path")
 			.data([Chart.dataAsXY(this.data, 'delay', 'mean')])

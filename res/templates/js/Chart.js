@@ -87,6 +87,17 @@ class Chart {
 			.x(d => this.xscale(d.x))
 			.y(d => this.yscale(d.y));
 	}
+
+	drawCI(svg, ciNormRange) {
+		svg.append("path")
+			.data(ciNormRange)
+			.attr("class", "confidenceinterval")
+			.attr("d", this.xZeroLine())
+			.transition()
+			.delay(Chart.delayTime)
+			.duration(Chart.transitionTime)
+			.attr("d", this.xyLine());
+	}
 }
 
 // Set some constants for the class
