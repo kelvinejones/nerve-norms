@@ -18,6 +18,7 @@
     <script src="data/example-CR21S.json"></script>
     <script src="js/Chart.js"></script>
     <script src="js/RecoveryCycle.js"></script>
+    <script src="js/ThresholdElectrotonus.js"></script>
 
     <style type="text/css">
       .line {
@@ -34,62 +35,179 @@
         fill: lightgrey;
       }
     </style>
+
+    <script>
+      function toggle(id) {
+        $(id + " .measures").toggleClass("d-none d-sm-flex")
+      }
+    </script>
   </head>
   <body class="bg-light">
     <div class="alert alert-success">
       <h1>Jitter - Nerve Data Explorer</h1>
       <div>Developed by <a href="https://bellstone.ca">Bellstone Engineering</a> for (Dr. Jones' lab link).</div>
     </div>
-
-    <div class="row">
-
-      <div class="col-md-3 col-sm-12">
-        <ul class="list-group rounded d-sm-block d-md-none">
-          <li class="list-group-item list-group-item-primary">Filter</li>
-          <li class="list-group-item">Expand on clicky</li>
-          <li class="list-group-item list-group-item-primary">Partipant</li>
-          <li class="list-group-item">Expand on clicky</li>
-        </ul>
-        <ul class="list-group rounded">
-          <li class="list-group-item list-group-item-primary">Recovery Cycle</li>
-          <li class="list-group-item"><svg id="recoveryCycle" style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></li>
-          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
-        </ul>
-        <ul class="list-group rounded">
-          <li class="list-group-item list-group-item-primary">Threshold Electrotonus</li>
-          <li class="list-group-item">Graph here</li>
-          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
-        </ul>
-        <ul class="list-group rounded">
-          <li class="list-group-item list-group-item-primary">Small QT</li>
-          <li class="list-group-item">Graph here</li>
-          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
-        </ul>
-        <ul class="list-group rounded">
-          <li class="list-group-item list-group-item-primary">SR</li>
-          <li class="list-group-item">Graph here</li>
-          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
-        </ul>
-        <ul class="list-group rounded">
-          <li class="list-group-item list-group-item-primary">SR</li>
-          <li class="list-group-item">Graph here</li>
-          <li class="list-group-item d-sm-block d-md-none">Expand on clicky (Data)</li>
-        </ul>
-      </div>
-
-      <div class="col-md-9 d-sm-none d-md-block">
-        <div>Filter</div>
-        <div class="bg-white">
-          <svg id="bigpanel" style="background-color: white; width: 100%" viewbox="0 0 600 300"></svg>
-        </div>
-          <script>
-            var rc = new RecoveryCycle(data.plots[7].data)
-            rc.draw(d3.select("#bigpanel"))
-            rc.draw(d3.select("#recoveryCycle"), true)
-          </script>
+    <div class="card-group">
+      <div class="card">
+        <div class="card-header">Filter</div>
+        <div class="card-body row">
+          <div>
+            <label>Sex:</label>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary active"> <input type="radio" name="options" id="option1" autocomplete="off" checked> Any </label>
+              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> Male </label>
+              <label class="btn btn-secondary"> <input type="radio" name="options" id="option3" autocomplete="off"> Female </label>
+            </div>
+          </div>
+          <div class="">
+            <label>Age:</label>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary active"> <input type="radio" name="options" id="option1" autocomplete="off" checked> Any </label>
+              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> 10 - 20 </label>
+              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> 20 - 30 </label>
+              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> 30 - 45 </label>
+              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> 45 - 65 </label>
+              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> 65+ </label>
+            </div>
+          </div>
         </div>
       </div>
-
+      <div class="card">
+        <div class="card-header">Participant: CH215</div>
+        <div class="card-body">
+              Nerve Health: Good
+              <button class="btn btn-secondary float-right">Change...</button>
+        </div>
+      </div>
     </div>
+    <div class="card-columns">
+
+      <div id="recoveryCycle" class="card border-success">
+        <div class="card-header bg-success text-white">Recovery Cycle</div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
+        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-right">Show</button>
+          </li>
+        </ul>
+        <ul class="list-group list-group-flush d-none d-md-flex measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-right d-md-none">Hide</button>
+          </li>
+          <li class="list-group-item">RRP (ms): 3.407
+          <li class="list-group-item">Superexcitability (%): -23.58
+          <li class="list-group-item">Subexcitability (%): 10.81
+          <li class="list-group-item">Refractoriness at 2.5ms (%): 50
+          <li class="list-group-item">Refractoriness at 2 ms (%): 100
+          <li class="list-group-item">Superexcitability at 7 ms (%): -24.25
+          <li class="list-group-item">Superexcitability at 5 ms (%): -22.24
+        </ul>
+      </div>
+
+      <div id="thresholdElectrotonus" class="card border-danger">
+        <div class="card-header bg-danger text-white">Threshold Electrotonus</div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
+        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#thresholdElectrotonus')" class="btn btn-sm float-right">Show</button>
+          </li>
+        </ul>
+        <ul class="list-group list-group-flush d-none d-md-flex measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#thresholdElectrotonus')" class="btn btn-sm float-right d-md-none">Hide</button>
+          </li>
+          <li class="list-group-item">TEh(90-100ms): -99.21</li>
+          <li class="list-group-item">TEh(10-20ms): -64.19</li>
+          <li class="list-group-item">TEh(overshoot): 10.7</li>
+          <li class="list-group-item">TEh(20-40ms): -78.66</li>
+          <li class="list-group-item">TEh(slope 101-140ms): 1.579</li>
+          <li class="list-group-item">TEd40(Accom): 19.6</li>
+        </ul>
+      </div>
+
+      <div id="chargeDuration" class="card border-success">
+        <div class="card-header bg-success text-white">Charge Duration</div>
+        <div class="card-body"><img src="QT.png" style="width:100%;"></div>
+        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#chargeDuration')" class="btn btn-sm float-right">Show</button>
+          </li>
+        </ul>
+        <ul class="list-group list-group-flush d-none d-md-flex measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#chargeDuration')" class="btn btn-sm float-right d-md-none">Hide</button>
+          </li>
+          <li class="list-group-item">Measures here</li>
+        </ul>
+      </div>
+
+      <div id="currentVoltage" class="card border-success">
+        <div class="card-header bg-success text-white">Current/Voltage</div>
+        <div class="card-body"><img src="IV.png" style="width:100%;"></div>
+        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#currentVoltage')" class="btn btn-sm float-right">Show</button>
+          </li>
+        </ul>
+        <ul class="list-group list-group-flush d-none d-md-flex measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#currentVoltage')" class="btn btn-sm float-right d-md-none">Hide</button>
+          </li>
+          <li class="list-group-item">Measures here</li>
+        </ul>
+      </div>
+
+      <div id="stimulusResponseRelative" class="card border-success">
+        <div class="card-header bg-success text-white">Stimulus Response (Relative)</div>
+        <div class="card-body"><img src="SRRel.png" style="width:100%;"></div>
+        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#stimulusResponseRelative')" class="btn btn-sm float-right">Show</button>
+          </li>
+        </ul>
+        <ul class="list-group list-group-flush d-none d-md-flex measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#stimulusResponseRelative')" class="btn btn-sm float-right d-md-none">Hide</button>
+          </li>
+          <li class="list-group-item">Measures here</li>
+        </ul>
+      </div>
+
+      <div id="stimulusResponse" class="card border-success">
+        <div class="card-header bg-success text-white">Stimulus Response</div>
+        <div class="card-body"><img src="SR.png" style="width:100%;"></div>
+        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#stimulusResponse')" class="btn btn-sm float-right">Show</button>
+          </li>
+        </ul>
+        <ul class="list-group list-group-flush d-none d-md-flex measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#stimulusResponse')" class="btn btn-sm float-right d-md-none">Hide</button>
+          </li>
+          <li class="list-group-item">Measures here</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      var rc = new RecoveryCycle(data.plots[7].data)
+      rc.draw(d3.select("#recoveryCycle svg"), true)
+
+      var te = new ThresholdElectrotonus(data.plots[2].data, data.plots[3].data, data.plots[4].data, data.plots[5].data)
+      te.draw(d3.select("#thresholdElectrotonus svg"), true)
+    </script>
   </body>
 </html>
