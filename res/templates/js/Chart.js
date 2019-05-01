@@ -15,7 +15,7 @@ class Chart {
 		this.xName = 'delay'
 		this.yName = 'value'
 		this.ySDName = 'SD'
-		this.meanName = 'mean'
+		this.yMeanName = 'mean'
 	}
 
 	get name() { throw new Error("A Chart must implement name()") }
@@ -85,9 +85,8 @@ class Chart {
 			.concat(Array.from(data).reverse().map(function(d) { return { x: d[self.xName], y: d[self.yName] - 2 * (d[self.ySDName] || 0) } }))
 	}
 
-	dataAsXY(data, yName) {
-		let self = this
-		return data.map(function(d) { return { x: d[self.xName], y: d[yName] } })
+	dataAsXY(data, xName, yName) {
+		return data.map(function(d) { return { x: d[xName], y: d[yName] } })
 
 	}
 
@@ -165,9 +164,9 @@ class Chart {
 
 	animateXYLineWithMean(lineData) {
 		this.animateCI(this.ciLayer, [this.normativeRange(lineData)])
-		this.animateLine(this.meanLayer, [this.dataAsXY(lineData, this.meanName)], "meanline")
+		this.animateLine(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], "meanline")
 		this.drawHorizontalLine(this.linesLayer, 0)
-		this.animateLine(this.valueLayer, [this.dataAsXY(lineData, this.yName)], "line")
+		this.animateLine(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], "line")
 		this.animateCircles(this.circlesLayer, lineData)
 	}
 }
