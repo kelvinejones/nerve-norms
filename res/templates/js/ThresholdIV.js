@@ -1,9 +1,7 @@
 class ThresholdIV extends Chart {
 	constructor(data) {
-		super()
+		super([-100, 50], [-400, 50])
 		this.data = data
-		this.xscale = this.xscale.domain([-100, 50]);
-		this.yscale = this.yscale.domain([-400, 50]);
 		this.xName = 'current'
 	}
 

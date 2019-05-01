@@ -1,14 +1,11 @@
 class ThresholdElectrotonus extends Chart {
 	constructor(hy40, de40, hy20, de20) {
-		super()
+		super([1, 200], [-150, 100])
 
 		this.hy40 = hy40
 		this.de40 = de40
 		this.hy20 = hy20
 		this.de20 = de20
-
-		this.xscale = this.xscale.domain([1, 200]);
-		this.yscale = this.yscale.domain([-150, 100]);
 	}
 
 	get name() { return "Threshold Electrotonus" }

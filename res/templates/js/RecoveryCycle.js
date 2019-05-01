@@ -1,9 +1,7 @@
 class RecoveryCycle extends Chart {
 	constructor(data) {
-		super()
+		super([1, 200], [-50, 110], d3.scaleLog())
 		this.data = data
-		this.xscale = d3.scaleLog().range([0, this.width]).domain([1, 200]);
-		this.yscale = this.yscale.domain([-50, 110]);
 		this.xMin = 1
 	}
 

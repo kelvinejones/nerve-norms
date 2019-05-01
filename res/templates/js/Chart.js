@@ -1,22 +1,21 @@
 class Chart {
-	constructor() {
+	constructor(xRange, yRange, xscale = d3.scaleLinear(), yscale = d3.scaleLinear()) {
+		this.xRange = xRange
+		this.yRange = yRange
+
 		this.margin = { top: 20, right: 20, bottom: 50, left: 50 };
 		this.width = 600 - this.margin.left - this.margin.right;
 		this.height = 300 - this.margin.top - this.margin.bottom;
 
 		// Set the default scaling
-		this.xscale = d3.scaleLinear().range([0, this.width]);
-		this.yscale = d3.scaleLinear().range([this.height, 0]);
+		this.xscale = xscale.range([0, this.width]).domain(xRange);
+		this.yscale = yscale.range([this.height, 0]).domain(yRange);
 
 		// Set default config values
 		this.xName = 'delay'
 		this.yName = 'value'
 		this.ySDName = 'SD'
 		this.meanName = 'mean'
-		this.xMin = -1000000
-		this.xMax = 1000000
-		this.yMin = -1000000
-		this.yMax = 1000000
 	}
 
 	get name() { throw new Error("A Chart must implement name()") }
@@ -129,7 +128,7 @@ class Chart {
 	drawHorizontalLine(svg, yVal) {
 		svg.append("path")
 			.data([
-				[{ x: this.xMin, y: yVal }, { x: this.xMax, y: yVal }]
+				[{ x: this.xRange[0], y: yVal }, { x: this.xRange[1], y: yVal }]
 			])
 			.attr("class", "meanline")
 			.attr("d", this.xyLine());
@@ -138,7 +137,7 @@ class Chart {
 	drawVerticalLine(svg, xVal) {
 		svg.append("path")
 			.data([
-				[{ y: this.yMin, x: xVal }, { y: this.yMax, x: xVal }]
+				[{ y: this.yRange[0], x: xVal }, { y: this.yRange[1], x: xVal }]
 			])
 			.attr("class", "meanline")
 			.attr("d", this.xyLine());
