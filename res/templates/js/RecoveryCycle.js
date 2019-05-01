@@ -17,7 +17,7 @@ class RecoveryCycle extends Chart {
 		const valueData = this.data.map(function(d) { return { x: d.delay, y: d.value } })
 		const meanData = this.data.map(function(d) { return { x: d.delay, y: d.mean } })
 
-		const normRange = normativeRange(this.data)
+		const normRange = Chart.normativeRange(this.data)
 
 		const xyDrawer = d3.line()
 			.x(d => self.xscale(d.x))
