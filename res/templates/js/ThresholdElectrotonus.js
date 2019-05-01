@@ -16,9 +16,9 @@ class ThresholdElectrotonus extends Chart {
 	get yLabel() { return "??Interstimulus Interval (ms)" }
 
 	drawLines(svg) {
-		this.animateXYLineWithMean(svg, this.hy40, "hy40")
-		this.animateXYLineWithMean(svg, this.de40, "de40")
-		this.animateXYLineWithMean(svg, this.hy20, "hy20")
-		this.animateXYLineWithMean(svg, this.de20, "de20")
+		this.animateXYLineWithMean(this.hy40, "hy40")
+		this.animateXYLineWithMean(this.de40, "de40")
+		this.animateXYLineWithMean(this.hy20, "hy20")
+		this.animateXYLineWithMean(this.de20, "de20")
 	}
 }
