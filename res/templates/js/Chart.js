@@ -165,7 +165,6 @@ class Chart {
 	animateXYLineWithMean(lineData) {
 		this.animateCI(this.ciLayer, [this.normativeRange(lineData)])
 		this.animateLine(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], "meanline")
-		this.drawHorizontalLine(this.linesLayer, 0)
 		this.animateLine(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], "line")
 		this.animateCircles(this.circlesLayer, lineData)
 	}

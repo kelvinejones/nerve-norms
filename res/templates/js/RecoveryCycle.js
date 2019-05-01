@@ -11,5 +11,6 @@ class RecoveryCycle extends Chart {
 
 	drawLines(svg) {
 		this.animateXYLineWithMean(this.data)
+		this.drawHorizontalLine(this.linesLayer, 0)
 	}
 }

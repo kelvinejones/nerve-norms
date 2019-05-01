@@ -1,6 +1,6 @@
 class ThresholdElectrotonus extends Chart {
 	constructor(hy40, de40, hy20, de20) {
-		super([1, 200], [-150, 100])
+		super([0, 200], [-150, 100])
 
 		this.hy40 = hy40
 		this.de40 = de40
@@ -17,5 +17,6 @@ class ThresholdElectrotonus extends Chart {
 		this.animateXYLineWithMean(this.de40)
 		this.animateXYLineWithMean(this.hy20)
 		this.animateXYLineWithMean(this.de20)
+		this.drawHorizontalLine(this.linesLayer, 0)
 	}
 }

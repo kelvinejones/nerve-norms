@@ -11,6 +11,7 @@ class ThresholdIV extends Chart {
 
 	drawLines(svg) {
 		this.animateXYLineWithMean(this.data)
-		this.drawVerticalLine(svg, 0)
+		this.drawHorizontalLine(this.linesLayer, 0)
+		this.drawVerticalLine(this.linesLayer, 0)
 	}
 }
