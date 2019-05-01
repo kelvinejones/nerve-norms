@@ -72,7 +72,7 @@ class Chart {
 			.concat(Array.from(data).reverse().map(function(d) { return { x: d[xName], y: d[yName] - 2 * (d[ySDName] || 0) } }))
 	}
 
-	static valueData(data, xName = 'delay', yName = 'value') {
+	static dataAsXY(data, xName = 'delay', yName = 'value') {
 		return data.map(function(d) { return { x: d['delay'], y: d['value'] } })
 	}
 

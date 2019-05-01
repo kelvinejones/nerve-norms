@@ -45,7 +45,7 @@ class RecoveryCycle extends Chart {
 
 		// Add the valueline path.
 		svg.append("path")
-			.data([Chart.valueData(this.data)])
+			.data([Chart.dataAsXY(this.data)])
 			.attr("class", "line")
 			.attr("d", this.xZeroLine())
 			.transition()
