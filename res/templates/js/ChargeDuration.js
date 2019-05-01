@@ -4,6 +4,7 @@ class ChargeDuration extends Chart {
 		this.data = data
 		this.xscale = this.xscale.domain([0, 1]);
 		this.yscale = this.yscale.domain([0, 10]);
+		this.xName = 'stimWidth'
 	}
 
 	get name() { return "Charge Duration" }
@@ -11,8 +12,6 @@ class ChargeDuration extends Chart {
 	get yLabel() { return "Threshold Change (mA•ms)" }
 
 	drawLines(svg) {
-		let config = Chart.defaultConfig()
-		config.xName = 'stimWidth'
-		this.animateXYLineWithMean(this.data, config)
+		this.animateXYLineWithMean(this.data)
 	}
 }

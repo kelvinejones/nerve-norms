@@ -7,6 +7,13 @@ class Chart {
 		// Set the default scaling
 		this.xscale = d3.scaleLinear().range([0, this.width]);
 		this.yscale = d3.scaleLinear().range([this.height, 0]);
+
+		// Set default config values
+		this.xName = 'delay'
+		this.yName = 'value'
+		this.ySDName = 'SD'
+		this.meanName = 'mean'
+		this.xMin = 0
 	}
 
 	get name() { throw new Error("A Chart must implement name()") }
@@ -69,24 +76,17 @@ class Chart {
 			.text(this.yLabel);
 	}
 
-	static normativeRange(data, config) {
+	normativeRange(data) {
+		let self = this
 		return (Array.from(data)
-				.map(function(d) { return { x: d[config.xName], y: d[config.yName] + 2 * (d[config.ySDName] || 0) } }))
-			.concat(Array.from(data).reverse().map(function(d) { return { x: d[config.xName], y: d[config.yName] - 2 * (d[config.ySDName] || 0) } }))
+				.map(function(d) { return { x: d[self.xName], y: d[self.yName] + 2 * (d[self.ySDName] || 0) } }))
+			.concat(Array.from(data).reverse().map(function(d) { return { x: d[self.xName], y: d[self.yName] - 2 * (d[self.ySDName] || 0) } }))
 	}
 
-	static dataAsXY(data, xName, yName) {
-		return data.map(function(d) { return { x: d[xName], y: d[yName] } })
-	}
+	dataAsXY(data, yName) {
+		let self = this
+		return data.map(function(d) { return { x: d[self.xName], y: d[yName] } })
 
-	static defaultConfig() {
-		return {
-			xName: 'delay',
-			yName: 'value',
-			ySDName: 'SD',
-			meanName: 'mean',
-			xMin: 0,
-		}
 	}
 
 	xZeroLine() {
@@ -133,7 +133,7 @@ class Chart {
 	}
 
 
-	animateCircles(svg, circleLocations, xName) {
+	animateCircles(svg, circleLocations) {
 		// Add circles into a separate SVG group
 		svg = svg.append("g")
 		const self = this
@@ -142,7 +142,7 @@ class Chart {
 			.data(circleLocations)
 			.enter()
 			.append("circle");
-		circles.attr("cx", d => self.xscale(d[xName]))
+		circles.attr("cx", d => self.xscale(d[this.xName]))
 			.attr("cy", self.yscale(0))
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => d.wasImputed ? "red" : "black");
@@ -153,12 +153,12 @@ class Chart {
 			.attr("cy", d => self.yscale(d.value))
 	}
 
-	animateXYLineWithMean(lineData, config = Chart.defaultConfig()) {
-		this.animateCI(this.ciLayer, [Chart.normativeRange(lineData, config)])
-		this.animateLine(this.meanLayer, [Chart.dataAsXY(lineData, config.xName, config.meanName)], "meanline")
-		this.drawHorizontalLine(this.linesLayer, 0, config.xMin)
-		this.animateLine(this.valueLayer, [Chart.dataAsXY(lineData, config.xName, config.yName)], "line")
-		this.animateCircles(this.circlesLayer, lineData, config.xName)
+	animateXYLineWithMean(lineData) {
+		this.animateCI(this.ciLayer, [this.normativeRange(lineData)])
+		this.animateLine(this.meanLayer, [this.dataAsXY(lineData, this.meanName)], "meanline")
+		this.drawHorizontalLine(this.linesLayer, 0)
+		this.animateLine(this.valueLayer, [this.dataAsXY(lineData, this.yName)], "line")
+		this.animateCircles(this.circlesLayer, lineData)
 	}
 }
 

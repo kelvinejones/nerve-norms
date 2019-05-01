@@ -4,6 +4,7 @@ class RecoveryCycle extends Chart {
 		this.data = data
 		this.xscale = d3.scaleLog().range([0, this.width]).domain([1, 200]);
 		this.yscale = this.yscale.domain([-50, 110]);
+		this.xMin = 1
 	}
 
 	get name() { return "Recovery Cycle" }
@@ -11,8 +12,6 @@ class RecoveryCycle extends Chart {
 	get yLabel() { return "Interstimulus Interval (ms)" }
 
 	drawLines(svg) {
-		let config = Chart.defaultConfig()
-		config.xMin = 1
-		this.animateXYLineWithMean(this.data, config)
+		this.animateXYLineWithMean(this.data)
 	}
 }
