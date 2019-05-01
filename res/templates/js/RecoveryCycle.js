@@ -15,14 +15,7 @@ class RecoveryCycle extends Chart {
 
 		this.drawCI(svg, [Chart.normativeRange(this.data)])
 
-		svg.append("path")
-			.data([Chart.dataAsXY(this.data, 'delay', 'mean')])
-			.attr("class", "meanline")
-			.attr("d", this.xZeroLine())
-			.transition()
-			.delay(Chart.delayTime)
-			.duration(Chart.transitionTime)
-			.attr("d", this.xyLine());
+		this.drawLine(svg, [Chart.dataAsXY(this.data, 'delay', 'mean')], "meanline")
 
 		// Add a reference line for 0
 		svg.append("path")
@@ -33,14 +26,7 @@ class RecoveryCycle extends Chart {
 			.attr("d", this.xZeroLine());
 
 		// Add the valueline path.
-		svg.append("path")
-			.data([Chart.dataAsXY(this.data)])
-			.attr("class", "line")
-			.attr("d", this.xZeroLine())
-			.transition()
-			.delay(Chart.delayTime)
-			.duration(Chart.transitionTime)
-			.attr("d", this.xyLine());
+		this.drawLine(svg, [Chart.dataAsXY(this.data)], "line")
 
 		const circles = svg.selectAll("circle")
 			.data(this.data)

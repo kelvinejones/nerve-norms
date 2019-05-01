@@ -98,6 +98,17 @@ class Chart {
 			.duration(Chart.transitionTime)
 			.attr("d", this.xyLine());
 	}
+
+	drawLine(svg, xyLine, className) {
+		svg.append("path")
+			.data(xyLine)
+			.attr("class", className)
+			.attr("d", this.xZeroLine())
+			.transition()
+			.delay(Chart.delayTime)
+			.duration(Chart.transitionTime)
+			.attr("d", this.xyLine());
+	}
 }
 
 // Set some constants for the class
