@@ -159,7 +159,7 @@ class Chart {
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("cy", d => self.yscale(d.value))
+			.attr("cy", d => self.yscale(d[this.yName]))
 	}
 
 	animateXYLineWithMean(lineData) {
