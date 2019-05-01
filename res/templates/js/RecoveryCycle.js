@@ -13,9 +13,6 @@ class RecoveryCycle extends Chart {
 	drawLines(svg) {
 		const self = this
 
-		// define the line
-		const meanData = this.data.map(function(d) { return { x: d.delay, y: d.mean } })
-
 		// Draw the confidence interval
 		svg.append("path")
 			.data([Chart.normativeRange(this.data)])
@@ -27,7 +24,7 @@ class RecoveryCycle extends Chart {
 			.attr("d", this.xyLine());
 
 		svg.append("path")
-			.data([meanData])
+			.data([Chart.dataAsXY(this.data, 'delay', 'mean')])
 			.attr("class", "meanline")
 			.attr("d", this.xZeroLine())
 			.transition()
