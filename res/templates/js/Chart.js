@@ -88,7 +88,7 @@ class Chart {
 			.y(d => this.yscale(d.y));
 	}
 
-	drawCI(svg, ciNormRange) {
+	animateCI(svg, ciNormRange) {
 		svg.append("path")
 			.data(ciNormRange)
 			.attr("class", "confidenceinterval")
@@ -99,7 +99,7 @@ class Chart {
 			.attr("d", this.xyLine());
 	}
 
-	drawLine(svg, xyLine, className) {
+	animateLine(svg, xyLine, className) {
 		svg.append("path")
 			.data(xyLine)
 			.attr("class", className)
