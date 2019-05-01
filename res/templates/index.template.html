@@ -20,6 +20,7 @@
     <script src="js/RecoveryCycle.js"></script>
     <script src="js/ThresholdElectrotonus.js"></script>
     <script src="js/ChargeDuration.js"></script>
+    <script src="js/ThresholdIV.js"></script>
 
     <style type="text/css">
       .line {
@@ -148,19 +149,19 @@
         </ul>
       </div>
 
-      <div id="currentVoltage" class="card border-success">
-        <div class="card-header bg-success text-white">Current/Voltage</div>
-        <div class="card-body"><img src="IV.png" style="width:100%;"></div>
+      <div id="thresholdIV" class="card border-success">
+        <div class="card-header bg-success text-white">Threshold I/V</div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             Discrete Measures
-            <button onclick="toggle('#currentVoltage')" class="btn btn-sm float-right">Show</button>
+            <button onclick="toggle('#thresholdIV')" class="btn btn-sm float-right">Show</button>
           </li>
         </ul>
         <ul class="list-group list-group-flush d-none d-md-flex measures">
           <li class="list-group-item bg-light">
             Discrete Measures
-            <button onclick="toggle('#currentVoltage')" class="btn btn-sm float-right d-md-none">Hide</button>
+            <button onclick="toggle('#thresholdIV')" class="btn btn-sm float-right d-md-none">Hide</button>
           </li>
           <li class="list-group-item">Measures here</li>
         </ul>
@@ -212,6 +213,9 @@
 
       var rc = new ChargeDuration(data.plots[1].data)
       rc.draw(d3.select("#chargeDuration svg"), true)
+
+      var rc = new ThresholdIV(data.plots[6].data)
+      rc.draw(d3.select("#thresholdIV svg"), true)
     </script>
   </body>
 </html>
