@@ -79,10 +79,12 @@ class Chart {
 	}
 
 	normativeRange(data) {
-		let self = this
+		let xMean = this.xMeanName || this.xName
+		let yMean = this.yMeanName || this.yName
+		let ySD = this.ySDName
 		return (Array.from(data)
-				.map(function(d) { return { x: d[self.xName], y: d[self.yName] + 2 * (d[self.ySDName] || 0) } }))
-			.concat(Array.from(data).reverse().map(function(d) { return { x: d[self.xName], y: d[self.yName] - 2 * (d[self.ySDName] || 0) } }))
+				.map(function(d) { return { x: d[xMean], y: d[yMean] + 2 * (d[ySD] || 0) } }))
+			.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean], y: d[yMean] - 2 * (d[ySD] || 0) } }))
 	}
 
 	dataAsXY(data, xName, yName) {
