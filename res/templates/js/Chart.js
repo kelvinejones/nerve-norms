@@ -15,7 +15,7 @@ class Chart {
 	drawLines(svg) { throw new Error("A Chart must implement drawLines(svg)") }
 
 	draw(svg, hideLabels) {
-		// append the svg obgect to the body of the page
+		// append the svg object to the body of the page
 		// appends a 'group' element to 'svg'
 		// moves the 'group' element to the top left margin
 		svg = svg
