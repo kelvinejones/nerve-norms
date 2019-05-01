@@ -14,32 +14,26 @@ class RecoveryCycle extends Chart {
 		const self = this
 
 		// define the line
-		const valueData = Chart.valueData(this.data)
 		const meanData = this.data.map(function(d) { return { x: d.delay, y: d.mean } })
-
-		const normRange = Chart.normativeRange(this.data)
-
-		const xZeroLine = this.xZeroLine()
-		const xyLine = this.xyLine()
 
 		// Draw the confidence interval
 		svg.append("path")
-			.data([normRange])
+			.data([Chart.normativeRange(this.data)])
 			.attr("class", "confidenceinterval")
-			.attr("d", xZeroLine)
+			.attr("d", this.xZeroLine())
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("d", xyLine);
+			.attr("d", this.xyLine());
 
 		svg.append("path")
 			.data([meanData])
 			.attr("class", "meanline")
-			.attr("d", xZeroLine)
+			.attr("d", this.xZeroLine())
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("d", xyLine);
+			.attr("d", this.xyLine());
 
 		// Add a reference line for 0
 		svg.append("path")
@@ -47,17 +41,17 @@ class RecoveryCycle extends Chart {
 				[{ x: 1, y: 0 }, { x: 200, y: 0 }]
 			])
 			.attr("class", "meanline")
-			.attr("d", xZeroLine);
+			.attr("d", this.xZeroLine());
 
 		// Add the valueline path.
 		svg.append("path")
-			.data([valueData])
+			.data([Chart.valueData(this.data)])
 			.attr("class", "line")
-			.attr("d", xZeroLine)
+			.attr("d", this.xZeroLine())
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("d", xyLine);
+			.attr("d", this.xyLine());
 
 		const circles = svg.selectAll("circle")
 			.data(this.data)
