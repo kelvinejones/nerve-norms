@@ -11,8 +11,6 @@ class RecoveryCycle extends Chart {
 	get yLabel() { return "Interstimulus Interval (ms)" }
 
 	drawLines(svg) {
-		const self = this
-
 		this.animateCI(svg, [Chart.normativeRange(this.data)])
 
 		this.animateLine(svg, [Chart.dataAsXY(this.data, 'delay', 'mean')], "meanline")
@@ -22,19 +20,7 @@ class RecoveryCycle extends Chart {
 		// Add the valueline path.
 		this.animateLine(svg, [Chart.dataAsXY(this.data)], "line")
 
-		const circles = svg.selectAll("circle")
-			.data(this.data)
-			.enter()
-			.append("circle");
-		circles.attr("cx", d => self.xscale(d.delay))
-			.attr("cy", self.yscale(0))
-			.attr("r", d => d.wasImputed ? 3 : 5)
-			.style("fill", d => d.wasImputed ? "red" : "black");
-		circles
-			.transition()
-			.delay(Chart.delayTime)
-			.duration(Chart.transitionTime)
-			.attr("cy", d => self.yscale(d.value))
+		this.animateCircles(svg, this.data)
 	}
 
 }

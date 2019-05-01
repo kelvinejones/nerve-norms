@@ -118,6 +118,25 @@ class Chart {
 			.attr("class", "meanline")
 			.attr("d", this.xZeroLine());
 	}
+
+
+	animateCircles(svg, circleLocations) {
+		const self = this
+
+		const circles = svg.selectAll("circle")
+			.data(circleLocations)
+			.enter()
+			.append("circle");
+		circles.attr("cx", d => self.xscale(d.delay))
+			.attr("cy", self.yscale(0))
+			.attr("r", d => d.wasImputed ? 3 : 5)
+			.style("fill", d => d.wasImputed ? "red" : "black");
+		circles
+			.transition()
+			.delay(Chart.delayTime)
+			.duration(Chart.transitionTime)
+			.attr("cy", d => self.yscale(d.value))
+	}
 }
 
 // Set some constants for the class
