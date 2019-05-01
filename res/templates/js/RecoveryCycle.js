@@ -13,8 +13,6 @@ class RecoveryCycle extends Chart {
 
 	drawLines(svg) {
 		const self = this
-		const delayTime = 750
-		const transitionTime = 2500
 
 		// define the line
 		const valueData = this.data.map(function(d) { return { x: d.delay, y: d.value } })
@@ -36,8 +34,8 @@ class RecoveryCycle extends Chart {
 			.attr("class", "confidenceinterval")
 			.attr("d", xyDrawer)
 			.transition()
-			.delay(delayTime)
-			.duration(transitionTime)
+			.delay(Chart.delayTime)
+			.duration(Chart.transitionTime)
 			.attr("d", xyTransition);
 
 		svg.append("path")
@@ -45,8 +43,8 @@ class RecoveryCycle extends Chart {
 			.attr("class", "meanline")
 			.attr("d", xyDrawer)
 			.transition()
-			.delay(delayTime)
-			.duration(transitionTime)
+			.delay(Chart.delayTime)
+			.duration(Chart.transitionTime)
 			.attr("d", xyTransition);
 
 		// Add a reference line for 0
@@ -63,8 +61,8 @@ class RecoveryCycle extends Chart {
 			.attr("class", "line")
 			.attr("d", xyDrawer)
 			.transition()
-			.delay(delayTime)
-			.duration(transitionTime)
+			.delay(Chart.delayTime)
+			.duration(Chart.transitionTime)
 			.attr("d", xyTransition);
 
 		const circles = svg.selectAll("circle")
@@ -77,8 +75,8 @@ class RecoveryCycle extends Chart {
 			.style("fill", d => d.wasImputed ? "red" : "black");
 		circles
 			.transition()
-			.delay(delayTime)
-			.duration(transitionTime)
+			.delay(Chart.delayTime)
+			.duration(Chart.transitionTime)
 			.attr("cy", d => self.y(d.value))
 	}
 

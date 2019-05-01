@@ -62,3 +62,13 @@ class Chart {
 			.text(this.yLabel);
 	}
 }
+
+// Set some constants for the class
+Object.defineProperty(Chart, 'delayTime', {
+	value: 750,
+	enumerable: true,
+})
+Object.defineProperty(Chart, 'transitionTime', {
+	value: 2500,
+	enumerable: true,
+})
