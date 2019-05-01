@@ -153,7 +153,7 @@ class Chart {
 			.attr("cy", d => self.yscale(d.value))
 	}
 
-	animateXYLineWithMean(lineData, config) {
+	animateXYLineWithMean(lineData, config = Chart.defaultConfig()) {
 		this.animateCI(this.ciLayer, [Chart.normativeRange(lineData, config)])
 		this.animateLine(this.meanLayer, [Chart.dataAsXY(lineData, config.xName, config.meanName)], "meanline")
 		this.drawHorizontalLine(this.linesLayer, 0, config.xMin)

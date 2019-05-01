@@ -16,9 +16,9 @@ class ThresholdElectrotonus extends Chart {
 	get yLabel() { return "Delay (ms)" }
 
 	drawLines(svg) {
-		this.animateXYLineWithMean(this.hy40, Chart.defaultConfig())
-		this.animateXYLineWithMean(this.de40, Chart.defaultConfig())
-		this.animateXYLineWithMean(this.hy20, Chart.defaultConfig())
-		this.animateXYLineWithMean(this.de20, Chart.defaultConfig())
+		this.animateXYLineWithMean(this.hy40)
+		this.animateXYLineWithMean(this.de40)
+		this.animateXYLineWithMean(this.hy20)
+		this.animateXYLineWithMean(this.de20)
 	}
 }
