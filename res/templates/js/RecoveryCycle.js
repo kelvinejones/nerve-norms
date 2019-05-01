@@ -3,8 +3,7 @@ class RecoveryCycle extends Chart {
 		super()
 		this.data = data
 
-		this.x = d3.scaleLog().range([0, this.width]);
-		this.y = d3.scaleLinear().range([this.height, 0]);
+		this.xscale = d3.scaleLog().range([0, this.width]);
 	}
 
 	get name() { return "Recovery Cycle" }
@@ -21,12 +20,12 @@ class RecoveryCycle extends Chart {
 		const normRange = normativeRange(this.data)
 
 		const xyDrawer = d3.line()
-			.x(d => self.x(d.x))
-			.y(d => self.y(0))
+			.x(d => self.xscale(d.x))
+			.y(d => self.yscale(0))
 
 		const xyTransition = d3.line()
-			.x(d => self.x(d.x))
-			.y(d => self.y(d.y));
+			.x(d => self.xscale(d.x))
+			.y(d => self.yscale(d.y));
 
 		// Draw the confidence interval
 		svg.append("path")
@@ -69,15 +68,15 @@ class RecoveryCycle extends Chart {
 			.data(this.data)
 			.enter()
 			.append("circle");
-		circles.attr("cx", d => self.x(d.delay))
-			.attr("cy", self.y(0))
+		circles.attr("cx", d => self.xscale(d.delay))
+			.attr("cy", self.yscale(0))
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => d.wasImputed ? "red" : "black");
 		circles
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("cy", d => self.y(d.value))
+			.attr("cy", d => self.yscale(d.value))
 	}
 
 }

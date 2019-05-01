@@ -3,6 +3,10 @@ class Chart {
 		this.margin = { top: 20, right: 20, bottom: 50, left: 50 };
 		this.width = 600 - this.margin.left - this.margin.right;
 		this.height = 300 - this.margin.top - this.margin.bottom;
+
+		// Set the default scaling
+		this.xscale = d3.scaleLinear().range([0, this.width]);
+		this.yscale = d3.scaleLinear().range([this.height, 0]);
 	}
 
 	get name() { throw new Error("A Chart must implement name()") }
@@ -20,18 +24,18 @@ class Chart {
 				"translate(" + this.margin.left + "," + this.margin.top + ")");
 
 		// Scale the range of the data
-		this.x.domain([1, 200]);
-		this.y.domain([-50, 110]);
+		this.xscale.domain([1, 200]);
+		this.yscale.domain([-50, 110]);
 
 		// Add the X Axis
 		var xelements = svg.append("g")
 			.attr("transform", "translate(0," + this.height + ")")
-			.call(d3.axisBottom(this.x).ticks(2)
+			.call(d3.axisBottom(this.xscale).ticks(2)
 				.tickFormat(d3.format("")));
 
 		// Add the Y Axis
 		var yelements = svg.append("g")
-			.call(d3.axisLeft(this.y));
+			.call(d3.axisLeft(this.yscale));
 
 		if (!hideLabels) {
 			this.labels(svg);
