@@ -11,6 +11,8 @@ class RecoveryCycle extends Chart {
 	get yLabel() { return "Interstimulus Interval (ms)" }
 
 	drawLines(svg) {
-		this.animateXYLineWithMean(this.data, 1)
+		let config = Chart.defaultConfig()
+		config.xMin = 1
+		this.animateXYLineWithMean(this.data, config)
 	}
 }

@@ -69,14 +69,24 @@ class Chart {
 			.text(this.yLabel);
 	}
 
-	static normativeRange(data, xName = 'delay', yName = 'mean', ySDName = 'SD') {
+	static normativeRange(data, config) {
 		return (Array.from(data)
-				.map(function(d) { return { x: d[xName], y: d[yName] + 2 * (d[ySDName] || 0) } }))
-			.concat(Array.from(data).reverse().map(function(d) { return { x: d[xName], y: d[yName] - 2 * (d[ySDName] || 0) } }))
+				.map(function(d) { return { x: d[config.xName], y: d[config.yName] + 2 * (d[config.ySDName] || 0) } }))
+			.concat(Array.from(data).reverse().map(function(d) { return { x: d[config.xName], y: d[config.yName] - 2 * (d[config.ySDName] || 0) } }))
 	}
 
-	static dataAsXY(data, xName = 'delay', yName = 'value') {
-		return data.map(function(d) { return { x: d['delay'], y: d['value'] } })
+	static dataAsXY(data, xName, yName) {
+		return data.map(function(d) { return { x: d[xName], y: d[yName] } })
+	}
+
+	static defaultConfig() {
+		return {
+			xName: 'delay',
+			yName: 'value',
+			ySDName: 'SD',
+			meanName: 'mean',
+			xMin: 0,
+		}
 	}
 
 	xZeroLine() {
@@ -123,7 +133,7 @@ class Chart {
 	}
 
 
-	animateCircles(svg, circleLocations) {
+	animateCircles(svg, circleLocations, xName) {
 		// Add circles into a separate SVG group
 		svg = svg.append("g")
 		const self = this
@@ -132,7 +142,7 @@ class Chart {
 			.data(circleLocations)
 			.enter()
 			.append("circle");
-		circles.attr("cx", d => self.xscale(d.delay))
+		circles.attr("cx", d => self.xscale(d[xName]))
 			.attr("cy", self.yscale(0))
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => d.wasImputed ? "red" : "black");
@@ -143,12 +153,12 @@ class Chart {
 			.attr("cy", d => self.yscale(d.value))
 	}
 
-	animateXYLineWithMean(lineData, xMin = 0) {
-		this.animateCI(this.ciLayer, [Chart.normativeRange(lineData)])
-		this.animateLine(this.meanLayer, [Chart.dataAsXY(lineData, 'delay', 'mean')], "meanline")
-		this.drawHorizontalLine(this.linesLayer, 0, xMin)
-		this.animateLine(this.valueLayer, [Chart.dataAsXY(lineData)], "line")
-		this.animateCircles(this.circlesLayer, lineData)
+	animateXYLineWithMean(lineData, config) {
+		this.animateCI(this.ciLayer, [Chart.normativeRange(lineData, config)])
+		this.animateLine(this.meanLayer, [Chart.dataAsXY(lineData, config.xName, config.meanName)], "meanline")
+		this.drawHorizontalLine(this.linesLayer, 0, config.xMin)
+		this.animateLine(this.valueLayer, [Chart.dataAsXY(lineData, config.xName, config.yName)], "line")
+		this.animateCircles(this.circlesLayer, lineData, config.xName)
 	}
 }
 
