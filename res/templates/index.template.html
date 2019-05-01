@@ -18,6 +18,7 @@
     <script src="data/example-CR21S.json"></script>
     <script src="js/Chart.js"></script>
     <script src="js/RecoveryCycle.js"></script>
+    <script src="js/ThresholdElectrotonus.js"></script>
 
     <style type="text/css">
       .line {
@@ -107,7 +108,7 @@
 
       <div id="thresholdElectrotonus" class="card border-danger">
         <div class="card-header bg-danger text-white">Threshold Electrotonus</div>
-        <div class="card-body"><img src="TE.png" style="width:100%;"></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             Discrete Measures
@@ -204,6 +205,9 @@
     <script>
       var rc = new RecoveryCycle(data.plots[7].data)
       rc.draw(d3.select("#recoveryCycle svg"), true)
+
+      var te = new ThresholdElectrotonus(data.plots[2].data, data.plots[3].data, data.plots[4].data, data.plots[5].data)
+      te.draw(d3.select("#thresholdElectrotonus svg"), true)
     </script>
   </body>
 </html>
