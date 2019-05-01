@@ -23,6 +23,13 @@ class Chart {
 			.attr("transform",
 				"translate(" + this.margin.left + "," + this.margin.top + ")");
 
+		// Add layers for various elements
+		this.ciLayer = svg.append("g")
+		this.meanLayer = svg.append("g")
+		this.linesLayer = svg.append("g")
+		this.valueLayer = svg.append("g")
+		this.circlesLayer = svg.append("g")
+
 		// Add the X Axis
 		var xelements = svg.append("g")
 			.attr("transform", "translate(0," + this.height + ")")
@@ -117,6 +124,8 @@ class Chart {
 
 
 	animateCircles(svg, circleLocations) {
+		// Add circles into a separate SVG group
+		svg = svg.append("g")
 		const self = this
 
 		const circles = svg.selectAll("circle")
@@ -135,15 +144,11 @@ class Chart {
 	}
 
 	animateXYLineWithMean(svg, lineData, className, xMin = 0) {
-		// Put it all into a single svg group
-		svg = svg.append("g")
-			.attr("class", className)
-
-		this.animateCI(svg, [Chart.normativeRange(lineData)])
-		this.animateLine(svg, [Chart.dataAsXY(lineData, 'delay', 'mean')], "meanline")
-		this.drawHorizontalLine(svg, 0, xMin)
-		this.animateLine(svg, [Chart.dataAsXY(lineData)], "line")
-		this.animateCircles(svg, lineData)
+		this.animateCI(this.ciLayer, [Chart.normativeRange(lineData)])
+		this.animateLine(this.meanLayer, [Chart.dataAsXY(lineData, 'delay', 'mean')], "meanline")
+		this.drawHorizontalLine(this.linesLayer, 0, xMin)
+		this.animateLine(this.valueLayer, [Chart.dataAsXY(lineData)], "line")
+		this.animateCircles(this.circlesLayer, lineData)
 	}
 }
 
