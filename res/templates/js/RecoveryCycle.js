@@ -20,9 +20,7 @@ class RecoveryCycle extends Chart {
 		const valueData = this.data.map(function(d) { return { x: d.delay, y: d.value } })
 		const meanData = this.data.map(function(d) { return { x: d.delay, y: d.mean } })
 
-		const normativeRange = (Array.from(this.data)
-				.map(function(d) { return { x: d.delay, y: d.mean + 2 * d.SD } }))
-			.concat(Array.from(this.data).reverse().map(function(d) { return { x: d.delay, y: d.mean - 2 * d.SD } }))
+		const normRange = normativeRange(this.data)
 
 		const xyDrawer = d3.line()
 			.x(d => self.x(d.x))
@@ -34,7 +32,7 @@ class RecoveryCycle extends Chart {
 
 		// Draw the confidence interval
 		svg.append("path")
-			.data([normativeRange])
+			.data([normRange])
 			.attr("class", "confidenceinterval")
 			.attr("d", xyDrawer)
 			.transition()
