@@ -14,7 +14,7 @@ class RecoveryCycle extends Chart {
 		const self = this
 
 		// define the line
-		const valueData = this.data.map(function(d) { return { x: d.delay, y: d.value } })
+		const valueData = Chart.valueData(this.data)
 		const meanData = this.data.map(function(d) { return { x: d.delay, y: d.mean } })
 
 		const normRange = Chart.normativeRange(this.data)
