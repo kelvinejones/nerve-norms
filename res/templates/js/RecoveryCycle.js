@@ -19,27 +19,27 @@ class RecoveryCycle extends Chart {
 
 		const normRange = Chart.normativeRange(this.data)
 
-		const xyDrawer = this.xZeroLine()
-		const xyTransition = this.xyLine()
+		const xZeroLine = this.xZeroLine()
+		const xyLine = this.xyLine()
 
 		// Draw the confidence interval
 		svg.append("path")
 			.data([normRange])
 			.attr("class", "confidenceinterval")
-			.attr("d", xyDrawer)
+			.attr("d", xZeroLine)
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("d", xyTransition);
+			.attr("d", xyLine);
 
 		svg.append("path")
 			.data([meanData])
 			.attr("class", "meanline")
-			.attr("d", xyDrawer)
+			.attr("d", xZeroLine)
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("d", xyTransition);
+			.attr("d", xyLine);
 
 		// Add a reference line for 0
 		svg.append("path")
@@ -47,17 +47,17 @@ class RecoveryCycle extends Chart {
 				[{ x: 1, y: 0 }, { x: 200, y: 0 }]
 			])
 			.attr("class", "meanline")
-			.attr("d", xyDrawer);
+			.attr("d", xZeroLine);
 
 		// Add the valueline path.
 		svg.append("path")
 			.data([valueData])
 			.attr("class", "line")
-			.attr("d", xyDrawer)
+			.attr("d", xZeroLine)
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("d", xyTransition);
+			.attr("d", xyLine);
 
 		const circles = svg.selectAll("circle")
 			.data(this.data)
