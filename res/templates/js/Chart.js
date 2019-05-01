@@ -109,6 +109,15 @@ class Chart {
 			.duration(Chart.transitionTime)
 			.attr("d", this.xyLine());
 	}
+
+	drawHorizontalLine(svg, yVal, xMin = 0, xMax = 1000000) {
+		svg.append("path")
+			.data([
+				[{ x: xMin, y: yVal }, { x: xMax, y: yVal }]
+			])
+			.attr("class", "meanline")
+			.attr("d", this.xZeroLine());
+	}
 }
 
 // Set some constants for the class

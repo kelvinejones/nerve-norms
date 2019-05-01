@@ -17,13 +17,7 @@ class RecoveryCycle extends Chart {
 
 		this.animateLine(svg, [Chart.dataAsXY(this.data, 'delay', 'mean')], "meanline")
 
-		// Add a reference line for 0
-		svg.append("path")
-			.data([
-				[{ x: 1, y: 0 }, { x: 200, y: 0 }]
-			])
-			.attr("class", "meanline")
-			.attr("d", this.xZeroLine());
+		this.drawHorizontalLine(svg, 0, 1)
 
 		// Add the valueline path.
 		this.animateLine(svg, [Chart.dataAsXY(this.data)], "line")
