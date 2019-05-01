@@ -79,10 +79,17 @@ class Chart {
 	}
 
 	normativeRange(data) {
-		let self = this
+		let xMean = this.xMeanName || this.xName
+		let yMean = this.yMeanName || this.yName
+		let ySD = this.ySDName
+		let xSD = this.xSDName
+		let first = data[0]
+		let last = data[data.length - 1]
 		return (Array.from(data)
-				.map(function(d) { return { x: d[self.xName], y: d[self.yName] + 2 * (d[self.ySDName] || 0) } }))
-			.concat(Array.from(data).reverse().map(function(d) { return { x: d[self.xName], y: d[self.yName] - 2 * (d[self.ySDName] || 0) } }))
+				.map(function(d) { return { x: d[xMean] - 2 * (d[xSD] || 0), y: d[yMean] + 2 * (d[ySD] || 0) } }))
+			.concat({ x: last[xMean] + 2 * (last[xSD] || 0), y: last[yMean] + 2 * (last[ySD] || 0) })
+			.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean] + 2 * (d[xSD] || 0), y: d[yMean] - 2 * (d[ySD] || 0) } }))
+			.concat({ x: first[xMean] - 2 * (first[xSD] || 0), y: first[yMean] - 2 * (first[ySD] || 0) })
 	}
 
 	dataAsXY(data, xName, yName) {
@@ -159,7 +166,7 @@ class Chart {
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("cy", d => self.yscale(d.value))
+			.attr("cy", d => self.yscale(d[this.yName]))
 	}
 
 	animateXYLineWithMean(lineData) {

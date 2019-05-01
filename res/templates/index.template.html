@@ -21,6 +21,7 @@
     <script src="js/ThresholdElectrotonus.js"></script>
     <script src="js/ChargeDuration.js"></script>
     <script src="js/ThresholdIV.js"></script>
+    <script src="js/StimulusResponse.js"></script>
 
     <style type="text/css">
       .line {
@@ -187,7 +188,7 @@
 
       <div id="stimulusResponse" class="card border-success">
         <div class="card-header bg-success text-white">Stimulus Response</div>
-        <div class="card-body"><img src="SR.png" style="width:100%;"></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             Discrete Measures
@@ -216,6 +217,9 @@
 
       var rc = new ThresholdIV(data.plots[6].data)
       rc.draw(d3.select("#thresholdIV svg"), true)
+
+      var rc = new StimulusResponse(data.plots[0].data)
+      rc.draw(d3.select("#stimulusResponse svg"), true)
     </script>
   </body>
 </html>
