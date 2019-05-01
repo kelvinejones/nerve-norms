@@ -13,7 +13,8 @@ class Chart {
 		this.yName = 'value'
 		this.ySDName = 'SD'
 		this.meanName = 'mean'
-		this.xMin = 0
+		this.xMin = -1000000
+		this.xMax = 1000000
 	}
 
 	get name() { throw new Error("A Chart must implement name()") }
@@ -123,13 +124,13 @@ class Chart {
 			.attr("d", this.xyLine());
 	}
 
-	drawHorizontalLine(svg, yVal, xMin = 0, xMax = 1000000) {
+	drawHorizontalLine(svg, yVal) {
 		svg.append("path")
 			.data([
-				[{ x: xMin, y: yVal }, { x: xMax, y: yVal }]
+				[{ x: this.xMin, y: yVal }, { x: this.xMax, y: yVal }]
 			])
 			.attr("class", "meanline")
-			.attr("d", this.xZeroLine());
+			.attr("d", this.xyLine());
 	}
 
 
