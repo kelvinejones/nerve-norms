@@ -15,6 +15,8 @@ class Chart {
 		this.meanName = 'mean'
 		this.xMin = -1000000
 		this.xMax = 1000000
+		this.yMin = -1000000
+		this.yMax = 1000000
 	}
 
 	get name() { throw new Error("A Chart must implement name()") }
@@ -133,6 +135,14 @@ class Chart {
 			.attr("d", this.xyLine());
 	}
 
+	drawVerticalLine(svg, xVal) {
+		svg.append("path")
+			.data([
+				[{ y: this.yMin, x: xVal }, { y: this.yMax, x: xVal }]
+			])
+			.attr("class", "meanline")
+			.attr("d", this.xyLine());
+	}
 
 	animateCircles(svg, circleLocations) {
 		// Add circles into a separate SVG group
