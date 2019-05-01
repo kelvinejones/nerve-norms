@@ -6,6 +6,7 @@ class StimulusResponse extends Chart {
 		this.yName = 'valueY'
 		this.xMeanName = 'meanX'
 		this.yMeanName = 'meanY'
+		this.xSDName = 'SDX'
 		this.ySDName = 'SDY'
 	}
 
