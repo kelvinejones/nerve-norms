@@ -23,10 +23,6 @@ class Chart {
 			.attr("transform",
 				"translate(" + this.margin.left + "," + this.margin.top + ")");
 
-		// Scale the range of the data
-		this.xscale.domain([1, 200]);
-		this.yscale.domain([-50, 110]);
-
 		// Add the X Axis
 		var xelements = svg.append("g")
 			.attr("transform", "translate(0," + this.height + ")")
