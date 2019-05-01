@@ -75,6 +75,18 @@ class Chart {
 	static valueData(data, xName = 'delay', yName = 'value') {
 		return data.map(function(d) { return { x: d['delay'], y: d['value'] } })
 	}
+
+	xZeroLine() {
+		return d3.line()
+			.x(d => this.xscale(d.x))
+			.y(d => this.yscale(0))
+	}
+
+	xyLine() {
+		return d3.line()
+			.x(d => this.xscale(d.x))
+			.y(d => this.yscale(d.y));
+	}
 }
 
 // Set some constants for the class

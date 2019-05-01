@@ -19,13 +19,8 @@ class RecoveryCycle extends Chart {
 
 		const normRange = Chart.normativeRange(this.data)
 
-		const xyDrawer = d3.line()
-			.x(d => self.xscale(d.x))
-			.y(d => self.yscale(0))
-
-		const xyTransition = d3.line()
-			.x(d => self.xscale(d.x))
-			.y(d => self.yscale(d.y));
+		const xyDrawer = this.xZeroLine()
+		const xyTransition = this.xyLine()
 
 		// Draw the confidence interval
 		svg.append("path")
