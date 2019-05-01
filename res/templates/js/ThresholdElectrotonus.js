@@ -16,26 +16,9 @@ class ThresholdElectrotonus extends Chart {
 	get yLabel() { return "??Interstimulus Interval (ms)" }
 
 	drawLines(svg) {
-		this.animateCI(svg, [Chart.normativeRange(this.hy40)])
-		this.animateCI(svg, [Chart.normativeRange(this.de40)])
-		this.animateCI(svg, [Chart.normativeRange(this.hy20)])
-		this.animateCI(svg, [Chart.normativeRange(this.de20)])
-
-		this.animateLine(svg, [Chart.dataAsXY(this.hy40, 'delay', 'mean')], "meanline")
-		this.animateLine(svg, [Chart.dataAsXY(this.de40, 'delay', 'mean')], "meanline")
-		this.animateLine(svg, [Chart.dataAsXY(this.hy20, 'delay', 'mean')], "meanline")
-		this.animateLine(svg, [Chart.dataAsXY(this.de20, 'delay', 'mean')], "meanline")
-
-		this.drawHorizontalLine(svg, 0)
-
-		this.animateLine(svg, [Chart.dataAsXY(this.hy40)], "line")
-		this.animateLine(svg, [Chart.dataAsXY(this.de40)], "line")
-		this.animateLine(svg, [Chart.dataAsXY(this.hy20)], "line")
-		this.animateLine(svg, [Chart.dataAsXY(this.de20)], "line")
-
-		this.animateCircles(svg, this.hy40)
-		this.animateCircles(svg, this.de40)
-		this.animateCircles(svg, this.hy20)
-		this.animateCircles(svg, this.de20)
+		this.animateXYLineWithMean(svg, this.hy40, "hy40")
+		this.animateXYLineWithMean(svg, this.de40, "de40")
+		this.animateXYLineWithMean(svg, this.hy20, "hy20")
+		this.animateXYLineWithMean(svg, this.de20, "de20")
 	}
 }

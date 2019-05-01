@@ -133,6 +133,18 @@ class Chart {
 			.duration(Chart.transitionTime)
 			.attr("cy", d => self.yscale(d.value))
 	}
+
+	animateXYLineWithMean(svg, lineData, className, xMin = 0) {
+		// Put it all into a single svg group
+		svg = svg.append("g")
+			.attr("class", className)
+
+		this.animateCI(svg, [Chart.normativeRange(lineData)])
+		this.animateLine(svg, [Chart.dataAsXY(lineData, 'delay', 'mean')], "meanline")
+		this.drawHorizontalLine(svg, 0, xMin)
+		this.animateLine(svg, [Chart.dataAsXY(lineData)], "line")
+		this.animateCircles(svg, lineData)
+	}
 }
 
 // Set some constants for the class
