@@ -1,5 +1,5 @@
 class Chart {
-	constructor(xRange, yRange, xscale = d3.scaleLinear(), yscale = d3.scaleLinear()) {
+	constructor(xRange, yRange, xScaleType = Chart.scaleType.LINEAR, yScaleType = Chart.scaleType.LINEAR) {
 		this.xRange = xRange
 		this.yRange = yRange
 
@@ -8,8 +8,8 @@ class Chart {
 		this.height = 300 - this.margin.top - this.margin.bottom;
 
 		// Set the default scaling
-		this.xscale = xscale.range([0, this.width]).domain(xRange);
-		this.yscale = yscale.range([this.height, 0]).domain(yRange);
+		this.xscale = this.makeScale(xScaleType).range([0, this.width]).domain(xRange);
+		this.yscale = this.makeScale(yScaleType).range([this.height, 0]).domain(yRange);
 
 		// Set default config values
 		this.xName = 'delay'
@@ -18,6 +18,21 @@ class Chart {
 		this.yMeanName = 'mean'
 
 		this.yAnimStart = this.animationStartValue(this.yRange)
+	}
+
+	makeScale(name) {
+		let scale
+		switch (name) {
+			case "LINEAR":
+				scale = d3.scaleLinear()
+				scale.scaleType = Chart.scaleType.LINEAR
+				break
+			case "LOG":
+				scale = d3.scaleLog()
+				scale.scaleType = Chart.scaleType.LOG
+				break
+		}
+		return scale
 	}
 
 	animationStartValue(range) {
@@ -194,5 +209,12 @@ Object.defineProperty(Chart, 'delayTime', {
 })
 Object.defineProperty(Chart, 'transitionTime', {
 	value: 2500,
+	enumerable: true,
+})
+Object.defineProperty(Chart, 'scaleType', {
+	value: {
+		LINEAR: "LINEAR",
+		LOG: "LOG",
+	},
 	enumerable: true,
 })
