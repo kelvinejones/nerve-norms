@@ -132,13 +132,15 @@ class Chart {
 				.concat({ x: last.rightLimit, y: last.upperLimit || last[yMean] })
 				.concat(Array.from(data).reverse().map(function(d) { return { x: d.rightLimit, y: d.lowerLimit || d[yMean] } }))
 				.concat({ x: first.leftLimit, y: first.lowerLimit || first[yMean] })
-		} else {
+		} else if (first.upperLimit !== undefined) {
 			// This is a simple limit with upper and lower bounds.
 			return this.scaleArrayWithinRange(Array.from(data)
 					.map(function(d) { return { x: d[xMean], y: d.lowerLimit || d[yMean] } }))
 				.concat({ x: last[xMean], y: last.upperLimit || last[yMean] })
 				.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean], y: d.upperLimit || d[yMean] } }))
 				.concat({ x: first[xMean], y: first.lowerLimit || first[yMean] })
+		} else {
+			return []
 		}
 	}
 
