@@ -104,7 +104,7 @@ class Chart {
 			.text(this.yLabel);
 	}
 
-	populationMeanCI(data) {
+	populationMeanCI(data, numSD = 2) {
 		const xMean = this.xMeanName || this.xName
 		const yMean = this.yMeanName || this.yName
 		const ySD = this.ySDName
@@ -112,10 +112,10 @@ class Chart {
 		const first = data[0]
 		const last = data[data.length - 1]
 		return this.scaleArrayWithinRange(Array.from(data)
-				.map(function(d) { return { x: d[xMean] - 2 * (d[xSD] || 0), y: d[yMean] + 2 * (d[ySD] || 0) } }))
-			.concat({ x: last[xMean] + 2 * (last[xSD] || 0), y: last[yMean] + 2 * (last[ySD] || 0) })
-			.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean] + 2 * (d[xSD] || 0), y: d[yMean] - 2 * (d[ySD] || 0) } }))
-			.concat({ x: first[xMean] - 2 * (first[xSD] || 0), y: first[yMean] - 2 * (first[ySD] || 0) })
+				.map(function(d) { return { x: d[xMean] - numSD * (d[xSD] || 0), y: d[yMean] + numSD * (d[ySD] || 0) } }))
+			.concat({ x: last[xMean] + numSD * (last[xSD] || 0), y: last[yMean] + numSD * (last[ySD] || 0) })
+			.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean] + numSD * (d[xSD] || 0), y: d[yMean] - numSD * (d[ySD] || 0) } }))
+			.concat({ x: first[xMean] - numSD * (first[xSD] || 0), y: first[yMean] - numSD * (first[ySD] || 0) })
 	}
 
 	normativeLimits(data) {
