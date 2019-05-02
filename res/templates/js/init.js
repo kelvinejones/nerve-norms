@@ -22,8 +22,8 @@ function initPlots(data) {
 	// Now set all excitability variables
 
 	function setExcitabilityVariable(idString, value, score) {
-		// TODO: This should find the span "excite-name" instead of using children[1]
-		document.getElementById(idString).children[1].innerHTML = value
+		var row = document.getElementById(idString);
+		row.getElementsByClassName("excite-value")[0].innerHTML = value
 		// TODO: update visualization using score
 	}
 
