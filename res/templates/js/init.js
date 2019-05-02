@@ -36,7 +36,6 @@ function initPlots(data) {
 
 		percent = score * 100
 		color = interpolate(score)
-		console.log(color)
 
 		row.style.background = "linear-gradient(to right, " + color + " " + percent + "%, #ffffff 0%)"
 	}
