@@ -104,7 +104,7 @@ class Chart {
 			.text(this.yLabel);
 	}
 
-	normativeRange(data) {
+	populationMeanCI(data) {
 		const xMean = this.xMeanName || this.xName
 		const yMean = this.yMeanName || this.yName
 		const ySD = this.ySDName
@@ -215,7 +215,7 @@ class Chart {
 	}
 
 	animateXYLineWithMean(lineData) {
-		this.animateCI(this.ciLayer, [this.normativeRange(lineData)])
+		this.animateCI(this.ciLayer, [this.populationMeanCI(lineData)])
 		this.animateLine(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], "meanline")
 		this.animateLine(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], "line")
 		this.animateCircles(this.circlesLayer, lineData)
