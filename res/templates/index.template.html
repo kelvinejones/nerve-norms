@@ -16,6 +16,7 @@
 
     <!-- Application Code -->
     <script src="data/example-WI20S.json"></script>
+    <script src="js/init.js"></script>
     <script src="js/Chart.js"></script>
     <script src="js/RecoveryCycle.js"></script>
     <script src="js/ThresholdElectrotonus.js"></script>
@@ -230,23 +231,7 @@
     </div>
 
     <script>
-      var rc = new RecoveryCycle(data.plots[7].data)
-      rc.draw(d3.select("#recoveryCycle svg"), true)
-
-      var te = new ThresholdElectrotonus(data.plots[2].data, data.plots[3].data, data.plots[4].data, data.plots[5].data)
-      te.draw(d3.select("#thresholdElectrotonus svg"), true)
-
-      var rc = new ChargeDuration(data.plots[1].data)
-      rc.draw(d3.select("#chargeDuration svg"), true)
-
-      var rc = new ThresholdIV(data.plots[6].data)
-      rc.draw(d3.select("#thresholdIV svg"), true)
-
-      var rc = new StimulusResponse(data.plots[0].data)
-      rc.draw(d3.select("#stimulusResponse svg"), true)
-
-      var rc = new StimulusRelative(data.plots[0].data)
-      rc.draw(d3.select("#stimulusResponseRelative svg"), true)
+      initPlots(data);
     </script>
   </body>
 </html>
