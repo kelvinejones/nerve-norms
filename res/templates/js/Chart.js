@@ -100,7 +100,7 @@ class Chart {
 	xZeroLine() {
 		return d3.line()
 			.x(d => this.xscale(d.x))
-			.y(d => this.yscale(0))
+			.y(d => this.yscale(this.yRange[0]))
 	}
 
 	xyLine() {
@@ -159,7 +159,7 @@ class Chart {
 			.enter()
 			.append("circle");
 		circles.attr("cx", d => self.xscale(d[this.xName]))
-			.attr("cy", self.yscale(0))
+			.attr("cy", self.yscale(this.yRange[0]))
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => d.wasImputed ? "red" : "black");
 		circles
