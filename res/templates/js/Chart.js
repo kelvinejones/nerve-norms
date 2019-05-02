@@ -18,7 +18,6 @@ class Chart {
 		this.yMeanName = 'mean'
 
 		this.yAnimStart = this.animationStartValue(this.yRange)
-		console.log(this.yAnimStart)
 	}
 
 	animationStartValue(range) {
