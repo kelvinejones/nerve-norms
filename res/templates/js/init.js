@@ -1,23 +1,29 @@
 function initPlots(data) {
 	// Create all of the plots
+	const plots = [{
+		chart: new RecoveryCycle(data.plots[7].data),
+		selector: "#recoveryCycle svg",
+	}, {
+		chart: new ThresholdElectrotonus(data.plots[2].data, data.plots[3].data, data.plots[4].data, data.plots[5].data),
+		selector: "#thresholdElectrotonus svg",
+	}, {
+		chart: new ChargeDuration(data.plots[1].data),
+		selector: "#chargeDuration svg",
+	}, {
+		chart: new ThresholdIV(data.plots[6].data),
+		selector: "#thresholdIV svg",
+	}, {
+		chart: new StimulusResponse(data.plots[0].data),
+		selector: "#stimulusResponse svg",
+	}, {
+		chart: new StimulusRelative(data.plots[0].data),
+		selector: "#stimulusResponseRelative svg",
+	}, ]
 
-	const rc = new RecoveryCycle(data.plots[7].data)
-	rc.draw(d3.select("#recoveryCycle svg"), true)
-
-	const te = new ThresholdElectrotonus(data.plots[2].data, data.plots[3].data, data.plots[4].data, data.plots[5].data)
-	te.draw(d3.select("#thresholdElectrotonus svg"), true)
-
-	const cd = new ChargeDuration(data.plots[1].data)
-	cd.draw(d3.select("#chargeDuration svg"), true)
-
-	const tiv = new ThresholdIV(data.plots[6].data)
-	tiv.draw(d3.select("#thresholdIV svg"), true)
-
-	const sr = new StimulusResponse(data.plots[0].data)
-	sr.draw(d3.select("#stimulusResponse svg"), true)
-
-	const srrel = new StimulusRelative(data.plots[0].data)
-	srrel.draw(d3.select("#stimulusResponseRelative svg"), true)
+	// Draw them all
+	plots.forEach(pl => {
+		pl.chart.draw(d3.select(pl.selector), true)
+	})
 
 	let opacity = 0.8,
 		red = d3.hsl("red"),
