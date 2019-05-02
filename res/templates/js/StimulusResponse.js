@@ -1,7 +1,7 @@
 class StimulusResponse extends Chart {
-	constructor(data) {
+	constructor(plots) {
 		super([0.01, 20], [0.01, 20], Chart.scaleType.LOG, Chart.scaleType.LOG)
-		this.data = data
+		this.data = plots.sr.data
 		this.xName = 'valueX'
 		this.yName = 'valueY'
 		this.xMeanName = 'meanX'

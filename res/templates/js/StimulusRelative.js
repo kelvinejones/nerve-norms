@@ -1,8 +1,8 @@
 class StimulusRelative extends Chart {
-	constructor(data) {
+	constructor(plots) {
 		super([0, 200], [0, 100])
-		const stimFor50PercentMax = data[24].valueX // Could also be extracted from excitability variables
-		this.data = data.map(function callback(d, i) {
+		const stimFor50PercentMax = plots.sr.data[24].valueX // Could also be extracted from excitability variables
+		this.data = plots.sr.data.map(function callback(d, i) {
 			return {
 				'x': d.valueX / stimFor50PercentMax * 100, // Normalize each element
 				'y': (i + 1) * 2,

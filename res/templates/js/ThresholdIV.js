@@ -1,7 +1,7 @@
 class ThresholdIV extends Chart {
-	constructor(data) {
+	constructor(plots) {
 		super([-100, 50], [-400, 50])
-		this.data = data
+		this.data = plots.tiv.data
 		this.xName = 'current'
 	}
 

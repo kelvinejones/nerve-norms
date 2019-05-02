@@ -1,22 +1,22 @@
 function initPlots(data) {
 	// Create all of the plots
 	const plots = [{
-		chart: new RecoveryCycle(data.plots.rc.data),
+		chart: new RecoveryCycle(data.plots),
 		selector: "#recoveryCycle svg",
 	}, {
-		chart: new ThresholdElectrotonus(data.plots.teh40.data, data.plots.ted40.data, data.plots.teh20.data, data.plots.ted20.data),
+		chart: new ThresholdElectrotonus(data.plots, data.plots, data.plots, data.plots),
 		selector: "#thresholdElectrotonus svg",
 	}, {
-		chart: new ChargeDuration(data.plots.cd.data),
+		chart: new ChargeDuration(data.plots),
 		selector: "#chargeDuration svg",
 	}, {
-		chart: new ThresholdIV(data.plots.tiv.data),
+		chart: new ThresholdIV(data.plots),
 		selector: "#thresholdIV svg",
 	}, {
-		chart: new StimulusResponse(data.plots.sr.data),
+		chart: new StimulusResponse(data.plots),
 		selector: "#stimulusResponse svg",
 	}, {
-		chart: new StimulusRelative(data.plots.sr.data),
+		chart: new StimulusRelative(data.plots),
 		selector: "#stimulusResponseRelative svg",
 	}, ]
 

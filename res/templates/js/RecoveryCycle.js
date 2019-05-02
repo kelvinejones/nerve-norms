@@ -1,7 +1,7 @@
 class RecoveryCycle extends Chart {
-	constructor(data) {
+	constructor(plots) {
 		super([1, 200], [-50, 110], Chart.scaleType.LOG)
-		this.data = data
+		this.data = plots.rc.data
 	}
 
 	get name() { return "Recovery Cycle" }

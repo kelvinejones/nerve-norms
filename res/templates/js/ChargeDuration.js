@@ -1,7 +1,7 @@
 class ChargeDuration extends Chart {
-	constructor(data) {
+	constructor(plots) {
 		super([0, 1], [0, 10])
-		this.data = data
+		this.data = plots.cd.data
 		this.xName = 'stimWidth'
 	}
 
