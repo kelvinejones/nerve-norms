@@ -1,4 +1,6 @@
 function initPlots(data) {
+	// Create all of the plots
+
 	var rc = new RecoveryCycle(data.plots[7].data)
 	rc.draw(d3.select("#recoveryCycle svg"), true)
 
@@ -16,4 +18,20 @@ function initPlots(data) {
 
 	var srrel = new StimulusRelative(data.plots[0].data)
 	srrel.draw(d3.select("#stimulusResponseRelative svg"), true)
+
+	// Now set all excitability variables
+
+	function setExcitabilityVariable(idString, value, score) {
+		// TODO: This should find the span "excite-name" instead of using children[1]
+		document.getElementById(idString).children[1].innerHTML = value
+		// TODO: update visualization using score
+	}
+
+	setExcitabilityVariable("overall-score", data.outlierScore, data.outlierScore)
+
+	data.plots.map(function(pl) { return pl.discreteMeasures; }).flat()
+		.concat(data.discreteMeasures)
+		.forEach(function(exind) {
+			setExcitabilityVariable("qtrac-excite-" + exind.qtracExciteID, exind.value, exind.outlierScore)
+		})
 }
