@@ -16,6 +16,18 @@ class Chart {
 		this.yName = 'value'
 		this.ySDName = 'SD'
 		this.yMeanName = 'mean'
+
+		this.yAnimStart = this.animationStartValue(this.yRange)
+		console.log(this.yAnimStart)
+	}
+
+	animationStartValue(range) {
+		// The animation start value should be at zero unless that's outside of range
+		if (range[0] < 0 && range[1] >= 0) {
+			return 0
+		} else {
+			return range[0]
+		}
 	}
 
 	get name() { throw new Error("A Chart must implement name()") }
@@ -94,13 +106,12 @@ class Chart {
 
 	dataAsXY(data, xName, yName) {
 		return data.map(function(d) { return { x: d[xName], y: d[yName] } })
-
 	}
 
 	xZeroLine() {
 		return d3.line()
 			.x(d => this.xscale(d.x))
-			.y(d => this.yscale(this.yRange[0]))
+			.y(d => this.yscale(this.yAnimStart))
 	}
 
 	xyLine() {
@@ -159,7 +170,7 @@ class Chart {
 			.enter()
 			.append("circle");
 		circles.attr("cx", d => self.xscale(d[this.xName]))
-			.attr("cy", self.yscale(this.yRange[0]))
+			.attr("cy", self.yscale(this.yAnimStart))
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => d.wasImputed ? "red" : "black");
 		circles
