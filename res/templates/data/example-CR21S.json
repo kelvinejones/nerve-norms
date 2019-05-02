@@ -4,19 +4,19 @@ data = {
 	"ageFilter": null,
 	"sexFilter": null,
 	"discreteMeasures": [
-		{ "rank": 9, "name": "Temperature ( C)", "mean": 33.01735537, "n": 121, "SD": 0.674527944, "SE": 0.061320722, "value": 33.5, "upperLimit": 33.13754399, "lowerLimit": 32.89716676, "outlierScore": 0.474281932 },
-		{ "rank": 17, "name": "Age (years)", "mean": 35.50413223, "n": 121, "SD": 14.60543504, "SE": 1.327766822, "value": 30, "upperLimit": 38.1065552, "lowerLimit": 32.90170926, "outlierScore": 0.706281313 },
-		{ "rank": 18, "name": "Sex (M=1, F=2)", "mean": 1.525, "n": 120, "SD": 0.501468432, "SE": 0.045777595, "value": 1, "upperLimit": 1.614724087, "lowerLimit": 1.435275913, "outlierScore": 0.295134022 },
-		{ "rank": 19, "name": "Latency (ms)", "mean": 6.186256198, "n": 121, "SD": 0.67773239, "SE": 0.061612035, "value": 8.063, "upperLimit": 6.307015788, "lowerLimit": 6.065496609, "outlierScore": 0.005620246 }
+		{ "qtracExciteID": 9, "name": "Temperature ( C)", "mean": 33.01735537, "n": 121, "SD": 0.674527944, "SE": 0.061320722, "value": 33.5, "upperLimit": 33.13754399, "lowerLimit": 32.89716676, "outlierScore": 0.474281932 },
+		{ "qtracExciteID": 17, "name": "Age (years)", "mean": 35.50413223, "n": 121, "SD": 14.60543504, "SE": 1.327766822, "value": 30, "upperLimit": 38.1065552, "lowerLimit": 32.90170926, "outlierScore": 0.706281313 },
+		{ "qtracExciteID": 18, "name": "Sex (M=1, F=2)", "mean": 1.525, "n": 120, "SD": 0.501468432, "SE": 0.045777595, "value": 1, "upperLimit": 1.614724087, "lowerLimit": 1.435275913, "outlierScore": 0.295134022 },
+		{ "qtracExciteID": 19, "name": "Latency (ms)", "mean": 6.186256198, "n": 121, "SD": 0.67773239, "SE": 0.061612035, "value": 8.063, "upperLimit": 6.307015788, "lowerLimit": 6.065496609, "outlierScore": 0.005620246 }
 	],
 	"plots": [{
 		"name": "Stimulus Response",
 		"order": 1,
 		"outlierScore": 0.24812,
 		"discreteMeasures": [
-			{ "rank": 1, "name": "Stimulus (mA) for 50% max response", "mean": 4.13277686, "n": 121, "SD": 1.924095759, "SE": 0.174917796, "value": 5.307, "upperLimit": 4.47561574, "lowerLimit": 3.789937979, "outlierScore": 0.541681169 },
-			{ "rank": 6, "name": "Peak response (mV)", "mean": 9.11514876, "n": 121, "SD": 3.289980275, "SE": 0.299089116, "value": 1.161, "upperLimit": 9.701363428, "lowerLimit": 8.528934093, "outlierScore": 0.015619425 },
-			{ "rank": 5, "name": "Stimulus-response slope", "mean": 5.037264463, "n": 121, "SD": 1.259571976, "SE": 0.114506543, "value": 6.699, "upperLimit": 5.261697288, "lowerLimit": 4.812831638, "outlierScore": 0.187073553 }
+			{ "qtracExciteID": 1, "name": "Stimulus (mA) for 50% max response", "mean": 4.13277686, "n": 121, "SD": 1.924095759, "SE": 0.174917796, "value": 5.307, "upperLimit": 4.47561574, "lowerLimit": 3.789937979, "outlierScore": 0.541681169 },
+			{ "qtracExciteID": 6, "name": "Peak response (mV)", "mean": 9.11514876, "n": 121, "SD": 3.289980275, "SE": 0.299089116, "value": 1.161, "upperLimit": 9.701363428, "lowerLimit": 8.528934093, "outlierScore": 0.015619425 },
+			{ "qtracExciteID": 5, "name": "Stimulus-response slope", "mean": 5.037264463, "n": 121, "SD": 1.259571976, "SE": 0.114506543, "value": 6.699, "upperLimit": 5.261697288, "lowerLimit": 4.812831638, "outlierScore": 0.187073553 }
 		],
 		"data": [
 			{ "meanX": 2.657393558, "meanY": 0.167871808, "n": 121, "SDX": 1.412910622, "SEX": 0.251754984, "SDY": 0.065793914, "SEY": 0.011723279, "leftLimit": 2.405638575, "lowerLimit": 0.179595088, "rightLimit": 2.909148542, "upperLimit": 0.156148529, "outlierScore": 0.027915689, "valueX": 3.915578365, "valueY": 0.023225917 },
@@ -74,8 +74,8 @@ data = {
 		"order": 2,
 		"outlierScore": 0.48236,
 		"discreteMeasures": [
-			{ "rank": 3, "name": "Strength-duration\time constant (ms)", "mean": 0.418669421, "n": 121, "SD": 0.088962013, "SE": 0.008087456, "value": 0.287, "upperLimit": 0.434520835, "lowerLimit": 0.402818008, "outlierScore": 0.138856323 },
-			{ "rank": 4, "name": "Rheobase (mA)", "mean": 2.799, "n": 121, "SD": 1.295309397, "SE": 0.1177554, "value": 4.026, "upperLimit": 3.029800583, "lowerLimit": 2.568199417, "outlierScore": 0.343504255 }
+			{ "qtracExciteID": 3, "name": "Strength-duration\time constant (ms)", "mean": 0.418669421, "n": 121, "SD": 0.088962013, "SE": 0.008087456, "value": 0.287, "upperLimit": 0.434520835, "lowerLimit": 0.402818008, "outlierScore": 0.138856323 },
+			{ "qtracExciteID": 4, "name": "Rheobase (mA)", "mean": 2.799, "n": 121, "SD": 1.295309397, "SE": 0.1177554, "value": 4.026, "upperLimit": 3.029800583, "lowerLimit": 2.568199417, "outlierScore": 0.343504255 }
 		],
 		"data": [
 			{ "stimWidth": 0.200000003, "mean": 1.713619146, "n": 121, "SD": 0.796175339, "SE": 0.072379576, "upperLimit": 1.855483116, "lowerLimit": 1.571755177, "outlierScore": 0.758702599, "value": 1.958192229 },
@@ -89,12 +89,12 @@ data = {
 		"order": 3,
 		"outlierScore": 0.25090,
 		"discreteMeasures": [
-			{ "rank": 11, "name": "TEh(90-100ms)", "mean": -117.1120661, "n": 121, "SD": 17.54893676, "SE": 1.595357888, "value": -99.21, "upperLimit": -113.9851647, "lowerLimit": -120.2389676, "outlierScore": 0.307670343 },
-			{ "rank": 22, "name": "TEh(10-20ms)", "mean": -73.25206612, "n": 121, "SD": 5.383868949, "SE": 0.489442632, "value": -64.19, "upperLimit": -72.29275856, "lowerLimit": -74.21137367, "outlierScore": 0.092338613 },
-			{ "rank": 24, "name": "TEh(overshoot)", "mean": 14.46140833, "n": 120, "SD": 4.931006152, "SE": 0.450137217, "value": 10.7, "upperLimit": 15.34367728, "lowerLimit": 13.57913939, "outlierScore": 0.445578225 },
-			{ "rank": 30, "name": "TEh(20-40ms)", "mean": -91.43669421, "n": 121, "SD": 8.314742067, "SE": 0.755885642, "value": -78.66, "upperLimit": -89.95515836, "lowerLimit": -92.91823007, "outlierScore": 0.124383585 },
-			{ "rank": 31, "name": "TEh(slope 101-140ms)", "mean": 2.008082645, "n": 121, "SD": 0.323709968, "SE": 0.029428179, "value": 1.579, "upperLimit": 2.065761875, "lowerLimit": 1.950403414, "outlierScore": 0.185000165 },
-			{ "rank": 36, "name": "TEd40(Accom)", "mean": 23.03636364, "n": 121, "SD": 3.680155114, "SE": 0.334559556, "value": 19.6, "upperLimit": 23.69210037, "lowerLimit": 22.38062691, "outlierScore": 0.350430231 }
+			{ "qtracExciteID": 11, "name": "TEh(90-100ms)", "mean": -117.1120661, "n": 121, "SD": 17.54893676, "SE": 1.595357888, "value": -99.21, "upperLimit": -113.9851647, "lowerLimit": -120.2389676, "outlierScore": 0.307670343 },
+			{ "qtracExciteID": 22, "name": "TEh(10-20ms)", "mean": -73.25206612, "n": 121, "SD": 5.383868949, "SE": 0.489442632, "value": -64.19, "upperLimit": -72.29275856, "lowerLimit": -74.21137367, "outlierScore": 0.092338613 },
+			{ "qtracExciteID": 24, "name": "TEh(overshoot)", "mean": 14.46140833, "n": 120, "SD": 4.931006152, "SE": 0.450137217, "value": 10.7, "upperLimit": 15.34367728, "lowerLimit": 13.57913939, "outlierScore": 0.445578225 },
+			{ "qtracExciteID": 30, "name": "TEh(20-40ms)", "mean": -91.43669421, "n": 121, "SD": 8.314742067, "SE": 0.755885642, "value": -78.66, "upperLimit": -89.95515836, "lowerLimit": -92.91823007, "outlierScore": 0.124383585 },
+			{ "qtracExciteID": 31, "name": "TEh(slope 101-140ms)", "mean": 2.008082645, "n": 121, "SD": 0.323709968, "SE": 0.029428179, "value": 1.579, "upperLimit": 2.065761875, "lowerLimit": 1.950403414, "outlierScore": 0.185000165 },
+			{ "qtracExciteID": 36, "name": "TEd40(Accom)", "mean": 23.03636364, "n": 121, "SD": 3.680155114, "SE": 0.334559556, "value": 19.6, "upperLimit": 23.69210037, "lowerLimit": 22.38062691, "outlierScore": 0.350430231 }
 		],
 		"data": [
 			{ "delay": 0, "mean": 0, "value": 0 },
@@ -129,12 +129,12 @@ data = {
 		"order": 3,
 		"outlierScore": 0.39690,
 		"discreteMeasures": [
-			{ "rank": 12, "name": "TEd(10-20ms)", "mean": 66.67818182, "n": 121, "SD": 4.152314013, "SE": 0.377483092, "value": 60.98, "upperLimit": 67.41804868, "lowerLimit": 65.93831496, "outlierScore": 0.169972966 },
-			{ "rank": 20, "name": "TEd(40-60ms)", "mean": 50.01669421, "n": 121, "SD": 4.608042858, "SE": 0.418912987, "value": 52.18, "upperLimit": 50.83776367, "lowerLimit": 49.19562476, "outlierScore": 0.638738701 },
-			{ "rank": 21, "name": "TEd(90-100ms)", "mean": 43.64958678, "n": 121, "SD": 4.163270028, "SE": 0.378479093, "value": 42.06, "upperLimit": 44.3914058, "lowerLimit": 42.90776775, "outlierScore": 0.70260076 },
-			{ "rank": 23, "name": "TEd(undershoot)", "mean": -18.2648595, "n": 121, "SD": 3.813895791, "SE": 0.346717799, "value": -15.6, "upperLimit": -17.58529262, "lowerLimit": -18.94442639, "outlierScore": 0.484724699 },
-			{ "rank": 25, "name": "TEd(peak)", "mean": 66.5485124, "n": 121, "SD": 4.179749526, "SE": 0.37997723, "value": 62.39, "upperLimit": 67.29326777, "lowerLimit": 65.80375703, "outlierScore": 0.31977564 },
-			{ "rank": 27, "name": "Accommodation half-time (ms)", "mean": 40.66504132, "n": 121, "SD": 4.982694406, "SE": 0.452972219, "value": 49.84, "upperLimit": 41.55286687, "lowerLimit": 39.77721577, "outlierScore": 0.0655681 }
+			{ "qtracExciteID": 12, "name": "TEd(10-20ms)", "mean": 66.67818182, "n": 121, "SD": 4.152314013, "SE": 0.377483092, "value": 60.98, "upperLimit": 67.41804868, "lowerLimit": 65.93831496, "outlierScore": 0.169972966 },
+			{ "qtracExciteID": 20, "name": "TEd(40-60ms)", "mean": 50.01669421, "n": 121, "SD": 4.608042858, "SE": 0.418912987, "value": 52.18, "upperLimit": 50.83776367, "lowerLimit": 49.19562476, "outlierScore": 0.638738701 },
+			{ "qtracExciteID": 21, "name": "TEd(90-100ms)", "mean": 43.64958678, "n": 121, "SD": 4.163270028, "SE": 0.378479093, "value": 42.06, "upperLimit": 44.3914058, "lowerLimit": 42.90776775, "outlierScore": 0.70260076 },
+			{ "qtracExciteID": 23, "name": "TEd(undershoot)", "mean": -18.2648595, "n": 121, "SD": 3.813895791, "SE": 0.346717799, "value": -15.6, "upperLimit": -17.58529262, "lowerLimit": -18.94442639, "outlierScore": 0.484724699 },
+			{ "qtracExciteID": 25, "name": "TEd(peak)", "mean": 66.5485124, "n": 121, "SD": 4.179749526, "SE": 0.37997723, "value": 62.39, "upperLimit": 67.29326777, "lowerLimit": 65.80375703, "outlierScore": 0.31977564 },
+			{ "qtracExciteID": 27, "name": "Accommodation half-time (ms)", "mean": 40.66504132, "n": 121, "SD": 4.982694406, "SE": 0.452972219, "value": 49.84, "upperLimit": 41.55286687, "lowerLimit": 39.77721577, "outlierScore": 0.0655681 }
 		],
 		"data": [
 			{ "delay": 0, "mean": 0, "value": 0 },
@@ -171,7 +171,7 @@ data = {
 		"order": 3,
 		"outlierScore": 0.160722518,
 		"discreteMeasures": [
-			{ "rank": 38, "name": "TEh20(10-20ms)", "mean": -36.11818182, "n": 121, "SD": 2.793422334, "SE": 0.253947485, "value": -32.2, "upperLimit": -35.62044475, "lowerLimit": -36.61591889, "outlierScore": 0.160722518 }
+			{ "qtracExciteID": 38, "name": "TEh20(10-20ms)", "mean": -36.11818182, "n": 121, "SD": 2.793422334, "SE": 0.253947485, "value": -32.2, "upperLimit": -35.62044475, "lowerLimit": -36.61591889, "outlierScore": 0.160722518 }
 		],
 		"data": [
 			{ "delay": 0, "mean": 0, "value": 0 },
@@ -206,9 +206,9 @@ data = {
 		"order": 3,
 		"outlierScore": 0.34173,
 		"discreteMeasures": [
-			{ "rank": 26, "name": "S2 accommodation", "mean": 22.89975207, "n": 121, "SD": 3.636809147, "SE": 0.330619013, "value": 20.33, "upperLimit": 23.54776533, "lowerLimit": 22.2517388, "outlierScore": 0.479818042 },
-			{ "rank": 35, "name": "TEd20(peak)", "mean": 37.40884298, "n": 121, "SD": 3.413565875, "SE": 0.31032417, "value": 34.11, "upperLimit": 38.01707835, "lowerLimit": 36.8006076, "outlierScore": 0.333848033 },
-			{ "rank": 37, "name": "TEd20(10-20ms)", "mean": 34.31694215, "n": 121, "SD": 2.81486792, "SE": 0.255897084, "value": 30.8, "upperLimit": 34.81850043, "lowerLimit": 33.81538386, "outlierScore": 0.211512812 }
+			{ "qtracExciteID": 26, "name": "S2 accommodation", "mean": 22.89975207, "n": 121, "SD": 3.636809147, "SE": 0.330619013, "value": 20.33, "upperLimit": 23.54776533, "lowerLimit": 22.2517388, "outlierScore": 0.479818042 },
+			{ "qtracExciteID": 35, "name": "TEd20(peak)", "mean": 37.40884298, "n": 121, "SD": 3.413565875, "SE": 0.31032417, "value": 34.11, "upperLimit": 38.01707835, "lowerLimit": 36.8006076, "outlierScore": 0.333848033 },
+			{ "qtracExciteID": 37, "name": "TEd20(10-20ms)", "mean": 34.31694215, "n": 121, "SD": 2.81486792, "SE": 0.255897084, "value": 30.8, "upperLimit": 34.81850043, "lowerLimit": 33.81538386, "outlierScore": 0.211512812 }
 		],
 		"data": [
 			{ "delay": 0, "mean": 0, "value": 0 },
@@ -243,9 +243,9 @@ data = {
 		"order": 4,
 		"outlierScore": 0.80454,
 		"discreteMeasures": [
-			{ "rank": 7, "name": "Resting I/V slope", "mean": 0.619066116, "n": 121, "SD": 0.092458165, "SE": 0.008405288, "value": 0.653, "upperLimit": 0.63554048, "lowerLimit": 0.602591752, "outlierScore": 0.713604998 },
-			{ "rank": 8, "name": "Minimum I/V slope", "mean": 0.243619835, "n": 121, "SD": 0.047068789, "SE": 0.004278981, "value": 0.25, "upperLimit": 0.252006637, "lowerLimit": 0.235233032, "outlierScore": 0.892177188 },
-			{ "rank": 28, "name": "Hyperpol. I/V slope", "mean": 0.345791667, "n": 120, "SD": 0.070757949, "SE": 0.006459287, "value": 0.363, "upperLimit": 0.35845187, "lowerLimit": 0.333131463, "outlierScore": 0.807850465 }
+			{ "qtracExciteID": 7, "name": "Resting I/V slope", "mean": 0.619066116, "n": 121, "SD": 0.092458165, "SE": 0.008405288, "value": 0.653, "upperLimit": 0.63554048, "lowerLimit": 0.602591752, "outlierScore": 0.713604998 },
+			{ "qtracExciteID": 8, "name": "Minimum I/V slope", "mean": 0.243619835, "n": 121, "SD": 0.047068789, "SE": 0.004278981, "value": 0.25, "upperLimit": 0.252006637, "lowerLimit": 0.235233032, "outlierScore": 0.892177188 },
+			{ "qtracExciteID": 28, "name": "Hyperpol. I/V slope", "mean": 0.345791667, "n": 120, "SD": 0.070757949, "SE": 0.006459287, "value": 0.363, "upperLimit": 0.35845187, "lowerLimit": 0.333131463, "outlierScore": 0.807850465 }
 		],
 		"data": [
 			{ "current": -100, "mean": -326.9362925, "n": 120, "SD": 51.9653934, "SE": 4.743769696, "upperLimit": -317.6385039, "lowerLimit": -336.2340811, "outlierScore": 0.622048671, "value": -301.3200073 },
@@ -270,13 +270,13 @@ data = {
 		"order": 5,
 		"outlierScore": 0.46508,
 		"discreteMeasures": [
-			{ "rank": 10, "name": "RRP (ms)", "mean": 2.981958678, "n": 121, "SD": 0.408379386, "SE": 0.037125399, "value": 3.407, "upperLimit": 3.054724459, "lowerLimit": 2.909192896, "outlierScore": 0.297968315 },
-			{ "rank": 13, "name": "Superexcitability (%)", "mean": -24.31471074, "n": 121, "SD": 6.28582843, "SE": 0.571438948, "value": -23.58, "upperLimit": -23.19469041, "lowerLimit": -25.43473108, "outlierScore": 0.906952233 },
-			{ "rank": 14, "name": "Subexcitability (%)", "mean": 15.96655372, "n": 121, "SD": 5.243496648, "SE": 0.476681513, "value": 10.81, "upperLimit": 16.90084949, "lowerLimit": 15.03225795, "outlierScore": 0.325401311 },
-			{ "rank": 29, "name": "Refractoriness at 2.5ms (%)", "mean": 19.83789744, "n": 117, "SD": 18.46144739, "SE": 1.706761415, "value": 50, "wasImputed": true, "upperLimit": 23.18314981, "lowerLimit": 16.49264506, "outlierScore": 0.282572629 },
-			{ "rank": 32, "name": "Refractoriness at 2 ms (%)", "mean": 65.0109009, "n": 111, "SD": 28.77993567, "SE": 2.731670606, "value": 100, "wasImputed": true, "upperLimit": 70.36497529, "lowerLimit": 59.65682651, "outlierScore": 0.023889813 },
-			{ "rank": 33, "name": "Superexcitability at 7 ms (%)", "mean": -22.1425124, "n": 121, "SD": 6.607728417, "SE": 0.600702583, "value": -24.25, "upperLimit": -20.96513533, "lowerLimit": -23.31988946, "outlierScore": 0.749769865 },
-			{ "rank": 34, "name": "Superexcitability at 5 ms (%)", "mean": -25.03372727, "n": 121, "SD": 6.53420675, "SE": 0.594018795, "value": -22.24, "upperLimit": -23.86945043, "lowerLimit": -26.19800411, "outlierScore": 0.668975746 }
+			{ "qtracExciteID": 10, "name": "RRP (ms)", "mean": 2.981958678, "n": 121, "SD": 0.408379386, "SE": 0.037125399, "value": 3.407, "upperLimit": 3.054724459, "lowerLimit": 2.909192896, "outlierScore": 0.297968315 },
+			{ "qtracExciteID": 13, "name": "Superexcitability (%)", "mean": -24.31471074, "n": 121, "SD": 6.28582843, "SE": 0.571438948, "value": -23.58, "upperLimit": -23.19469041, "lowerLimit": -25.43473108, "outlierScore": 0.906952233 },
+			{ "qtracExciteID": 14, "name": "Subexcitability (%)", "mean": 15.96655372, "n": 121, "SD": 5.243496648, "SE": 0.476681513, "value": 10.81, "upperLimit": 16.90084949, "lowerLimit": 15.03225795, "outlierScore": 0.325401311 },
+			{ "qtracExciteID": 29, "name": "Refractoriness at 2.5ms (%)", "mean": 19.83789744, "n": 117, "SD": 18.46144739, "SE": 1.706761415, "value": 50, "wasImputed": true, "upperLimit": 23.18314981, "lowerLimit": 16.49264506, "outlierScore": 0.282572629 },
+			{ "qtracExciteID": 32, "name": "Refractoriness at 2 ms (%)", "mean": 65.0109009, "n": 111, "SD": 28.77993567, "SE": 2.731670606, "value": 100, "wasImputed": true, "upperLimit": 70.36497529, "lowerLimit": 59.65682651, "outlierScore": 0.023889813 },
+			{ "qtracExciteID": 33, "name": "Superexcitability at 7 ms (%)", "mean": -22.1425124, "n": 121, "SD": 6.607728417, "SE": 0.600702583, "value": -24.25, "upperLimit": -20.96513533, "lowerLimit": -23.31988946, "outlierScore": 0.749769865 },
+			{ "qtracExciteID": 34, "name": "Superexcitability at 5 ms (%)", "mean": -25.03372727, "n": 121, "SD": 6.53420675, "SE": 0.594018795, "value": -22.24, "upperLimit": -23.86945043, "lowerLimit": -26.19800411, "outlierScore": 0.668975746 }
 		],
 		"data": [
 			{ "delay": 2, "mean": 59.69669912, "n": 103, "SD": 20.72014289, "SE": 2.041616343, "upperLimit": 63.69826716, "lowerLimit": 55.69513109, "outlierScore": 0.003962962, "value": 100, "wasImputed": true },
