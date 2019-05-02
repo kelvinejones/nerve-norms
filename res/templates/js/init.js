@@ -1,22 +1,22 @@
 function initPlots(data) {
 	// Create all of the plots
 	const plots = [{
-		chart: new RecoveryCycle(data.plots[7].data),
+		chart: new RecoveryCycle(data.plots.rc.data),
 		selector: "#recoveryCycle svg",
 	}, {
-		chart: new ThresholdElectrotonus(data.plots[2].data, data.plots[3].data, data.plots[4].data, data.plots[5].data),
+		chart: new ThresholdElectrotonus(data.plots.teh40.data, data.plots.ted40.data, data.plots.teh20.data, data.plots.ted20.data),
 		selector: "#thresholdElectrotonus svg",
 	}, {
-		chart: new ChargeDuration(data.plots[1].data),
+		chart: new ChargeDuration(data.plots.cd.data),
 		selector: "#chargeDuration svg",
 	}, {
-		chart: new ThresholdIV(data.plots[6].data),
+		chart: new ThresholdIV(data.plots.tiv.data),
 		selector: "#thresholdIV svg",
 	}, {
-		chart: new StimulusResponse(data.plots[0].data),
+		chart: new StimulusResponse(data.plots.sr.data),
 		selector: "#stimulusResponse svg",
 	}, {
-		chart: new StimulusRelative(data.plots[0].data),
+		chart: new StimulusRelative(data.plots.sr.data),
 		selector: "#stimulusResponseRelative svg",
 	}, ]
 
@@ -48,7 +48,7 @@ function initPlots(data) {
 
 	setExcitabilityVariable("overall-score", data.outlierScore, data.outlierScore)
 
-	data.plots.map(function(pl) { return pl.discreteMeasures; }).flat()
+	Object.keys(data.plots).map(function(key) { return data.plots[key].discreteMeasures; }).flat()
 		.concat(data.discreteMeasures)
 		.forEach(function(exind) {
 			setExcitabilityVariable("qtrac-excite-" + exind.qtracExciteID, exind.value, exind.outlierScore)
