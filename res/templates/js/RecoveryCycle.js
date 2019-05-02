@@ -2,7 +2,6 @@ class RecoveryCycle extends Chart {
 	constructor(data) {
 		super([1, 200], [-50, 110], d3.scaleLog())
 		this.data = data
-		this.xMin = 1
 	}
 
 	get name() { return "Recovery Cycle" }
