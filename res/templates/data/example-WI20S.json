@@ -1,4 +1,4 @@
-data = {
+participants["WI20S"] = {
 	"participant": "WI20S",
 	"outlierScore": 0.2718,
 	"ageFilter": null,
