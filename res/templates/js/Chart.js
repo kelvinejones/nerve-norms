@@ -104,7 +104,8 @@ class Chart {
 			.text(this.yLabel);
 	}
 
-	populationMeanCI(data, numSD = 2) {
+	// standardDeviationCI creates a CI polygon showing the area within a specified number of standard deviations
+	standardDeviationCI(data, numSD = 2) {
 		const xMean = this.xMeanName || this.xName
 		const yMean = this.yMeanName || this.yName
 		const ySD = this.ySDName
@@ -118,6 +119,7 @@ class Chart {
 			.concat({ x: first[xMean] - numSD * (first[xSD] || 0), y: first[yMean] - numSD * (first[ySD] || 0) })
 	}
 
+	// normativeLimits extracts the calculated limits from the dataset, which describes the range in which a healthy measure is expected
 	normativeLimits(data) {
 		const xMean = this.xMeanName || this.xName
 		const yMean = this.yMeanName || this.yName
@@ -237,7 +239,7 @@ class Chart {
 	}
 
 	animateXYLineWithMean(lineData) {
-		this.animateCI(this.ciLayer, [this.populationMeanCI(lineData)])
+		this.animateCI(this.ciLayer, [this.normativeLimits(lineData)])
 		this.animateLine(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], "meanline")
 		this.animateLine(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], "line")
 		this.animateCircles(this.circlesLayer, lineData)
