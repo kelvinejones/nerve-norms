@@ -107,24 +107,15 @@ class Chart {
 	normativeRange(data) {
 		const xMean = this.xMeanName || this.xName
 		const yMean = this.yMeanName || this.yName
-		const last = data[data.length - 1]
+		const ySD = this.ySDName
+		const xSD = this.xSDName
 		const first = data[0]
-		let ar
-		if (first.leftLimit !== undefined) {
-			// This is a complicated limit with x and y limits.
-			ar = (Array.from(data)
-					.map(function(d) { return { x: d.leftLimit, y: d.upperLimit || d[yMean] } }))
-				.concat({ x: last.rightLimit, y: last.upperLimit || last[yMean] })
-				.concat(Array.from(data).reverse().map(function(d) { return { x: d.rightLimit, y: d.lowerLimit || d[yMean] } }))
-				.concat({ x: first.leftLimit, y: first.lowerLimit || first[yMean] })
-		} else {
-			// This is a simple limit with upper and lower bounds.
-			ar = (Array.from(data)
-					.map(function(d) { return { x: d[xMean], y: d.lowerLimit || d[yMean] } }))
-				.concat({ x: last[xMean], y: last.upperLimit || last[yMean] })
-				.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean], y: d.upperLimit || d[yMean] } }))
-				.concat({ x: first[xMean], y: first.lowerLimit || first[yMean] })
-		}
+		const last = data[data.length - 1]
+		let ar = (Array.from(data)
+				.map(function(d) { return { x: d[xMean] - 2 * (d[xSD] || 0), y: d[yMean] + 2 * (d[ySD] || 0) } }))
+			.concat({ x: last[xMean] + 2 * (last[xSD] || 0), y: last[yMean] + 2 * (last[ySD] || 0) })
+			.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean] + 2 * (d[xSD] || 0), y: d[yMean] - 2 * (d[ySD] || 0) } }))
+			.concat({ x: first[xMean] - 2 * (first[xSD] || 0), y: first[yMean] - 2 * (first[ySD] || 0) })
 
 		if (this.xscale.scaleType == Chart.scaleType.LOG) {
 			// It's not safe for x values to be below zero
