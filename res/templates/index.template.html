@@ -79,7 +79,13 @@
       <div class="card">
         <div class="card-header">Participant: WI20S</div>
         <div class="card-body">
-              Nerve Health: Good
+              <ul class="list-group list-group-flush d-none d-md-flex measures">
+                <li id="overall-score" class="list-group-item"><span class="excite-name">Nerve Health</span>: <span class="excite-value">unknown</span></li>
+                <li id="qtrac-excite-9" class="list-group-item"><span class="excite-name">Temperature (&deg;C)</span>: <span class="excite-value">unknown</span></li>
+                <li id="qtrac-excite-17" class="list-group-item"><span class="excite-name">Age (years)</span>: <span class="excite-value">unknown</span></li>
+                <li id="qtrac-excite-18" class="list-group-item"><span class="excite-name">Sex (M=1, F=2)</span>: <span class="excite-value">unknown</span></li>
+                <li id="qtrac-excite-19" class="list-group-item"><span class="excite-name">Latency (ms)</span>: <span class="excite-value">unknown</span></li>
+              </ul>
               <button class="btn btn-secondary float-right">Change...</button>
         </div>
       </div>
@@ -100,13 +106,13 @@
             Discrete Measures
             <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-right d-md-none">Hide</button>
           </li>
-          <li class="list-group-item">RRP (ms): 3.407
-          <li class="list-group-item">Superexcitability (%): -23.58
-          <li class="list-group-item">Subexcitability (%): 10.81
-          <li class="list-group-item">Refractoriness at 2.5ms (%): 50
-          <li class="list-group-item">Refractoriness at 2 ms (%): 100
-          <li class="list-group-item">Superexcitability at 7 ms (%): -24.25
-          <li class="list-group-item">Superexcitability at 5 ms (%): -22.24
+          <li id="qtrac-excite-10" class="list-group-item"><span class="excite-name">RRP (ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-13" class="list-group-item"><span class="excite-name">Superexcitability (%)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-14" class="list-group-item"><span class="excite-name">Subexcitability (%)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-29" class="list-group-item"><span class="excite-name">Refractoriness at 2.5ms (%)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-32" class="list-group-item"><span class="excite-name">Refractoriness at 2 ms (%)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-33" class="list-group-item"><span class="excite-name">Superexcitability at 7 ms (%)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-34" class="list-group-item"><span class="excite-name">Superexcitability at 5 ms (%)</span>: <span class="excite-value">unknown</span></li>
         </ul>
       </div>
 
@@ -124,12 +130,22 @@
             Discrete Measures
             <button onclick="toggle('#thresholdElectrotonus')" class="btn btn-sm float-right d-md-none">Hide</button>
           </li>
-          <li class="list-group-item">TEh(90-100ms): -99.21</li>
-          <li class="list-group-item">TEh(10-20ms): -64.19</li>
-          <li class="list-group-item">TEh(overshoot): 10.7</li>
-          <li class="list-group-item">TEh(20-40ms): -78.66</li>
-          <li class="list-group-item">TEh(slope 101-140ms): 1.579</li>
-          <li class="list-group-item">TEd40(Accom): 19.6</li>
+          <li id="qtrac-excite-11" class="list-group-item"><span class="excite-name">TEh(90&ndash;100ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-22" class="list-group-item"><span class="excite-name">TEh(10&ndash;20ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-24" class="list-group-item"><span class="excite-name">TEh(overshoot)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-30" class="list-group-item"><span class="excite-name">TEh(20&ndash;40ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-31" class="list-group-item"><span class="excite-name">TEh(slope 101&ndash;140ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-36" class="list-group-item"><span class="excite-name">TEd40(Accom)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-12" class="list-group-item"><span class="excite-name">TEd(10&ndash;20ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-20" class="list-group-item"><span class="excite-name">TEd(40&ndash;60ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-21" class="list-group-item"><span class="excite-name">TEd(90&ndash;100ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-23" class="list-group-item"><span class="excite-name">TEd(undershoot)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-25" class="list-group-item"><span class="excite-name">TEd(peak)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-27" class="list-group-item"><span class="excite-name">Accommodation half-time (ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-38" class="list-group-item"><span class="excite-name">TEh20(10&ndash;20ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-26" class="list-group-item"><span class="excite-name">S2 accommodation</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-35" class="list-group-item"><span class="excite-name">TEd20(peak)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-37" class="list-group-item"><span class="excite-name">TEd20(10&ndash;20ms)</span>: <span class="excite-value">unknown</span></li>
         </ul>
       </div>
 
@@ -147,7 +163,8 @@
             Discrete Measures
             <button onclick="toggle('#chargeDuration')" class="btn btn-sm float-right d-md-none">Hide</button>
           </li>
-          <li class="list-group-item">Measures here</li>
+          <li id="qtrac-excite-3" class="list-group-item"><span class="excite-name">Strength-duration time constant (ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-4" class="list-group-item"><span class="excite-name">Rheobase (mA)</span>: <span class="excite-value">unknown</span></li>
         </ul>
       </div>
 
@@ -165,7 +182,9 @@
             Discrete Measures
             <button onclick="toggle('#thresholdIV')" class="btn btn-sm float-right d-md-none">Hide</button>
           </li>
-          <li class="list-group-item">Measures here</li>
+          <li id="qtrac-excite-7" class="list-group-item"><span class="excite-name">Resting I/V slope</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-8" class="list-group-item"><span class="excite-name">Minimum I/V slope</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-28" class="list-group-item"><span class="excite-name">Hyperpolarization I/V slope</span>: <span class="excite-value">unknown</span></li>
         </ul>
       </div>
 
@@ -183,7 +202,9 @@
             Discrete Measures
             <button onclick="toggle('#stimulusResponseRelative')" class="btn btn-sm float-right d-md-none">Hide</button>
           </li>
-          <li class="list-group-item">Measures here</li>
+          <li id="qtrac-excite-1" class="list-group-item"><span class="excite-name">Stimulus (mA) for 50% max response</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-6" class="list-group-item"><span class="excite-name">Peak response (mV)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-5" class="list-group-item"><span class="excite-name">Stimulus-response slope</span>: <span class="excite-value">unknown</span></li>
         </ul>
       </div>
 
@@ -201,7 +222,9 @@
             Discrete Measures
             <button onclick="toggle('#stimulusResponse')" class="btn btn-sm float-right d-md-none">Hide</button>
           </li>
-          <li class="list-group-item">Measures here</li>
+          <li id="qtrac-excite-1" class="list-group-item"><span class="excite-name">Stimulus (mA) for 50% max response</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-6" class="list-group-item"><span class="excite-name">Peak response (mV)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-5" class="list-group-item"><span class="excite-name">Stimulus-response slope</span>: <span class="excite-value">unknown</span></li>
         </ul>
       </div>
     </div>
