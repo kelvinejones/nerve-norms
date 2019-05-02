@@ -1,6 +1,6 @@
 class StimulusResponse extends Chart {
 	constructor(data) {
-		super([0, 10], [0, 10])
+		super([0.01, 20], [0.01, 20], d3.scaleLog(), d3.scaleLog())
 		this.data = data
 		this.xName = 'valueX'
 		this.yName = 'valueY'
