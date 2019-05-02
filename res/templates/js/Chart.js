@@ -105,12 +105,12 @@ class Chart {
 	}
 
 	normativeRange(data) {
-		let xMean = this.xMeanName || this.xName
-		let yMean = this.yMeanName || this.yName
-		let ySD = this.ySDName
-		let xSD = this.xSDName
-		let first = data[0]
-		let last = data[data.length - 1]
+		const xMean = this.xMeanName || this.xName
+		const yMean = this.yMeanName || this.yName
+		const ySD = this.ySDName
+		const xSD = this.xSDName
+		const first = data[0]
+		const last = data[data.length - 1]
 		return (Array.from(data)
 				.map(function(d) { return { x: d[xMean] - 2 * (d[xSD] || 0), y: d[yMean] + 2 * (d[ySD] || 0) } }))
 			.concat({ x: last[xMean] + 2 * (last[xSD] || 0), y: last[yMean] + 2 * (last[ySD] || 0) })
