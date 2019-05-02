@@ -19,12 +19,26 @@ function initPlots(data) {
 	var srrel = new StimulusRelative(data.plots[0].data)
 	srrel.draw(d3.select("#stimulusResponseRelative svg"), true)
 
+	let opacity = 0.8,
+		red = d3.hsl("red"),
+		green = d3.hsl("lightgreen");
+
+	red.opacity = opacity
+	green.opacity = opacity
+
+	let interpolate = d3.interpolateHsl(green, red);
+
 	// Now set all excitability variables
 
 	function setExcitabilityVariable(idString, value, score) {
-		// TODO: This should find the span "excite-name" instead of using children[1]
-		document.getElementById(idString).children[1].innerHTML = value
-		// TODO: update visualization using score
+		var row = document.getElementById(idString);
+		row.getElementsByClassName("excite-value")[0].innerHTML = value
+
+		percent = score * 100
+		color = interpolate(score)
+		console.log(color)
+
+		row.style.background = "linear-gradient(to right, " + color + " " + percent + "%, #ffffff 0%)"
 	}
 
 	setExcitabilityVariable("overall-score", data.outlierScore, data.outlierScore)
