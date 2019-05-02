@@ -112,6 +112,9 @@ class Chart {
 		const xSD = this.xSDName
 		const first = data[0]
 		const last = data[data.length - 1]
+		if (first[xMean] === undefined || first[yMean] === undefined) {
+			return []
+		}
 		return this.scaleArrayWithinRange(Array.from(data)
 				.map(function(d) { return { x: d[xMean] - numSD * (d[xSD] || 0), y: d[yMean] + numSD * (d[ySD] || 0) } }))
 			.concat({ x: last[xMean] + numSD * (last[xSD] || 0), y: last[yMean] + numSD * (last[ySD] || 0) })
@@ -165,6 +168,9 @@ class Chart {
 	}
 
 	dataAsXY(data, xName, yName) {
+		if (data[0][xName] === undefined || data[0][yName] === undefined) {
+			return []
+		}
 		return data.map(function(d) { return { x: d[xName], y: d[yName] } })
 	}
 
