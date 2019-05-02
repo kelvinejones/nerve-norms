@@ -111,11 +111,30 @@ class Chart {
 		const xSD = this.xSDName
 		const first = data[0]
 		const last = data[data.length - 1]
-		return (Array.from(data)
+		let ar = (Array.from(data)
 				.map(function(d) { return { x: d[xMean] - 2 * (d[xSD] || 0), y: d[yMean] + 2 * (d[ySD] || 0) } }))
 			.concat({ x: last[xMean] + 2 * (last[xSD] || 0), y: last[yMean] + 2 * (last[ySD] || 0) })
 			.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean] + 2 * (d[xSD] || 0), y: d[yMean] - 2 * (d[ySD] || 0) } }))
 			.concat({ x: first[xMean] - 2 * (first[xSD] || 0), y: first[yMean] - 2 * (first[ySD] || 0) })
+
+		if (this.xscale.scaleType == Chart.scaleType.LOG) {
+			// It's not safe for x values to be below zero
+			ar = this.raiseZeroValues(ar, 'x', this.xRange[0])
+		}
+		if (this.yscale.scaleType == Chart.scaleType.LOG) {
+			// It's not safe for y values to be below zero
+			ar = this.raiseZeroValues(ar, 'y', this.yRange[0])
+		}
+		return ar
+	}
+
+	raiseZeroValues(ar, axis, min) {
+		return ar.map(function(d) {
+			if (d[axis] < min) {
+				d[axis] = min
+			}
+			return d
+		})
 	}
 
 	dataAsXY(data, xName, yName) {
