@@ -223,11 +223,6 @@ class Chart {
 			.duration(Chart.transitionTime)
 	}
 
-	animateCI(ciNormRange, name) {
-		this.animateGroup("path", ciNormRange, name + "-" + "confidenceinterval")
-			.attr("d", this.xyLine());
-	}
-
 	createLine(svg, xyLine, groupName, className) {
 		this.createGroup(svg, "path", groupName + "-" + className)
 			.append("path")
@@ -270,7 +265,7 @@ class Chart {
 	}
 
 	animateXYLineWithMean(lineData, name) {
-		this.animateCI([this.normativeLimits(lineData)], name)
+		this.animateLine([this.normativeLimits(lineData)], name, "confidenceinterval")
 		this.animateLine([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
 		this.animateLine([this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
 		this.animateCircles(lineData, name)
