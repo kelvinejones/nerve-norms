@@ -2,10 +2,10 @@ class ThresholdElectrotonus extends Chart {
 	constructor(plots) {
 		super([0, 200], [-150, 100])
 
-		this.hy40 = plots.teh40.data
-		this.de40 = plots.ted40.data
-		this.hy20 = plots.teh20.data
-		this.de20 = plots.ted20.data
+		this.hy40 = plots.te.data.h40
+		this.de40 = plots.te.data.d40
+		this.hy20 = plots.te.data.h20
+		this.de20 = plots.te.data.d20
 	}
 
 	get name() { return "Threshold Electrotonus" }
@@ -13,10 +13,10 @@ class ThresholdElectrotonus extends Chart {
 	get yLabel() { return "Delay (ms)" }
 
 	updatePlots(plots) {
-		this.hy40 = plots.teh40.data
-		this.de40 = plots.ted40.data
-		this.hy20 = plots.teh20.data
-		this.de20 = plots.ted20.data
+		this.hy40 = plots.te.data.h40
+		this.de40 = plots.te.data.d40
+		this.hy20 = plots.te.data.h20
+		this.de20 = plots.te.data.d20
 		this.animateLines()
 	}
 
