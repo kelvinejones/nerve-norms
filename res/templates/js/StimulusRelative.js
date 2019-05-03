@@ -4,6 +4,7 @@ class StimulusRelative extends Chart {
 		this.data = this.calculateData(plots.sr.data)
 		this.xName = 'x'
 		this.yName = 'y'
+		this.limFunc = undefined
 	}
 
 	calculateData(data) {

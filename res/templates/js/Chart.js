@@ -23,6 +23,8 @@ class Chart {
 		this.transitionTime = Chart.slowTransition;
 
 		this.group = {}
+
+		this.limFunc = this.limAtLoc
 	}
 
 	makeScale(name) {
@@ -112,18 +114,7 @@ class Chart {
 			.text(this.yLabel);
 	}
 
-	// standardDeviationCI creates a CI polygon showing the area within a specified number of standard deviations
-	standardDeviationCI(data, numSD = 2) {
-		if (data[0][this.xMeanName || this.xName] === undefined || data[0][this.yMeanName || this.yName] === undefined) {
-			return []
-		}
-		return this.scaleArrayWithinRange((Array.from(data)
-				.map(d => { return this.sdAtLoc(d, Chart.limLoc.UPPER_LEFT) }))
-			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT))
-			.concat(Array.from(data).reverse().map(d => { return this.sdAtLoc(d, Chart.limLoc.LOWER_RIGHT) }))
-			.concat(this.sdAtLoc(data[0], Chart.limLoc.LOWER_LEFT)))
-	}
-
+	// sdAtLoc calculates limits based on the standard deviations
 	sdAtLoc(dpt, loc, numSD = 2) {
 		switch (loc) {
 			case Chart.limLoc.UPPER_LEFT:
@@ -141,7 +132,6 @@ class Chart {
 		}
 	}
 
-	// sd can be overridden if a different calculation is more appropriate.
 	// dpt is the data point object.
 	// dpt[meanName] is the mean.
 	// dpt[sdName] is the standard deviation.
@@ -150,19 +140,20 @@ class Chart {
 		return dpt[meanName] + numSD * (dpt[sdName] || 0)
 	}
 
-	// normativeLimits extracts the calculated limits from the dataset, which describes the range in which a healthy measure is expected
 	normativeLimits(data) {
-		if (data[0].leftLimit === undefined && data[0].upperLimit === undefined) {
+		if (this.limFunc === undefined) {
 			return []
 		}
 
+		// this.limFunc can be changed if a different calculation is more appropriate.
 		return this.scaleArrayWithinRange((Array.from(data)
-				.map(d => { return this.limAtLoc(d, Chart.limLoc.UPPER_LEFT) }))
-			.concat(this.limAtLoc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT))
-			.concat(Array.from(data).reverse().map(d => { return this.limAtLoc(d, Chart.limLoc.LOWER_RIGHT) }))
-			.concat(this.limAtLoc(data[0], Chart.limLoc.LOWER_LEFT)))
+				.map(d => { return this.limFunc(d, Chart.limLoc.UPPER_LEFT) }))
+			.concat(this.limFunc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT))
+			.concat(Array.from(data).reverse().map(d => { return this.limFunc(d, Chart.limLoc.LOWER_RIGHT) }))
+			.concat(this.limFunc(data[0], Chart.limLoc.LOWER_LEFT)))
 	}
 
+	// limAtLoc extracts the calculated limits from the dataset, which describes the range in which a healthy measure is expected
 	limAtLoc(dpt, loc) {
 		switch (loc) {
 			case Chart.limLoc.UPPER_LEFT:
