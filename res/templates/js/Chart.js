@@ -115,7 +115,7 @@ class Chart {
 	}
 
 	static linearSD(val, sign, numSD, sdSize) {
-		return val + sign * numSD * sdSize
+		return val + sign * numSD * (sdSize || 0)
 	}
 
 	// sdAtLoc calculates limits based on the standard deviations
@@ -126,20 +126,12 @@ class Chart {
 		const ysd = this.ySDName
 
 		function stPoint(xSign, ySign) {
-			if ((dpt[xsd] === undefined || xSign == 0) && (dpt[ysd] === undefined || ySign == 0)) {
-				return { x: dpt[xmn], y: dpt[ymn] }
-			} else if (dpt[xsd] === undefined || xSign == 0) {
-				return { x: dpt[xmn], y: Chart.linearSD(dpt[ymn], ySign, numSD, dpt[ysd]) }
-			} else if (dpt[ysd] === undefined || ySign == 0) {
-				return { x: Chart.linearSD(dpt[xmn], xSign, numSD, dpt[xsd]), y: dpt[ymn] }
-			} else {
+			let scale = numSD
+			if (dpt[xsd] !== undefined && xSign != 0 && dpt[ysd] !== undefined && ySign != 0) {
 				// Since both are set, scale the edges by sqrt(2) to make a ovoid area
-				const scale = 0.707 * numSD
-				return {
-					x: Chart.linearSD(dpt[xmn], xSign, scale, dpt[xsd]),
-					y: Chart.linearSD(dpt[ymn], ySign, scale, dpt[ysd]),
-				}
+				scale = 0.707 * numSD
 			}
+			return { x: Chart.linearSD(dpt[xmn], xSign, scale, dpt[xsd]), y: Chart.linearSD(dpt[ymn], ySign, scale, dpt[ysd]) }
 		}
 
 		switch (loc) {
