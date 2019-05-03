@@ -9,7 +9,7 @@ class StimulusRelative extends Chart {
 
 	calculateData(data) {
 		const stimFor50PercentMax = data[24].valueX // Could also be extracted from excitability variables
-		return data.map(function callback(d, i) {
+		return data.map((d, i) => {
 			return {
 				'x': d.valueX / stimFor50PercentMax * 100, // Normalize each element
 				'y': (i + 1) * 2,
