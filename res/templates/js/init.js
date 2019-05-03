@@ -26,16 +26,22 @@ function initPlots(data) {
 		pl.chart.setDelayTime(Chart.fastDelay) // After initial setup, remove the delay
 	})
 
+	// Now set all excitability variables
+	updateIndices(data);
+
 	function changeParticipant(ev) {
 		plots.forEach(pl => {
 			currentParticipant = participants[ev.srcElement.value] // This is a global
 			pl.chart.updatePlots(currentParticipant.plots)
+			updateIndices(currentParticipant)
 		})
 	}
 
 	document.getElementById("select-participant-dropdown")
 		.addEventListener("change", changeParticipant);
+}
 
+function updateIndices(data) {
 	let opacity = 0.8,
 		red = d3.hsl("red"),
 		green = d3.hsl("lightgreen");
@@ -44,8 +50,6 @@ function initPlots(data) {
 	green.opacity = opacity
 
 	let interpolate = d3.interpolateHsl(green, red);
-
-	// Now set all excitability variables
 
 	function setExcitabilityVariable(idString, value, score) {
 		var row = document.getElementById(idString);
