@@ -27,7 +27,8 @@ function initPlots(data) {
 
 	function changeParticipant(ev) {
 		plots.forEach(pl => {
-			pl.chart.updatePlots(participants[ev.srcElement.value].plots)
+			currentParticipant = participants[ev.srcElement.value] // This is a global
+			pl.chart.updatePlots(currentParticipant.plots)
 		})
 	}
 
