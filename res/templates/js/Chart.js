@@ -258,6 +258,7 @@ class Chart {
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => d.wasImputed ? "red" : "black")
 			.attr("cy", d => this.yscale(d[this.yName]))
+			.attr("cx", d => this.xscale(d[this.xName]))
 	}
 
 	createXYLineWithMean(lineData, name) {
