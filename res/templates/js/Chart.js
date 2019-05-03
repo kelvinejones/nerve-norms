@@ -124,9 +124,9 @@ class Chart {
 			return []
 		}
 		return this.scaleArrayWithinRange((Array.from(data)
-				.map(function(d) { return { x: d[xMean] - numSD * (d[xSD] || 0), y: d[yMean] + numSD * (d[ySD] || 0) } }))
+				.map(d => { return { x: d[xMean] - numSD * (d[xSD] || 0), y: d[yMean] + numSD * (d[ySD] || 0) } }))
 			.concat({ x: last[xMean] + numSD * (last[xSD] || 0), y: last[yMean] + numSD * (last[ySD] || 0) })
-			.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean] + numSD * (d[xSD] || 0), y: d[yMean] - numSD * (d[ySD] || 0) } }))
+			.concat(Array.from(data).reverse().map(d => { return { x: d[xMean] + numSD * (d[xSD] || 0), y: d[yMean] - numSD * (d[ySD] || 0) } }))
 			.concat({ x: first[xMean] - numSD * (first[xSD] || 0), y: first[yMean] - numSD * (first[ySD] || 0) }))
 	}
 
@@ -139,16 +139,16 @@ class Chart {
 		if (first.leftLimit !== undefined) {
 			// This is a complicated limit with x and y limits.
 			return this.scaleArrayWithinRange((Array.from(data)
-					.map(function(d) { return { x: d.leftLimit, y: d.upperLimit || d[yMean] } }))
+					.map(d => { return { x: d.leftLimit, y: d.upperLimit || d[yMean] } }))
 				.concat({ x: last.rightLimit, y: last.upperLimit || last[yMean] })
-				.concat(Array.from(data).reverse().map(function(d) { return { x: d.rightLimit, y: d.lowerLimit || d[yMean] } }))
+				.concat(Array.from(data).reverse().map(d => { return { x: d.rightLimit, y: d.lowerLimit || d[yMean] } }))
 				.concat({ x: first.leftLimit, y: first.lowerLimit || first[yMean] }))
 		} else if (first.upperLimit !== undefined) {
 			// This is a simple limit with upper and lower bounds.
 			return this.scaleArrayWithinRange((Array.from(data)
-					.map(function(d) { return { x: d[xMean], y: d.lowerLimit || d[yMean] } }))
+					.map(d => { return { x: d[xMean], y: d.lowerLimit || d[yMean] } }))
 				.concat({ x: last[xMean], y: last.upperLimit || last[yMean] })
-				.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean], y: d.upperLimit || d[yMean] } }))
+				.concat(Array.from(data).reverse().map(d => { return { x: d[xMean], y: d.upperLimit || d[yMean] } }))
 				.concat({ x: first[xMean], y: first.lowerLimit || first[yMean] }))
 		} else {
 			return []
