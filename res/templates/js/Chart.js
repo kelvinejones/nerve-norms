@@ -119,6 +119,10 @@ class Chart {
 		return val + sign * numSD * (sdSize || 0)
 	}
 
+	static logSD(val, sign, numSD, sdSize) {
+		return val * Math.pow(10, sign * numSD * (sdSize || 0))
+	}
+
 	// sdAtLoc calculates limits based on the standard deviations
 	sdAtLoc(dpt, loc) {
 		const xmn = this.xMeanName || this.xName

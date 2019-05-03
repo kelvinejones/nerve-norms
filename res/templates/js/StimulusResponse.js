@@ -1,13 +1,14 @@
 class StimulusResponse extends Chart {
 	constructor(plots) {
-		super([0.01, 20], [0.01, 20], Chart.scaleType.LOG, Chart.scaleType.LOG)
+		super([1, 20], [0.01, 20], Chart.scaleType.LOG, Chart.scaleType.LOG)
 		this.data = plots.sr.data
 		this.xName = 'valueX'
 		this.yName = 'valueY'
 		this.xMeanName = 'meanX'
 		this.yMeanName = 'meanY'
-		this.xSDName = 'SDX'
-		this.ySDName = 'SDY'
+		this.xSDName = 'SDlogX'
+		this.ySDName = 'SDlogY'
+		this.sdFunc = Chart.logSD
 	}
 
 	get name() { return "Stimulus Response" }
