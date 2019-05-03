@@ -179,13 +179,13 @@ class Chart {
 		return data.map(function(d) { return { x: d[xName], y: d[yName] } })
 	}
 
-	xZeroLine() {
+	xZeroPath() {
 		return d3.line()
 			.x(d => this.xscale(d.x))
 			.y(d => this.yscale(this.yAnimStart))
 	}
 
-	xyLine() {
+	xyPath() {
 		return d3.line()
 			.x(d => this.xscale(d.x))
 			.y(d => this.yscale(d.y));
@@ -197,7 +197,7 @@ class Chart {
 				[{ x: this.xRange[0], y: yVal }, { x: this.xRange[1], y: yVal }]
 			])
 			.attr("class", "meanline")
-			.attr("d", this.xyLine());
+			.attr("d", this.xyPath());
 	}
 
 	drawVerticalLine(svg, xVal) {
@@ -206,7 +206,7 @@ class Chart {
 				[{ y: this.yRange[0], x: xVal }, { y: this.yRange[1], x: xVal }]
 			])
 			.attr("class", "meanline")
-			.attr("d", this.xyLine());
+			.attr("d", this.xyPath());
 	}
 
 	createGroup(svg, typeString, name) {
@@ -228,12 +228,12 @@ class Chart {
 			.append("path")
 			.data(path)
 			.attr("class", className)
-			.attr("d", this.xZeroLine())
+			.attr("d", this.xZeroPath())
 	}
 
 	animatePath(path, groupName, className, delayTime) {
 		this.animateGroup("path", path, groupName + "-" + className, delayTime)
-			.attr("d", this.xyLine());
+			.attr("d", this.xyPath());
 	}
 
 	createCircles(svg, circleLocations, name) {
