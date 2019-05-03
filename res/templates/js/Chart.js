@@ -24,7 +24,7 @@ class Chart {
 
 		this.group = {}
 
-		this.numSD = 1
+		this.numSD = 2
 		this.sdFunc = Chart.linearSD
 	}
 
