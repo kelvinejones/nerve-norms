@@ -19,6 +19,9 @@ class Chart {
 
 		this.yAnimStart = this.animationStartValue(this.yRange)
 
+		this.delayTime = Chart.delayTime;
+		this.transitionTime = Chart.transitionTime;
+
 		this.group = {}
 	}
 
@@ -215,12 +218,12 @@ class Chart {
 		return svg
 	}
 
-	animateGroup(typeString, newData, name, delayTime) {
+	animateGroup(typeString, newData, name) {
 		return this.group[typeString + "-" + name].selectAll(typeString)
 			.data(newData)
 			.transition()
-			.delay(delayTime)
-			.duration(Chart.transitionTime)
+			.delay(this.delayTime)
+			.duration(this.transitionTime)
 	}
 
 	createPath(svg, path, groupName, className) {
@@ -231,8 +234,8 @@ class Chart {
 			.attr("d", this.xZeroPath())
 	}
 
-	animatePath(path, groupName, className, delayTime) {
-		this.animateGroup("path", path, groupName + "-" + className, delayTime)
+	animatePath(path, groupName, className) {
+		this.animateGroup("path", path, groupName + "-" + className)
 			.attr("d", this.xyPath());
 	}
 
@@ -250,8 +253,8 @@ class Chart {
 			.style("fill", d => "black");
 	}
 
-	animateCircles(circleLocations, name, delayTime) {
-		this.animateGroup("circle", circleLocations, name, delayTime)
+	animateCircles(circleLocations, name) {
+		this.animateGroup("circle", circleLocations, name)
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => d.wasImputed ? "red" : "black")
 			.attr("cy", d => this.yscale(d[this.yName]))
@@ -264,11 +267,23 @@ class Chart {
 		this.createCircles(this.circlesLayer, lineData, name)
 	}
 
-	animateXYLineWithMean(lineData, name, delayTime = Chart.delayTime) {
-		this.animatePath([this.normativeLimits(lineData)], name, "confidenceinterval", delayTime)
-		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline", delayTime)
-		this.animatePath([this.dataAsXY(lineData, this.xName, this.yName)], name, "line", delayTime)
-		this.animateCircles(lineData, name, delayTime)
+	animateXYLineWithMean(lineData, name) {
+		this.animatePath([this.normativeLimits(lineData)], name, "confidenceinterval")
+		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
+		this.animatePath([this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
+		this.animateCircles(lineData, name)
+	}
+
+	setDelayTime(dt) {
+		// Return 'this' for chaining
+		this.delayTime = dt
+		return this
+	}
+
+	setTransitionTime(tt) {
+		// Return 'this' for chaining
+		this.transitionTime = tt
+		return this
 	}
 }
 

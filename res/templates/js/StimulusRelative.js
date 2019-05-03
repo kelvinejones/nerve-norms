@@ -22,7 +22,7 @@ class StimulusRelative extends Chart {
 
 	updatePlots(plots) {
 		this.data = this.calculateData(plots.sr.data)
-		this.animateXYLineWithMean(this.data, "srel", 0)
+		this.animateXYLineWithMean(this.data, "srel")
 	}
 
 	drawLines(svg) {

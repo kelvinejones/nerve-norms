@@ -23,6 +23,7 @@ function initPlots(data) {
 	// Draw them all
 	plots.forEach(pl => {
 		pl.chart.draw(d3.select(pl.selector), true)
+		pl.chart.setDelayTime(0) // After initial setup, remove the delay
 	})
 
 	function changeParticipant(ev) {
