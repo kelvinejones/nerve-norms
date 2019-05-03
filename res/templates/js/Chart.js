@@ -25,6 +25,7 @@ class Chart {
 		this.group = {}
 
 		this.numSD = 1
+		this.sdFunc = Chart.linearSD
 	}
 
 	makeScale(name) {
@@ -125,6 +126,7 @@ class Chart {
 		const xsd = this.xSDName
 		const ysd = this.ySDName
 		const numSD = this.numSD
+		const sdFunc = this.sdFunc
 
 		function stPoint(xSign, ySign) {
 			let scale = numSD
@@ -132,7 +134,7 @@ class Chart {
 				// Since both are set, scale the edges by sqrt(2) to make a ovoid area
 				scale = 0.707 * numSD
 			}
-			return { x: Chart.linearSD(dpt[xmn], xSign, scale, dpt[xsd]), y: Chart.linearSD(dpt[ymn], ySign, scale, dpt[ysd]) }
+			return { x: sdFunc(dpt[xmn], xSign, scale, dpt[xsd]), y: sdFunc(dpt[ymn], ySign, scale, dpt[ysd]) }
 		}
 
 		switch (loc) {
