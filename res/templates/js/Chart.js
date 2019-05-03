@@ -191,6 +191,24 @@ class Chart {
 			.y(d => this.yscale(d.y));
 	}
 
+	drawHorizontalLine(svg, yVal) {
+		svg.append("path")
+			.data([
+				[{ x: this.xRange[0], y: yVal }, { x: this.xRange[1], y: yVal }]
+			])
+			.attr("class", "meanline")
+			.attr("d", this.xyLine());
+	}
+
+	drawVerticalLine(svg, xVal) {
+		svg.append("path")
+			.data([
+				[{ y: this.yRange[0], x: xVal }, { y: this.yRange[1], x: xVal }]
+			])
+			.attr("class", "meanline")
+			.attr("d", this.xyLine());
+	}
+
 	createCI(svg, ciNormRange, name) {
 		svg = svg.append("g")
 		this.group["path" + "-" + name + "-" + "CI"] = svg
@@ -226,24 +244,6 @@ class Chart {
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("d", this.xyLine());
-	}
-
-	drawHorizontalLine(svg, yVal) {
-		svg.append("path")
-			.data([
-				[{ x: this.xRange[0], y: yVal }, { x: this.xRange[1], y: yVal }]
-			])
-			.attr("class", "meanline")
-			.attr("d", this.xyLine());
-	}
-
-	drawVerticalLine(svg, xVal) {
-		svg.append("path")
-			.data([
-				[{ y: this.yRange[0], x: xVal }, { y: this.yRange[1], x: xVal }]
-			])
-			.attr("class", "meanline")
 			.attr("d", this.xyLine());
 	}
 
