@@ -27,7 +27,7 @@ function initPlots(data) {
 
 	function changeParticipant(ev) {
 		plots.forEach(pl => {
-			pl.chart.updatePlots(participants[ev.srcElement.value])
+			pl.chart.updatePlots(participants[ev.srcElement.value].plots)
 		})
 	}
 
