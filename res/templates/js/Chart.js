@@ -209,6 +209,12 @@ class Chart {
 			.attr("d", this.xyLine());
 	}
 
+	createGroup(svg, typeString, name) {
+		svg = svg.append("g")
+		this.group[typeString + "-" + name] = svg
+		return svg
+	}
+
 	animateGroup(typeString, newData, name) {
 		return this.group[typeString + "-" + name].selectAll(typeString)
 			.data(newData)
@@ -218,10 +224,8 @@ class Chart {
 	}
 
 	createCI(svg, ciNormRange, name) {
-		svg = svg.append("g")
-		this.group["path" + "-" + name + "-" + "CI"] = svg
-
-		svg.append("path")
+		this.createGroup(svg, "path", name + "-" + "CI")
+			.append("path")
 			.data(ciNormRange)
 			.attr("class", "confidenceinterval")
 			.attr("d", this.xZeroLine())
@@ -233,10 +237,8 @@ class Chart {
 	}
 
 	createLine(svg, xyLine, groupName, className) {
-		svg = svg.append("g")
-		this.group["path" + "-" + groupName + "-" + className] = svg
-
-		svg.append("path")
+		this.createGroup(svg, "path", groupName + "-" + className)
+			.append("path")
 			.data(xyLine)
 			.attr("class", className)
 			.attr("d", this.xZeroLine())
@@ -250,10 +252,8 @@ class Chart {
 	createCircles(svg, circleLocations, name) {
 		// create circle locations at init for each name, with right amount and position of circles
 		// Add circles into a separate SVG group
-		svg = svg.append("g")
-		this.group["circle" + "-" + name] = svg
-
-		svg.selectAll("circle")
+		this.createGroup(svg, "circle", name)
+			.selectAll("circle")
 			.data(circleLocations)
 			.enter()
 			.append("circle")
