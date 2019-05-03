@@ -223,16 +223,16 @@ class Chart {
 			.duration(Chart.transitionTime)
 	}
 
-	createLine(svg, xyLine, groupName, className) {
+	createPath(svg, path, groupName, className) {
 		this.createGroup(svg, "path", groupName + "-" + className)
 			.append("path")
-			.data(xyLine)
+			.data(path)
 			.attr("class", className)
 			.attr("d", this.xZeroLine())
 	}
 
-	animateLine(xyLine, groupName, className) {
-		this.animateGroup("path", xyLine, groupName + "-" + className)
+	animatePath(path, groupName, className) {
+		this.animateGroup("path", path, groupName + "-" + className)
 			.attr("d", this.xyLine());
 	}
 
@@ -258,16 +258,16 @@ class Chart {
 	}
 
 	createXYLineWithMean(lineData, name) {
-		this.createLine(this.ciLayer, [this.normativeLimits(lineData)], name, "confidenceinterval")
-		this.createLine(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
-		this.createLine(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
+		this.createPath(this.ciLayer, [this.normativeLimits(lineData)], name, "confidenceinterval")
+		this.createPath(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
+		this.createPath(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
 		this.createCircles(this.circlesLayer, lineData, name)
 	}
 
 	animateXYLineWithMean(lineData, name) {
-		this.animateLine([this.normativeLimits(lineData)], name, "confidenceinterval")
-		this.animateLine([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
-		this.animateLine([this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
+		this.animatePath([this.normativeLimits(lineData)], name, "confidenceinterval")
+		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
+		this.animatePath([this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
 		this.animateCircles(lineData, name)
 	}
 }
