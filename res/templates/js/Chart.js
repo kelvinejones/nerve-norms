@@ -124,10 +124,19 @@ class Chart {
 			return []
 		}
 		return this.scaleArrayWithinRange((Array.from(data)
-				.map(d => { return { x: d[xMean] - numSD * (d[xSD] || 0), y: d[yMean] + numSD * (d[ySD] || 0) } }))
-			.concat({ x: last[xMean] + numSD * (last[xSD] || 0), y: last[yMean] + numSD * (last[ySD] || 0) })
-			.concat(Array.from(data).reverse().map(d => { return { x: d[xMean] + numSD * (d[xSD] || 0), y: d[yMean] - numSD * (d[ySD] || 0) } }))
-			.concat({ x: first[xMean] - numSD * (first[xSD] || 0), y: first[yMean] - numSD * (first[ySD] || 0) }))
+				.map(d => { return { x: this.sd(d, xMean, xSD, -numSD), y: this.sd(d, yMean, ySD, numSD) } }))
+			.concat({ x: this.sd(last, xMean, xSD, numSD), y: this.sd(last, yMean, ySD, numSD) })
+			.concat(Array.from(data).reverse().map(d => { return { x: this.sd(d, xMean, xSD, numSD), y: this.sd(d, yMean, ySD, -numSD) } }))
+			.concat({ x: this.sd(first, xMean, xSD, -numSD), y: this.sd(first, yMean, ySD, -numSD) }))
+	}
+
+	// sd can be overridden if a different calculation is more appropriate.
+	// dpt is the data point object.
+	// dpt[meanName] is the mean.
+	// dpt[sdName] is the standard deviation.
+	// numSD is the number of SD to add or subtract.
+	sd(dpt, meanName, sdName, numSD) {
+		return dpt[meanName] + numSD * (dpt[sdName] || 0)
 	}
 
 	// normativeLimits extracts the calculated limits from the dataset, which describes the range in which a healthy measure is expected
