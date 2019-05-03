@@ -215,11 +215,11 @@ class Chart {
 		return svg
 	}
 
-	animateGroup(typeString, newData, name) {
+	animateGroup(typeString, newData, name, delayTime) {
 		return this.group[typeString + "-" + name].selectAll(typeString)
 			.data(newData)
 			.transition()
-			.delay(Chart.delayTime)
+			.delay(delayTime)
 			.duration(Chart.transitionTime)
 	}
 
@@ -231,8 +231,8 @@ class Chart {
 			.attr("d", this.xZeroLine())
 	}
 
-	animatePath(path, groupName, className) {
-		this.animateGroup("path", path, groupName + "-" + className)
+	animatePath(path, groupName, className, delayTime) {
+		this.animateGroup("path", path, groupName + "-" + className, delayTime)
 			.attr("d", this.xyLine());
 	}
 
@@ -250,8 +250,8 @@ class Chart {
 			.style("fill", d => "black");
 	}
 
-	animateCircles(circleLocations, name) {
-		this.animateGroup("circle", circleLocations, name)
+	animateCircles(circleLocations, name, delayTime) {
+		this.animateGroup("circle", circleLocations, name, delayTime)
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => d.wasImputed ? "red" : "black")
 			.attr("cy", d => this.yscale(d[this.yName]))
@@ -264,11 +264,11 @@ class Chart {
 		this.createCircles(this.circlesLayer, lineData, name)
 	}
 
-	animateXYLineWithMean(lineData, name) {
-		this.animatePath([this.normativeLimits(lineData)], name, "confidenceinterval")
-		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
-		this.animatePath([this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
-		this.animateCircles(lineData, name)
+	animateXYLineWithMean(lineData, name, delayTime = Chart.delayTime) {
+		this.animatePath([this.normativeLimits(lineData)], name, "confidenceinterval", delayTime)
+		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline", delayTime)
+		this.animatePath([this.dataAsXY(lineData, this.xName, this.yName)], name, "line", delayTime)
+		this.animateCircles(lineData, name, delayTime)
 	}
 }
 
