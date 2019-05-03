@@ -9,7 +9,7 @@ class RecoveryCycle extends Chart {
 	get yLabel() { return "Interstimulus Interval (ms)" }
 
 	drawLines(svg) {
-		this.animateXYLineWithMean(this.data)
+		this.animateXYLineWithMean(this.data, "rc")
 		this.drawHorizontalLine(this.linesLayer, 0)
 	}
 }

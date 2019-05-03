@@ -249,7 +249,7 @@ class Chart {
 			.attr("cy", d => self.yscale(d[this.yName]))
 	}
 
-	animateXYLineWithMean(lineData) {
+	animateXYLineWithMean(lineData, name) {
 		this.animateCI(this.ciLayer, [this.normativeLimits(lineData)])
 		this.animateLine(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], "meanline")
 		this.animateLine(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], "line")
