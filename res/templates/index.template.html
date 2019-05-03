@@ -18,6 +18,7 @@
     <script src="data/example-WI20S.json"></script>
     <script src="js/init.js"></script>
     <script src="js/Chart.js"></script>
+    <script src="js/modal.js"></script>
     <script src="js/RecoveryCycle.js"></script>
     <script src="js/ThresholdElectrotonus.js"></script>
     <script src="js/ChargeDuration.js"></script>
@@ -95,7 +96,7 @@
 
       <div id="recoveryCycle" class="card border-success">
         <div class="card-header bg-success text-white">Recovery Cycle</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Recovery Cycle', new RecoveryCycle(data.plots[7].data))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             Discrete Measures
@@ -119,7 +120,7 @@
 
       <div id="thresholdElectrotonus" class="card border-danger">
         <div class="card-header bg-danger text-white">Threshold Electrotonus</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold Electrotonus', new ThresholdElectrotonus(data.plots[2].data, data.plots[3].data, data.plots[4].data, data.plots[5].data))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             Discrete Measures
@@ -152,7 +153,7 @@
 
       <div id="chargeDuration" class="card border-success">
         <div class="card-header bg-success text-white">Charge Duration</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Charge Duration', new ChargeDuration(data.plots[1].data))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             Discrete Measures
@@ -171,7 +172,7 @@
 
       <div id="thresholdIV" class="card border-success">
         <div class="card-header bg-success text-white">Threshold I/V</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold I/V', new ThresholdIV(data.plots[6].data))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             Discrete Measures
@@ -191,7 +192,7 @@
 
       <div id="stimulusResponseRelative" class="card border-success">
         <div class="card-header bg-success text-white">Stimulus Response (Relative)</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response (Relative)', new StimulusRelative(data.plots[0].data))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             Discrete Measures
@@ -211,7 +212,7 @@
 
       <div id="stimulusResponse" class="card border-success">
         <div class="card-header bg-success text-white">Stimulus Response</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response', new StimulusResponse(data.plots[0].data))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             Discrete Measures
@@ -220,6 +221,24 @@
         </ul>
       </div>
     </div>
+
+
+    <div id="modal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document" style="max-width: 80%">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 id="modal-title" class="modal-title" >Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <svg style="background-color: white; width: 100%" viewbox="30 -30 600 300"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <script>
       initPlots(data);
