@@ -171,30 +171,6 @@ class Chart {
 			.concat(this.limFunc(data[0], Chart.limLoc.LEFT)))
 	}
 
-	// limAtLoc extracts the calculated limits from the dataset, which describes the range in which a healthy measure is expected
-	limAtLoc(dpt, loc) {
-		const xmn = this.xMeanName || this.xName
-		const ymn = this.yMeanName || this.yName
-		switch (loc) {
-			case Chart.limLoc.UPPER_LEFT:
-				return { x: dpt['leftLimit'] || dpt[xmn], y: dpt['upperLimit'] || dpt[ymn] }
-			case Chart.limLoc.UPPER_RIGHT:
-				return { x: dpt['rightLimit'] || dpt[xmn], y: dpt['upperLimit'] || dpt[ymn] }
-			case Chart.limLoc.LOWER_LEFT:
-				return { x: dpt['leftLimit'] || dpt[xmn], y: dpt['lowerLimit'] || dpt[ymn] }
-			case Chart.limLoc.LOWER_RIGHT:
-				return { x: dpt['rightLimit'] || dpt[xmn], y: dpt['lowerLimit'] || dpt[ymn] }
-			case Chart.limLoc.UPPER:
-				return { x: dpt[xmn], y: dpt['upperLimit'] || dpt[ymn] }
-			case Chart.limLoc.LOWER:
-				return { x: dpt[xmn], y: dpt['lowerLimit'] || dpt[ymn] }
-			case Chart.limLoc.LEFT:
-				return { x: dpt['leftLimit'] || dpt[xmn], y: dpt[ymn] }
-			case Chart.limLoc.RIGHT:
-				return { x: dpt['rightLimit'] || dpt[xmn], y: dpt[ymn] }
-		}
-	}
-
 	scaleArrayWithinRange(ar) {
 		// With a log scale, values can't be plotted at or below zero.
 		if (this.xscale.scaleType == Chart.scaleType.LOG) {
