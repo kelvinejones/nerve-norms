@@ -223,16 +223,8 @@ class Chart {
 			.duration(Chart.transitionTime)
 	}
 
-	createCI(svg, ciNormRange, name) {
-		this.createGroup(svg, "path", name + "-" + "CI")
-			.append("path")
-			.data(ciNormRange)
-			.attr("class", "confidenceinterval")
-			.attr("d", this.xZeroLine())
-	}
-
 	animateCI(ciNormRange, name) {
-		this.animateGroup("path", ciNormRange, name + "-" + "CI")
+		this.animateGroup("path", ciNormRange, name + "-" + "confidenceinterval")
 			.attr("d", this.xyLine());
 	}
 
@@ -271,7 +263,7 @@ class Chart {
 	}
 
 	createXYLineWithMean(lineData, name) {
-		this.createCI(this.ciLayer, [this.normativeLimits(lineData)], name)
+		this.createLine(this.ciLayer, [this.normativeLimits(lineData)], name, "confidenceinterval")
 		this.createLine(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
 		this.createLine(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
 		this.createCircles(this.circlesLayer, lineData, name)
