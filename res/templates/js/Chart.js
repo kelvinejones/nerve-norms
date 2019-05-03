@@ -24,7 +24,7 @@ class Chart {
 
 		this.group = {}
 
-		this.limFunc = this.limAtLoc
+		this.limFunc = this.limAtLoc // For SD: (dpt, loc) => { return this.sdAtLoc(dpt, loc, 1) }
 	}
 
 	makeScale(name) {
