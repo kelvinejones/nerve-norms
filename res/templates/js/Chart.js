@@ -203,6 +203,7 @@ class Chart {
 
 	animateCI(ciNormRange, name) {
 		this.group["path" + "-" + name + "-" + "CI"].selectAll("path")
+			.data(ciNormRange)
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
@@ -221,6 +222,7 @@ class Chart {
 
 	animateLine(xyLine, groupName, className) {
 		this.group["path" + "-" + groupName + "-" + className].selectAll("path")
+			.data(xyLine)
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
