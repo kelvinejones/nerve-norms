@@ -114,6 +114,10 @@ class Chart {
 			.text(this.yLabel);
 	}
 
+	static linearSD(val, sign, numSD, sdSize) {
+		return val + sign * numSD * sdSize
+	}
+
 	// sdAtLoc calculates limits based on the standard deviations
 	sdAtLoc(dpt, loc, numSD = 2) {
 		const xmn = this.xMeanName || this.xName
@@ -125,15 +129,15 @@ class Chart {
 			if ((dpt[xsd] === undefined || xSign == 0) && (dpt[ysd] === undefined || ySign == 0)) {
 				return { x: dpt[xmn], y: dpt[ymn] }
 			} else if (dpt[xsd] === undefined || xSign == 0) {
-				return { x: dpt[xmn], y: dpt[ymn] + ySign * numSD * dpt[ysd] }
+				return { x: dpt[xmn], y: Chart.linearSD(dpt[ymn], ySign, numSD, dpt[ysd]) }
 			} else if (dpt[ysd] === undefined || ySign == 0) {
-				return { x: dpt[xmn] + xSign * numSD * dpt[xsd], y: dpt[ymn] }
+				return { x: Chart.linearSD(dpt[xmn], xSign, numSD, dpt[xsd]), y: dpt[ymn] }
 			} else {
 				// Since both are set, scale the edges by sqrt(2) to make a ovoid area
 				const scale = 0.707 * numSD
 				return {
-					x: dpt[xmn] + xSign * scale * dpt[xsd],
-					y: dpt[ymn] + ySign * scale * dpt[ysd],
+					x: Chart.linearSD(dpt[xmn], xSign, scale, dpt[xsd]),
+					y: Chart.linearSD(dpt[ymn], ySign, scale, dpt[ysd]),
 				}
 			}
 		}
