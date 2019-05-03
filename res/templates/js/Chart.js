@@ -23,8 +23,9 @@ class Chart {
 		this.transitionTime = Chart.slowTransition;
 
 		this.group = {}
+		this.numSD = 1
 
-		this.limFunc = (dpt, loc) => { return this.sdAtLoc(dpt, loc, 1) }
+		this.limFunc = (dpt, loc) => { return this.sdAtLoc(dpt, loc) }
 	}
 
 	makeScale(name) {
@@ -119,11 +120,12 @@ class Chart {
 	}
 
 	// sdAtLoc calculates limits based on the standard deviations
-	sdAtLoc(dpt, loc, numSD = 2) {
+	sdAtLoc(dpt, loc) {
 		const xmn = this.xMeanName || this.xName
 		const ymn = this.yMeanName || this.yName
 		const xsd = this.xSDName
 		const ysd = this.ySDName
+		const numSD = this.numSD
 
 		function stPoint(xSign, ySign) {
 			let scale = numSD
