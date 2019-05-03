@@ -4,14 +4,23 @@ class StimulusRelative extends Chart {
 		this.data = this.calculateData(plots.sr.data)
 		this.xName = 'x'
 		this.yName = 'y'
+		this.xSDName = 'SD'
+		this.ySDName = undefined
+		this.xMeanName = 'mean'
+		this.yMeanName = undefined
 	}
 
 	calculateData(data) {
 		const stimFor50PercentMax = data[24].valueX // Could also be extracted from excitability variables
-		return data.map(function callback(d, i) {
+		const meanStimFor50PercentMax = data[24].meanX
+
+		return data.map((d, i) => {
 			return {
-				'x': d.valueX / stimFor50PercentMax * 100, // Normalize each element
 				'y': (i + 1) * 2,
+				// Normalize each element
+				'x': d.valueX / stimFor50PercentMax * 100,
+				'SD': d.SDX / d.meanX * 100,
+				'mean': d.meanX / meanStimFor50PercentMax * 100,
 			}
 		})
 	}

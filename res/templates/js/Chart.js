@@ -23,6 +23,9 @@ class Chart {
 		this.transitionTime = Chart.slowTransition;
 
 		this.group = {}
+
+		this.numSD = 2
+		this.sdFunc = Chart.linearSD
 	}
 
 	makeScale(name) {
@@ -112,47 +115,67 @@ class Chart {
 			.text(this.yLabel);
 	}
 
-	// standardDeviationCI creates a CI polygon showing the area within a specified number of standard deviations
-	standardDeviationCI(data, numSD = 2) {
-		const xMean = this.xMeanName || this.xName
-		const yMean = this.yMeanName || this.yName
-		const ySD = this.ySDName
-		const xSD = this.xSDName
-		const first = data[0]
-		const last = data[data.length - 1]
-		if (first[xMean] === undefined || first[yMean] === undefined) {
-			return []
-		}
-		return this.scaleArrayWithinRange((Array.from(data)
-				.map(function(d) { return { x: d[xMean] - numSD * (d[xSD] || 0), y: d[yMean] + numSD * (d[ySD] || 0) } }))
-			.concat({ x: last[xMean] + numSD * (last[xSD] || 0), y: last[yMean] + numSD * (last[ySD] || 0) })
-			.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean] + numSD * (d[xSD] || 0), y: d[yMean] - numSD * (d[ySD] || 0) } }))
-			.concat({ x: first[xMean] - numSD * (first[xSD] || 0), y: first[yMean] - numSD * (first[ySD] || 0) }))
+	static linearSD(val, sign, numSD, sdSize) {
+		return val + sign * numSD * (sdSize || 0)
 	}
 
-	// normativeLimits extracts the calculated limits from the dataset, which describes the range in which a healthy measure is expected
+	static logSD(val, sign, numSD, sdSize) {
+		return val * Math.pow(10, sign * numSD * (sdSize || 0))
+	}
+
+	// sdAtLoc calculates limits based on the standard deviations
+	sdAtLoc(dpt, loc) {
+		const xmn = this.xMeanName || this.xName
+		const ymn = this.yMeanName || this.yName
+		const xsd = this.xSDName
+		const ysd = this.ySDName
+		const numSD = this.numSD
+		const sdFunc = this.sdFunc
+
+		function stPoint(xSign, ySign) {
+			let scale = numSD
+			if (dpt[xsd] !== undefined && xSign != 0 && dpt[ysd] !== undefined && ySign != 0) {
+				// Since both are set, scale the edges by sqrt(2) to make a ovoid area
+				scale = 0.707 * numSD
+			}
+			return { x: sdFunc(dpt[xmn], xSign, scale, dpt[xsd]), y: sdFunc(dpt[ymn], ySign, scale, dpt[ysd]) }
+		}
+
+		switch (loc) {
+			case Chart.limLoc.UPPER_LEFT:
+				return stPoint(-1, 1)
+			case Chart.limLoc.UPPER_RIGHT:
+				return stPoint(1, 1)
+			case Chart.limLoc.LOWER_LEFT:
+				return stPoint(-1, -1)
+			case Chart.limLoc.LOWER_RIGHT:
+				return stPoint(1, -1)
+			case Chart.limLoc.UPPER:
+				return stPoint(0, 1)
+			case Chart.limLoc.LOWER:
+				return stPoint(0, -11)
+			case Chart.limLoc.LEFT:
+				return stPoint(-1, 0)
+			case Chart.limLoc.RIGHT:
+				return stPoint(1, 0)
+		}
+	}
+
 	normativeLimits(data) {
-		const xMean = this.xMeanName || this.xName
-		const yMean = this.yMeanName || this.yName
-		const last = data[data.length - 1]
-		const first = data[0]
-		if (first.leftLimit !== undefined) {
-			// This is a complicated limit with x and y limits.
-			return this.scaleArrayWithinRange((Array.from(data)
-					.map(function(d) { return { x: d.leftLimit, y: d.upperLimit || d[yMean] } }))
-				.concat({ x: last.rightLimit, y: last.upperLimit || last[yMean] })
-				.concat(Array.from(data).reverse().map(function(d) { return { x: d.rightLimit, y: d.lowerLimit || d[yMean] } }))
-				.concat({ x: first.leftLimit, y: first.lowerLimit || first[yMean] }))
-		} else if (first.upperLimit !== undefined) {
-			// This is a simple limit with upper and lower bounds.
-			return this.scaleArrayWithinRange((Array.from(data)
-					.map(function(d) { return { x: d[xMean], y: d.lowerLimit || d[yMean] } }))
-				.concat({ x: last[xMean], y: last.upperLimit || last[yMean] })
-				.concat(Array.from(data).reverse().map(function(d) { return { x: d[xMean], y: d.upperLimit || d[yMean] } }))
-				.concat({ x: first[xMean], y: first.lowerLimit || first[yMean] }))
-		} else {
+		if (this.sdNum == 0) {
 			return []
 		}
+
+		// this.sdAtLoc can be changed if a different calculation is more appropriate.
+		return this.scaleArrayWithinRange((Array.from(data)
+				.map(d => { return this.sdAtLoc(d, Chart.limLoc.UPPER_LEFT) }))
+			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.UPPER))
+			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT))
+			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.RIGHT))
+			.concat(Array.from(data).reverse().map(d => { return this.sdAtLoc(d, Chart.limLoc.LOWER_RIGHT) }))
+			.concat(this.sdAtLoc(data[0], Chart.limLoc.LOWER))
+			.concat(this.sdAtLoc(data[0], Chart.limLoc.LOWER_LEFT))
+			.concat(this.sdAtLoc(data[0], Chart.limLoc.LEFT)))
 	}
 
 	scaleArrayWithinRange(ar) {
@@ -263,14 +286,14 @@ class Chart {
 
 	createXYLineWithMean(lineData, name) {
 		this.createPath(this.ciLayer, [this.normativeLimits(lineData)], name, "confidenceinterval")
-		this.createPath(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
+		this.createPath(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName)], name, "meanline")
 		this.createPath(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
 		this.createCircles(this.circlesLayer, lineData, name)
 	}
 
 	animateXYLineWithMean(lineData, name) {
 		this.animatePath([this.normativeLimits(lineData)], name, "confidenceinterval")
-		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
+		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName)], name, "meanline")
 		this.animatePath([this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
 		this.animateCircles(lineData, name)
 	}
@@ -309,6 +332,19 @@ Object.defineProperty(Chart, 'scaleType', {
 	value: {
 		LINEAR: "LINEAR",
 		LOG: "LOG",
+	},
+	enumerable: true,
+})
+Object.defineProperty(Chart, 'limLoc', {
+	value: {
+		UPPER_LEFT: "UPPER_LEFT",
+		UPPER_RIGHT: "UPPER_RIGHT",
+		LOWER_LEFT: "LOWER_LEFT",
+		LOWER_RIGHT: "LOWER_RIGHT",
+		UPPER: "UPPER",
+		LOWER: "LOWER",
+		LEFT: "LEFT",
+		RIGHT: "RIGHT",
 	},
 	enumerable: true,
 })
