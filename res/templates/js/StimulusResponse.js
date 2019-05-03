@@ -14,6 +14,11 @@ class StimulusResponse extends Chart {
 	get xLabel() { return "Stimulus Current (mA)" }
 	get yLabel() { return "Peak Response (mV)" }
 
+	updatePlots(plots) {
+		this.data = plots.sr.data
+		this.animateXYLineWithMean(this.data, "sr")
+	}
+
 	drawLines(svg) {
 		this.createXYLineWithMean(this.data, "sr")
 		this.animateXYLineWithMean(this.data, "sr")

@@ -9,6 +9,11 @@ class ThresholdIV extends Chart {
 	get xLabel() { return "Threshold Reduction (%)" }
 	get yLabel() { return "Current (% Threshold)" }
 
+	updatePlots(plots) {
+		this.data = plots.tiv.data
+		this.animateXYLineWithMean(this.data, "tiv")
+	}
+
 	drawLines(svg) {
 		this.createXYLineWithMean(this.data, "tiv")
 		this.drawHorizontalLine(this.linesLayer, 0)

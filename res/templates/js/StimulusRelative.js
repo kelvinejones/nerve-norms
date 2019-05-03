@@ -20,6 +20,11 @@ class StimulusRelative extends Chart {
 	get xLabel() { return "Stimulus (% Mean Threshold)" }
 	get yLabel() { return "Peak Response (% Max)" }
 
+	updatePlots(plots) {
+		this.data = this.calculateData(plots.sr.data)
+		this.animateXYLineWithMean(this.data, "srel")
+	}
+
 	drawLines(svg) {
 		this.createXYLineWithMean(this.data, "srel")
 		this.animateXYLineWithMean(this.data, "srel")

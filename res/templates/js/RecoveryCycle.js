@@ -8,6 +8,11 @@ class RecoveryCycle extends Chart {
 	get xLabel() { return "Threshold Change (%)" }
 	get yLabel() { return "Interstimulus Interval (ms)" }
 
+	updatePlots(plots) {
+		this.data = plots.rc.data
+		this.animateXYLineWithMean(this.data, "rc")
+	}
+
 	drawLines(svg) {
 		this.createXYLineWithMean(this.data, "rc")
 		this.animateXYLineWithMean(this.data, "rc")
