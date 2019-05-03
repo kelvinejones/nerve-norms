@@ -4,7 +4,7 @@ function initPlots(data) {
 		chart: new RecoveryCycle(data.plots),
 		selector: "#recoveryCycle svg",
 	}, {
-		chart: new ThresholdElectrotonus(data.plots, data.plots, data.plots, data.plots),
+		chart: new ThresholdElectrotonus(data.plots),
 		selector: "#thresholdElectrotonus svg",
 	}, {
 		chart: new ChargeDuration(data.plots),
