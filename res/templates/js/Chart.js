@@ -122,9 +122,19 @@ class Chart {
 		const ysd = this.ySDName
 
 		function stPoint(xSign, ySign) {
-			return {
-				x: dpt[xmn] + xSign * numSD * (dpt[xsd] || 0),
-				y: dpt[ymn] + ySign * numSD * (dpt[ysd] || 0),
+			if ((dpt[xsd] === undefined || xSign == 0) && (dpt[ysd] === undefined || ySign == 0)) {
+				return { x: dpt[xmn], y: dpt[ymn] }
+			} else if (dpt[xsd] === undefined || xSign == 0) {
+				return { x: dpt[xmn], y: dpt[ymn] + ySign * numSD * dpt[ysd] }
+			} else if (dpt[ysd] === undefined || ySign == 0) {
+				return { x: dpt[xmn] + xSign * numSD * dpt[xsd], y: dpt[ymn] }
+			} else {
+				// Since both are set, scale the edges by sqrt(2) to make a ovoid area
+				const scale = 0.707 * numSD
+				return {
+					x: dpt[xmn] + xSign * scale * dpt[xsd],
+					y: dpt[ymn] + ySign * scale * dpt[ysd],
+				}
 			}
 		}
 
@@ -137,6 +147,14 @@ class Chart {
 				return stPoint(-1, -1)
 			case Chart.limLoc.LOWER_RIGHT:
 				return stPoint(1, -1)
+			case Chart.limLoc.UPPER:
+				return stPoint(0, 1)
+			case Chart.limLoc.LOWER:
+				return stPoint(0, -11)
+			case Chart.limLoc.LEFT:
+				return stPoint(-1, 0)
+			case Chart.limLoc.RIGHT:
+				return stPoint(1, 0)
 		}
 	}
 
@@ -148,9 +166,13 @@ class Chart {
 		// this.limFunc can be changed if a different calculation is more appropriate.
 		return this.scaleArrayWithinRange((Array.from(data)
 				.map(d => { return this.limFunc(d, Chart.limLoc.UPPER_LEFT) }))
+			.concat(this.limFunc(data[data.length - 1], Chart.limLoc.UPPER))
 			.concat(this.limFunc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT))
+			.concat(this.limFunc(data[data.length - 1], Chart.limLoc.RIGHT))
 			.concat(Array.from(data).reverse().map(d => { return this.limFunc(d, Chart.limLoc.LOWER_RIGHT) }))
-			.concat(this.limFunc(data[0], Chart.limLoc.LOWER_LEFT)))
+			.concat(this.limFunc(data[0], Chart.limLoc.LOWER))
+			.concat(this.limFunc(data[0], Chart.limLoc.LOWER_LEFT))
+			.concat(this.limFunc(data[0], Chart.limLoc.LEFT)))
 	}
 
 	// limAtLoc extracts the calculated limits from the dataset, which describes the range in which a healthy measure is expected
@@ -160,16 +182,20 @@ class Chart {
 		switch (loc) {
 			case Chart.limLoc.UPPER_LEFT:
 				return { x: dpt['leftLimit'] || dpt[xmn], y: dpt['upperLimit'] || dpt[ymn] }
-				break
 			case Chart.limLoc.UPPER_RIGHT:
 				return { x: dpt['rightLimit'] || dpt[xmn], y: dpt['upperLimit'] || dpt[ymn] }
-				break
 			case Chart.limLoc.LOWER_LEFT:
 				return { x: dpt['leftLimit'] || dpt[xmn], y: dpt['lowerLimit'] || dpt[ymn] }
-				break
 			case Chart.limLoc.LOWER_RIGHT:
 				return { x: dpt['rightLimit'] || dpt[xmn], y: dpt['lowerLimit'] || dpt[ymn] }
-				break
+			case Chart.limLoc.UPPER:
+				return { x: dpt[xmn], y: dpt['upperLimit'] || dpt[ymn] }
+			case Chart.limLoc.LOWER:
+				return { x: dpt[xmn], y: dpt['lowerLimit'] || dpt[ymn] }
+			case Chart.limLoc.LEFT:
+				return { x: dpt['leftLimit'] || dpt[xmn], y: dpt[ymn] }
+			case Chart.limLoc.RIGHT:
+				return { x: dpt['rightLimit'] || dpt[xmn], y: dpt[ymn] }
 		}
 	}
 
@@ -336,6 +362,10 @@ Object.defineProperty(Chart, 'limLoc', {
 		UPPER_RIGHT: "UPPER_RIGHT",
 		LOWER_LEFT: "LOWER_LEFT",
 		LOWER_RIGHT: "LOWER_RIGHT",
+		UPPER: "UPPER",
+		LOWER: "LOWER",
+		LEFT: "LEFT",
+		RIGHT: "RIGHT",
 	},
 	enumerable: true,
 })
