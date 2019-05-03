@@ -114,20 +114,31 @@ class Chart {
 
 	// standardDeviationCI creates a CI polygon showing the area within a specified number of standard deviations
 	standardDeviationCI(data, numSD = 2) {
-		const xMean = this.xMeanName || this.xName
-		const yMean = this.yMeanName || this.yName
-		const ySD = this.ySDName
-		const xSD = this.xSDName
-		const first = data[0]
-		const last = data[data.length - 1]
-		if (first[xMean] === undefined || first[yMean] === undefined) {
+		if (data[0][this.xMeanName || this.xName] === undefined || data[0][this.yMeanName || this.yName] === undefined) {
 			return []
 		}
 		return this.scaleArrayWithinRange((Array.from(data)
-				.map(d => { return { x: this.sd(d, xMean, xSD, -numSD), y: this.sd(d, yMean, ySD, numSD) } }))
-			.concat({ x: this.sd(last, xMean, xSD, numSD), y: this.sd(last, yMean, ySD, numSD) })
-			.concat(Array.from(data).reverse().map(d => { return { x: this.sd(d, xMean, xSD, numSD), y: this.sd(d, yMean, ySD, -numSD) } }))
-			.concat({ x: this.sd(first, xMean, xSD, -numSD), y: this.sd(first, yMean, ySD, -numSD) }))
+				.map(d => { return this.sdAtLoc(d, Chart.limLoc.UPPER_LEFT) }))
+			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT))
+			.concat(Array.from(data).reverse().map(d => { return this.sdAtLoc(d, Chart.limLoc.LOWER_RIGHT) }))
+			.concat(this.sdAtLoc(data[0], Chart.limLoc.LOWER_LEFT)))
+	}
+
+	sdAtLoc(dpt, loc, numSD = 2) {
+		switch (loc) {
+			case Chart.limLoc.UPPER_LEFT:
+				return { x: this.sd(dpt, this.xMeanName || this.xName, this.xSDName, -numSD), y: this.sd(dpt, this.yMeanName || this.yName, this.ySDName, numSD) }
+				break
+			case Chart.limLoc.UPPER_RIGHT:
+				return { x: this.sd(dpt, this.xMeanName || this.xName, this.xSDName, numSD), y: this.sd(dpt, this.yMeanName || this.yName, this.ySDName, numSD) }
+				break
+			case Chart.limLoc.LOWER_LEFT:
+				return { x: this.sd(dpt, this.xMeanName || this.xName, this.xSDName, -numSD), y: this.sd(dpt, this.yMeanName || this.yName, this.ySDName, -numSD) }
+				break
+			case Chart.limLoc.LOWER_RIGHT:
+				return { x: this.sd(dpt, this.xMeanName || this.xName, this.xSDName, numSD), y: this.sd(dpt, this.yMeanName || this.yName, this.ySDName, -numSD) }
+				break
+		}
 	}
 
 	// sd can be overridden if a different calculation is more appropriate.
