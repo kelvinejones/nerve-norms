@@ -25,6 +25,15 @@ function initPlots(data) {
 		pl.chart.draw(d3.select(pl.selector), true)
 	})
 
+	function changeParticipant(ev) {
+		plots.forEach(pl => {
+			pl.chart.updatePlots(participants[ev.srcElement.value])
+		})
+	}
+
+	document.getElementById("select-participant-dropdown")
+		.addEventListener("change", changeParticipant);
+
 	let opacity = 0.8,
 		red = d3.hsl("red"),
 		green = d3.hsl("lightgreen");

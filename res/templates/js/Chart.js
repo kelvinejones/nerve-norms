@@ -44,6 +44,7 @@ class Chart {
 		}
 	}
 
+	updatePlots(plots) { throw new Error("A Chart must implement updatePlots(plots)") }
 	get name() { throw new Error("A Chart must implement name()") }
 	get xLabel() { throw new Error("A Chart must implement xLabel()") }
 	get yLabel() { throw new Error("A Chart must implement yLabel()") }
