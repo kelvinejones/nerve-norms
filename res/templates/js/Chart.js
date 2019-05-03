@@ -19,8 +19,8 @@ class Chart {
 
 		this.yAnimStart = this.animationStartValue(this.yRange)
 
-		this.delayTime = Chart.delayTime;
-		this.transitionTime = Chart.transitionTime;
+		this.delayTime = Chart.slowDelay;
+		this.transitionTime = Chart.slowTransition;
 
 		this.group = {}
 	}
@@ -288,12 +288,20 @@ class Chart {
 }
 
 // Set some constants for the class
-Object.defineProperty(Chart, 'delayTime', {
+Object.defineProperty(Chart, 'slowDelay', {
 	value: 750,
 	enumerable: true,
 })
-Object.defineProperty(Chart, 'transitionTime', {
+Object.defineProperty(Chart, 'fastDelay', {
+	value: 0,
+	enumerable: true,
+})
+Object.defineProperty(Chart, 'slowTransition', {
 	value: 2500,
+	enumerable: true,
+})
+Object.defineProperty(Chart, 'fastTransition', {
+	value: 1000,
 	enumerable: true,
 })
 Object.defineProperty(Chart, 'scaleType', {
