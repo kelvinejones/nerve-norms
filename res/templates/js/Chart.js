@@ -118,40 +118,25 @@ class Chart {
 	sdAtLoc(dpt, loc, numSD = 2) {
 		const xmn = this.xMeanName || this.xName
 		const ymn = this.yMeanName || this.yName
+		const xsd = this.xSDName
+		const ysd = this.ySDName
 
-		// dpt is the data point object.
-		// dpt[meanName] is the mean.
-		// dpt[sdName] is the standard deviation.
-		// numSD is the number of SD to add or subtract.
-		function sd(dpt, meanName, sdName, numSD) {
-			return dpt[meanName] + numSD * (dpt[sdName] || 0)
+		function stPoint(xSign, ySign) {
+			return {
+				x: dpt[xmn] + xSign * numSD * (dpt[xsd] || 0),
+				y: dpt[ymn] + ySign * numSD * (dpt[ysd] || 0),
+			}
 		}
 
 		switch (loc) {
 			case Chart.limLoc.UPPER_LEFT:
-				return {
-					x: sd(dpt, xmn, this.xSDName, -numSD),
-					y: sd(dpt, ymn, this.ySDName, numSD),
-				}
-				break
+				return stPoint(-1, 1)
 			case Chart.limLoc.UPPER_RIGHT:
-				return {
-					x: sd(dpt, xmn, this.xSDName, numSD),
-					y: sd(dpt, ymn, this.ySDName, numSD),
-				}
-				break
+				return stPoint(1, 1)
 			case Chart.limLoc.LOWER_LEFT:
-				return {
-					x: sd(dpt, xmn, this.xSDName, -numSD),
-					y: sd(dpt, ymn, this.ySDName, -numSD),
-				}
-				break
+				return stPoint(-1, -1)
 			case Chart.limLoc.LOWER_RIGHT:
-				return {
-					x: sd(dpt, xmn, this.xSDName, numSD),
-					y: sd(dpt, ymn, this.ySDName, -numSD),
-				}
-				break
+				return stPoint(1, -1)
 		}
 	}
 
