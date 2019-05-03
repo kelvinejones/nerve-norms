@@ -145,23 +145,19 @@ class Chart {
 		const yMean = this.yMeanName || this.yName
 		const last = data[data.length - 1]
 		const first = data[0]
-		if (first.leftLimit !== undefined) {
-			// This is a complicated limit with x and y limits.
-			return this.scaleArrayWithinRange((Array.from(data)
-					.map(d => { return { x: d.leftLimit, y: d.upperLimit || d[yMean] } }))
-				.concat({ x: last.rightLimit, y: last.upperLimit || last[yMean] })
-				.concat(Array.from(data).reverse().map(d => { return { x: d.rightLimit, y: d.lowerLimit || d[yMean] } }))
-				.concat({ x: first.leftLimit, y: first.lowerLimit || first[yMean] }))
-		} else if (first.upperLimit !== undefined) {
-			// This is a simple limit with upper and lower bounds.
-			return this.scaleArrayWithinRange((Array.from(data)
-					.map(d => { return { x: d[xMean], y: d.lowerLimit || d[yMean] } }))
-				.concat({ x: last[xMean], y: last.upperLimit || last[yMean] })
-				.concat(Array.from(data).reverse().map(d => { return { x: d[xMean], y: d.upperLimit || d[yMean] } }))
-				.concat({ x: first[xMean], y: first.lowerLimit || first[yMean] }))
-		} else {
+		if (first.leftLimit === undefined && first.upperLimit === undefined) {
 			return []
 		}
+
+		return this.scaleArrayWithinRange((Array.from(data)
+				.map(d => { return this.lim(d, 'leftLimit', 'upperLimit', xMean, yMean) }))
+			.concat(this.lim(last, 'rightLimit', 'upperLimit', xMean, yMean))
+			.concat(Array.from(data).reverse().map(d => { return this.lim(d, 'rightLimit', 'lowerLimit', xMean, yMean) }))
+			.concat(this.lim(first, 'leftLimit', 'lowerLimit', xMean, yMean)))
+	}
+
+	lim(dpt, xlim, ylim, xmn, ymn) {
+		return { x: dpt[xlim] || dpt[xmn], y: dpt[ylim] || dpt[ymn] }
 	}
 
 	scaleArrayWithinRange(ar) {
