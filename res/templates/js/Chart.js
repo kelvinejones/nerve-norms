@@ -116,28 +116,43 @@ class Chart {
 
 	// sdAtLoc calculates limits based on the standard deviations
 	sdAtLoc(dpt, loc, numSD = 2) {
+		const xmn = this.xMeanName || this.xName
+		const ymn = this.yMeanName || this.yName
+
+		// dpt is the data point object.
+		// dpt[meanName] is the mean.
+		// dpt[sdName] is the standard deviation.
+		// numSD is the number of SD to add or subtract.
+		function sd(dpt, meanName, sdName, numSD) {
+			return dpt[meanName] + numSD * (dpt[sdName] || 0)
+		}
+
 		switch (loc) {
 			case Chart.limLoc.UPPER_LEFT:
-				return { x: this.sd(dpt, this.xMeanName || this.xName, this.xSDName, -numSD), y: this.sd(dpt, this.yMeanName || this.yName, this.ySDName, numSD) }
+				return {
+					x: sd(dpt, xmn, this.xSDName, -numSD),
+					y: sd(dpt, ymn, this.ySDName, numSD),
+				}
 				break
 			case Chart.limLoc.UPPER_RIGHT:
-				return { x: this.sd(dpt, this.xMeanName || this.xName, this.xSDName, numSD), y: this.sd(dpt, this.yMeanName || this.yName, this.ySDName, numSD) }
+				return {
+					x: sd(dpt, xmn, this.xSDName, numSD),
+					y: sd(dpt, ymn, this.ySDName, numSD),
+				}
 				break
 			case Chart.limLoc.LOWER_LEFT:
-				return { x: this.sd(dpt, this.xMeanName || this.xName, this.xSDName, -numSD), y: this.sd(dpt, this.yMeanName || this.yName, this.ySDName, -numSD) }
+				return {
+					x: sd(dpt, xmn, this.xSDName, -numSD),
+					y: sd(dpt, ymn, this.ySDName, -numSD),
+				}
 				break
 			case Chart.limLoc.LOWER_RIGHT:
-				return { x: this.sd(dpt, this.xMeanName || this.xName, this.xSDName, numSD), y: this.sd(dpt, this.yMeanName || this.yName, this.ySDName, -numSD) }
+				return {
+					x: sd(dpt, xmn, this.xSDName, numSD),
+					y: sd(dpt, ymn, this.ySDName, -numSD),
+				}
 				break
 		}
-	}
-
-	// dpt is the data point object.
-	// dpt[meanName] is the mean.
-	// dpt[sdName] is the standard deviation.
-	// numSD is the number of SD to add or subtract.
-	sd(dpt, meanName, sdName, numSD) {
-		return dpt[meanName] + numSD * (dpt[sdName] || 0)
 	}
 
 	normativeLimits(data) {
@@ -155,24 +170,22 @@ class Chart {
 
 	// limAtLoc extracts the calculated limits from the dataset, which describes the range in which a healthy measure is expected
 	limAtLoc(dpt, loc) {
+		const xmn = this.xMeanName || this.xName
+		const ymn = this.yMeanName || this.yName
 		switch (loc) {
 			case Chart.limLoc.UPPER_LEFT:
-				return this.lim(dpt, 'leftLimit', 'upperLimit', this.xMeanName || this.xName, this.yMeanName || this.yName)
+				return { x: dpt['leftLimit'] || dpt[xmn], y: dpt['upperLimit'] || dpt[ymn] }
 				break
 			case Chart.limLoc.UPPER_RIGHT:
-				return this.lim(dpt, 'rightLimit', 'upperLimit', this.xMeanName || this.xName, this.yMeanName || this.yName)
+				return { x: dpt['rightLimit'] || dpt[xmn], y: dpt['upperLimit'] || dpt[ymn] }
 				break
 			case Chart.limLoc.LOWER_LEFT:
-				return this.lim(dpt, 'leftLimit', 'lowerLimit', this.xMeanName || this.xName, this.yMeanName || this.yName)
+				return { x: dpt['leftLimit'] || dpt[xmn], y: dpt['lowerLimit'] || dpt[ymn] }
 				break
 			case Chart.limLoc.LOWER_RIGHT:
-				return this.lim(dpt, 'rightLimit', 'lowerLimit', this.xMeanName || this.xName, this.yMeanName || this.yName)
+				return { x: dpt['rightLimit'] || dpt[xmn], y: dpt['lowerLimit'] || dpt[ymn] }
 				break
 		}
-	}
-
-	lim(dpt, xlim, ylim, xmn, ymn) {
-		return { x: dpt[xlim] || dpt[xmn], y: dpt[ylim] || dpt[ymn] }
 	}
 
 	scaleArrayWithinRange(ar) {
