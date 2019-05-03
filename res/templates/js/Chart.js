@@ -141,19 +141,32 @@ class Chart {
 
 	// normativeLimits extracts the calculated limits from the dataset, which describes the range in which a healthy measure is expected
 	normativeLimits(data) {
-		const xMean = this.xMeanName || this.xName
-		const yMean = this.yMeanName || this.yName
-		const last = data[data.length - 1]
-		const first = data[0]
-		if (first.leftLimit === undefined && first.upperLimit === undefined) {
+		if (data[0].leftLimit === undefined && data[0].upperLimit === undefined) {
 			return []
 		}
 
 		return this.scaleArrayWithinRange((Array.from(data)
-				.map(d => { return this.lim(d, 'leftLimit', 'upperLimit', xMean, yMean) }))
-			.concat(this.lim(last, 'rightLimit', 'upperLimit', xMean, yMean))
-			.concat(Array.from(data).reverse().map(d => { return this.lim(d, 'rightLimit', 'lowerLimit', xMean, yMean) }))
-			.concat(this.lim(first, 'leftLimit', 'lowerLimit', xMean, yMean)))
+				.map(d => { return this.limAtLoc(d, Chart.limLoc.UPPER_LEFT) }))
+			.concat(this.limAtLoc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT))
+			.concat(Array.from(data).reverse().map(d => { return this.limAtLoc(d, Chart.limLoc.LOWER_RIGHT) }))
+			.concat(this.limAtLoc(data[0], Chart.limLoc.LOWER_LEFT)))
+	}
+
+	limAtLoc(dpt, loc) {
+		switch (loc) {
+			case Chart.limLoc.UPPER_LEFT:
+				return this.lim(dpt, 'leftLimit', 'upperLimit', this.xMeanName || this.xName, this.yMeanName || this.yName)
+				break
+			case Chart.limLoc.UPPER_RIGHT:
+				return this.lim(dpt, 'rightLimit', 'upperLimit', this.xMeanName || this.xName, this.yMeanName || this.yName)
+				break
+			case Chart.limLoc.LOWER_LEFT:
+				return this.lim(dpt, 'leftLimit', 'lowerLimit', this.xMeanName || this.xName, this.yMeanName || this.yName)
+				break
+			case Chart.limLoc.LOWER_RIGHT:
+				return this.lim(dpt, 'rightLimit', 'lowerLimit', this.xMeanName || this.xName, this.yMeanName || this.yName)
+				break
+		}
 	}
 
 	lim(dpt, xlim, ylim, xmn, ymn) {
@@ -314,6 +327,15 @@ Object.defineProperty(Chart, 'scaleType', {
 	value: {
 		LINEAR: "LINEAR",
 		LOG: "LOG",
+	},
+	enumerable: true,
+})
+Object.defineProperty(Chart, 'limLoc', {
+	value: {
+		UPPER_LEFT: "UPPER_LEFT",
+		UPPER_RIGHT: "UPPER_RIGHT",
+		LOWER_LEFT: "LOWER_LEFT",
+		LOWER_RIGHT: "LOWER_RIGHT",
 	},
 	enumerable: true,
 })
