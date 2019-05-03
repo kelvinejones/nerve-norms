@@ -15,6 +15,7 @@ class StimulusResponse extends Chart {
 	get yLabel() { return "Peak Response (mV)" }
 
 	drawLines(svg) {
+		this.createXYLineWithMean(this.data, "sr")
 		this.animateXYLineWithMean(this.data, "sr")
 	}
 }

@@ -17,6 +17,7 @@ class StimulusRelative extends Chart {
 	get yLabel() { return "Peak Response (% Max)" }
 
 	drawLines(svg) {
+		this.createXYLineWithMean(this.data, "srel")
 		this.animateXYLineWithMean(this.data, "srel")
 	}
 }

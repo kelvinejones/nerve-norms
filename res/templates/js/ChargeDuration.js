@@ -10,6 +10,7 @@ class ChargeDuration extends Chart {
 	get yLabel() { return "Threshold Change (mA•ms)" }
 
 	drawLines(svg) {
+		this.createXYLineWithMean(this.data, "cd")
 		this.animateXYLineWithMean(this.data, "cd")
 	}
 }

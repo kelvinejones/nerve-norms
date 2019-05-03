@@ -18,6 +18,8 @@ class Chart {
 		this.yMeanName = 'mean'
 
 		this.yAnimStart = this.animationStartValue(this.yRange)
+
+		this.group = {}
 	}
 
 	makeScale(name) {
@@ -189,22 +191,36 @@ class Chart {
 			.y(d => this.yscale(d.y));
 	}
 
-	animateCI(svg, ciNormRange) {
+	createCI(svg, ciNormRange, name) {
+		svg = svg.append("g")
+		this.group["path" + "-" + name + "-" + "CI"] = svg
+
 		svg.append("path")
 			.data(ciNormRange)
 			.attr("class", "confidenceinterval")
 			.attr("d", this.xZeroLine())
+	}
+
+	animateCI(ciNormRange, name) {
+		this.group["path" + "-" + name + "-" + "CI"].selectAll("path")
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
 			.attr("d", this.xyLine());
 	}
 
-	animateLine(svg, xyLine, className) {
+	createLine(svg, xyLine, groupName, className) {
+		svg = svg.append("g")
+		this.group["path" + "-" + groupName + "-" + className] = svg
+
 		svg.append("path")
 			.data(xyLine)
 			.attr("class", className)
 			.attr("d", this.xZeroLine())
+	}
+
+	animateLine(xyLine, groupName, className) {
+		this.group["path" + "-" + groupName + "-" + className].selectAll("path")
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
@@ -229,31 +245,45 @@ class Chart {
 			.attr("d", this.xyLine());
 	}
 
-	animateCircles(svg, circleLocations) {
+	createCircles(svg, circleLocations, name) {
+		// create circle locations at init for each name, with right amount and position of circles
 		// Add circles into a separate SVG group
 		svg = svg.append("g")
-		const self = this
+		this.group["circle" + "-" + name] = svg
 
-		const circles = svg.selectAll("circle")
+		svg.selectAll("circle")
 			.data(circleLocations)
 			.enter()
-			.append("circle");
-		circles.attr("cx", d => self.xscale(d[this.xName]))
-			.attr("cy", self.yscale(this.yAnimStart))
-			.attr("r", d => d.wasImputed ? 3 : 5)
-			.style("fill", d => d.wasImputed ? "red" : "black");
-		circles
+			.append("circle")
+			.attr("cx", d => this.xscale(d[this.xName]))
+			.attr("cy", this.yscale(this.yAnimStart))
+			.attr("r", d => 3)
+			.style("fill", d => "black");
+	}
+
+	animateCircles(circleLocations, name) {
+		this.group["circle" + "-" + name].selectAll("circle")
+			.data(circleLocations)
 			.transition()
 			.delay(Chart.delayTime)
 			.duration(Chart.transitionTime)
-			.attr("cy", d => self.yscale(d[this.yName]))
+			.attr("r", d => d.wasImputed ? 3 : 5)
+			.style("fill", d => d.wasImputed ? "red" : "black")
+			.attr("cy", d => this.yscale(d[this.yName]))
+	}
+
+	createXYLineWithMean(lineData, name) {
+		this.createCI(this.ciLayer, [this.normativeLimits(lineData)], name)
+		this.createLine(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
+		this.createLine(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
+		this.createCircles(this.circlesLayer, lineData, name)
 	}
 
 	animateXYLineWithMean(lineData, name) {
-		this.animateCI(this.ciLayer, [this.normativeLimits(lineData)])
-		this.animateLine(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], "meanline")
-		this.animateLine(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], "line")
-		this.animateCircles(this.circlesLayer, lineData)
+		this.animateCI([this.normativeLimits(lineData)], name)
+		this.animateLine([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
+		this.animateLine([this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
+		this.animateCircles(lineData, name)
 	}
 }
 

@@ -10,8 +10,9 @@ class ThresholdIV extends Chart {
 	get yLabel() { return "Current (% Threshold)" }
 
 	drawLines(svg) {
-		this.animateXYLineWithMean(this.data, "tiv")
+		this.createXYLineWithMean(this.data, "tiv")
 		this.drawHorizontalLine(this.linesLayer, 0)
 		this.drawVerticalLine(this.linesLayer, 0)
+		this.animateXYLineWithMean(this.data, "tiv")
 	}
 }
