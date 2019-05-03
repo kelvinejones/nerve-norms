@@ -1,7 +1,7 @@
 class StimulusResponse extends Chart {
-	constructor(data) {
+	constructor(plots) {
 		super([0.01, 20], [0.01, 20], Chart.scaleType.LOG, Chart.scaleType.LOG)
-		this.data = data
+		this.data = plots.sr.data
 		this.xName = 'valueX'
 		this.yName = 'valueY'
 		this.xMeanName = 'meanX'
@@ -14,7 +14,13 @@ class StimulusResponse extends Chart {
 	get xLabel() { return "Stimulus Current (mA)" }
 	get yLabel() { return "Peak Response (mV)" }
 
+	updatePlots(plots) {
+		this.data = plots.sr.data
+		this.animateXYLineWithMean(this.data, "sr", 0)
+	}
+
 	drawLines(svg) {
-		this.animateXYLineWithMean(this.data)
+		this.createXYLineWithMean(this.data, "sr")
+		this.animateXYLineWithMean(this.data, "sr")
 	}
 }

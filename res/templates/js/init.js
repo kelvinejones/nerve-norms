@@ -1,23 +1,38 @@
 function initPlots(data) {
 	// Create all of the plots
+	const plots = [{
+		chart: new RecoveryCycle(data.plots),
+		selector: "#recoveryCycle svg",
+	}, {
+		chart: new ThresholdElectrotonus(data.plots, data.plots, data.plots, data.plots),
+		selector: "#thresholdElectrotonus svg",
+	}, {
+		chart: new ChargeDuration(data.plots),
+		selector: "#chargeDuration svg",
+	}, {
+		chart: new ThresholdIV(data.plots),
+		selector: "#thresholdIV svg",
+	}, {
+		chart: new StimulusResponse(data.plots),
+		selector: "#stimulusResponse svg",
+	}, {
+		chart: new StimulusRelative(data.plots),
+		selector: "#stimulusResponseRelative svg",
+	}, ]
 
-	var rc = new RecoveryCycle(data.plots[7].data)
-	rc.draw(d3.select("#recoveryCycle svg"), true)
+	// Draw them all
+	plots.forEach(pl => {
+		pl.chart.draw(d3.select(pl.selector), true)
+	})
 
-	var te = new ThresholdElectrotonus(data.plots[2].data, data.plots[3].data, data.plots[4].data, data.plots[5].data)
-	te.draw(d3.select("#thresholdElectrotonus svg"), true)
+	function changeParticipant(ev) {
+		plots.forEach(pl => {
+			pl.chart.updatePlots(participants[ev.srcElement.value].plots)
+		})
+	}
 
-	var cd = new ChargeDuration(data.plots[1].data)
-	cd.draw(d3.select("#chargeDuration svg"), true)
-
-	var tiv = new ThresholdIV(data.plots[6].data)
-	tiv.draw(d3.select("#thresholdIV svg"), true)
-
-	var sr = new StimulusResponse(data.plots[0].data)
-	sr.draw(d3.select("#stimulusResponse svg"), true)
-
-	var srrel = new StimulusRelative(data.plots[0].data)
-	srrel.draw(d3.select("#stimulusResponseRelative svg"), true)
+	document.getElementById("select-participant-dropdown")
+		.addEventListener("change", changeParticipant);
 
 	let opacity = 0.8,
 		red = d3.hsl("red"),
@@ -42,7 +57,7 @@ function initPlots(data) {
 
 	setExcitabilityVariable("overall-score", data.outlierScore, data.outlierScore)
 
-	data.plots.map(function(pl) { return pl.discreteMeasures; }).flat()
+	Object.keys(data.plots).map(function(key) { return data.plots[key].discreteMeasures; }).flat()
 		.concat(data.discreteMeasures)
 		.forEach(function(exind) {
 			setExcitabilityVariable("qtrac-excite-" + exind.qtracExciteID, exind.value, exind.outlierScore)

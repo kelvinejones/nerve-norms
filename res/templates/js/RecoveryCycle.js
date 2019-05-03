@@ -1,15 +1,21 @@
 class RecoveryCycle extends Chart {
-	constructor(data) {
+	constructor(plots) {
 		super([1, 200], [-50, 110], Chart.scaleType.LOG)
-		this.data = data
+		this.data = plots.rc.data
 	}
 
 	get name() { return "Recovery Cycle" }
 	get xLabel() { return "Threshold Change (%)" }
 	get yLabel() { return "Interstimulus Interval (ms)" }
 
+	updatePlots(plots) {
+		this.data = plots.rc.data
+		this.animateXYLineWithMean(this.data, "rc", 0)
+	}
+
 	drawLines(svg) {
-		this.animateXYLineWithMean(this.data)
+		this.createXYLineWithMean(this.data, "rc")
+		this.animateXYLineWithMean(this.data, "rc")
 		this.drawHorizontalLine(this.linesLayer, 0)
 	}
 }

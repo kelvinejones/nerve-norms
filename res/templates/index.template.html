@@ -15,7 +15,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
     <!-- Application Code -->
+    <script>let participants = {};</script>
     <script src="data/example-WI20S.json"></script>
+    <script src="data/example-CR21S.json"></script>
     <script src="js/init.js"></script>
     <script src="js/Chart.js"></script>
     <script src="js/modal.js"></script>
@@ -88,7 +90,10 @@
                 <li id="qtrac-excite-18" class="qtrac-excite list-group-item"><span class="excite-name">Sex (M=1, F=2)</span>: <span class="excite-value">unknown</span></li>
                 <li id="qtrac-excite-19" class="qtrac-excite list-group-item"><span class="excite-name">Latency (ms)</span>: <span class="excite-value">unknown</span></li>
               </ul>
-              <button class="btn btn-secondary float-right">Change...</button>
+              <select id="select-participant-dropdown" class="btn btn-secondary float-right">
+                <option value="CR21S">CR21S</option>
+                <option value="WI20S">WI20S</option>
+              </select>
         </div>
       </div>
     </div>
@@ -241,7 +246,7 @@
 
 
     <script>
-      initPlots(data);
+      initPlots(participants["CR21S"]);
     </script>
   </body>
 </html>

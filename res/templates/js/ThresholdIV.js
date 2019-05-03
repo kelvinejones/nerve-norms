@@ -1,7 +1,7 @@
 class ThresholdIV extends Chart {
-	constructor(data) {
+	constructor(plots) {
 		super([-100, 50], [-400, 50])
-		this.data = data
+		this.data = plots.tiv.data
 		this.xName = 'current'
 	}
 
@@ -9,9 +9,15 @@ class ThresholdIV extends Chart {
 	get xLabel() { return "Threshold Reduction (%)" }
 	get yLabel() { return "Current (% Threshold)" }
 
+	updatePlots(plots) {
+		this.data = plots.tiv.data
+		this.animateXYLineWithMean(this.data, "tiv", 0)
+	}
+
 	drawLines(svg) {
-		this.animateXYLineWithMean(this.data)
+		this.createXYLineWithMean(this.data, "tiv")
 		this.drawHorizontalLine(this.linesLayer, 0)
 		this.drawVerticalLine(this.linesLayer, 0)
+		this.animateXYLineWithMean(this.data, "tiv")
 	}
 }

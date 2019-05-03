@@ -1,7 +1,7 @@
 class ChargeDuration extends Chart {
-	constructor(data) {
+	constructor(plots) {
 		super([0, 1], [0, 10])
-		this.data = data
+		this.data = plots.cd.data
 		this.xName = 'stimWidth'
 	}
 
@@ -9,7 +9,13 @@ class ChargeDuration extends Chart {
 	get xLabel() { return "Stimulus Width (ms)" }
 	get yLabel() { return "Threshold Change (mA•ms)" }
 
+	updatePlots(plots) {
+		this.data = plots.cd.data
+		this.animateXYLineWithMean(this.data, "cd", 0)
+	}
+
 	drawLines(svg) {
-		this.animateXYLineWithMean(this.data)
+		this.createXYLineWithMean(this.data, "cd")
+		this.animateXYLineWithMean(this.data, "cd")
 	}
 }
