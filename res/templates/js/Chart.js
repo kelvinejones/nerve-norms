@@ -76,7 +76,9 @@ class Chart {
 			.call(d3.axisLeft(this.yscale));
 
 		if (!hideLabels) {
+			svg.attr("transform", "scale(0.9) translate(100, 0)")
 			this.labels(svg);
+
 		} else {
 			xelements.selectAll("text").remove();
 			yelements.selectAll("text").remove();
