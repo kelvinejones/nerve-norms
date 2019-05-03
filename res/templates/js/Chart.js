@@ -209,6 +209,14 @@ class Chart {
 			.attr("d", this.xyLine());
 	}
 
+	animateGroup(typeString, newData, name) {
+		return this.group[typeString + "-" + name].selectAll(typeString)
+			.data(newData)
+			.transition()
+			.delay(Chart.delayTime)
+			.duration(Chart.transitionTime)
+	}
+
 	createCI(svg, ciNormRange, name) {
 		svg = svg.append("g")
 		this.group["path" + "-" + name + "-" + "CI"] = svg
@@ -220,11 +228,7 @@ class Chart {
 	}
 
 	animateCI(ciNormRange, name) {
-		this.group["path" + "-" + name + "-" + "CI"].selectAll("path")
-			.data(ciNormRange)
-			.transition()
-			.delay(Chart.delayTime)
-			.duration(Chart.transitionTime)
+		this.animateGroup("path", ciNormRange, name + "-" + "CI")
 			.attr("d", this.xyLine());
 	}
 
@@ -239,11 +243,7 @@ class Chart {
 	}
 
 	animateLine(xyLine, groupName, className) {
-		this.group["path" + "-" + groupName + "-" + className].selectAll("path")
-			.data(xyLine)
-			.transition()
-			.delay(Chart.delayTime)
-			.duration(Chart.transitionTime)
+		this.animateGroup("path", xyLine, groupName + "-" + className)
 			.attr("d", this.xyLine());
 	}
 
@@ -264,11 +264,7 @@ class Chart {
 	}
 
 	animateCircles(circleLocations, name) {
-		this.group["circle" + "-" + name].selectAll("circle")
-			.data(circleLocations)
-			.transition()
-			.delay(Chart.delayTime)
-			.duration(Chart.transitionTime)
+		this.animateGroup("circle", circleLocations, name)
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => d.wasImputed ? "red" : "black")
 			.attr("cy", d => this.yscale(d[this.yName]))
