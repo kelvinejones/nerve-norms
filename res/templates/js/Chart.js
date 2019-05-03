@@ -281,14 +281,14 @@ class Chart {
 
 	createXYLineWithMean(lineData, name) {
 		this.createPath(this.ciLayer, [this.normativeLimits(lineData)], name, "confidenceinterval")
-		this.createPath(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
+		this.createPath(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName)], name, "meanline")
 		this.createPath(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
 		this.createCircles(this.circlesLayer, lineData, name)
 	}
 
 	animateXYLineWithMean(lineData, name) {
 		this.animatePath([this.normativeLimits(lineData)], name, "confidenceinterval")
-		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName)], name, "meanline")
+		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName)], name, "meanline")
 		this.animatePath([this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
 		this.animateCircles(lineData, name)
 	}
