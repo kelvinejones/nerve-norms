@@ -10,7 +10,7 @@ class RecoveryCycle extends Chart {
 
 	updatePlots(plots) {
 		this.data = plots.rc.data
-		this.animateXYLineWithMean(this.data, "rc")
+		this.animateXYLineWithMean(this.data, "rc", 0)
 	}
 
 	drawLines(svg) {

@@ -16,7 +16,7 @@ class StimulusResponse extends Chart {
 
 	updatePlots(plots) {
 		this.data = plots.sr.data
-		this.animateXYLineWithMean(this.data, "sr")
+		this.animateXYLineWithMean(this.data, "sr", 0)
 	}
 
 	drawLines(svg) {

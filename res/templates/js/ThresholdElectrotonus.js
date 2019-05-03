@@ -17,10 +17,10 @@ class ThresholdElectrotonus extends Chart {
 		this.de40 = plots.ted40.data
 		this.hy20 = plots.teh20.data
 		this.de20 = plots.ted20.data
-		this.animateXYLineWithMean(this.hy40, "hy40")
-		this.animateXYLineWithMean(this.de40, "de40")
-		this.animateXYLineWithMean(this.hy20, "hy20")
-		this.animateXYLineWithMean(this.de20, "de20")
+		this.animateXYLineWithMean(this.hy40, "hy40", 0)
+		this.animateXYLineWithMean(this.de40, "de40", 0)
+		this.animateXYLineWithMean(this.hy20, "hy20", 0)
+		this.animateXYLineWithMean(this.de20, "de20", 0)
 	}
 
 	drawLines(svg) {

@@ -11,7 +11,7 @@ class ThresholdIV extends Chart {
 
 	updatePlots(plots) {
 		this.data = plots.tiv.data
-		this.animateXYLineWithMean(this.data, "tiv")
+		this.animateXYLineWithMean(this.data, "tiv", 0)
 	}
 
 	drawLines(svg) {

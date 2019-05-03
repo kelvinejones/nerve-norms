@@ -11,7 +11,7 @@ class ChargeDuration extends Chart {
 
 	updatePlots(plots) {
 		this.data = plots.cd.data
-		this.animateXYLineWithMean(this.data, "cd")
+		this.animateXYLineWithMean(this.data, "cd", 0)
 	}
 
 	drawLines(svg) {
