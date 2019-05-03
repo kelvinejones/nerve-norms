@@ -23,9 +23,8 @@ class Chart {
 		this.transitionTime = Chart.slowTransition;
 
 		this.group = {}
-		this.numSD = 1
 
-		this.limFunc = (dpt, loc) => { return this.sdAtLoc(dpt, loc) }
+		this.numSD = 1
 	}
 
 	makeScale(name) {
@@ -157,20 +156,20 @@ class Chart {
 	}
 
 	normativeLimits(data) {
-		if (this.limFunc === undefined) {
+		if (this.sdNum == 0) {
 			return []
 		}
 
-		// this.limFunc can be changed if a different calculation is more appropriate.
+		// this.sdAtLoc can be changed if a different calculation is more appropriate.
 		return this.scaleArrayWithinRange((Array.from(data)
-				.map(d => { return this.limFunc(d, Chart.limLoc.UPPER_LEFT) }))
-			.concat(this.limFunc(data[data.length - 1], Chart.limLoc.UPPER))
-			.concat(this.limFunc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT))
-			.concat(this.limFunc(data[data.length - 1], Chart.limLoc.RIGHT))
-			.concat(Array.from(data).reverse().map(d => { return this.limFunc(d, Chart.limLoc.LOWER_RIGHT) }))
-			.concat(this.limFunc(data[0], Chart.limLoc.LOWER))
-			.concat(this.limFunc(data[0], Chart.limLoc.LOWER_LEFT))
-			.concat(this.limFunc(data[0], Chart.limLoc.LEFT)))
+				.map(d => { return this.sdAtLoc(d, Chart.limLoc.UPPER_LEFT) }))
+			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.UPPER))
+			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT))
+			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.RIGHT))
+			.concat(Array.from(data).reverse().map(d => { return this.sdAtLoc(d, Chart.limLoc.LOWER_RIGHT) }))
+			.concat(this.sdAtLoc(data[0], Chart.limLoc.LOWER))
+			.concat(this.sdAtLoc(data[0], Chart.limLoc.LOWER_LEFT))
+			.concat(this.sdAtLoc(data[0], Chart.limLoc.LEFT)))
 	}
 
 	scaleArrayWithinRange(ar) {

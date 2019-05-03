@@ -8,7 +8,6 @@ class StimulusRelative extends Chart {
 		this.ySDName = undefined
 		this.xMeanName = 'mean'
 		this.yMeanName = undefined
-		this.limFunc = this.sdAtLoc // Only sd lines are supported
 	}
 
 	calculateData(data) {
