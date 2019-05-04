@@ -74,7 +74,7 @@ participants["rat"] = {
 		"cd": {
 			"name": "Charge Duration",
 			"order": 2,
-			"outlierScore": 0.99546,
+			"outlierScore": 0.68259546,
 			"discreteMeasures": [
 				{ "qtracExciteID": 3, "name": "Strength-duration\time constant (ms)", "mean": 0.418669421, "n": 121, "SD": 0.088962013, "value": 0.212, "outlierScore": 0.738856323 },
 				{ "qtracExciteID": 4, "name": "Rheobase (mA)", "mean": 2.799, "n": 121, "SD": 1.295309397, "value": 1.474, "outlierScore": 0.343504255 }
