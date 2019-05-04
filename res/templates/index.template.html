@@ -101,30 +101,6 @@
     </div>
     <div class="card-columns">
 
-      <div id="recoveryCycle" class="card border-success">
-        <div class="card-header bg-success text-white">Recovery Cycle</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Recovery Cycle', new RecoveryCycle(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
-        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
-          <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-right">Show</button>
-          </li>
-        </ul>
-        <ul class="list-group list-group-flush d-none d-md-flex measures">
-          <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-right d-md-none">Hide</button>
-          </li>
-          <li id="qtrac-excite-10" class="qtrac-excite list-group-item"><span class="excite-name">RRP (ms)</span>: <span class="excite-value">unknown</span></li>
-          <li id="qtrac-excite-13" class="qtrac-excite list-group-item"><span class="excite-name">Superexcitability (%)</span>: <span class="excite-value">unknown</span></li>
-          <li id="qtrac-excite-14" class="qtrac-excite list-group-item"><span class="excite-name">Subexcitability (%)</span>: <span class="excite-value">unknown</span></li>
-          <li id="qtrac-excite-29" class="qtrac-excite list-group-item"><span class="excite-name">Refractoriness at 2.5ms (%)</span>: <span class="excite-value">unknown</span></li>
-          <li id="qtrac-excite-32" class="qtrac-excite list-group-item"><span class="excite-name">Refractoriness at 2 ms (%)</span>: <span class="excite-value">unknown</span></li>
-          <li id="qtrac-excite-33" class="qtrac-excite list-group-item"><span class="excite-name">Superexcitability at 7 ms (%)</span>: <span class="excite-value">unknown</span></li>
-          <li id="qtrac-excite-34" class="qtrac-excite list-group-item"><span class="excite-name">Superexcitability at 5 ms (%)</span>: <span class="excite-value">unknown</span></li>
-        </ul>
-      </div>
-
       <div id="thresholdElectrotonus" class="card border-danger">
         <div class="card-header bg-danger text-white">Threshold Electrotonus</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold Electrotonus', new ThresholdElectrotonus(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
@@ -155,6 +131,30 @@
           <li id="qtrac-excite-26" class="qtrac-excite list-group-item"><span class="excite-name">S2 accommodation</span>: <span class="excite-value">unknown</span></li>
           <li id="qtrac-excite-35" class="qtrac-excite list-group-item"><span class="excite-name">TEd20(peak)</span>: <span class="excite-value">unknown</span></li>
           <li id="qtrac-excite-37" class="qtrac-excite list-group-item"><span class="excite-name">TEd20(10&ndash;20ms)</span>: <span class="excite-value">unknown</span></li>
+        </ul>
+      </div>
+
+      <div id="recoveryCycle" class="card border-success">
+        <div class="card-header bg-success text-white">Recovery Cycle</div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Recovery Cycle', new RecoveryCycle(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
+        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-right">Show</button>
+          </li>
+        </ul>
+        <ul class="list-group list-group-flush d-none d-md-flex measures">
+          <li class="list-group-item bg-light">
+            Discrete Measures
+            <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-right d-md-none">Hide</button>
+          </li>
+          <li id="qtrac-excite-10" class="qtrac-excite list-group-item"><span class="excite-name">RRP (ms)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-13" class="qtrac-excite list-group-item"><span class="excite-name">Superexcitability (%)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-14" class="qtrac-excite list-group-item"><span class="excite-name">Subexcitability (%)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-29" class="qtrac-excite list-group-item"><span class="excite-name">Refractoriness at 2.5ms (%)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-32" class="qtrac-excite list-group-item"><span class="excite-name">Refractoriness at 2 ms (%)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-33" class="qtrac-excite list-group-item"><span class="excite-name">Superexcitability at 7 ms (%)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-34" class="qtrac-excite list-group-item"><span class="excite-name">Superexcitability at 5 ms (%)</span>: <span class="excite-value">unknown</span></li>
         </ul>
       </div>
 
