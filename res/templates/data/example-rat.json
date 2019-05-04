@@ -1,5 +1,5 @@
 participants["rat"] = {
-	"participant": "rat",
+	"participant": "Rat",
 	"outlierScore": 0.9998,
 	"ageFilter": null,
 	"sexFilter": null,
