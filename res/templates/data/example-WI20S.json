@@ -4,10 +4,10 @@ participants["WI20S"] = {
 	"ageFilter": null,
 	"sexFilter": null,
 	"discreteMeasures": [
-		{ "qtracExciteID": 9, "name": "Temperature ( C)", "mean": 33.01735537, "n": 121, "SD": 0.674527944, "value": 32, "outlierScore": 0.74281932 },
-		{ "qtracExciteID": 17, "name": "Age (years)", "mean": 35.50413223, "n": 121, "SD": 14.60543504, "value": 29, "outlierScore": 0.06281313 },
-		{ "qtracExciteID": 18, "name": "Sex (M=1, F=2)", "mean": 1.525, "n": 120, "SD": 0.501468432, "value": 1, "outlierScore": 0.95134022 },
-		{ "qtracExciteID": 19, "name": "Latency (ms)", "mean": 6.186256198, "n": 121, "SD": 0.67773239, "value": 6.113, "outlierScore": 0.05620246 }
+		{ "qtracExciteID": 9, "name": "Temperature ( C)", "mean": 33.01735537, "n": 121, "SD": 0.674527944, "value": 32 },
+		{ "qtracExciteID": 17, "name": "Age (years)", "mean": 35.50413223, "n": 121, "SD": 14.60543504, "value": 29 },
+		{ "qtracExciteID": 18, "name": "Sex (M=1, F=2)", "mean": 1.525, "n": 120, "SD": 0.501468432, "value": 1 },
+		{ "qtracExciteID": 19, "name": "Latency (ms)", "mean": 6.186256198, "n": 121, "SD": 0.67773239, "value": 6.113 }
 	],
 	"plots": {
 		"sr": {

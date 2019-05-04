@@ -55,10 +55,11 @@ function updateIndices(data) {
 		var row = document.getElementById(idString);
 		row.getElementsByClassName("excite-value")[0].innerHTML = value
 
-		percent = score * 100
-		color = interpolate(score)
-
-		row.style.background = "linear-gradient(to right, " + color + " " + percent + "%, #ffffff 0%)"
+		if (score !== undefined) {
+			percent = score * 100
+			color = interpolate(score)
+			row.style.background = "linear-gradient(to right, " + color + " " + percent + "%, #ffffff 0%)"
+		}
 	}
 
 	setExcitabilityVariable("overall-score", data.outlierScore, data.outlierScore)
