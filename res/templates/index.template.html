@@ -43,6 +43,9 @@
       .confidenceinterval  {
         fill: lightgrey;
       }
+      .card-header {
+        background-color: grey;
+      }
     </style>
 
     <script>
@@ -57,8 +60,8 @@
       <div>Developed by <a href="https://bellstone.ca">Bellstone Engineering</a> and <a href="https://sites.ualberta.ca/~kejones/people.htm">Clinical & Theoretical Neuroscience Laboratory</a>.</div>
     </div>
     <div class="card-group">
-      <div class="card">
-        <div class="card-header">Filter</div>
+      <div class="card border-dark">
+        <div class="card-header bg-secondary font-weight-bold">Filter</div>
         <div class="card-body row">
           <div>
             <label>Sex:</label>
@@ -81,8 +84,8 @@
           </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-header">Participant: WI20S</div>
+      <div class="card border-dark">
+        <div class="card-header bg-secondary font-weight-bold">Participant: WI20S</div>
         <div class="card-body">
               <ul class="list-group list-group-flush d-none d-md-flex measures">
                 <li id="overall-score" class="qtrac-excite list-group-item"><span class="excite-name">Nerve Health</span>: <span class="excite-value">unknown</span></li>
@@ -101,8 +104,8 @@
     </div>
     <div class="card-columns">
 
-      <div id="thresholdElectrotonus" class="card border-danger">
-        <div class="card-header bg-danger text-white">Threshold Electrotonus</div>
+      <div id="thresholdElectrotonus" class="card border-dark">
+        <div class="card-header font-weight-bold te-header">Threshold Electrotonus</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold Electrotonus', new ThresholdElectrotonus(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
@@ -134,8 +137,8 @@
         </ul>
       </div>
 
-      <div id="recoveryCycle" class="card border-success">
-        <div class="card-header bg-success text-white">Recovery Cycle</div>
+      <div id="recoveryCycle" class="card border-dark">
+        <div class="card-header font-weight-bold rc-header">Recovery Cycle</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Recovery Cycle', new RecoveryCycle(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
@@ -158,8 +161,8 @@
         </ul>
       </div>
 
-      <div id="chargeDuration" class="card border-success">
-        <div class="card-header bg-success text-white">Charge Duration</div>
+      <div id="chargeDuration" class="card border-dark">
+        <div class="card-header font-weight-bold cd-header">Charge Duration</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Charge Duration', new ChargeDuration(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
@@ -177,8 +180,8 @@
         </ul>
       </div>
 
-      <div id="thresholdIV" class="card border-success">
-        <div class="card-header bg-success text-white">Threshold I/V</div>
+      <div id="thresholdIV" class="card border-dark">
+        <div class="card-header font-weight-bold tiv-header">Threshold I/V</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold I/V', new ThresholdIV(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
@@ -197,8 +200,8 @@
         </ul>
       </div>
 
-      <div id="stimulusResponseRelative" class="card border-success">
-        <div class="card-header bg-success text-white">Stimulus Response (Relative)</div>
+      <div id="stimulusResponseRelative" class="card border-dark">
+        <div class="card-header font-weight-bold sr-header">Stimulus Response (Relative)</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response (Relative)', new StimulusRelative(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
@@ -217,8 +220,8 @@
         </ul>
       </div>
 
-      <div id="stimulusResponse" class="card border-success">
-        <div class="card-header bg-success text-white">Stimulus Response</div>
+      <div id="stimulusResponse" class="card border-dark">
+        <div class="card-header font-weight-bold sr-header">Stimulus Response</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response', new StimulusResponse(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">

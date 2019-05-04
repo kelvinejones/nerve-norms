@@ -74,7 +74,12 @@ function updateIndices(data) {
 
 	setExcitabilityVariable("overall-score", labelForScore(data.outlierScore), data.outlierScore)
 
-	Object.keys(data.plots).map(function(key) { return data.plots[key].discreteMeasures; }).flat()
+	Object.keys(data.plots).map(function(key) {
+			[...document.querySelectorAll("." + key + "-header")].forEach(elm => {
+				elm.style.background = interpolate(data.plots[key].outlierScore);
+			})
+			return data.plots[key].discreteMeasures;
+		}).flat()
 		.concat(data.discreteMeasures)
 		.forEach(function(exind) {
 			setExcitabilityVariable("qtrac-excite-" + exind.qtracExciteID, exind.value, exind.outlierScore)
