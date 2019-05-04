@@ -62,7 +62,17 @@ function updateIndices(data) {
 		}
 	}
 
-	setExcitabilityVariable("overall-score", data.outlierScore, data.outlierScore)
+	function labelForScore(score) {
+		if (score < 0.75) {
+			return "Healthy"
+		} else if (score < .95) {
+			return "Abnormal"
+		} else {
+			return "Extremely Abnormal"
+		}
+	}
+
+	setExcitabilityVariable("overall-score", labelForScore(data.outlierScore), data.outlierScore)
 
 	Object.keys(data.plots).map(function(key) { return data.plots[key].discreteMeasures; }).flat()
 		.concat(data.discreteMeasures)

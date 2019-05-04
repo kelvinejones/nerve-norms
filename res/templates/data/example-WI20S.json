@@ -1,6 +1,6 @@
 participants["WI20S"] = {
 	"participant": "WI20S",
-	"outlierScore": 0.718,
+	"outlierScore": 0.758,
 	"ageFilter": null,
 	"sexFilter": null,
 	"discreteMeasures": [
