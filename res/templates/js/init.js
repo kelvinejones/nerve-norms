@@ -75,7 +75,11 @@ function updateIndices(data) {
 	[...document.querySelectorAll(".participant-header")].forEach(elm => {
 		elm.style.background = interpolate(data.outlierScore);
 	})
-	setExcitabilityVariable("overall-score", labelForScore(data.outlierScore), 0)
+	const healthLabel = labelForScore(data.outlierScore)
+	setExcitabilityVariable("overall-score", healthLabel + " (" + data.outlierScore.toFixed(2) + ")", 0)
+	var nameSpan = document.getElementById("participant-name");
+	nameSpan.innerHTML = data.participant + " (" + healthLabel + ")"
+
 
 	Object.keys(data.plots).map(function(key) {
 			[...document.querySelectorAll("." + key + "-header")].forEach(elm => {
