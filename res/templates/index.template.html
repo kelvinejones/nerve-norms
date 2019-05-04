@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -85,20 +84,13 @@
         </div>
       </div>
       <div class="card border-dark">
-        <div class="card-header bg-secondary font-weight-bold">Participant: WI20S</div>
+        <div class="card-header font-weight-bold participant-header">Participant: WI20S</div>
         <div class="card-body">
-              <ul class="list-group list-group-flush d-none d-md-flex measures">
-                <li id="overall-score" class="qtrac-excite list-group-item"><span class="excite-name">Nerve Health</span>: <span class="excite-value">unknown</span></li>
-                <li id="qtrac-excite-9" class="qtrac-excite list-group-item"><span class="excite-name">Temperature (&deg;C)</span>: <span class="excite-value">unknown</span></li>
-                <li id="qtrac-excite-17" class="qtrac-excite list-group-item"><span class="excite-name">Age (years)</span>: <span class="excite-value">unknown</span></li>
-                <li id="qtrac-excite-18" class="qtrac-excite list-group-item"><span class="excite-name">Sex (M=1, F=2)</span>: <span class="excite-value">unknown</span></li>
-                <li id="qtrac-excite-19" class="qtrac-excite list-group-item"><span class="excite-name">Latency (ms)</span>: <span class="excite-value">unknown</span></li>
-              </ul>
-              <select id="select-participant-dropdown" class="btn btn-secondary float-left">
-                <option value="CR21S">CR21S</option>
-                <option value="WI20S">WI20S</option>
-                <option value="rat">rat</option>
-              </select>
+          <select id="select-participant-dropdown" class="btn btn-secondary float-left">
+            <option value="CR21S">CR21S</option>
+            <option value="WI20S">WI20S</option>
+            <option value="rat">rat</option>
+          </select>
         </div>
       </div>
     </div>
@@ -213,6 +205,17 @@
       <div id="stimulusResponse" class="card border-dark">
         <div class="card-header font-weight-bold sr-header">Stimulus Response</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response', new StimulusResponse(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
+      </div>
+
+      <div id="participantInfo" class="card border-dark">
+        <div class="card-header font-weight-bold sr-header">Participant Info</div>
+        <ul class="list-group list-group-flush d-sm-flex measures">
+          <li id="overall-score" class="qtrac-excite list-group-item"><span class="excite-name">Nerve Health</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-9" class="qtrac-excite list-group-item"><span class="excite-name">Temperature (&deg;C)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-17" class="qtrac-excite list-group-item"><span class="excite-name">Age (years)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-18" class="qtrac-excite list-group-item"><span class="excite-name">Sex (M=1, F=2)</span>: <span class="excite-value">unknown</span></li>
+          <li id="qtrac-excite-19" class="qtrac-excite list-group-item"><span class="excite-name">Latency (ms)</span>: <span class="excite-value">unknown</span></li>
+        </ul>
       </div>
     </div>
 

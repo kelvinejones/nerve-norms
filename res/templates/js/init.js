@@ -72,7 +72,10 @@ function updateIndices(data) {
 		}
 	}
 
-	setExcitabilityVariable("overall-score", labelForScore(data.outlierScore), data.outlierScore)
+	[...document.querySelectorAll(".participant-header")].forEach(elm => {
+		elm.style.background = interpolate(data.outlierScore);
+	})
+	setExcitabilityVariable("overall-score", labelForScore(data.outlierScore), 0)
 
 	Object.keys(data.plots).map(function(key) {
 			[...document.querySelectorAll("." + key + "-header")].forEach(elm => {
