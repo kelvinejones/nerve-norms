@@ -40,7 +40,7 @@
         stroke: darkgrey;
         stroke-width: 1px;
       }
-      .confidenceinterval  {
+      .confidenceinterval {
         fill: lightgrey;
       }
       .card-header {
@@ -94,7 +94,7 @@
                 <li id="qtrac-excite-18" class="qtrac-excite list-group-item"><span class="excite-name">Sex (M=1, F=2)</span>: <span class="excite-value">unknown</span></li>
                 <li id="qtrac-excite-19" class="qtrac-excite list-group-item"><span class="excite-name">Latency (ms)</span>: <span class="excite-value">unknown</span></li>
               </ul>
-              <select id="select-participant-dropdown" class="btn btn-secondary float-right">
+              <select id="select-participant-dropdown" class="btn btn-secondary float-left">
                 <option value="CR21S">CR21S</option>
                 <option value="WI20S">WI20S</option>
                 <option value="rat">rat</option>
@@ -109,14 +109,12 @@
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold Electrotonus', new ThresholdElectrotonus(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#thresholdElectrotonus')" class="btn btn-sm float-right">Show</button>
+            <button onclick="toggle('#thresholdElectrotonus')" class="btn btn-sm float-left">Show Discrete Measures</button>
           </li>
         </ul>
         <ul class="list-group list-group-flush d-none d-md-flex measures">
           <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#thresholdElectrotonus')" class="btn btn-sm float-right d-md-none">Hide</button>
+            <button onclick="toggle('#thresholdElectrotonus')" class="btn btn-sm float-left d-md-none">Hide Discrete Measures</button>
           </li>
           <li id="qtrac-excite-11" class="qtrac-excite list-group-item"><span class="excite-name">TEh(90&ndash;100ms)</span>: <span class="excite-value">unknown</span></li>
           <li id="qtrac-excite-22" class="qtrac-excite list-group-item"><span class="excite-name">TEh(10&ndash;20ms)</span>: <span class="excite-value">unknown</span></li>
@@ -142,14 +140,12 @@
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Recovery Cycle', new RecoveryCycle(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-right">Show</button>
+            <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-left">Show Discrete Measures</button>
           </li>
         </ul>
         <ul class="list-group list-group-flush d-none d-md-flex measures">
           <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-right d-md-none">Hide</button>
+            <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-left d-md-none">Hide Discrete Measures</button>
           </li>
           <li id="qtrac-excite-10" class="qtrac-excite list-group-item"><span class="excite-name">RRP (ms)</span>: <span class="excite-value">unknown</span></li>
           <li id="qtrac-excite-13" class="qtrac-excite list-group-item"><span class="excite-name">Superexcitability (%)</span>: <span class="excite-value">unknown</span></li>
@@ -166,14 +162,12 @@
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Charge Duration', new ChargeDuration(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#chargeDuration')" class="btn btn-sm float-right">Show</button>
+            <button onclick="toggle('#chargeDuration')" class="btn btn-sm float-left">Show Discrete Measures</button>
           </li>
         </ul>
         <ul class="list-group list-group-flush d-none d-md-flex measures">
           <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#chargeDuration')" class="btn btn-sm float-right d-md-none">Hide</button>
+            <button onclick="toggle('#chargeDuration')" class="btn btn-sm float-left d-md-none">Hide Discrete Measures</button>
           </li>
           <li id="qtrac-excite-3" class="qtrac-excite list-group-item"><span class="excite-name">Strength-duration time constant (ms)</span>: <span class="excite-value">unknown</span></li>
           <li id="qtrac-excite-4" class="qtrac-excite list-group-item"><span class="excite-name">Rheobase (mA)</span>: <span class="excite-value">unknown</span></li>
@@ -185,14 +179,12 @@
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold I/V', new ThresholdIV(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#thresholdIV')" class="btn btn-sm float-right">Show</button>
+            <button onclick="toggle('#thresholdIV')" class="btn btn-sm float-left">Show Discrete Measures</button>
           </li>
         </ul>
         <ul class="list-group list-group-flush d-none d-md-flex measures">
           <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#thresholdIV')" class="btn btn-sm float-right d-md-none">Hide</button>
+            <button onclick="toggle('#thresholdIV')" class="btn btn-sm float-left d-md-none">Hide Discrete Measures</button>
           </li>
           <li id="qtrac-excite-7" class="qtrac-excite list-group-item"><span class="excite-name">Resting I/V slope</span>: <span class="excite-value">unknown</span></li>
           <li id="qtrac-excite-8" class="qtrac-excite list-group-item"><span class="excite-name">Minimum I/V slope</span>: <span class="excite-value">unknown</span></li>
@@ -205,14 +197,12 @@
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response (Relative)', new StimulusRelative(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#stimulusResponseRelative')" class="btn btn-sm float-right">Show</button>
+            <button onclick="toggle('#stimulusResponseRelative')" class="btn btn-sm float-left">Show Discrete Measures</button>
           </li>
         </ul>
         <ul class="list-group list-group-flush d-none d-md-flex measures">
           <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#stimulusResponseRelative')" class="btn btn-sm float-right d-md-none">Hide</button>
+            <button onclick="toggle('#stimulusResponseRelative')" class="btn btn-sm float-left d-md-none">Hide Discrete Measures</button>
           </li>
           <li id="qtrac-excite-1" class="qtrac-excite list-group-item"><span class="excite-name">Stimulus (mA) for 50% max response</span>: <span class="excite-value">unknown</span></li>
           <li id="qtrac-excite-6" class="qtrac-excite list-group-item"><span class="excite-name">Peak response (mV)</span>: <span class="excite-value">unknown</span></li>
@@ -223,12 +213,6 @@
       <div id="stimulusResponse" class="card border-dark">
         <div class="card-header font-weight-bold sr-header">Stimulus Response</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response', new StimulusResponse(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
-        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
-          <li class="list-group-item bg-light">
-            Discrete Measures
-            <button onclick="toggle('#stimulusResponse')" class="btn btn-sm float-right">Show</button>
-          </li>
-        </ul>
       </div>
     </div>
 
