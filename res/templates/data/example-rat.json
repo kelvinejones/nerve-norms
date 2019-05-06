@@ -6,7 +6,7 @@ participants["rat"] = {
 	"discreteMeasures": [
 		{ "qtracExciteID": 9, "name": "Temperature ( C)", "mean": 33.01735537, "n": 121, "SD": 0.674527944, "value": 37.5 },
 		{ "qtracExciteID": 17, "name": "Age (years)", "mean": 35.50413223, "n": 121, "SD": 14.60543504, "value": 10, "wasImputed": true },
-		{ "qtracExciteID": 18, "name": "Sex (M=1, F=2)", "mean": 1.525, "n": 120, "SD": 0.501468432, "value": 2 },
+		{ "qtracExciteID": 18, "name": "Sex", "mean": 1.525, "n": 120, "SD": 0.501468432, "value": "Female" },
 		{ "qtracExciteID": 19, "name": "Latency (ms)", "mean": 6.186256198, "n": 121, "SD": 0.67773239, "value": 3.067 }
 	],
 	"plots": {
