@@ -64,6 +64,12 @@ function updateIndices(data) {
 		}
 	}
 
+	function setHeaderScore(str, score) {
+		[...document.querySelectorAll(str)].forEach(elm => {
+			elm.style.background = interpolate(score);
+		})
+	}
+
 	function labelForScore(score) {
 		if (score < 0.75) {
 			return "Healthy"
@@ -74,9 +80,7 @@ function updateIndices(data) {
 		}
 	}
 
-	[...document.querySelectorAll(".participant-header")].forEach(elm => {
-		elm.style.background = interpolate(data.outlierScore);
-	})
+	setHeaderScore(".participant-header", data.outlierScore)
 	const healthLabel = labelForScore(data.outlierScore)
 	setExcitabilityVariable("overall-score", healthLabel + " (" + data.outlierScore.toFixed(2) + ")", 0)
 	var nameSpan = document.getElementById("participant-name");
@@ -84,9 +88,7 @@ function updateIndices(data) {
 
 
 	Object.keys(data.plots).map(function(key) {
-			[...document.querySelectorAll("." + key + "-header")].forEach(elm => {
-				elm.style.background = interpolate(data.plots[key].outlierScore);
-			})
+			setHeaderScore("." + key + "-header", data.plots[key].outlierScore)
 			return data.plots[key].discreteMeasures;
 		}).flat()
 		.concat(data.discreteMeasures)
