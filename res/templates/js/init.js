@@ -42,14 +42,16 @@ function initPlots(data) {
 }
 
 function updateIndices(data) {
-	let opacity = 0.8,
-		red = d3.hsl("red"),
-		green = d3.hsl("lightgreen");
+	const interpolate = function() {
+		let opacity = 0.8,
+			red = d3.hsl("red"),
+			green = d3.hsl("lightgreen");
 
-	red.opacity = opacity
-	green.opacity = opacity
+		red.opacity = opacity
+		green.opacity = opacity
 
-	let interpolate = d3.interpolateHsl(green, red);
+		return d3.interpolateHsl(green, red);
+	}()
 
 	function setExcitabilityVariable(idString, value, score) {
 		var row = document.getElementById(idString);
