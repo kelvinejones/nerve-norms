@@ -75,13 +75,13 @@ class Chart {
 		this.circlesLayer = svg.append("g")
 
 		// Add the X Axis
-		var xelements = svg.append("g")
+		const xelements = svg.append("g")
 			.attr("transform", "translate(0," + this.height + ")")
 			.call(d3.axisBottom(this.xscale).ticks(2)
 				.tickFormat(d3.format("")));
 
 		// Add the Y Axis
-		var yelements = svg.append("g")
+		const yelements = svg.append("g")
 			.call(d3.axisLeft(this.yscale));
 
 		if (!hideLabels) {

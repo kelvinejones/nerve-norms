@@ -43,7 +43,7 @@ function initPlots(data) {
 
 function updateIndices(data) {
 	const interpolate = function() {
-		let opacity = 0.8,
+		const opacity = 0.8,
 			red = d3.hsl("red"),
 			green = d3.hsl("lightgreen");
 
@@ -84,9 +84,8 @@ function updateIndices(data) {
 	setHeaderScore(".participant-header", data.outlierScore)
 	const healthLabel = labelForScore(data.outlierScore)
 	setExcitabilityVariable("overall-score", healthLabel + " (" + data.outlierScore.toFixed(2) + ")", 0)
-	var nameSpan = document.getElementById("participant-name");
+	const nameSpan = document.getElementById("participant-name");
 	nameSpan.innerHTML = data.participant + " (" + healthLabel + ")"
-
 
 	Object.keys(data.plots).map(function(key) {
 			setHeaderScore("." + key + "-header", data.plots[key].outlierScore)
