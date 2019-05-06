@@ -50,7 +50,8 @@ function updateIndices(data) {
 		red.opacity = opacity
 		green.opacity = opacity
 
-		return d3.interpolateHsl(green, red);
+		const intr = d3.interpolateHsl(green, red);
+		return function(score) { return intr(Math.pow(score, 3)) }
 	}()
 
 	function setExcitabilityVariable(idString, value, score) {
