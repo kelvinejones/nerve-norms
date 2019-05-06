@@ -54,7 +54,7 @@ function updateIndices(data) {
 	}()
 
 	function setExcitabilityVariable(idString, value, score) {
-		var row = document.getElementById(idString);
+		const row = document.getElementById(idString);
 		row.getElementsByClassName("excite-value")[0].innerHTML = value
 
 		if (score !== undefined) {
