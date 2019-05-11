@@ -13,12 +13,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
+    <!-- Test Data -->
+    <script>const participants = {}; const normative = {}; const outlierScore = {};</script>
+    <script src="data/normative-all.json"></script>
+    <script src="data/normative-fake.json"></script>
+    <script src="data/outlier-WI20S-all.json"></script>
+    <script src="data/outlier-CR21S-all.json"></script>
+    <script src="data/outlier-rat-all.json"></script>
+    <script src="data/outlier-WI20S-fake.json"></script>
+    <script src="data/outlier-CR21S-fake.json"></script>
+    <script src="data/outlier-rat-fake.json"></script>
+    <script src="data/participant-WI20S.json"></script>
+    <script src="data/participant-CR21S.json"></script>
+    <script src="data/participant-rat.json"></script>
+
     <!-- Application Code -->
-    <script>const participants = {};</script>
-    <script src="data/example-WI20S.json"></script>
-    <script src="data/example-CR21S.json"></script>
-    <script src="data/example-TEST-Norm.json"></script>
-    <script src="data/example-rat.json"></script>
     <script src="js/init.js"></script>
     <script src="js/Chart.js"></script>
     <script src="js/modal.js"></script>
@@ -94,6 +103,10 @@
             <option value="WI20S">WI20S</option>
             <option value="TESTNORM">TESTNORM</option>
             <option value="rat">rat</option>
+          </select>
+          <select id="select-normative-dropdown" class="btn btn-secondary float-left">
+            <option value="all">all</option>
+            <option value="fake">fake</option>
           </select>
         </div>
       </div>
@@ -242,7 +255,7 @@
 
 
     <script>
-      initPlots(participants, participants, participants);
+      initPlots(participants, normative, outlierScore);
     </script>
   </body>
 </html>

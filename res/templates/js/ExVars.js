@@ -35,20 +35,33 @@ class ExVars {
 		}
 	}
 
-	static update(data) {
-		ExVars._setHeaderScore(".participant-header", data.outlierScore)
-		const healthLabel = ExVars._labelForScore(data.outlierScore)
-		ExVars._setExcitabilityVariable("overall-score", healthLabel + " (" + data.outlierScore.toFixed(2) + ")", 0)
+	static update(scores, values) {
+		ExVars._setHeaderScore(".participant-header", scores.outlierScore)
+		const healthLabel = ExVars._labelForScore(scores.outlierScore)
+		ExVars._setExcitabilityVariable("overall-score", healthLabel + " (" + scores.outlierScore.toFixed(2) + ")", 0)
 		const nameSpan = document.getElementById("participant-name");
-		nameSpan.innerHTML = data.participant + " (" + healthLabel + ")"
+		nameSpan.innerHTML = scores.participant + " (" + healthLabel + ")"
 
-		Object.keys(data.plots).map(function(key) {
-				ExVars._setHeaderScore("." + key + "-header", data.plots[key].outlierScore)
-				return data.plots[key].discreteMeasures;
+		const exinds = {}
+		const measureScores = Object.keys(scores.plots).map(function(key) {
+				ExVars._setHeaderScore("." + key + "-header", scores.plots[key].outlierScore)
+				return scores.plots[key].discreteMeasures;
 			}).flat()
-			.concat(data.discreteMeasures)
+			.concat(scores.discreteMeasures)
 			.forEach(function(exind) {
-				ExVars._setExcitabilityVariable("qtrac-excite-" + exind.qtracExciteID, exind.value, exind.outlierScore)
+				exinds[exind.id] = { score: exind.outlierScore }
 			})
+		Object.keys(values.plots).map(function(key) {
+				ExVars._setHeaderScore("." + key + "-header", values.plots[key].outlierScore)
+				return values.plots[key].discreteMeasures;
+			}).flat()
+			.concat(values.discreteMeasures)
+			.forEach(function(exind) {
+				exinds[exind.id].value = exind.value
+			})
+
+		Object.keys(exinds).forEach(function(id) {
+			ExVars._setExcitabilityVariable("qtrac-excite-" + id, exinds[id].value, exinds[id].score)
+		})
 	}
 }
