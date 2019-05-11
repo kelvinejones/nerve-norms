@@ -55,7 +55,7 @@ func (ev ExcitabilityVariables) String() string {
 }
 
 func (exciteVar ExcitabilityVariables) ParseRegex() *regexp.Regexp {
-	return regexp.MustCompile(`^ \d+\.\s+([-+]?\d*\.?\d+)\s+(.+)`)
+	return regexp.MustCompile(`^ (\d+)\.\s+([-+]?\d*\.?\d+)\s+.+`)
 }
 
 func (exciteVar *ExcitabilityVariables) ParseLine(result []string) error {
@@ -63,12 +63,13 @@ func (exciteVar *ExcitabilityVariables) ParseLine(result []string) error {
 		return errors.New("Incorrect ExVar line length")
 	}
 
-	val, err := strconv.ParseFloat(result[1], 64)
+	val, err := strconv.ParseFloat(result[2], 64)
 	if err != nil {
 		return err
 	}
 
-	exciteVar.Values[result[2]] = val
+	// Since we have an ID, just store that as the name.
+	exciteVar.Values[result[1]] = val
 
 	return nil
 }
@@ -91,6 +92,7 @@ func (extraVar *ExtraVariables) ParseLine(result []string) error {
 		return err
 	}
 
+	// Since we DON'T have an ID, index by the name.
 	extraVar.Values[strings.TrimSpace(result[1])] = val
 
 	return nil

@@ -1,6 +1,7 @@
 package mem
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
@@ -20,6 +21,29 @@ type TableSet struct {
 
 	// Tables is a slice of tables (usually just one).
 	Tables []Table
+
+	// Abbreviation is the prefix of each import row.
+	Abbreviation string
+}
+
+func (tab Table) MarshalJSON() ([]byte, error) {
+	numCols := len(tab)
+	if numCols == 0 {
+		return []byte(`[[]]`), nil
+	}
+	numRows := len(tab[0])
+	data := make([][]float64, numRows) // It's rows of columns of floats
+	for i := range tab[0] {
+		data[i] = make([]float64, numCols)
+	}
+
+	// Go through the length of the first column (assuming all columns are the same length)
+	for colNum, col := range tab {
+		for rowNum, val := range col {
+			data[rowNum][colNum] = val
+		}
+	}
+	return json.Marshal(&data)
 }
 
 type Section struct {
@@ -31,6 +55,34 @@ type Section struct {
 
 	// ExtraLines are extra lines which couldn't be parsed (e.g. Max CMAP).
 	ExtraLines []string
+}
+
+func (sec *Section) MarshalJSON() ([]byte, error) {
+	str := &struct {
+		Name    *string         `json:"name"`
+		Columns []string        `json:"columnNames"`
+		Data    json.RawMessage `json:"data"`
+		Extra   []string        `json:"extra,omitempty"`
+	}{
+		Name:    &sec.Header,
+		Columns: sec.TableSet.Names,
+		Extra:   sec.ExtraLines,
+	}
+
+	var err error
+	switch len(sec.TableSet.Tables) {
+	case 0:
+		// Do nothing; it's empty
+	case 1:
+		str.Data, err = json.Marshal(sec.TableSet.Tables[0])
+	default:
+		str.Data, err = json.Marshal(sec.TableSet.Tables)
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(&str)
 }
 
 // columnContainsName returns the first column containing the provided name.
@@ -63,22 +115,30 @@ func (tab *Table) appendRow(row []string) error {
 
 func (ts *TableSet) appendRow(row []string) error {
 	// Format is two characters followed by optional digits, a decimal, and digits
-	result := regexp.MustCompile(`^[[:alpha:]]{2}(\d*)\.(\d+)`).FindStringSubmatch(row[0])
-	if len(result) != 3 {
+	result := regexp.MustCompile(`^([[:alpha:]]{2})(\d*)\.(\d+)`).FindStringSubmatch(row[0])
+	if len(result) != 4 {
 		return errors.New("A table row must contain a valid location: '" + row[0] + "'")
+	}
+
+	if ts.Abbreviation != result[1] {
+		if ts.Abbreviation == "" {
+			ts.Abbreviation = result[1]
+		} else {
+			return errors.New("The table's rows don't have matching prefixes: '" + ts.Abbreviation + "' and '" + result[1] + "'")
+		}
 	}
 
 	tableNum := 1
 	var err error
-	if result[1] != "" {
-		tableNum, err = strconv.Atoi(result[1])
+	if result[2] != "" {
+		tableNum, err = strconv.Atoi(result[2])
 		if err != nil {
 			return errors.New("Table number could not be parsed: " + err.Error())
 		}
 	}
 
 	// Parse the row number to insure it's valid, but we don't use it
-	_, err = strconv.Atoi(result[2])
+	_, err = strconv.Atoi(result[3])
 	if err != nil {
 		return errors.New("Row number could not be parsed: " + err.Error())
 	}
