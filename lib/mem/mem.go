@@ -18,7 +18,7 @@ func (mem *Mem) MarshalJSON() ([]byte, error) {
 	str := &struct {
 		Header   *Header             `json:"header"`
 		Sections map[string]*Section `json:"sections"`
-		ExVars   map[string]float64  `json:"exVars"`
+		ExVars   map[int]float64     `json:"exVars"`
 		Settings map[string]string   `json:"settings"`
 	}{
 		Header:   &mem.Header,
@@ -35,7 +35,7 @@ func (mem *Mem) MarshalJSON() ([]byte, error) {
 func Import(data io.Reader) (Mem, error) {
 	reader := NewReader(data)
 	mem := Mem{}
-	mem.ExcitabilityVariables.Values = make(map[string]float64)
+	mem.ExcitabilityVariables.Values = make(map[int]float64)
 
 	err := mem.Header.Parse(reader)
 	if err != nil {

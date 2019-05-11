@@ -11,13 +11,13 @@ import (
 type ExcitabilitySettings map[string]string
 
 type ExcitabilityVariables struct {
-	Values map[string]float64
+	Values map[int]float64
 	ExcitabilitySettings
 }
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
 	if exciteVar.Values == nil {
-		exciteVar.Values = map[string]float64{}
+		exciteVar.Values = map[int]float64{}
 	}
 	if exciteVar.ExcitabilitySettings == nil {
 		exciteVar.ExcitabilitySettings = map[string]string{}
@@ -68,8 +68,13 @@ func (exciteVar *ExcitabilityVariables) ParseLine(result []string) error {
 		return err
 	}
 
+	id, err := strconv.Atoi(result[1])
+	if err != nil {
+		return err
+	}
+
 	// Since we have an ID, just store that as the name.
-	exciteVar.Values[result[1]] = val
+	exciteVar.Values[id] = val
 
 	return nil
 }
@@ -92,10 +97,61 @@ func (extraVar *ExtraVariables) ParseLine(result []string) error {
 		return err
 	}
 
-	// Since we DON'T have an ID, index by the name.
-	extraVar.Values[strings.TrimSpace(result[1])] = val
+	id := idForName(strings.TrimSpace(result[1]))
+	if id < 1000 {
+		return errors.New("Invalid name '" + result[1] + "'")
+	}
+	extraVar.Values[id] = val
 
 	return nil
+}
+
+func idForName(name string) int {
+	switch name {
+	case "TEd40(Accom)":
+		return 1001
+	case "TEd20(10-20ms)":
+		return 1002
+	case "TEh20(10-20ms)":
+		return 1003
+	case "TEh20(90-100ms)":
+		return 1004
+	case "MScPeak(mV)":
+		return 1005
+	case "MScS50(mA)":
+		return 1006
+	case "MSFNUnits":
+		return 1007
+	case "MSFMeanUnitAmp(uV)":
+		return 1008
+	case "MRRP":
+		return 1009
+	case "MSuperN(<15)%":
+		return 1010
+	case "MSuperN@(ms)":
+		return 1011
+	case "CRRP(ms)":
+		return 1012
+	case "CSuperN(%)":
+		return 1013
+	case "CSuperN@(ms)":
+		return 1014
+	case "RMT200":
+		return 1015
+	case "T-SICI(70%)2.5ms":
+		return 1016
+	case "T-ICF(70%)15ms":
+		return 1017
+	case "Potassium":
+		return 1018
+	case "pH":
+		return 1019
+	case "MRCsumscore":
+		return 1020
+	default:
+		return -1
+	}
+
 }
 
 func (es ExcitabilitySettings) ParseRegex() *regexp.Regexp {
