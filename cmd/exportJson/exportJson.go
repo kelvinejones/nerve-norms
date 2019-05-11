@@ -35,6 +35,9 @@ func main() {
 		if err != nil {
 			fmt.Println("Could not parse '" + subpath + "' due to error: " + err.Error())
 		}
+		if _, ok := jsonStrings[name]; ok {
+			fmt.Println("Warning: Participant '" + name + "' already exists and has been overwritten")
+		}
 		jsonStrings[name] = js
 
 		return nil
