@@ -23,29 +23,6 @@ type TableSet struct {
 	Tables []Table
 }
 
-func (ts TableSet) MarshalJSON() ([]byte, error) {
-	data := struct {
-		Names []string        `json:"header"`
-		Data  json.RawMessage `json:"data"`
-	}{}
-	data.Names = ts.Names
-
-	var err error
-	switch len(ts.Tables) {
-	case 0:
-		// Do nothing; it's empty
-	case 1:
-		data.Data, err = json.Marshal(ts.Tables[0])
-	default:
-		data.Data, err = json.Marshal(ts.Tables)
-	}
-	if err != nil {
-		return nil, err
-	}
-
-	return json.Marshal(&data)
-}
-
 func (tab Table) MarshalJSON() ([]byte, error) {
 	numCols := len(tab)
 	if numCols == 0 {
@@ -78,15 +55,31 @@ type Section struct {
 }
 
 func (sec *Section) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Name  *string  `json:"name"`
-		Data  TableSet `json:"data"`
-		Extra []string `json:"extra,omitempty"`
+	str := &struct {
+		Name    *string         `json:"name"`
+		Columns []string        `json:"columnNames"`
+		Data    json.RawMessage `json:"data"`
+		Extra   []string        `json:"extra,omitempty"`
 	}{
-		Name:  &sec.Header,
-		Data:  sec.TableSet,
-		Extra: sec.ExtraLines,
-	})
+		Name:    &sec.Header,
+		Columns: sec.TableSet.Names,
+		Extra:   sec.ExtraLines,
+	}
+
+	var err error
+	switch len(sec.TableSet.Tables) {
+	case 0:
+		// Do nothing; it's empty
+	case 1:
+		str.Data, err = json.Marshal(sec.TableSet.Tables[0])
+	default:
+		str.Data, err = json.Marshal(sec.TableSet.Tables)
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(&str)
 }
 
 // columnContainsName returns the first column containing the provided name.
