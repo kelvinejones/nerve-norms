@@ -8,9 +8,9 @@ import (
 )
 
 type Mem struct {
-	Header
-	Sections []Section
-	ExcitabilityVariables
+	Header                `json:"header"`
+	Sections              []Section `json:"sections"`
+	ExcitabilityVariables `json:"exVars"`
 }
 
 func Import(data io.Reader) (Mem, error) {

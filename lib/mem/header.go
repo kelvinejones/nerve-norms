@@ -18,18 +18,18 @@ const (
 )
 
 type Header struct {
-	File      string
-	Name      string
-	Protocol  string
-	Date      time.Time
-	StartTime time.Time // TODO get rid of this field; merge into Date
-	Age       int
-	Sex
-	Temperature   float64
-	SRSites       string
-	NormalControl bool
-	Operator      string
-	Comment       string
+	File          string    `json:"file"`
+	Name          string    `json:"name"`
+	Protocol      string    `json:"protocol"`
+	Date          time.Time `json:"date"`
+	StartTime     time.Time // TODO get rid of this field; merge into Date
+	Age           int       `json:"age"`
+	Sex           `json:"sex"`
+	Temperature   float64 `json:"temperature"`
+	SRSites       string  `json:"srSites"`
+	NormalControl bool    `json:"normalControl"`
+	Operator      string  `json:"operator"`
+	Comment       string  `json:"comment"`
 }
 
 func (header *Header) Parse(reader *Reader) error {

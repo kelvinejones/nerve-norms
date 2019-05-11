@@ -1,6 +1,7 @@
 package mem
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
@@ -22,6 +23,49 @@ type TableSet struct {
 	Tables []Table
 }
 
+func (ts TableSet) MarshalJSON() ([]byte, error) {
+	data := struct {
+		Names []string        `json:"header"`
+		Data  json.RawMessage `json:"data"`
+	}{}
+	data.Names = ts.Names
+
+	var err error
+	switch len(ts.Tables) {
+	case 0:
+		// Do nothing; it's empty
+	case 1:
+		data.Data, err = json.Marshal(ts.Tables[0])
+	default:
+		data.Data, err = json.Marshal(ts.Tables)
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(&data)
+}
+
+func (tab Table) MarshalJSON() ([]byte, error) {
+	numCols := len(tab)
+	if numCols == 0 {
+		return []byte(`[[]]`), nil
+	}
+	numRows := len(tab[0])
+	data := make([][]float64, numRows) // It's rows of columns of floats
+	for i := range tab[0] {
+		data[i] = make([]float64, numCols)
+	}
+
+	// Go through the length of the first column (assuming all columns are the same length)
+	for colNum, col := range tab {
+		for rowNum, val := range col {
+			data[rowNum][colNum] = val
+		}
+	}
+	return json.Marshal(&data)
+}
+
 type Section struct {
 	// Header is the header for the section.
 	Header string
@@ -31,6 +75,18 @@ type Section struct {
 
 	// ExtraLines are extra lines which couldn't be parsed (e.g. Max CMAP).
 	ExtraLines []string
+}
+
+func (sec *Section) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Name  *string  `json:"name"`
+		Data  TableSet `json:"data"`
+		Extra []string `json:"extra,omitempty"`
+	}{
+		Name:  &sec.Header,
+		Data:  sec.TableSet,
+		Extra: sec.ExtraLines,
+	})
 }
 
 // columnContainsName returns the first column containing the provided name.
