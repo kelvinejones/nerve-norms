@@ -11,8 +11,8 @@ import (
 type ExcitabilitySettings map[string]string
 
 type ExcitabilityVariables struct {
-	Values               map[string]float64 `json:"values"`
-	ExcitabilitySettings `json:"settings,omitempty"`
+	Values map[string]float64
+	ExcitabilitySettings
 }
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {

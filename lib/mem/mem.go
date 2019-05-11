@@ -1,6 +1,7 @@
 package mem
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -8,9 +9,23 @@ import (
 )
 
 type Mem struct {
-	Header                `json:"header"`
-	Sections              []Section `json:"sections"`
-	ExcitabilityVariables `json:"exVars"`
+	Header
+	Sections []Section
+	ExcitabilityVariables
+}
+
+func (mem *Mem) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Header   *Header            `json:"header"`
+		Sections []Section          `json:"sections"`
+		ExVars   map[string]float64 `json:"exVars"`
+		Settings map[string]string  `json:"settings"`
+	}{
+		Header:   &mem.Header,
+		Sections: mem.Sections,
+		ExVars:   mem.ExcitabilityVariables.Values,
+		Settings: mem.ExcitabilityVariables.ExcitabilitySettings,
+	})
 }
 
 func Import(data io.Reader) (Mem, error) {
