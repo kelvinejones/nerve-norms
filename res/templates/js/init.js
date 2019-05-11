@@ -33,6 +33,7 @@ function initPlots(data) {
 		plots.forEach(pl => {
 			currentParticipant = participants[ev.srcElement.value] // This is a global
 			pl.chart.updatePlots(currentParticipant.plots)
+			pl.chart.updateNorms(currentParticipant.plots)
 			updateIndices(currentParticipant)
 		})
 	}
