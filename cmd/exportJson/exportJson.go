@@ -33,7 +33,7 @@ func main() {
 			return nil
 		}
 
-		name, js, err := printMem(subpath)
+		name, js, err := loadMemAsJson(subpath)
 		if err != nil {
 			fmt.Println("Could not parse '" + subpath + "' due to error: " + err.Error())
 		}
@@ -61,7 +61,7 @@ func main() {
 	}
 }
 
-func printMem(path string) (string, []byte, error) {
+func loadMemAsJson(path string) (string, []byte, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return "", nil, err
