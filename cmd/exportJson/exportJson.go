@@ -17,7 +17,7 @@ var path = flag.String("path", "res/data/FESB70821B.MEM", "path to the file that
 func main() {
 	flag.Parse()
 
-	jsonStrings := []json.RawMessage{}
+	jsonStrings := make(map[string]json.RawMessage)
 
 	// This works regardless of whether *path is a file or a directory, though if it's an invalid file, it will be silently skipped
 	filepath.Walk(*path, func(subpath string, info os.FileInfo, err error) error {
@@ -31,11 +31,11 @@ func main() {
 			return nil
 		}
 
-		js, err := printMem(subpath)
+		name, js, err := printMem(subpath)
 		if err != nil {
 			fmt.Println("Could not parse '" + subpath + "' due to error: " + err.Error())
 		}
-		jsonStrings = append(jsonStrings, js)
+		jsonStrings[name] = js
 
 		return nil
 	})
@@ -48,16 +48,17 @@ func main() {
 	fmt.Printf("%v\n", string(jsArray))
 }
 
-func printMem(path string) ([]byte, error) {
+func printMem(path string) (string, []byte, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 
 	memData, err := mem.Import(bufio.NewReader(file))
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 
-	return json.Marshal(&memData)
+	js, err := json.Marshal(&memData)
+	return memData.Header.Name, js, err
 }
