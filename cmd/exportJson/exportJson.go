@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -12,15 +13,16 @@ import (
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
-var path = flag.String("path", "res/data/FESB70821B.MEM", "path to the file that should be imported")
+var input = flag.String("input", "res/data/FESB70821B.MEM", "path to the file that should be imported")
+var output = flag.String("output", "", "name of the file to save the JSON into; if blank, print to stdout")
 
 func main() {
 	flag.Parse()
 
 	jsonStrings := make(map[string]json.RawMessage)
 
-	// This works regardless of whether *path is a file or a directory, though if it's an invalid file, it will be silently skipped
-	filepath.Walk(*path, func(subpath string, info os.FileInfo, err error) error {
+	// This works regardless of whether *input is a file or a directory, though if it's an invalid file, it will be silently skipped
+	filepath.Walk(*input, func(subpath string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println("Could not walk '" + subpath + "' due to error: " + err.Error())
 			return nil
@@ -48,7 +50,15 @@ func main() {
 		fmt.Println("Could not concatenate JSON due to error: " + err.Error())
 	}
 
-	fmt.Printf("%v\n", string(jsArray))
+	if *output == "" {
+		fmt.Printf("%v\n", string(jsArray))
+	} else {
+		err = ioutil.WriteFile(*output, jsArray, 0644)
+		if err != nil {
+			fmt.Println("Could not save JSON due to error: " + err.Error())
+		}
+
+	}
 }
 
 func printMem(path string) (string, []byte, error) {
