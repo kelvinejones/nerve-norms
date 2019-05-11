@@ -21,6 +21,9 @@ type TableSet struct {
 
 	// Tables is a slice of tables (usually just one).
 	Tables []Table
+
+	// Abbreviation is the prefix of each import row.
+	Abbreviation string
 }
 
 func (tab Table) MarshalJSON() ([]byte, error) {
@@ -112,22 +115,30 @@ func (tab *Table) appendRow(row []string) error {
 
 func (ts *TableSet) appendRow(row []string) error {
 	// Format is two characters followed by optional digits, a decimal, and digits
-	result := regexp.MustCompile(`^[[:alpha:]]{2}(\d*)\.(\d+)`).FindStringSubmatch(row[0])
-	if len(result) != 3 {
+	result := regexp.MustCompile(`^([[:alpha:]]{2})(\d*)\.(\d+)`).FindStringSubmatch(row[0])
+	if len(result) != 4 {
 		return errors.New("A table row must contain a valid location: '" + row[0] + "'")
+	}
+
+	if ts.Abbreviation != result[1] {
+		if ts.Abbreviation == "" {
+			ts.Abbreviation = result[1]
+		} else {
+			return errors.New("The table's rows don't have matching prefixes: '" + ts.Abbreviation + "' and '" + result[1] + "'")
+		}
 	}
 
 	tableNum := 1
 	var err error
-	if result[1] != "" {
-		tableNum, err = strconv.Atoi(result[1])
+	if result[2] != "" {
+		tableNum, err = strconv.Atoi(result[2])
 		if err != nil {
 			return errors.New("Table number could not be parsed: " + err.Error())
 		}
 	}
 
 	// Parse the row number to insure it's valid, but we don't use it
-	_, err = strconv.Atoi(result[2])
+	_, err = strconv.Atoi(result[3])
 	if err != nil {
 		return errors.New("Row number could not be parsed: " + err.Error())
 	}
