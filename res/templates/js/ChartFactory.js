@@ -27,31 +27,19 @@ class ChartFactory {
 		this.osAccessor.participant = this.partDropDown.selection
 		this.osAccessor.normative = this.normDropDown.selection
 
-		// Create all of the plots
-		const plots = [{
-			chart: this.build("recoveryCycle"),
-			selector: "#recoveryCycle svg",
-		}, {
-			chart: this.build("thresholdElectrotonus"),
-			selector: "#thresholdElectrotonus svg",
-		}, {
-			chart: this.build("chargeDuration"),
-			selector: "#chargeDuration svg",
-		}, {
-			chart: this.build("thresholdIV"),
-			selector: "#thresholdIV svg",
-		}, {
-			chart: this.build("stimulusResponse"),
-			selector: "#stimulusResponse svg",
-		}, {
-			chart: this.build("stimulusResponseRelative"),
-			selector: "#stimulusResponseRelative svg",
-		}, ]
+		const plots = {
+			"recoveryCycle": null,
+			"thresholdElectrotonus": null,
+			"chargeDuration": null,
+			"thresholdIV": null,
+			"stimulusResponse": null,
+			"stimulusResponseRelative": null,
+		}
 
-		// Draw them all
-		plots.forEach(pl => {
-			pl.chart.draw(d3.select(pl.selector), true)
-			pl.chart.setDelayTime(Chart.fastDelay) // After initial setup, remove the delay
+		Object.keys(plots).forEach(key => {
+			plots[key] = this.build(key)
+			plots[key].draw(d3.select("#" + key + " svg"), true)
+			plots[key].setDelayTime(Chart.fastDelay) // After initial setup, remove the delay
 		})
 
 		// Now set all excitability variables
@@ -68,7 +56,6 @@ class ChartFactory {
 		chart.draw(d3.select('#modal svg'))
 		$('#modal').modal('toggle')
 	}
-
 
 	build(typeStr) {
 		switch (typeStr) {
