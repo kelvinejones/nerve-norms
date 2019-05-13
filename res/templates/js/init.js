@@ -26,8 +26,21 @@ function initPlots(data) {
 		pl.chart.setDelayTime(Chart.fastDelay) // After initial setup, remove the delay
 	})
 
+	const osAccessor = function() {
+		let participantName = data.participant
+
+		return {
+			setParticipant: function() {
+				participantName = participantName
+			},
+			getScores: function() {
+				return participants[participantName]
+			},
+		}
+	}();
+
 	// Now set all excitability variables
-	ExVars.update(data);
+	ExVars.update(osAccessor.getScores());
 
 	new DataDropDown("select-participant-dropdown", participants, function(name, currentParticipant) {
 		plots.forEach(pl => {
