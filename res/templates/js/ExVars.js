@@ -1,5 +1,5 @@
 class ExVars {
-	static _interpolate() {
+	static get _interpolate() {
 		const opacity = 0.8,
 			red = d3.hsl("red"),
 			green = d3.hsl("lightgreen");
