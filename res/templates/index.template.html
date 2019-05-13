@@ -241,8 +241,8 @@
 
 
     <script>
-      const currentParticipant = participants[document.getElementById("select-participant-dropdown").value];
-      initPlots(currentParticipant);
+      const participantName = document.getElementById("select-participant-dropdown").value;
+      initPlots(participants[participantName]);
     </script>
   </body>
 </html>
