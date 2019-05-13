@@ -1,19 +1,13 @@
 function initPlots(participants) {
-	const osAccessor = function() {
-		let participantName = ""
-
-		return {
-			setParticipant: function(name) {
-				participantName = name
-			},
-			getScores: function() {
-				return participants[participantName]
-			},
-		}
-	}();
+	const osAccessor = {
+		participant: "",
+		getScores: function() {
+			return participants[this.participant]
+		},
+	}
 
 	const partDropDown = new DataDropDown("select-participant-dropdown", participants, function(name, currentParticipant) {
-		osAccessor.setParticipant(name)
+		osAccessor.participant = name
 		ExVars.update(osAccessor.getScores());
 		plots.forEach(pl => {
 			pl.chart.updatePlots(currentParticipant.plots)
@@ -21,7 +15,7 @@ function initPlots(participants) {
 		})
 	})
 
-	osAccessor.setParticipant(partDropDown.selection)
+	osAccessor.participant = partDropDown.selection
 
 	// Create all of the plots
 	const plots = [{
