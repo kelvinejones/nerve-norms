@@ -31,7 +31,7 @@ function initPlots(data) {
 
 	function changeParticipant(ev) {
 		plots.forEach(pl => {
-			currentParticipant = participants[ev.srcElement.value] // This is a global
+			const currentParticipant = participants[ev.srcElement.value]
 			pl.chart.updatePlots(currentParticipant.plots)
 			pl.chart.updateNorms(currentParticipant.plots)
 			ExVars.update(currentParticipant)
