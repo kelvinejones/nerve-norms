@@ -29,15 +29,11 @@ function initPlots(data) {
 	// Now set all excitability variables
 	ExVars.update(data);
 
-	function changeParticipant(ev) {
+	new DataDropDown("select-participant-dropdown", participants, function(name, currentParticipant) {
 		plots.forEach(pl => {
-			const currentParticipant = participants[ev.srcElement.value]
 			pl.chart.updatePlots(currentParticipant.plots)
 			pl.chart.updateNorms(currentParticipant.plots)
 			ExVars.update(currentParticipant)
 		})
-	}
-
-	document.getElementById("select-participant-dropdown")
-		.addEventListener("change", changeParticipant);
+	})
 }
