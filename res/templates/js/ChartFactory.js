@@ -58,6 +58,18 @@ class ChartFactory {
 		ExVars.update(this.osAccessor.getScores(), this.partDropDown.data);
 	}
 
+	drawModal(name, typeStr) {
+		document.getElementById('modal-title').innerHTML = name
+		d3.selectAll("#modal svg > *").remove()
+
+		const chart = this.build(typeStr)
+		chart.setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition)
+
+		chart.draw(d3.select('#modal svg'))
+		$('#modal').modal('toggle')
+	}
+
+
 	build(typeStr) {
 		switch (typeStr) {
 			case "recoveryCycle":
