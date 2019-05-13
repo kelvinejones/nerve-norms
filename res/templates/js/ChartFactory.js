@@ -1,6 +1,6 @@
 class ChartFactory {
 	constructor(participants, norms, outlierScores) {
-		const osAccessor = {
+		this.osAccessor = {
 			participant: "",
 			normative: "",
 			getScores: function() {
@@ -8,43 +8,43 @@ class ChartFactory {
 			},
 		}
 
-		const partDropDown = new DataDropDown("select-participant-dropdown", participants, function(name, currentParticipant) {
-			osAccessor.participant = name
-			ExVars.update(osAccessor.getScores(), currentParticipant);
+		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, function(name, currentParticipant) {
+			this.osAccessor.participant = name
+			ExVars.update(this.osAccessor.getScores(), currentParticipant);
 			plots.forEach(pl => {
 				pl.chart.updateParticipant(currentParticipant.plots)
 			})
 		})
 
-		const normDropDown = new DataDropDown("select-normative-dropdown", norms, function(name, currentNormative) {
-			osAccessor.normative = name
-			ExVars.update(osAccessor.getScores(), partDropDown.data);
+		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, function(name, currentNormative) {
+			this.osAccessor.normative = name
+			ExVars.update(this.osAccessor.getScores(), this.partDropDown.data);
 			plots.forEach(pl => {
 				pl.chart.updateNorms(currentNormative.plots)
 			})
 		})
 
-		osAccessor.participant = partDropDown.selection
-		osAccessor.normative = normDropDown.selection
+		this.osAccessor.participant = this.partDropDown.selection
+		this.osAccessor.normative this.normDropDown.selection
 
 		// Create all of the plots
 		const plots = [{
-			chart: new RecoveryCycle(partDropDown.data.plots, normDropDown.data.plots),
+			chart: new RecoveryCycle(this.partDropDown.data.plotsthis.normDropDown.data.plots),
 			selector: "#recoveryCycle svg",
 		}, {
-			chart: new ThresholdElectrotonus(partDropDown.data.plots, normDropDown.data.plots),
+			chart: new ThresholdElectrotonus(this.partDropDown.data.plotsthis.normDropDown.data.plots),
 			selector: "#thresholdElectrotonus svg",
 		}, {
-			chart: new ChargeDuration(partDropDown.data.plots, normDropDown.data.plots),
+			chart: new ChargeDuration(this.partDropDown.data.plotsthis.normDropDown.data.plots),
 			selector: "#chargeDuration svg",
 		}, {
-			chart: new ThresholdIV(partDropDown.data.plots, normDropDown.data.plots),
+			chart: new ThresholdIV(this.partDropDown.data.plotsthis.normDropDown.data.plots),
 			selector: "#thresholdIV svg",
 		}, {
-			chart: new StimulusResponse(partDropDown.data.plots, normDropDown.data.plots),
+			chart: new StimulusResponse(this.partDropDown.data.plotsthis.normDropDown.data.plots),
 			selector: "#stimulusResponse svg",
 		}, {
-			chart: new StimulusRelative(partDropDown.data.plots, normDropDown.data.plots),
+			chart: new StimulusRelative(this.partDropDown.data.plotsthis.normDropDown.data.plots),
 			selector: "#stimulusResponseRelative svg",
 		}, ]
 
@@ -55,6 +55,6 @@ class ChartFactory {
 		})
 
 		// Now set all excitability variables
-		ExVars.update(osAccessor.getScores(), partDropDown.data);
+		ExVars.update(this.osAccessor.getScores(), this.partDropDown.data);
 	}
 }
