@@ -43,7 +43,7 @@ class ExVars {
 		nameSpan.innerHTML = scores.participant + " (" + healthLabel + ")"
 
 		const exinds = {}
-		const measureScores = Object.keys(scores.plots).map(function(key) {
+		Object.keys(scores.plots).map(function(key) {
 				ExVars._setHeaderScore("." + key + "-header", scores.plots[key].outlierScore)
 				return scores.plots[key].discreteMeasures;
 			}).flat()
