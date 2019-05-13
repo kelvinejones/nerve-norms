@@ -10,7 +10,7 @@ function initPlots(participants, norms, outlierScores) {
 		osAccessor.participant = name
 		ExVars.update(osAccessor.getScores());
 		plots.forEach(pl => {
-			pl.chart.updatePlots(currentParticipant.plots)
+			pl.chart.updateParticipant(currentParticipant.plots)
 			pl.chart.updateNorms(norms[name].plots)
 		})
 	})
