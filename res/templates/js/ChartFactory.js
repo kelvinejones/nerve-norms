@@ -11,16 +11,16 @@ class ChartFactory {
 		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
 			this.osAccessor.participant = name
 			ExVars.update(this.osAccessor.getScores(), currentParticipant);
-			plots.forEach(pl => {
-				pl.chart.updateParticipant(currentParticipant.plots)
+			Object.values(plots).forEach(pl => {
+				pl.updateParticipant(currentParticipant.plots)
 			})
 		})
 
 		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, (name, currentNormative) => {
 			this.osAccessor.normative = name
 			ExVars.update(this.osAccessor.getScores(), this.partDropDown.data);
-			plots.forEach(pl => {
-				pl.chart.updateNorms(currentNormative.plots)
+			Object.values(plots).forEach(pl => {
+				pl.updateNorms(currentNormative.plots)
 			})
 		})
 
