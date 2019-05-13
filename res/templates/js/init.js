@@ -1,8 +1,8 @@
-function initPlots(participants) {
+function initPlots(participants, norms, outlierScores) {
 	const osAccessor = {
 		participant: "",
 		getScores: function() {
-			return participants[this.participant]
+			return outlierScores[this.participant]
 		},
 	}
 
@@ -11,7 +11,7 @@ function initPlots(participants) {
 		ExVars.update(osAccessor.getScores());
 		plots.forEach(pl => {
 			pl.chart.updatePlots(currentParticipant.plots)
-			pl.chart.updateNorms(currentParticipant.plots)
+			pl.chart.updateNorms(norms[name].plots)
 		})
 	})
 
@@ -19,22 +19,22 @@ function initPlots(participants) {
 
 	// Create all of the plots
 	const plots = [{
-		chart: new RecoveryCycle(partDropDown.data.plots),
+		chart: new RecoveryCycle(partDropDown.data.plots, norms[partDropDown.selection].plots),
 		selector: "#recoveryCycle svg",
 	}, {
-		chart: new ThresholdElectrotonus(partDropDown.data.plots),
+		chart: new ThresholdElectrotonus(partDropDown.data.plots, norms[partDropDown.selection].plots),
 		selector: "#thresholdElectrotonus svg",
 	}, {
-		chart: new ChargeDuration(partDropDown.data.plots),
+		chart: new ChargeDuration(partDropDown.data.plots, norms[partDropDown.selection].plots),
 		selector: "#chargeDuration svg",
 	}, {
-		chart: new ThresholdIV(partDropDown.data.plots),
+		chart: new ThresholdIV(partDropDown.data.plots, norms[partDropDown.selection].plots),
 		selector: "#thresholdIV svg",
 	}, {
-		chart: new StimulusResponse(partDropDown.data.plots),
+		chart: new StimulusResponse(partDropDown.data.plots, norms[partDropDown.selection].plots),
 		selector: "#stimulusResponse svg",
 	}, {
-		chart: new StimulusRelative(partDropDown.data.plots),
+		chart: new StimulusRelative(partDropDown.data.plots, norms[partDropDown.selection].plots),
 		selector: "#stimulusResponseRelative svg",
 	}, ]
 
