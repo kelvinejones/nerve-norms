@@ -28,7 +28,7 @@
     <script src="data/participant-rat.json"></script>
 
     <!-- Application Code -->
-    <script src="js/init.js"></script>
+    <script src="js/ChartFactory.js"></script>
     <script src="js/Chart.js"></script>
     <script src="js/modal.js"></script>
     <script src="js/RecoveryCycle.js"></script>
@@ -255,7 +255,7 @@
 
 
     <script>
-      initPlots(participants, normative, outlierScore);
+      new ChartFactory(participants, normative, outlierScore);
     </script>
   </body>
 </html>
