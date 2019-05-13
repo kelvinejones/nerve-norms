@@ -58,12 +58,12 @@ class ChartFactory {
 		ExVars.update(this.osAccessor.getScores(), this.partDropDown.data);
 	}
 
-	drawModal(name, typeStr) {
-		document.getElementById('modal-title').innerHTML = name
-		d3.selectAll("#modal svg > *").remove()
-
+	drawModal(typeStr) {
 		const chart = this.build(typeStr)
 		chart.setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition)
+
+		document.getElementById('modal-title').innerHTML = chart.name
+		d3.selectAll("#modal svg > *").remove()
 
 		chart.draw(d3.select('#modal svg'))
 		$('#modal').modal('toggle')
