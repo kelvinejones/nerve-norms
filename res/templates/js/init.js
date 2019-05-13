@@ -1,22 +1,30 @@
-function initPlots(data) {
+function initPlots(participants) {
+	const partDropDown = new DataDropDown("select-participant-dropdown", participants, function(name, currentParticipant) {
+		ExVars.update(currentParticipant)
+		plots.forEach(pl => {
+			pl.chart.updatePlots(currentParticipant.plots)
+			pl.chart.updateNorms(currentParticipant.plots)
+		})
+	})
+
 	// Create all of the plots
 	const plots = [{
-		chart: new RecoveryCycle(data.plots),
+		chart: new RecoveryCycle(partDropDown.data.plots),
 		selector: "#recoveryCycle svg",
 	}, {
-		chart: new ThresholdElectrotonus(data.plots),
+		chart: new ThresholdElectrotonus(partDropDown.data.plots),
 		selector: "#thresholdElectrotonus svg",
 	}, {
-		chart: new ChargeDuration(data.plots),
+		chart: new ChargeDuration(partDropDown.data.plots),
 		selector: "#chargeDuration svg",
 	}, {
-		chart: new ThresholdIV(data.plots),
+		chart: new ThresholdIV(partDropDown.data.plots),
 		selector: "#thresholdIV svg",
 	}, {
-		chart: new StimulusResponse(data.plots),
+		chart: new StimulusResponse(partDropDown.data.plots),
 		selector: "#stimulusResponse svg",
 	}, {
-		chart: new StimulusRelative(data.plots),
+		chart: new StimulusRelative(partDropDown.data.plots),
 		selector: "#stimulusResponseRelative svg",
 	}, ]
 
@@ -27,7 +35,7 @@ function initPlots(data) {
 	})
 
 	const osAccessor = function() {
-		let participantName = data.participant
+		let participantName = partDropDown.data.participant
 
 		return {
 			setParticipant: function() {
@@ -41,12 +49,4 @@ function initPlots(data) {
 
 	// Now set all excitability variables
 	ExVars.update(osAccessor.getScores());
-
-	new DataDropDown("select-participant-dropdown", participants, function(name, currentParticipant) {
-		plots.forEach(pl => {
-			pl.chart.updatePlots(currentParticipant.plots)
-			pl.chart.updateNorms(currentParticipant.plots)
-			ExVars.update(currentParticipant)
-		})
-	})
 }
