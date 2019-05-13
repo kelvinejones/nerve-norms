@@ -52,7 +52,6 @@ class ExVars {
 				exinds[exind.id] = { score: exind.outlierScore }
 			})
 		Object.keys(values.plots).map(function(key) {
-				ExVars._setHeaderScore("." + key + "-header", values.plots[key].outlierScore)
 				return values.plots[key].discreteMeasures;
 			}).flat()
 			.concat(values.discreteMeasures)
