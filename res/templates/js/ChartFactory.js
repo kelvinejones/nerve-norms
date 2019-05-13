@@ -29,22 +29,22 @@ class ChartFactory {
 
 		// Create all of the plots
 		const plots = [{
-			chart: this.build("rc"),
+			chart: this.build("recoveryCycle"),
 			selector: "#recoveryCycle svg",
 		}, {
-			chart: this.build("te"),
+			chart: this.build("thresholdElectrotonus"),
 			selector: "#thresholdElectrotonus svg",
 		}, {
-			chart: this.build("cd"),
+			chart: this.build("chargeDuration"),
 			selector: "#chargeDuration svg",
 		}, {
-			chart: this.build("tiv"),
+			chart: this.build("thresholdIV"),
 			selector: "#thresholdIV svg",
 		}, {
-			chart: this.build("sr"),
+			chart: this.build("stimulusResponse"),
 			selector: "#stimulusResponse svg",
 		}, {
-			chart: this.build("srel"),
+			chart: this.build("stimulusResponseRelative"),
 			selector: "#stimulusResponseRelative svg",
 		}, ]
 
@@ -60,17 +60,17 @@ class ChartFactory {
 
 	build(typeStr) {
 		switch (typeStr) {
-			case "rc":
+			case "recoveryCycle":
 				return new RecoveryCycle(this.partDropDown.data.plots, this.normDropDown.data.plots)
-			case "te":
+			case "thresholdElectrotonus":
 				return new ThresholdElectrotonus(this.partDropDown.data.plots, this.normDropDown.data.plots)
-			case "cd":
+			case "chargeDuration":
 				return new ChargeDuration(this.partDropDown.data.plots, this.normDropDown.data.plots)
-			case "tiv":
+			case "thresholdIV":
 				return new ThresholdIV(this.partDropDown.data.plots, this.normDropDown.data.plots)
-			case "sr":
+			case "stimulusResponse":
 				return new StimulusResponse(this.partDropDown.data.plots, this.normDropDown.data.plots)
-			case "srel":
+			case "stimulusResponseRelative":
 				return new StimulusRelative(this.partDropDown.data.plots, this.normDropDown.data.plots)
 		}
 	}
