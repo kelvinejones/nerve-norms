@@ -1,11 +1,27 @@
 function initPlots(participants) {
+	const osAccessor = function() {
+		let participantName = ""
+
+		return {
+			setParticipant: function(name) {
+				participantName = name
+			},
+			getScores: function() {
+				return participants[participantName]
+			},
+		}
+	}();
+
 	const partDropDown = new DataDropDown("select-participant-dropdown", participants, function(name, currentParticipant) {
-		ExVars.update(currentParticipant)
+		osAccessor.setParticipant(name)
+		ExVars.update(osAccessor.getScores());
 		plots.forEach(pl => {
 			pl.chart.updatePlots(currentParticipant.plots)
 			pl.chart.updateNorms(currentParticipant.plots)
 		})
 	})
+
+	osAccessor.setParticipant(partDropDown.selection)
 
 	// Create all of the plots
 	const plots = [{
@@ -33,19 +49,6 @@ function initPlots(participants) {
 		pl.chart.draw(d3.select(pl.selector), true)
 		pl.chart.setDelayTime(Chart.fastDelay) // After initial setup, remove the delay
 	})
-
-	const osAccessor = function() {
-		let participantName = partDropDown.data.participant
-
-		return {
-			setParticipant: function() {
-				participantName = participantName
-			},
-			getScores: function() {
-				return participants[participantName]
-			},
-		}
-	}();
 
 	// Now set all excitability variables
 	ExVars.update(osAccessor.getScores());
