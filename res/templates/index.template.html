@@ -13,11 +13,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
+    <!-- Test Data -->
+    <script>const participants = {}; const normative = {}; const outlierScore = {};</script>
+    <script src="data/normative-all.json"></script>
+    <script src="data/normative-fake.json"></script>
+    <script src="data/outlier-WI20S-all.json"></script>
+    <script src="data/outlier-CR21S-all.json"></script>
+    <script src="data/outlier-rat-all.json"></script>
+    <script src="data/outlier-WI20S-fake.json"></script>
+    <script src="data/outlier-CR21S-fake.json"></script>
+    <script src="data/outlier-rat-fake.json"></script>
+    <script src="data/participant-WI20S.json"></script>
+    <script src="data/participant-CR21S.json"></script>
+    <script src="data/participant-rat.json"></script>
+
     <!-- Application Code -->
-    <script>const participants = {};</script>
-    <script src="data/example-WI20S.json"></script>
-    <script src="data/example-CR21S.json"></script>
-    <script src="data/example-rat.json"></script>
     <script src="js/init.js"></script>
     <script src="js/Chart.js"></script>
     <script src="js/modal.js"></script>
@@ -27,6 +37,8 @@
     <script src="js/ThresholdIV.js"></script>
     <script src="js/StimulusResponse.js"></script>
     <script src="js/StimulusRelative.js"></script>
+    <script src="js/ExVars.js"></script>
+    <script src="js/DataDropDown.js"></script>
 
     <style type="text/css">
       .line {
@@ -89,7 +101,12 @@
           <select id="select-participant-dropdown" class="btn btn-secondary float-left">
             <option value="CR21S">CR21S</option>
             <option value="WI20S">WI20S</option>
+            <option value="TESTNORM">TESTNORM</option>
             <option value="rat">rat</option>
+          </select>
+          <select id="select-normative-dropdown" class="btn btn-secondary float-left">
+            <option value="all">all</option>
+            <option value="fake">fake</option>
           </select>
         </div>
       </div>
@@ -98,7 +115,7 @@
 
       <div id="thresholdElectrotonus" class="card border-dark">
         <div class="card-header font-weight-bold te-header">Threshold Electrotonus</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold Electrotonus', new ThresholdElectrotonus(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold Electrotonus', new ThresholdElectrotonus(participants[document.getElementById('select-participant-dropdown').value].plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#thresholdElectrotonus')" class="btn btn-sm float-left">Show Discrete Measures</button>
@@ -129,7 +146,7 @@
 
       <div id="recoveryCycle" class="card border-dark">
         <div class="card-header font-weight-bold rc-header">Recovery Cycle</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Recovery Cycle', new RecoveryCycle(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Recovery Cycle', new RecoveryCycle(participants[document.getElementById('select-participant-dropdown').value].plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-left">Show Discrete Measures</button>
@@ -151,7 +168,7 @@
 
       <div id="chargeDuration" class="card border-dark">
         <div class="card-header font-weight-bold cd-header">Charge Duration</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Charge Duration', new ChargeDuration(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Charge Duration', new ChargeDuration(participants[document.getElementById('select-participant-dropdown').value].plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#chargeDuration')" class="btn btn-sm float-left">Show Discrete Measures</button>
@@ -168,7 +185,7 @@
 
       <div id="thresholdIV" class="card border-dark">
         <div class="card-header font-weight-bold tiv-header">Threshold I/V</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold I/V', new ThresholdIV(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Threshold I/V', new ThresholdIV(participants[document.getElementById('select-participant-dropdown').value].plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#thresholdIV')" class="btn btn-sm float-left">Show Discrete Measures</button>
@@ -186,7 +203,7 @@
 
       <div id="stimulusResponseRelative" class="card border-dark">
         <div class="card-header font-weight-bold sr-header">Stimulus Response (Relative)</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response (Relative)', new StimulusRelative(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response (Relative)', new StimulusRelative(participants[document.getElementById('select-participant-dropdown').value].plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
         <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#stimulusResponseRelative')" class="btn btn-sm float-left">Show Discrete Measures</button>
@@ -204,7 +221,7 @@
 
       <div id="stimulusResponse" class="card border-dark">
         <div class="card-header font-weight-bold sr-header">Stimulus Response</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response', new StimulusResponse(currentParticipant.plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="drawModal('Stimulus Response', new StimulusResponse(participants[document.getElementById('select-participant-dropdown').value].plots).setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition))"></svg></div>
       </div>
 
       <div id="participantInfo" class="card border-dark">
@@ -238,8 +255,7 @@
 
 
     <script>
-      let currentParticipant = participants["CR21S"];
-      initPlots(currentParticipant);
+      initPlots(participants, normative, outlierScore);
     </script>
   </body>
 </html>

@@ -1,7 +1,8 @@
 class StimulusResponse extends Chart {
-	constructor(plots) {
+	constructor(participant, norms) {
 		super([1, 20], [0.01, 20], Chart.scaleType.LOG, Chart.scaleType.LOG)
-		this.data = plots.sr.data
+		this.participant = participant.sr.data
+		this.norms = norms.sr.data
 		this.xName = 'valueX'
 		this.yName = 'valueY'
 		this.xMeanName = 'meanX'
@@ -15,13 +16,20 @@ class StimulusResponse extends Chart {
 	get xLabel() { return "Stimulus Current (mA)" }
 	get yLabel() { return "Peak Response (mV)" }
 
-	updatePlots(plots) {
-		this.data = plots.sr.data
-		this.animateXYLineWithMean(this.data, "sr")
+	updateParticipant(participant) {
+		this.participant = participant.sr.data
+		this.animateXYLine(this.participant, "sr")
+	}
+
+	updateNorms(norms) {
+		this.norms = norms.sr.data
+		this.animateNorms(this.norms, "sr")
 	}
 
 	drawLines(svg) {
-		this.createXYLineWithMean(this.data, "sr")
-		this.animateXYLineWithMean(this.data, "sr")
+		this.createXYLine(this.participant, "sr")
+		this.createNorms(this.norms, "sr")
+		this.animateXYLine(this.participant, "sr")
+		this.animateNorms(this.norms, "sr")
 	}
 }

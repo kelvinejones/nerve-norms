@@ -52,7 +52,8 @@ class Chart {
 		}
 	}
 
-	updatePlots(plots) { throw new Error("A Chart must implement updatePlots(plots)") }
+	updateParticipant(participant) { throw new Error("A Chart must implement updateParticipant(participant)") }
+	updateNorms(norms) { throw new Error("A Chart must implement updateNorms(norms)") }
 	get name() { throw new Error("A Chart must implement name()") }
 	get xLabel() { throw new Error("A Chart must implement xLabel()") }
 	get yLabel() { throw new Error("A Chart must implement yLabel()") }
@@ -284,16 +285,22 @@ class Chart {
 			.attr("cx", d => this.xscale(d[this.xName]))
 	}
 
-	createXYLineWithMean(lineData, name) {
+	createNorms(lineData, name) {
 		this.createPath(this.ciLayer, [this.normativeLimits(lineData)], name, "confidenceinterval")
 		this.createPath(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName)], name, "meanline")
+	}
+
+	createXYLine(lineData, name) {
 		this.createPath(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
 		this.createCircles(this.circlesLayer, lineData, name)
 	}
 
-	animateXYLineWithMean(lineData, name) {
+	animateNorms(lineData, name) {
 		this.animatePath([this.normativeLimits(lineData)], name, "confidenceinterval")
 		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName)], name, "meanline")
+	}
+
+	animateXYLine(lineData, name) {
 		this.animatePath([this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
 		this.animateCircles(lineData, name)
 	}
