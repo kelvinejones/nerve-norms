@@ -29,9 +29,9 @@ class ExVars {
 		if (score < 0.75) {
 			return "Healthy"
 		} else if (score < .95) {
-			return "Abnormal"
+			return "Atypical"
 		} else {
-			return "Extremely Abnormal"
+			return "Extremely Atypical"
 		}
 	}
 
