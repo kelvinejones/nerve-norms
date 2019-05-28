@@ -15,7 +15,11 @@ func (mem *Mem) ThresholdIV() (ThresholdIV, error) {
 
 	sec, err := mem.sectionContainingHeader("THRESHOLD I/V")
 	if err != nil {
-		return tiv, errors.New("Could not get threshold IV: " + err.Error())
+		// Sometimes an old format spelled this incorrectly
+		sec, err = mem.sectionContainingHeader("THESHOLD I/V")
+		if err != nil {
+			return tiv, errors.New("Could not get threshold IV: " + err.Error())
+		}
 	}
 
 	curr, err := sec.columnContainsName("Current (%)", 0)
@@ -25,7 +29,11 @@ func (mem *Mem) ThresholdIV() (ThresholdIV, error) {
 
 	tiv.ThreshReduction, err = sec.columnContainsName("Threshold redn. (%)", 0)
 	if err != nil {
-		return tiv, errors.New("Could not get threshold IV: " + err.Error())
+		// Try alternative spelling
+		tiv.ThreshReduction, err = sec.columnContainsName("Threshold change (%)", 0)
+		if err != nil {
+			return tiv, errors.New("Could not get threshold IV: " + err.Error())
+		}
 	}
 
 	tiv.WasImputed = tiv.ThreshReduction.ImputeWithValue(curr, tiv.Current, 0.01)
