@@ -50,11 +50,11 @@ func (mem *Mem) ThresholdElectrotonus() (ThresholdElectrotonus, error) {
 		max := current.Maximum()
 		min := current.Minimum()
 		switch {
-		case max > 38 && max < 42 && min == 0:
+		case max > 38 && max < 46 && min == 0:
 			te.Hyperpol40 = &pair
 		case max > 18 && max < 22 && min == 0:
 			te.Hyperpol20 = &pair
-		case max == 0 && min < -38 && min > -42:
+		case max == 0 && min < -38 && min > -46:
 			te.Depol40 = &pair
 		case max == 0 && min < -18 && min > -22:
 			te.Depol20 = &pair
