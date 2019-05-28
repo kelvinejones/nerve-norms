@@ -277,10 +277,14 @@ class Chart {
 			.style("fill", d => "black");
 	}
 
+	fillColor(pt) {
+		return pt.wasImputed ? "red" : "black"
+	}
+
 	animateCircles(circleLocations, name) {
 		this.animateGroup("circle", circleLocations, name)
 			.attr("r", d => d.wasImputed ? 3 : 5)
-			.style("fill", d => d.wasImputed ? "red" : "black")
+			.style("fill", d => this.fillColor(d))
 			.attr("cy", d => this.yscale(d[this.yName]))
 			.attr("cx", d => this.xscale(d[this.xName]))
 	}
