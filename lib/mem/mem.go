@@ -32,6 +32,26 @@ func (mem *Mem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(str)
 }
 
+// Verify verifies that all of the required data is here.
+func (mem *Mem) Verify() error {
+	if _, err := mem.ChargeDuration(); err != nil {
+		return err
+	}
+	if _, err := mem.RecoveryCycle(); err != nil {
+		return err
+	}
+	if _, err := mem.StimulusResponse(); err != nil {
+		return err
+	}
+	if _, err := mem.ThresholdElectrotonus(); err != nil {
+		return err
+	}
+	if _, err := mem.ThresholdIV(); err != nil {
+		return err
+	}
+	return nil
+}
+
 func Import(data io.Reader) (Mem, error) {
 	reader := NewReader(data)
 	mem := Mem{}
