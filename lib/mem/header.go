@@ -110,6 +110,9 @@ func extractPotentialDoubleValue(str string) string {
 	if strings.Contains(str, " / ") {
 		strs := strings.SplitN(str, " / ", 2)
 		return strs[0]
+	} else if strings.Contains(str, ",") {
+		// This might be a float with a comma instead of a decimal
+		return strings.Replace(str, ",", ".", -1)
 	} else {
 		// There's no slash splitting it.
 		return str
