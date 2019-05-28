@@ -2,7 +2,6 @@ package mem
 
 import (
 	"errors"
-	"fmt"
 )
 
 type ChargeDuration struct {
@@ -29,11 +28,7 @@ func (mem *Mem) ChargeDuration() (ChargeDuration, error) {
 		return cd, errors.New("Could not get charge duration: " + err.Error())
 	}
 
-	old := cd.ThreshCharge
 	cd.WasImputed = cd.ThreshCharge.ImputeWithValue(dur, cd.Duration, 0.0000001)
-	if cd.WasImputed != nil {
-		fmt.Println("Imputed CD:", old, cd.ThreshCharge)
-	}
 
 	return cd, nil
 }

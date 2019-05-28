@@ -2,7 +2,6 @@ package mem
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
 	"strconv"
 )
@@ -33,11 +32,7 @@ func (mem *Mem) StimulusResponse() (StimResponse, error) {
 		return sr, errors.New("Could not get stimulus response: " + err.Error())
 	}
 
-	old := sr.Stimulus
 	sr.WasImputed = sr.Stimulus.ImputeWithValue(perMax, sr.PercentMax, 0.1)
-	if sr.WasImputed != nil {
-		fmt.Println("Imputed SR:", old, sr.Stimulus)
-	}
 
 	sr.ValueType = parseValueType(sec.ExtraLines)
 	sr.MaxCmaps = parseMaxCmap(sec.ExtraLines)

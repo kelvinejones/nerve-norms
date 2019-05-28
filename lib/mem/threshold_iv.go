@@ -2,7 +2,6 @@ package mem
 
 import (
 	"errors"
-	"fmt"
 )
 
 type ThresholdIV struct {
@@ -29,11 +28,7 @@ func (mem *Mem) ThresholdIV() (ThresholdIV, error) {
 		return tiv, errors.New("Could not get threshold IV: " + err.Error())
 	}
 
-	old := tiv.ThreshReduction
 	tiv.WasImputed = tiv.ThreshReduction.ImputeWithValue(curr, tiv.Current, 0.01)
-	if tiv.WasImputed != nil {
-		fmt.Println("Imputed TIV:", old, tiv.ThreshReduction)
-	}
 
 	return tiv, nil
 }

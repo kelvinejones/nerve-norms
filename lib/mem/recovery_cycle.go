@@ -2,7 +2,6 @@ package mem
 
 import (
 	"errors"
-	"fmt"
 )
 
 type RecoveryCycle struct {
@@ -29,11 +28,7 @@ func (mem *Mem) RecoveryCycle() (RecoveryCycle, error) {
 		return rc, errors.New("Could not get recovery cycle: " + err.Error())
 	}
 
-	old := rc.ThreshChange
 	rc.WasImputed = rc.ThreshChange.ImputeWithValue(interval, rc.Interval, 0.000001)
-	if rc.WasImputed != nil {
-		fmt.Println("Imputed RC:", old, rc.ThreshChange)
-	}
 
 	return rc, nil
 }
