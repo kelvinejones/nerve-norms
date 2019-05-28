@@ -8,6 +8,7 @@ import (
 type TEPair struct {
 	Delay           Column
 	ThreshReduction Column
+	WasImputed      Column
 }
 
 type ThresholdElectrotonus struct {
@@ -26,19 +27,22 @@ func (mem *Mem) ThresholdElectrotonus() (ThresholdElectrotonus, error) {
 	}
 
 	for i := range sec.Tables {
-		pair := TEPair{Delay: Column([]float64{0, 9, 10, 11, 20, 30, 40, 50, 60, 70, 80, 90, 100, 109, 110, 111, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210})}
+		pair := TEPair{Delay: Column([]float64{0, 9, 10, 11, 15, 20, 26, 33, 41, 50, 60, 70, 80, 90, 100, 109, 110, 111, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210})}
 
 		delay, err := sec.columnContainsName("Delay (ms)", i)
 		if err != nil {
 			return te, errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
-		if !pair.Delay.Equals(delay, 0.01) {
-			return te, errors.New("File contains invalid te Delay")
-		}
 
 		pair.ThreshReduction, err = sec.columnContainsName("Thresh redn. (%)", i)
 		if err != nil {
 			return te, errors.New("Could not get threshold electrotonus: " + err.Error())
+		}
+
+		old := pair.ThreshReduction
+		pair.WasImputed = pair.ThreshReduction.ImputeWithValue(delay, pair.Delay, 0.01)
+		if pair.WasImputed != nil {
+			fmt.Println("Imputed TE:", old, pair.ThreshReduction)
 		}
 
 		current, err := sec.columnContainsName("Current (%)", i)

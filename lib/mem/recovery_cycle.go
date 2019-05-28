@@ -2,11 +2,13 @@ package mem
 
 import (
 	"errors"
+	"fmt"
 )
 
 type RecoveryCycle struct {
 	Interval     Column
 	ThreshChange Column
+	WasImputed   Column
 }
 
 func (mem *Mem) RecoveryCycle() (RecoveryCycle, error) {
@@ -21,13 +23,16 @@ func (mem *Mem) RecoveryCycle() (RecoveryCycle, error) {
 	if err != nil {
 		return rc, errors.New("Could not get recovery cycle: " + err.Error())
 	}
-	if !rc.Interval.Equals(interval, 0.000001) {
-		return rc, errors.New("File contains invalid rc Interval")
-	}
 
 	rc.ThreshChange, err = sec.columnContainsName("Threshold change (%)", 0)
 	if err != nil {
 		return rc, errors.New("Could not get recovery cycle: " + err.Error())
+	}
+
+	old := rc.ThreshChange
+	rc.WasImputed = rc.ThreshChange.ImputeWithValue(interval, rc.Interval, 0.000001)
+	if rc.WasImputed != nil {
+		fmt.Println("Imputed RC:", old, rc.ThreshChange)
 	}
 
 	return rc, nil

@@ -2,6 +2,7 @@ package mem
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"strconv"
 )
@@ -11,6 +12,7 @@ type StimResponse struct {
 	ValueType  string
 	PercentMax Column
 	Stimulus   Column
+	WasImputed Column
 }
 
 func (mem *Mem) StimulusResponse() (StimResponse, error) {
@@ -25,13 +27,16 @@ func (mem *Mem) StimulusResponse() (StimResponse, error) {
 	if err != nil {
 		return sr, errors.New("Could not get stimulus response: " + err.Error())
 	}
-	if !sr.PercentMax.Equals(perMax, 0.1) {
-		return sr, errors.New("File contains invalid sr PercentMax")
-	}
 
 	sr.Stimulus, err = sec.columnContainsName("Stimulus", 0)
 	if err != nil {
 		return sr, errors.New("Could not get stimulus response: " + err.Error())
+	}
+
+	old := sr.Stimulus
+	sr.WasImputed = sr.Stimulus.ImputeWithValue(perMax, sr.PercentMax, 0.1)
+	if sr.WasImputed != nil {
+		fmt.Println("Imputed SR:", old, sr.Stimulus)
 	}
 
 	sr.ValueType = parseValueType(sec.ExtraLines)

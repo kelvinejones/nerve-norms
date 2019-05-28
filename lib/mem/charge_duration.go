@@ -2,11 +2,13 @@ package mem
 
 import (
 	"errors"
+	"fmt"
 )
 
 type ChargeDuration struct {
 	Duration     Column
 	ThreshCharge Column
+	WasImputed   Column
 }
 
 func (mem *Mem) ChargeDuration() (ChargeDuration, error) {
@@ -21,13 +23,16 @@ func (mem *Mem) ChargeDuration() (ChargeDuration, error) {
 	if err != nil {
 		return cd, errors.New("Could not get charge duration: " + err.Error())
 	}
-	if !cd.Duration.Equals(dur, 0.0000001) {
-		return cd, errors.New("File contains invalid cd Duration")
-	}
 
 	cd.ThreshCharge, err = sec.columnContainsName("Threshold charge (mA.mS)", 0)
 	if err != nil {
 		return cd, errors.New("Could not get charge duration: " + err.Error())
+	}
+
+	old := cd.ThreshCharge
+	cd.WasImputed = cd.ThreshCharge.ImputeWithValue(dur, cd.Duration, 0.0000001)
+	if cd.WasImputed != nil {
+		fmt.Println("Imputed CD:", old, cd.ThreshCharge)
 	}
 
 	return cd, nil
