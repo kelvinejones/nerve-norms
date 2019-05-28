@@ -1,9 +1,14 @@
 class ThresholdIV extends Chart {
 	constructor(participant, norms) {
-		super([-100, 50], [-400, 50])
+		super([-400, 50], [-100, 50])
 		this.participant = participant.tiv.data
 		this.norms = norms.tiv.data
-		this.xName = 'current'
+		this.yName = 'current'
+		this.xName = 'value'
+		this.ySDName = undefined
+		this.yMeanName = undefined
+		this.xSDName = 'SD'
+		this.xMeanName = 'mean'
 	}
 
 	get name() { return "Threshold I/V" }
