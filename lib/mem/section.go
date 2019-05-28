@@ -26,6 +26,18 @@ type TableSet struct {
 	Abbreviation string
 }
 
+func (col Column) Equals(col2 Column, eps float64) bool {
+	if len(col) != len(col2) {
+		return false
+	}
+	for i, val := range col2 {
+		if val-eps > col[i] || val+eps < col[i] {
+			return false
+		}
+	}
+	return true
+}
+
 func (tab Table) MarshalJSON() ([]byte, error) {
 	numCols := len(tab)
 	if numCols == 0 {
