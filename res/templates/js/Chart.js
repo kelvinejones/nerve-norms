@@ -278,6 +278,10 @@ class Chart {
 	}
 
 	fillColor(pt) {
+		// If either the x or y value is undefined, then this point should be hidden
+		if (pt[this.yName] === undefined || pt[this.yName] === undefined) {
+			return "rgba(0, 0, 0, 0)"
+		}
 		return pt.wasImputed ? "red" : "black"
 	}
 
