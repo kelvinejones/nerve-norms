@@ -253,13 +253,13 @@ class Chart {
 	createPath(svg, path, groupName, className) {
 		this.createGroup(svg, "path", groupName + "-" + className)
 			.append("path")
-			.data(path)
+			.data([path])
 			.attr("class", className)
 			.attr("d", this.xZeroPath())
 	}
 
 	animatePath(path, groupName, className) {
-		this.animateGroup("path", path, groupName + "-" + className)
+		this.animateGroup("path", [path], groupName + "-" + className)
 			.attr("d", this.xyPath());
 	}
 
@@ -285,27 +285,27 @@ class Chart {
 		this.animateGroup("circle", circleLocations, name)
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => this.fillColor(d))
-			.attr("cy", d => this.yscale(d[this.yName]))
-			.attr("cx", d => this.xscale(d[this.xName]))
+			.attr("cy", d => this.yscale(d[this.yName] || 0))
+			.attr("cx", d => this.xscale(d[this.xName] || 0))
 	}
 
 	createNorms(lineData, name) {
-		this.createPath(this.ciLayer, [this.normativeLimits(lineData)], name, "confidenceinterval")
-		this.createPath(this.meanLayer, [this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName)], name, "meanline")
+		this.createPath(this.ciLayer, this.normativeLimits(lineData), name, "confidenceinterval")
+		this.createPath(this.meanLayer, this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName), name, "meanline")
 	}
 
 	createXYLine(lineData, name) {
-		this.createPath(this.valueLayer, [this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
+		this.createPath(this.valueLayer, this.dataAsXY(lineData, this.xName, this.yName), name, "line")
 		this.createCircles(this.circlesLayer, lineData, name)
 	}
 
 	animateNorms(lineData, name) {
-		this.animatePath([this.normativeLimits(lineData)], name, "confidenceinterval")
-		this.animatePath([this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName)], name, "meanline")
+		this.animatePath(this.normativeLimits(lineData), name, "confidenceinterval")
+		this.animatePath(this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName), name, "meanline")
 	}
 
 	animateXYLine(lineData, name) {
-		this.animatePath([this.dataAsXY(lineData, this.xName, this.yName)], name, "line")
+		this.animatePath(this.dataAsXY(lineData, this.xName, this.yName), name, "line")
 		this.animateCircles(lineData, name)
 	}
 
