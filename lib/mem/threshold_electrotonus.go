@@ -54,13 +54,13 @@ func (mem *Mem) ThresholdElectrotonus() (ThresholdElectrotonus, error) {
 		max := current.Maximum()
 		min := current.Minimum()
 		switch {
-		case max == 40 && min == 0:
+		case max > 38 && max < 42 && min == 0:
 			te.Hyperpol40 = &pair
-		case max == 20 && min == 0:
+		case max > 18 && max < 22 && min == 0:
 			te.Hyperpol20 = &pair
-		case max == 0 && min == -40:
+		case max == 0 && min < -38 && min > -42:
 			te.Depol40 = &pair
-		case max == 0 && min == -20:
+		case max == 0 && min < -18 && min > -22:
 			te.Depol20 = &pair
 		default:
 			fmt.Printf("TE contained unexpected current [%f, %f]\n", min, max)
