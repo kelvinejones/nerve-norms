@@ -49,11 +49,11 @@ func (val *Column) ImputeWithValue(oldLabel, newLabel Column, eps float64) Colum
 			if oldNum < 2 {
 				col[i] = (*val)[0]
 			} else if oldInd == 0 {
-				col[i] = (*val)[0] - (oldLabel[0]-lab)/(oldLabel[1]-oldLabel[0])*((*val)[1]-(*val)[0])
+				col[i] = interpolate(oldLabel[1], oldLabel[0], lab, (*val)[1], (*val)[0])
 			} else if oldInd >= oldNum {
-				col[i] = (*val)[oldNum-1] - (oldLabel[oldNum-2]-lab)/(oldLabel[oldNum-1]-oldLabel[oldNum-2])*((*val)[oldNum-1]-(*val)[oldNum-2])
+				col[i] = interpolate(oldLabel[oldNum-1], oldLabel[oldNum-2], lab, (*val)[oldNum-1], (*val)[oldNum-2])
 			} else {
-				col[i] = (*val)[oldInd] - (oldLabel[oldInd-1]-lab)/(oldLabel[oldInd]-oldLabel[oldInd-1])*((*val)[oldInd]-(*val)[oldInd-1])
+				col[i] = interpolate(oldLabel[oldInd], oldLabel[oldInd-1], lab, (*val)[oldInd], (*val)[oldInd-1])
 			}
 			wasImp[i] = 1.0
 			colChanged = true
@@ -69,6 +69,10 @@ func (val *Column) ImputeWithValue(oldLabel, newLabel Column, eps float64) Colum
 	} else {
 		return Column(nil)
 	}
+}
+
+func interpolate(x1, x2, x3, y1, y2 float64) float64 {
+	return y2 - (x2-x3)/(x1-x2)*(y1-y2)
 }
 
 func (tab Table) MarshalJSON() ([]byte, error) {
