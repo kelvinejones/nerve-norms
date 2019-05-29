@@ -10,19 +10,19 @@ import (
 
 type Mem struct {
 	Header
-	Sections []Section
+	Sections []RawSection
 	ExcitabilityVariables
 }
 
 func (mem *Mem) MarshalJSON() ([]byte, error) {
 	str := &struct {
-		Header   *Header             `json:"header"`
-		Sections map[string]*Section `json:"sections"`
-		ExVars   map[int]float64     `json:"exVars"`
-		Settings map[string]string   `json:"settings"`
+		Header   *Header                `json:"header"`
+		Sections map[string]*RawSection `json:"sections"`
+		ExVars   map[int]float64        `json:"exVars"`
+		Settings map[string]string      `json:"settings"`
 	}{
 		Header:   &mem.Header,
-		Sections: make(map[string]*Section),
+		Sections: make(map[string]*RawSection),
 		ExVars:   mem.ExcitabilityVariables.Values,
 		Settings: mem.ExcitabilityVariables.ExcitabilitySettings,
 	}
@@ -63,7 +63,7 @@ func Import(data io.Reader) (Mem, error) {
 	}
 
 	for err == nil {
-		err = mem.importSection(reader)
+		err = mem.importRawSection(reader)
 	}
 
 	if err != io.EOF && err != nil {
@@ -73,7 +73,7 @@ func Import(data io.Reader) (Mem, error) {
 	return mem, nil
 }
 
-func (mem *Mem) importSection(reader *Reader) error {
+func (mem *Mem) importRawSection(reader *Reader) error {
 	str, err := reader.skipEmptyLines()
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func (mem *Mem) importSection(reader *Reader) error {
 		return mem.ExcitabilityVariables.Parse(reader)
 	}
 
-	sec := Section{Header: strings.TrimSpace(str)}
+	sec := RawSection{Header: strings.TrimSpace(str)}
 	err = sec.parse(reader)
 	if err != nil {
 		return err
@@ -110,11 +110,11 @@ func (mem Mem) String() string {
 
 // sectionContainingHeader returns a section containing the provided header.
 // Dashes are replaced with spaces for a slightly less sensitive search.
-func (mem Mem) sectionContainingHeader(header string) (Section, error) {
+func (mem Mem) sectionContainingHeader(header string) (RawSection, error) {
 	for _, sec := range mem.Sections {
 		if strings.Contains(strings.Replace(sec.Header, "-", " ", -1), header) {
 			return sec, nil
 		}
 	}
-	return Section{}, errors.New("MEM does not contain section '" + header + "'")
+	return RawSection{}, errors.New("MEM does not contain section '" + header + "'")
 }

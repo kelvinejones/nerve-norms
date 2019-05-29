@@ -86,7 +86,7 @@ func (tab Table) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&data)
 }
 
-type Section struct {
+type RawSection struct {
 	// Header is the header for the section.
 	Header string
 
@@ -97,7 +97,7 @@ type Section struct {
 	ExtraLines []string
 }
 
-func (sec *Section) MarshalJSON() ([]byte, error) {
+func (sec *RawSection) MarshalJSON() ([]byte, error) {
 	str := &struct {
 		Name    *string         `json:"name"`
 		Columns []string        `json:"columnNames"`
@@ -126,7 +126,7 @@ func (sec *Section) MarshalJSON() ([]byte, error) {
 }
 
 // columnContainsName returns the first column containing the provided name.
-func (sec Section) columnContainsName(name string, table int) (Column, error) {
+func (sec RawSection) columnContainsName(name string, table int) (Column, error) {
 	if table > len(sec.Tables) {
 		return Column{}, errors.New("Attempt to access table out of range in section '" + sec.Header + "'")
 	}
@@ -190,7 +190,7 @@ func (ts *TableSet) appendRow(row []string) error {
 	return ts.Tables[tableNum-1].appendRow(row[1:])
 }
 
-func (sec *Section) parse(reader *Reader) error {
+func (sec *RawSection) parse(reader *Reader) error {
 	// Keep parsing extra lines until we get a valid table header
 	for sec.ColCount == 0 {
 		str, err := reader.skipEmptyLines()
@@ -248,8 +248,8 @@ func rowIsHeader(cols []string) bool {
 	return !(len(cols) < 1 || strings.TrimSpace(cols[0]) != "" || len(cols) < 2)
 }
 
-func (sec Section) String() string {
-	return fmt.Sprintf("Section{'%s', %v}", sec.Header, sec.TableSet)
+func (sec RawSection) String() string {
+	return fmt.Sprintf("RawSection{'%s', %v}", sec.Header, sec.TableSet)
 }
 
 func (ts TableSet) String() string {
