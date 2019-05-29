@@ -1,8 +1,8 @@
 class ThresholdElectrotonus extends Chart {
 	constructor(participant, norms) {
 		super([0, 200], [-150, 100])
-		this.participant = participant.TE.data
-		this.norms = norms.TE.data
+		this.participant = participant.sections.TE.data
+		this.norms = norms.sections.TE.data
 	}
 
 	get name() { return "Threshold Electrotonus" }
@@ -10,12 +10,12 @@ class ThresholdElectrotonus extends Chart {
 	get yLabel() { return "Delay (ms)" }
 
 	updateParticipant(participant) {
-		this.participant = participant.TE.data
+		this.participant = participant.sections.TE.data
 		this.animateParticipant()
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.TE.data
+		this.norms = norms.sections.TE.data
 		this.animateUpdatedNorms()
 	}
 
