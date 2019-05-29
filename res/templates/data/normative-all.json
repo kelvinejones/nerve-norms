@@ -1,4 +1,4 @@
-normative["all"] = {
+normative["Human Norms"] = {
 	"ageFilter": null,
 	"sexFilter": null,
 	"sections": {

@@ -1,4 +1,4 @@
-normative["fake"] = {
+normative["Garbage Norms"] = {
 	"ageFilter": "50-59",
 	"sexFilter": "male",
 	"sections": {

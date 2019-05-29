@@ -1,5 +1,5 @@
 outlierScore["WI20S"] = outlierScore["WI20S"] || {};
-outlierScore["WI20S"]["fake"] = {
+outlierScore["WI20S"]["Garbage Norms"] = {
 	"participant": "WI20S",
 	"outlierScore": 0.857,
 	"ageFilter": "50-59",

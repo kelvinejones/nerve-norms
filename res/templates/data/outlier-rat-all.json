@@ -1,5 +1,5 @@
 outlierScore["Rat on Drugs"] = outlierScore["Rat on Drugs"] || {};
-outlierScore["Rat on Drugs"]["all"] = {
+outlierScore["Rat on Drugs"]["Human Norms"] = {
 	"participant": "Rat on Drugs",
 	"outlierScore": 0.9998,
 	"ageFilter": null,
