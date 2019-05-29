@@ -16,40 +16,29 @@ type Mem struct {
 
 func (mem *Mem) MarshalJSON() ([]byte, error) {
 	str := &struct {
-		Header   *Header                `json:"header"`
-		Sections map[string]*RawSection `json:"sections"`
-		ExVars   map[int]float64        `json:"exVars"`
-		Settings map[string]string      `json:"settings"`
+		Header   *Header            `json:"header"`
+		Sections map[string]Section `json:"sections"`
+		ExVars   map[int]float64    `json:"exVars"`
+		Settings map[string]string  `json:"settings"`
 	}{
 		Header:   &mem.Header,
-		Sections: make(map[string]*RawSection),
+		Sections: make(map[string]Section),
 		ExVars:   mem.ExcitabilityVariables.Values,
 		Settings: mem.ExcitabilityVariables.ExcitabilitySettings,
 	}
-	for i, sec := range mem.Sections {
-		str.Sections[sec.Abbreviation] = &(mem.Sections[i])
-	}
-	return json.Marshal(str)
-}
 
-// Verify verifies that all of the required data is here.
-func (mem *Mem) Verify() error {
-	if err := (&ChargeDuration{}).LoadFromMem(mem); err != nil {
-		return err
+	str.Sections["CD"] = &ChargeDuration{}
+	str.Sections["RC"] = &RecoveryCycle{}
+	str.Sections["SR"] = &StimResponse{}
+	str.Sections["TE"] = &ThresholdElectrotonus{}
+	str.Sections["IV"] = &ThresholdIV{}
+	for _, sec := range str.Sections {
+		if err := sec.LoadFromMem(mem); err != nil {
+			return nil, err
+		}
 	}
-	if err := (&RecoveryCycle{}).LoadFromMem(mem); err != nil {
-		return err
-	}
-	if err := (&StimResponse{}).LoadFromMem(mem); err != nil {
-		return err
-	}
-	if err := (&ThresholdElectrotonus{}).LoadFromMem(mem); err != nil {
-		return err
-	}
-	if err := (&ThresholdIV{}).LoadFromMem(mem); err != nil {
-		return err
-	}
-	return nil
+
+	return json.Marshal(str)
 }
 
 func Import(data io.Reader) (Mem, error) {

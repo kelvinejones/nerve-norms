@@ -104,11 +104,6 @@ func loadMemAsJson(path string) (string, []byte, error) {
 		return "", nil, err
 	}
 
-	err = memData.Verify()
-	if err != nil {
-		return "", nil, err
-	}
-
 	js, err := json.Marshal(&memData)
 	return memData.Header.Name, js, err
 }
