@@ -1,14 +1,24 @@
 class StimulusRelative extends Chart {
 	constructor(participant, norms) {
 		super([0, 200], [0, 100])
-		this.participant = participant.sections.SR.data
+		this.participant = this.calculateParticipant(participant.sections.SR.data)
 		this.norms = this.calculateNorms(norms.sections.SR.data)
-		this.xName = 'valueX'
-		this.yName = 'valueY'
+		this.xName = 'x'
+		this.yName = 'y'
 		this.xSDName = 'SD'
 		this.ySDName = undefined
 		this.xMeanName = 'mean'
 		this.yMeanName = 'y'
+	}
+
+	calculateParticipant(data) {
+		const stimFor50PercentMax = data[24].valueX // Could also be extracted from excitability variables
+		return data.map((d, i) => {
+			return {
+				'y': d.valueY,
+				'x': d.valueX / stimFor50PercentMax * 100,
+			}
+		})
 	}
 
 	calculateNorms(data) {
@@ -27,7 +37,7 @@ class StimulusRelative extends Chart {
 	get yLabel() { return "Peak Response (% Max)" }
 
 	updateParticipant(participant) {
-		this.participant = participant.sections.SR.data
+		this.participant = this.calculateParticipant(participant.sections.SR.data)
 		this.animateXYLine(this.participant, "srel")
 	}
 

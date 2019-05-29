@@ -14,11 +14,8 @@ class StimulusResponse extends Chart {
 
 	calculateParticipant(participant) {
 		let peakResponse = 0;
-		let stimFor50PercentMax = 0;
 		participant.exVars.forEach(function(exvar) {
-			if (exvar.id == 1) {
-				stimFor50PercentMax = exvar.value;
-			} else if (exvar.id == 6) {
+			if (exvar.id == 6) {
 				peakResponse = exvar.value;
 			}
 		})
@@ -26,7 +23,7 @@ class StimulusResponse extends Chart {
 		return participant.sections.SR.data.map((d, i) => {
 			return {
 				'y': (i + 1) * 2 / 100 * peakResponse,
-				'x': d.valueX * stimFor50PercentMax / 100,
+				'x': d.valueX,
 			}
 		})
 	}
