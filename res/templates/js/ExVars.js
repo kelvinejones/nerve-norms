@@ -13,6 +13,10 @@ class ExVars {
 
 	static _setExcitabilityVariable(idString, value, score) {
 		const row = document.getElementById(idString);
+		if (row === null) {
+			// We don't care about this variable
+			return
+		}
 		row.getElementsByClassName("excite-value")[0].innerHTML = value
 		if (score !== undefined) {
 			row.style.background = "linear-gradient(to right, " + ExVars._interpolate(score) + " " + score * 100 + "%, #ffffff 0%)"
@@ -51,6 +55,7 @@ class ExVars {
 			exinds[exind.id] = { score: exind.outlierScore }
 		})
 		values.exVars.forEach(function(exind) {
+			exinds[exind.id] = exinds[exind.id] || {}; // Unknown score
 			exinds[exind.id].value = exind.value
 		})
 
