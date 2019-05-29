@@ -3,8 +3,8 @@ class ThresholdIV extends Chart {
 		super([-400, 50], [-100, 50])
 		this.participant = participant.sections.IV.data
 		this.norms = norms.sections.IV.data
-		this.yName = 'current'
-		this.xName = 'value'
+		this.yName = 0
+		this.xName = 1
 		this.ySDName = undefined
 		this.yMeanName = 'current'
 		this.xSDName = 'SD'

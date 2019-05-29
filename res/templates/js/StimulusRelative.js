@@ -12,11 +12,11 @@ class StimulusRelative extends Chart {
 	}
 
 	calculateParticipant(data) {
-		const stimFor50PercentMax = data[24].valueX // Could also be extracted from excitability variables
+		const stimFor50PercentMax = data[24][1] // Could also be extracted from excitability variables
 		return data.map((d, i) => {
 			return {
-				'y': d.valueY,
-				'x': d.valueX / stimFor50PercentMax * 100,
+				'y': d[0],
+				'x': d[1] / stimFor50PercentMax * 100,
 			}
 		})
 	}

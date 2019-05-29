@@ -23,7 +23,7 @@ class StimulusResponse extends Chart {
 		return participant.sections.SR.data.map((d, i) => {
 			return {
 				'y': (i + 1) * 2 / 100 * peakResponse,
-				'x': d.valueX,
+				'x': d[1],
 			}
 		})
 	}
