@@ -34,19 +34,19 @@ func (mem *Mem) MarshalJSON() ([]byte, error) {
 
 // Verify verifies that all of the required data is here.
 func (mem *Mem) Verify() error {
-	if _, err := mem.ChargeDuration(); err != nil {
+	if err := (&ChargeDuration{}).LoadFromMem(mem); err != nil {
 		return err
 	}
-	if _, err := mem.RecoveryCycle(); err != nil {
+	if err := (&RecoveryCycle{}).LoadFromMem(mem); err != nil {
 		return err
 	}
-	if _, err := mem.StimulusResponse(); err != nil {
+	if err := (&StimResponse{}).LoadFromMem(mem); err != nil {
 		return err
 	}
-	if _, err := mem.ThresholdElectrotonus(); err != nil {
+	if err := (&ThresholdElectrotonus{}).LoadFromMem(mem); err != nil {
 		return err
 	}
-	if _, err := mem.ThresholdIV(); err != nil {
+	if err := (&ThresholdIV{}).LoadFromMem(mem); err != nil {
 		return err
 	}
 	return nil

@@ -11,12 +11,12 @@ type ChargeDuration struct {
 	WasImputed   Column
 }
 
-func (mem *Mem) ChargeDuration() (ChargeDuration, error) {
-	cd := ChargeDuration{Duration: Column([]float64{0.2, 0.4, 0.6, 0.8, 1})}
+func (cd *ChargeDuration) LoadFromMem(mem *Mem) error {
+	cd.Duration = Column([]float64{0.2, 0.4, 0.6, 0.8, 1})
 
 	sec, err := mem.sectionContainingHeader("CHARGE DURATION")
 	if err != nil {
-		return cd, errors.New("Could not get charge duration: " + err.Error())
+		return errors.New("Could not get charge duration: " + err.Error())
 	}
 
 	dur, err := sec.columnContainsName("Duration (ms)", 0)
@@ -24,7 +24,7 @@ func (mem *Mem) ChargeDuration() (ChargeDuration, error) {
 		// For some reason this column sometimes has the wrong name in older files
 		dur, err = sec.columnContainsName("Current (%)", 0)
 		if err != nil {
-			return cd, errors.New("Could not get charge duration: " + err.Error())
+			return errors.New("Could not get charge duration: " + err.Error())
 		}
 	}
 
@@ -33,18 +33,18 @@ func (mem *Mem) ChargeDuration() (ChargeDuration, error) {
 		// Some old formats use this mis-labeled column that must be converted
 		threshold, err := sec.columnContainsName("Threshold change (%)", 0)
 		if err != nil {
-			return cd, errors.New("Could not get charge duration: " + err.Error())
+			return errors.New("Could not get charge duration: " + err.Error())
 		}
 
 		err = cd.importOldStyle(threshold)
 		if err != nil {
-			return cd, errors.New("Could not get charge duration: " + err.Error())
+			return errors.New("Could not get charge duration: " + err.Error())
 		}
 	}
 
 	cd.WasImputed = cd.ThreshCharge.ImputeWithValue(dur, cd.Duration, 0.0000001)
 
-	return cd, nil
+	return nil
 }
 
 func (dat *ChargeDuration) MarshalJSON() ([]byte, error) {

@@ -19,12 +19,10 @@ type ThresholdElectrotonus struct {
 	Depol20    *TEPair
 }
 
-func (mem *Mem) ThresholdElectrotonus() (ThresholdElectrotonus, error) {
-	te := ThresholdElectrotonus{}
-
+func (te *ThresholdElectrotonus) LoadFromMem(mem *Mem) error {
 	sec, err := mem.sectionContainingHeader("THRESHOLD ELECTROTONUS")
 	if err != nil {
-		return te, errors.New("Could not get threshold electrotonus: " + err.Error())
+		return errors.New("Could not get threshold electrotonus: " + err.Error())
 	}
 
 	for i := range sec.Tables {
@@ -32,19 +30,19 @@ func (mem *Mem) ThresholdElectrotonus() (ThresholdElectrotonus, error) {
 
 		delay, err := sec.columnContainsName("Delay (ms)", i)
 		if err != nil {
-			return te, errors.New("Could not get threshold electrotonus: " + err.Error())
+			return errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
 
 		pair.ThreshReduction, err = sec.columnContainsName("Thresh redn. (%)", i)
 		if err != nil {
-			return te, errors.New("Could not get threshold electrotonus: " + err.Error())
+			return errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
 
 		pair.WasImputed = pair.ThreshReduction.ImputeWithValue(delay, pair.Delay, 0.01)
 
 		current, err := sec.columnContainsName("Current (%)", i)
 		if err != nil {
-			return te, errors.New("Could not get threshold electrotonus: " + err.Error())
+			return errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
 
 		// This is a quick and simple way to parse the data we expect to see
@@ -64,7 +62,7 @@ func (mem *Mem) ThresholdElectrotonus() (ThresholdElectrotonus, error) {
 		}
 	}
 
-	return te, nil
+	return nil
 }
 
 func (dat *ThresholdElectrotonus) MarshalJSON() ([]byte, error) {

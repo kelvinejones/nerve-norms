@@ -10,6 +10,11 @@ import (
 	"strings"
 )
 
+type Section interface {
+	LoadFromMem(mem *Mem) error
+	MarshalJSON() ([]byte, error)
+}
+
 type Column []float64
 type Table []Column
 type TableSet struct {
