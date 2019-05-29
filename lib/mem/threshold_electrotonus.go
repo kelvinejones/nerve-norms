@@ -72,19 +72,19 @@ func (dat *ThresholdElectrotonus) MarshalJSON() ([]byte, error) {
 	}{
 		Columns: []string{"Delay (ms)", "Threshold Reduction (%)"},
 		Data: map[string]Table{
-			"Hyperpol40": []Column{dat.Hyperpol40.Delay, dat.Hyperpol40.ThreshReduction},
-			"Hyperpol20": []Column{dat.Hyperpol20.Delay, dat.Hyperpol20.ThreshReduction},
-			"Depol40":    []Column{dat.Depol40.Delay, dat.Depol40.ThreshReduction},
-			"Depol20":    []Column{dat.Depol20.Delay, dat.Depol20.ThreshReduction},
+			"h40": []Column{dat.Hyperpol40.Delay, dat.Hyperpol40.ThreshReduction},
+			"h20": []Column{dat.Hyperpol20.Delay, dat.Hyperpol20.ThreshReduction},
+			"d40": []Column{dat.Depol40.Delay, dat.Depol40.ThreshReduction},
+			"d20": []Column{dat.Depol20.Delay, dat.Depol20.ThreshReduction},
 		},
 	}
 
 	if dat.Hyperpol40.WasImputed != nil || dat.Hyperpol20.WasImputed != nil || dat.Depol40.WasImputed != nil || dat.Depol20.WasImputed != nil {
 		str.Columns = append(str.Columns, "Was Imputed")
-		str.Data["Hyperpol40"] = append(str.Data["Hyperpol40"], dat.Hyperpol40.WasImputed)
-		str.Data["Hyperpol20"] = append(str.Data["Hyperpol20"], dat.Hyperpol20.WasImputed)
-		str.Data["Depol40"] = append(str.Data["Depol40"], dat.Depol40.WasImputed)
-		str.Data["Depol20"] = append(str.Data["Depol20"], dat.Depol20.WasImputed)
+		str.Data["h40"] = append(str.Data["h40"], dat.Hyperpol40.WasImputed)
+		str.Data["h20"] = append(str.Data["h20"], dat.Hyperpol20.WasImputed)
+		str.Data["d40"] = append(str.Data["d40"], dat.Depol40.WasImputed)
+		str.Data["d20"] = append(str.Data["d20"], dat.Depol20.WasImputed)
 	}
 
 	return json.Marshal(&str)
