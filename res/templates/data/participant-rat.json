@@ -6,8 +6,8 @@ participants["rat"] = {
 		{ "id": 18, "value": "Female", },
 		{ "id": 19, "value": 3.067, }
 	],
-	"plots": {
-		"sr": {
+	"sections": {
+		"SR": {
 			"name": "Stimulus Response",
 			"discreteMeasures": [
 				{ "id": 1, "value": 1.835, },
@@ -66,7 +66,7 @@ participants["rat"] = {
 				{ "valueX": 2.200125933, "valueY": 1.68756485, }
 			],
 		},
-		"cd": {
+		"CD": {
 			"name": "Charge Duration",
 			"discreteMeasures": [
 				{ "id": 3, "value": 0.212, },
@@ -80,7 +80,7 @@ participants["rat"] = {
 				{ "stimWidth": 1, "value": 1.81387198, }
 			],
 		},
-		"te": {
+		"TE": {
 			"name": "Threshold Electrotonus",
 			"discreteMeasures": [
 				{ "id": 11, "value": -44.29266667, },
@@ -217,7 +217,7 @@ participants["rat"] = {
 				],
 			},
 		},
-		"tiv": {
+		"IV": {
 			"name": "Threshold I/V",
 			"discreteMeasures": [
 				{ "id": 7, "value": 1.536, },
@@ -243,7 +243,7 @@ participants["rat"] = {
 				{ "current": 50, "value": 30.40999985, }
 			],
 		},
-		"rc": {
+		"RC": {
 			"name": "Recovery Cycle",
 			"discreteMeasures": [
 				{ "id": 10, "value": 6.318333333, "wasImputed": true, },

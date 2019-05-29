@@ -6,8 +6,8 @@ participants["WI20S"] = {
 		{ "id": 18, "value": "Male", },
 		{ "id": 19, "value": 6.113, }
 	],
-	"plots": {
-		"sr": {
+	"sections": {
+		"SR": {
 			"discreteMeasures": [
 				{ "id": 1, "value": 2.667, },
 				{ "id": 6, "value": 11.55, },
@@ -65,7 +65,7 @@ participants["WI20S"] = {
 				{ "valueX": 4.822797298, "valueY": 11.31689453, }
 			],
 		},
-		"cd": {
+		"CD": {
 			"discreteMeasures": [
 				{ "id": 3, "value": 0.368, },
 				{ "id": 4, "value": 1.813, }
@@ -78,7 +78,7 @@ participants["WI20S"] = {
 				{ "stimWidth": 1, "value": 2.482729912, }
 			],
 		},
-		"te": {
+		"TE": {
 			"discreteMeasures": [
 				{ "id": 11, "value": -120.8, },
 				{ "id": 22, "value": -69.94, },
@@ -214,7 +214,7 @@ participants["WI20S"] = {
 				],
 			},
 		},
-		"tiv": {
+		"IV": {
 			"discreteMeasures": [
 				{ "id": 7, "value": 0.551, },
 				{ "id": 8, "value": 0.19, },
@@ -239,7 +239,7 @@ participants["WI20S"] = {
 				{ "current": 50, "value": 54.810001378, }
 			],
 		},
-		"rc": {
+		"RC": {
 			"discreteMeasures": [
 				{ "id": 10, "value": 2.747, },
 				{ "id": 13, "value": -32.14, },

@@ -1,8 +1,8 @@
 class ChargeDuration extends Chart {
 	constructor(participant, norms) {
 		super([0, 1], [0, 10])
-		this.participant = participant.cd.data
-		this.norms = norms.cd.data
+		this.participant = participant.CD.data
+		this.norms = norms.CD.data
 		this.xName = 'stimWidth'
 	}
 
@@ -11,12 +11,12 @@ class ChargeDuration extends Chart {
 	get yLabel() { return "Threshold Change (mA•ms)" }
 
 	updateParticipant(participant) {
-		this.participant = participant.cd.data
+		this.participant = participant.CD.data
 		this.animateXYLine(this.participant, "cd")
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.cd.data
+		this.norms = norms.CD.data
 		this.animateNorms(this.norms, "cd")
 	}
 

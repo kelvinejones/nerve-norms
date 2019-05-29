@@ -12,7 +12,7 @@ class ChartFactory {
 			this.osAccessor.participant = name
 			ExVars.update(this.osAccessor.getScores(), currentParticipant);
 			Object.values(plots).forEach(pl => {
-				pl.updateParticipant(currentParticipant.plots)
+				pl.updateParticipant(currentParticipant.sections)
 			})
 		})
 
@@ -20,7 +20,7 @@ class ChartFactory {
 			this.osAccessor.normative = name
 			ExVars.update(this.osAccessor.getScores(), this.partDropDown.data);
 			Object.values(plots).forEach(pl => {
-				pl.updateNorms(currentNormative.plots)
+				pl.updateNorms(currentNormative.sections)
 			})
 		})
 
@@ -60,17 +60,17 @@ class ChartFactory {
 	build(typeStr) {
 		switch (typeStr) {
 			case "recoveryCycle":
-				return new RecoveryCycle(this.partDropDown.data.plots, this.normDropDown.data.plots)
+				return new RecoveryCycle(this.partDropDown.data.sections, this.normDropDown.data.sections)
 			case "thresholdElectrotonus":
-				return new ThresholdElectrotonus(this.partDropDown.data.plots, this.normDropDown.data.plots)
+				return new ThresholdElectrotonus(this.partDropDown.data.sections, this.normDropDown.data.sections)
 			case "chargeDuration":
-				return new ChargeDuration(this.partDropDown.data.plots, this.normDropDown.data.plots)
+				return new ChargeDuration(this.partDropDown.data.sections, this.normDropDown.data.sections)
 			case "thresholdIV":
-				return new ThresholdIV(this.partDropDown.data.plots, this.normDropDown.data.plots)
+				return new ThresholdIV(this.partDropDown.data.sections, this.normDropDown.data.sections)
 			case "stimulusResponse":
-				return new StimulusResponse(this.partDropDown.data.plots, this.normDropDown.data.plots)
+				return new StimulusResponse(this.partDropDown.data.sections, this.normDropDown.data.sections)
 			case "stimulusResponseRelative":
-				return new StimulusRelative(this.partDropDown.data.plots, this.normDropDown.data.plots)
+				return new StimulusRelative(this.partDropDown.data.sections, this.normDropDown.data.sections)
 		}
 	}
 }

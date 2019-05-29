@@ -43,16 +43,16 @@ class ExVars {
 		nameSpan.innerHTML = scores.participant + " (" + healthLabel + ")"
 
 		const exinds = {}
-		Object.keys(scores.plots).map(function(key) {
-				ExVars._setHeaderScore("." + key + "-header", scores.plots[key].outlierScore)
-				return scores.plots[key].discreteMeasures;
+		Object.keys(scores.sections).map(function(key) {
+				ExVars._setHeaderScore("." + key + "-header", scores.sections[key].outlierScore)
+				return scores.sections[key].discreteMeasures;
 			}).flat()
 			.concat(scores.discreteMeasures)
 			.forEach(function(exind) {
 				exinds[exind.id] = { score: exind.outlierScore }
 			})
-		Object.keys(values.plots).map(function(key) {
-				return values.plots[key].discreteMeasures;
+		Object.keys(values.sections).map(function(key) {
+				return values.sections[key].discreteMeasures;
 			}).flat()
 			.concat(values.discreteMeasures)
 			.forEach(function(exind) {

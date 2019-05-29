@@ -1,8 +1,8 @@
 class RecoveryCycle extends Chart {
 	constructor(participant, norms) {
 		super([1, 200], [-50, 110], Chart.scaleType.LOG)
-		this.participant = participant.rc.data
-		this.norms = norms.rc.data
+		this.participant = participant.RC.data
+		this.norms = norms.RC.data
 	}
 
 	get name() { return "Recovery Cycle" }
@@ -10,12 +10,12 @@ class RecoveryCycle extends Chart {
 	get yLabel() { return "Interstimulus Interval (ms)" }
 
 	updateParticipant(participant) {
-		this.participant = participant.rc.data
+		this.participant = participant.RC.data
 		this.animateXYLine(this.participant, "rc")
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.rc.data
+		this.norms = norms.RC.data
 		this.animateNorms(this.norms, "rc")
 	}
 

@@ -10,8 +10,8 @@ outlierScore["rat"]["fake"] = {
 		{ "id": 18, "outlierScore": 0.391983892, },
 		{ "id": 19, "outlierScore": 0.202940720469, }
 	],
-	"plots": {
-		"sr": {
+	"sections": {
+		"SR": {
 			"outlierScore": 0.79966,
 			"discreteMeasures": [
 				{ "id": 1, "outlierScore": 0.193835, },
@@ -70,7 +70,7 @@ outlierScore["rat"]["fake"] = {
 				{ "outlierScore": 0.729915691, }
 			],
 		},
-		"cd": {
+		"CD": {
 			"outlierScore": 0.28659546,
 			"discreteMeasures": [
 				{ "id": 3, "outlierScore": 0.837856323, },
@@ -84,7 +84,7 @@ outlierScore["rat"]["fake"] = {
 				{ "stimWidth": 1, "outlierScore": 0.799211983, }
 			],
 		},
-		"te": {
+		"TE": {
 			"outlierScore": 0.109942,
 			"discreteMeasures": [
 				{ "id": 11, "outlierScore": 0.79907670343, },
@@ -221,7 +221,7 @@ outlierScore["rat"]["fake"] = {
 				],
 			},
 		},
-		"tiv": {
+		"IV": {
 			"outlierScore": 0.2497,
 			"discreteMeasures": [
 				{ "id": 7, "outlierScore": 0.59913604998, },
@@ -247,7 +247,7 @@ outlierScore["rat"]["fake"] = {
 				{ "current": 50, "outlierScore": 0.029217601, }
 			],
 		},
-		"rc": {
+		"RC": {
 			"outlierScore": 0.8291,
 			"discreteMeasures": [
 				{ "id": 10, "outlierScore": 0.799968315, },

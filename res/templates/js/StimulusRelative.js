@@ -1,8 +1,8 @@
 class StimulusRelative extends Chart {
 	constructor(participant, norms) {
 		super([0, 200], [0, 100])
-		this.participant = this.calculateParticipant(participant.sr.data)
-		this.norms = this.calculateNorms(norms.sr.data)
+		this.participant = this.calculateParticipant(participant.SR.data)
+		this.norms = this.calculateNorms(norms.SR.data)
 		this.xName = 'x'
 		this.yName = 'y'
 		this.xSDName = 'SD'
@@ -37,12 +37,12 @@ class StimulusRelative extends Chart {
 	get yLabel() { return "Peak Response (% Max)" }
 
 	updateParticipant(participant) {
-		this.participant = this.calculateParticipant(participant.sr.data)
+		this.participant = this.calculateParticipant(participant.SR.data)
 		this.animateXYLine(this.participant, "srel")
 	}
 
 	updateNorms(norms) {
-		this.norms = this.calculateNorms(norms.sr.data)
+		this.norms = this.calculateNorms(norms.SR.data)
 		this.animateNorms(this.norms, "srel")
 	}
 
