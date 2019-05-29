@@ -40,7 +40,7 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *Mem) error {
 			return errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
 
-		pair.WasImputed = pair.ThreshReduction.ImputeWithValue(delay, pair.Delay, 0.01)
+		pair.WasImputed = pair.ThreshReduction.ImputeWithValue(delay, pair.Delay, 0.01, false)
 
 		current, err := sec.columnContainsName("Current (%)", i)
 		if err != nil {

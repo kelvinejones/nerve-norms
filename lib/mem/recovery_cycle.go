@@ -29,7 +29,7 @@ func (rc *RecoveryCycle) LoadFromMem(mem *Mem) error {
 		return errors.New("Could not get recovery cycle: " + err.Error())
 	}
 
-	rc.WasImputed = rc.ThreshChange.ImputeWithValue(interval, rc.Interval, 0.000001)
+	rc.WasImputed = rc.ThreshChange.ImputeWithValue(interval, rc.Interval, 0.000001, true)
 
 	return nil
 }

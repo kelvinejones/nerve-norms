@@ -37,7 +37,7 @@ func (tiv *ThresholdIV) LoadFromMem(mem *Mem) error {
 		}
 	}
 
-	tiv.WasImputed = tiv.ThreshReduction.ImputeWithValue(curr, tiv.Current, 0.01)
+	tiv.WasImputed = tiv.ThreshReduction.ImputeWithValue(curr, tiv.Current, 0.01, false)
 
 	return nil
 }

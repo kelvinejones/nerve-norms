@@ -42,7 +42,7 @@ func (cd *ChargeDuration) LoadFromMem(mem *Mem) error {
 		}
 	}
 
-	cd.WasImputed = cd.ThreshCharge.ImputeWithValue(dur, cd.Duration, 0.0000001)
+	cd.WasImputed = cd.ThreshCharge.ImputeWithValue(dur, cd.Duration, 0.0000001, false)
 
 	return nil
 }

@@ -33,7 +33,7 @@ func (sr *StimResponse) LoadFromMem(mem *Mem) error {
 		return errors.New("Could not get stimulus response: " + err.Error())
 	}
 
-	sr.WasImputed = sr.Stimulus.ImputeWithValue(perMax, sr.PercentMax, 0.1)
+	sr.WasImputed = sr.Stimulus.ImputeWithValue(perMax, sr.PercentMax, 0.1, false)
 
 	sr.ValueType = parseValueType(sec.ExtraLines)
 	sr.MaxCmaps = parseMaxCmap(sec.ExtraLines)
