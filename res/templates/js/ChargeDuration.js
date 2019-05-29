@@ -7,6 +7,7 @@ class ChargeDuration extends Chart {
 		this.yName = 1
 		this.yMeanName = 'mean'
 		this.xMeanName = 'stimWidth'
+		this.ySDName = 'SD'
 	}
 
 	get name() { return "Charge Duration" }

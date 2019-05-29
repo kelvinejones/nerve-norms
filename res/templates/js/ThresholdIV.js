@@ -6,7 +6,7 @@ class ThresholdIV extends Chart {
 		this.yName = 'current'
 		this.xName = 'value'
 		this.ySDName = undefined
-		this.yMeanName = undefined
+		this.yMeanName = 'current'
 		this.xSDName = 'SD'
 		this.xMeanName = 'mean'
 	}

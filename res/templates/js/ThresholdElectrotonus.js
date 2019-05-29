@@ -3,6 +3,12 @@ class ThresholdElectrotonus extends Chart {
 		super([0, 200], [-150, 100])
 		this.participant = participant.sections.TE.data
 		this.norms = norms.sections.TE.data
+		this.xName = 'delay'
+		this.yName = 'value'
+		this.xSDName = undefined // No standard deviation in the x direction.
+		this.ySDName = 'SD'
+		this.yMeanName = 'mean'
+		this.xMeanName = 'delay'
 	}
 
 	get name() { return "Threshold Electrotonus" }

@@ -3,6 +3,13 @@ class RecoveryCycle extends Chart {
 		super([1, 200], [-50, 110], Chart.scaleType.LOG)
 		this.participant = participant.sections.RC.data
 		this.norms = norms.sections.RC.data
+
+		this.xName = 'delay'
+		this.yName = 'value'
+		this.xSDName = undefined // No standard deviation in the x direction.
+		this.ySDName = 'SD'
+		this.yMeanName = 'mean'
+		this.xMeanName = 'delay'
 	}
 
 	get name() { return "Recovery Cycle" }
