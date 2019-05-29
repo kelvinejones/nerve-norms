@@ -3,8 +3,6 @@ class ChargeDuration extends Chart {
 		super([0, 1], [0, 10])
 		this.participant = participant.sections.CD.data
 		this.norms = norms.sections.CD.data
-		this.xName = 0
-		this.yName = 1
 		this.yMeanName = 'mean'
 		this.xMeanName = 'stimWidth'
 		this.ySDName = 'SD'

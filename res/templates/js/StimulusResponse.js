@@ -3,8 +3,6 @@ class StimulusResponse extends Chart {
 		super([1, 20], [0.01, 20], Chart.scaleType.LOG, Chart.scaleType.LOG)
 		this.participant = this.calculateParticipant(participant)
 		this.norms = norms.sections.SR.data
-		this.xName = 'x'
-		this.yName = 'y'
 		this.xMeanName = 'meanX'
 		this.yMeanName = 'meanY'
 		this.xSDName = 'SDlogX'
@@ -21,10 +19,10 @@ class StimulusResponse extends Chart {
 		})
 
 		return participant.sections.SR.data.map((d, i) => {
-			return {
-				'y': (i + 1) * 2 / 100 * peakResponse,
-				'x': d[1],
-			}
+			return [
+				d[1],
+				(i + 1) * 2 / 100 * peakResponse,
+			]
 		})
 	}
 

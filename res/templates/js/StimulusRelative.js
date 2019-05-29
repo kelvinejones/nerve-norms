@@ -3,8 +3,6 @@ class StimulusRelative extends Chart {
 		super([0, 200], [0, 100])
 		this.participant = this.calculateParticipant(participant.sections.SR.data)
 		this.norms = this.calculateNorms(norms.sections.SR.data)
-		this.xName = 'x'
-		this.yName = 'y'
 		this.xSDName = 'SD'
 		this.ySDName = undefined
 		this.xMeanName = 'mean'
@@ -14,10 +12,10 @@ class StimulusRelative extends Chart {
 	calculateParticipant(data) {
 		const stimFor50PercentMax = data[24][1] // Could also be extracted from excitability variables
 		return data.map((d, i) => {
-			return {
-				'y': d[0],
-				'x': d[1] / stimFor50PercentMax * 100,
-			}
+			return [
+				d[1] / stimFor50PercentMax * 100,
+				d[0],
+			]
 		})
 	}
 

@@ -12,12 +12,12 @@ class Chart {
 		this.yscale = this.makeScale(yScaleType).range([this.height, 0]).domain(yRange);
 
 		// Set default config values
-		this.xName = 'delay'
-		this.yName = 'value'
+		this.xIndex = 0
+		this.yIndex = 1
 		this.xSDName = undefined // If undefined, then there is no standard deviation in the x direction.
 		this.ySDName = 'SD'
-		this.yMeanName = 'mean' // Defaults to this.yName if undefined by subclass.
-		this.xMeanName = undefined // Defaults to this.xName if undefined by subclass.
+		this.yMeanName = 'mean' // Defaults to this.yIndex if undefined by subclass.
+		this.xMeanName = undefined // Defaults to this.xIndex if undefined by subclass.
 
 		this.yAnimStart = this.animationStartValue(this.yRange)
 
@@ -128,8 +128,8 @@ class Chart {
 
 	// sdAtLoc calculates limits based on the standard deviations
 	sdAtLoc(dpt, loc) {
-		const xmn = this.xMeanName || this.xName
-		const ymn = this.yMeanName || this.yName
+		const xmn = this.xMeanName || this.xIndex
+		const ymn = this.yMeanName || this.yIndex
 		const xsd = this.xSDName
 		const ysd = this.ySDName
 		const numSD = this.numSD
@@ -201,11 +201,11 @@ class Chart {
 		})
 	}
 
-	dataAsXY(data, xName, yName) {
-		if (data[0][xName] === undefined || data[0][yName] === undefined) {
+	dataAsXY(data, xIndex, yIndex) {
+		if (data[0][xIndex] === undefined || data[0][yIndex] === undefined) {
 			return []
 		}
-		return data.map(function(d) { return { x: d[xName], y: d[yName] } })
+		return data.map(function(d) { return { x: d[xIndex], y: d[yIndex] } })
 	}
 
 	xZeroPath() {
@@ -273,7 +273,7 @@ class Chart {
 			.data(circleLocations)
 			.enter()
 			.append("circle")
-			.attr("cx", d => this.xscale(d[this.xName]))
+			.attr("cx", d => this.xscale(d[this.xIndex]))
 			.attr("cy", this.yscale(this.yAnimStart))
 			.attr("r", d => 3)
 			.style("fill", d => "black");
@@ -281,7 +281,7 @@ class Chart {
 
 	fillColor(pt) {
 		// If either the x or y value is undefined, then this point should be hidden
-		if (pt[this.yName] === undefined || pt[this.yName] === undefined) {
+		if (pt[this.yIndex] === undefined || pt[this.yIndex] === undefined) {
 			return "rgba(0, 0, 0, 0)"
 		}
 		return pt.wasImputed ? "red" : "black"
@@ -291,27 +291,27 @@ class Chart {
 		this.animateGroup("circle", circleLocations, name)
 			.attr("r", d => d.wasImputed ? 3 : 5)
 			.style("fill", d => this.fillColor(d))
-			.attr("cy", d => this.yscale(d[this.yName] || 0))
-			.attr("cx", d => this.xscale(d[this.xName] || 0))
+			.attr("cy", d => this.yscale(d[this.yIndex] || 0))
+			.attr("cx", d => this.xscale(d[this.xIndex] || 0))
 	}
 
 	createNorms(lineData, name) {
 		this.createPath(this.ciLayer, this.normativeLimits(lineData), name, "confidenceinterval")
-		this.createPath(this.meanLayer, this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName), name, "meanline")
+		this.createPath(this.meanLayer, this.dataAsXY(lineData, this.xMeanName || this.xIndex, this.yMeanName || this.yIndex), name, "meanline")
 	}
 
 	createXYLine(lineData, name) {
-		this.createPath(this.valueLayer, this.dataAsXY(lineData, this.xName, this.yName), name, "line")
+		this.createPath(this.valueLayer, this.dataAsXY(lineData, this.xIndex, this.yIndex), name, "line")
 		this.createCircles(this.circlesLayer, lineData, name)
 	}
 
 	animateNorms(lineData, name) {
 		this.animatePath(this.normativeLimits(lineData), name, "confidenceinterval")
-		this.animatePath(this.dataAsXY(lineData, this.xMeanName || this.xName, this.yMeanName || this.yName), name, "meanline")
+		this.animatePath(this.dataAsXY(lineData, this.xMeanName || this.xIndex, this.yMeanName || this.yIndex), name, "meanline")
 	}
 
 	animateXYLine(lineData, name) {
-		this.animatePath(this.dataAsXY(lineData, this.xName, this.yName), name, "line")
+		this.animatePath(this.dataAsXY(lineData, this.xIndex, this.yIndex), name, "line")
 		this.animateCircles(lineData, name)
 	}
 
