@@ -1,6 +1,7 @@
 package mem
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"regexp"
@@ -11,8 +12,47 @@ import (
 type ExcitabilitySettings map[string]string
 
 type ExcitabilityVariables struct {
-	Values map[int]float64
+	Values     map[int]float64
+	WasImputed map[int]bool
 	ExcitabilitySettings
+}
+
+func (exciteVar *ExcitabilityVariables) imputeZero() {
+	expectedIndices := []int{1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38}
+
+	if exciteVar.WasImputed == nil {
+		exciteVar.WasImputed = make(map[int]bool, len(expectedIndices))
+	}
+
+	// Go through all expected variables and impute any that are missing
+	for _, id := range expectedIndices {
+		if _, ok := exciteVar.Values[id]; !ok {
+			exciteVar.Values[id] = 0.0
+			exciteVar.WasImputed[id] = true
+		}
+	}
+}
+
+// MarshalJSON marshals the excitability variables, but not the settings.
+func (exciteVar *ExcitabilityVariables) MarshalJSON() ([]byte, error) {
+	exciteVar.imputeZero()
+
+	type ExVar struct {
+		Id         int     `json:"id"`
+		Value      float64 `json:"value"`
+		WasImputed bool    `json:"wasImputed,omitempty"`
+	}
+
+	arr := []ExVar{}
+	for id := range exciteVar.Values {
+		arr = append(arr, ExVar{
+			Id:         id,
+			Value:      exciteVar.Values[id],
+			WasImputed: exciteVar.WasImputed[id],
+		})
+	}
+
+	return json.Marshal(&arr)
 }
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
