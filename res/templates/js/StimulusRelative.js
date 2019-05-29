@@ -3,8 +3,6 @@ class StimulusRelative extends Chart {
 		super([0, 200], [0, 100])
 		this.participant = participant.sections.SR.data
 		this.norms = this.calculateNorms(norms.sections.SR.data)
-		console.log(this.participant)
-		console.log(this.norms)
 		this.xName = 'valueX'
 		this.yName = 'valueY'
 		this.xSDName = 'SD'
