@@ -188,6 +188,14 @@ func idForName(name string) int {
 		return 1019
 	case "MRCsumscore":
 		return 1020
+	case "TEh(peak,-70%)":
+		return 1021
+	case "S3(-70%)":
+		return 1022
+	case "TEh(peak,-100%)":
+		return 1023
+	case "S3(-100%)":
+		return 1024
 	default:
 		return -1
 	}

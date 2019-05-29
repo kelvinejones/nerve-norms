@@ -17,6 +17,8 @@ type ThresholdElectrotonus struct {
 	Hyperpol20 *TEPair
 	Depol40    *TEPair
 	Depol20    *TEPair
+	Depol70    *TEPair
+	Depol100   *TEPair
 }
 
 func (te *ThresholdElectrotonus) LoadFromMem(mem *Mem) error {
@@ -57,6 +59,10 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *Mem) error {
 			te.Depol40 = &pair
 		case max == 0 && min < -14 && min > -26:
 			te.Depol20 = &pair
+		case max == 0 && min < -64 && min > -76:
+			te.Depol70 = &pair
+		case max == 0 && min < -94 && min > -106:
+			te.Depol100 = &pair
 		default:
 			fmt.Printf("TE contained unexpected current [%f, %f]\n", min, max)
 		}
