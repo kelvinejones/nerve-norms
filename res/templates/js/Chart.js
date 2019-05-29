@@ -285,7 +285,7 @@ class Chart {
 		if (pt[this.yIndex] === undefined || pt[this.yIndex] === undefined) {
 			return "rgba(0, 0, 0, 0)"
 		}
-		return pt[this.wasImputedIndex] ? "red" : "black"
+		return pt[this.wasImputedIndex] ? "rgba(0, 0, 0, 0)" : "black"
 	}
 
 	animateCircles(circleLocations, name) {
