@@ -18,6 +18,7 @@ class Chart {
 		this.ySDName = 'SD'
 		this.yMeanName = 'mean' // Defaults to this.yIndex if undefined by subclass.
 		this.xMeanName = undefined // Defaults to this.xIndex if undefined by subclass.
+		this.wasImputedIndex = 2
 
 		this.yAnimStart = this.animationStartValue(this.yRange)
 
@@ -284,12 +285,12 @@ class Chart {
 		if (pt[this.yIndex] === undefined || pt[this.yIndex] === undefined) {
 			return "rgba(0, 0, 0, 0)"
 		}
-		return pt.wasImputed ? "red" : "black"
+		return pt[this.wasImputedIndex] ? "red" : "black"
 	}
 
 	animateCircles(circleLocations, name) {
 		this.animateGroup("circle", circleLocations, name)
-			.attr("r", d => d.wasImputed ? 3 : 5)
+			.attr("r", d => d[this.wasImputedIndex] ? 3 : 5)
 			.style("fill", d => this.fillColor(d))
 			.attr("cy", d => this.yscale(d[this.yIndex] || 0))
 			.attr("cx", d => this.xscale(d[this.xIndex] || 0))
