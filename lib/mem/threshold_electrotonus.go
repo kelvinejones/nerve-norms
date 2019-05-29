@@ -1,6 +1,7 @@
 package mem
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 )
@@ -64,4 +65,29 @@ func (mem *Mem) ThresholdElectrotonus() (ThresholdElectrotonus, error) {
 	}
 
 	return te, nil
+}
+
+func (dat *ThresholdElectrotonus) MarshalJSON() ([]byte, error) {
+	str := &struct {
+		Columns []string         `json:"columns"`
+		Data    map[string]Table `json:"data"`
+	}{
+		Columns: []string{"Delay (ms)", "Threshold Reduction (%)"},
+		Data: map[string]Table{
+			"Hyperpol40": []Column{dat.Hyperpol40.Delay, dat.Hyperpol40.ThreshReduction},
+			"Hyperpol20": []Column{dat.Hyperpol20.Delay, dat.Hyperpol20.ThreshReduction},
+			"Depol40":    []Column{dat.Depol40.Delay, dat.Depol40.ThreshReduction},
+			"Depol20":    []Column{dat.Depol20.Delay, dat.Depol20.ThreshReduction},
+		},
+	}
+
+	if dat.Hyperpol40.WasImputed != nil || dat.Hyperpol20.WasImputed != nil || dat.Depol40.WasImputed != nil || dat.Depol20.WasImputed != nil {
+		str.Columns = append(str.Columns, "Was Imputed")
+		str.Data["Hyperpol40"] = append(str.Data["Hyperpol40"], dat.Hyperpol40.WasImputed)
+		str.Data["Hyperpol20"] = append(str.Data["Hyperpol20"], dat.Hyperpol20.WasImputed)
+		str.Data["Depol40"] = append(str.Data["Depol40"], dat.Depol40.WasImputed)
+		str.Data["Depol20"] = append(str.Data["Depol20"], dat.Depol20.WasImputed)
+	}
+
+	return json.Marshal(&str)
 }

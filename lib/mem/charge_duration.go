@@ -1,6 +1,7 @@
 package mem
 
 import (
+	"encoding/json"
 	"errors"
 )
 
@@ -44,6 +45,23 @@ func (mem *Mem) ChargeDuration() (ChargeDuration, error) {
 	cd.WasImputed = cd.ThreshCharge.ImputeWithValue(dur, cd.Duration, 0.0000001)
 
 	return cd, nil
+}
+
+func (dat *ChargeDuration) MarshalJSON() ([]byte, error) {
+	str := &struct {
+		Columns []string `json:"columns"`
+		Data    Table    `json:"data"`
+	}{
+		Columns: []string{"Duration (ms)", "Threshold charge (mA•ms)"},
+		Data:    []Column{dat.Duration, dat.ThreshCharge},
+	}
+
+	if dat.WasImputed != nil {
+		str.Columns = append(str.Columns, "Was Imputed")
+		str.Data = append(str.Data, dat.WasImputed)
+	}
+
+	return json.Marshal(&str)
 }
 
 func (cd *ChargeDuration) importOldStyle(threshold Column) error {

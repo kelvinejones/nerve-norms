@@ -1,6 +1,7 @@
 package mem
 
 import (
+	"encoding/json"
 	"errors"
 )
 
@@ -39,4 +40,21 @@ func (mem *Mem) ThresholdIV() (ThresholdIV, error) {
 	tiv.WasImputed = tiv.ThreshReduction.ImputeWithValue(curr, tiv.Current, 0.01)
 
 	return tiv, nil
+}
+
+func (dat *ThresholdIV) MarshalJSON() ([]byte, error) {
+	str := &struct {
+		Columns []string `json:"columns"`
+		Data    Table    `json:"data"`
+	}{
+		Columns: []string{"Current (%)", "Threshold Reduction (%)"},
+		Data:    []Column{dat.Current, dat.ThreshReduction},
+	}
+
+	if dat.WasImputed != nil {
+		str.Columns = append(str.Columns, "Was Imputed")
+		str.Data = append(str.Data, dat.WasImputed)
+	}
+
+	return json.Marshal(&str)
 }

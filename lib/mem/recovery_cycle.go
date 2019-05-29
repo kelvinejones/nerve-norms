@@ -1,6 +1,7 @@
 package mem
 
 import (
+	"encoding/json"
 	"errors"
 )
 
@@ -31,4 +32,21 @@ func (mem *Mem) RecoveryCycle() (RecoveryCycle, error) {
 	rc.WasImputed = rc.ThreshChange.ImputeWithValue(interval, rc.Interval, 0.000001)
 
 	return rc, nil
+}
+
+func (dat *RecoveryCycle) MarshalJSON() ([]byte, error) {
+	str := &struct {
+		Columns []string `json:"columns"`
+		Data    Table    `json:"data"`
+	}{
+		Columns: []string{"Interval (ms)", "Threshold change (%)"},
+		Data:    []Column{dat.Interval, dat.ThreshChange},
+	}
+
+	if dat.WasImputed != nil {
+		str.Columns = append(str.Columns, "Was Imputed")
+		str.Data = append(str.Data, dat.WasImputed)
+	}
+
+	return json.Marshal(&str)
 }

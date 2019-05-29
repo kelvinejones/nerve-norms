@@ -1,6 +1,7 @@
 package mem
 
 import (
+	"encoding/json"
 	"errors"
 	"regexp"
 	"strconv"
@@ -40,6 +41,27 @@ func (mem *Mem) StimulusResponse() (StimResponse, error) {
 	return sr, nil
 }
 
+func (dat *StimResponse) MarshalJSON() ([]byte, error) {
+	str := &struct {
+		Columns   []string  `json:"columns"`
+		Data      Table     `json:"data"`
+		MaxCmaps  []MaxCmap `json:"maxCmaps"`
+		ValueType string    `json:"valueType"`
+	}{
+		Columns:   []string{"% Max", "Stimulus"},
+		Data:      []Column{dat.PercentMax, dat.Stimulus},
+		MaxCmaps:  dat.MaxCmaps,
+		ValueType: dat.ValueType,
+	}
+
+	if dat.WasImputed != nil {
+		str.Columns = append(str.Columns, "Was Imputed")
+		str.Data = append(str.Data, dat.WasImputed)
+	}
+
+	return json.Marshal(&str)
+}
+
 func parseValueType(strs []string) string {
 	reg := regexp.MustCompile(`^Values (.*)`)
 	for _, str := range strs {
@@ -58,9 +80,9 @@ func parseValueType(strs []string) string {
 }
 
 type MaxCmap struct {
-	Time  float64
-	Val   float64
-	Units byte
+	Time  float64 `json:"time"`
+	Val   float64 `json:"value"`
+	Units byte    `json:"units"`
 }
 
 func parseMaxCmap(strs []string) []MaxCmap {
