@@ -1,5 +1,5 @@
-outlierScore["rat"] = outlierScore["rat"] || {};
-outlierScore["rat"]["fake"] = {
+outlierScore["Rat on Drugs"] = outlierScore["Rat on Drugs"] || {};
+outlierScore["Rat on Drugs"]["fake"] = {
 	"participant": "Rat on Drugs",
 	"outlierScore": 0.9998,
 	"ageFilter": "50-59",
