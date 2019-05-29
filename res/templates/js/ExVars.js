@@ -42,22 +42,17 @@ class ExVars {
 		const nameSpan = document.getElementById("participant-name");
 		nameSpan.innerHTML = scores.participant + " (" + healthLabel + ")"
 
+		Object.keys(scores.sections).forEach(function(key) {
+			ExVars._setHeaderScore("." + key + "-header", scores.sections[key].outlierScore)
+		})
+
 		const exinds = {}
-		Object.keys(scores.sections).map(function(key) {
-				ExVars._setHeaderScore("." + key + "-header", scores.sections[key].outlierScore)
-				return scores.sections[key].discreteMeasures;
-			}).flat()
-			.concat(scores.discreteMeasures)
-			.forEach(function(exind) {
-				exinds[exind.id] = { score: exind.outlierScore }
-			})
-		Object.keys(values.sections).map(function(key) {
-				return values.sections[key].discreteMeasures;
-			}).flat()
-			.concat(values.discreteMeasures)
-			.forEach(function(exind) {
-				exinds[exind.id].value = exind.value
-			})
+		scores.exVars.forEach(function(exind) {
+			exinds[exind.id] = { score: exind.outlierScore }
+		})
+		values.exVars.forEach(function(exind) {
+			exinds[exind.id].value = exind.value
+		})
 
 		Object.keys(exinds).forEach(function(id) {
 			ExVars._setExcitabilityVariable("qtrac-excite-" + id, exinds[id].value, exinds[id].score)

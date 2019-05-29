@@ -4,20 +4,9 @@ outlierScore["rat"]["fake"] = {
 	"outlierScore": 0.9998,
 	"ageFilter": "50-59",
 	"sexFilter": "male",
-	"discreteMeasures": [
-		{ "id": 9, "outlierScore": 0.293822225, },
-		{ "id": 17, "outlierScore": 0.92529859, },
-		{ "id": 18, "outlierScore": 0.391983892, },
-		{ "id": 19, "outlierScore": 0.202940720469, }
-	],
 	"sections": {
 		"SR": {
 			"outlierScore": 0.79966,
-			"discreteMeasures": [
-				{ "id": 1, "outlierScore": 0.193835, },
-				{ "id": 6, "outlierScore": 0.119722, },
-				{ "id": 5, "outlierScore": 0.819638, }
-			],
 			"data": [
 				{ "outlierScore": 0.729915689, },
 				{ "outlierScore": 0.729915692, },
@@ -72,10 +61,6 @@ outlierScore["rat"]["fake"] = {
 		},
 		"CD": {
 			"outlierScore": 0.28659546,
-			"discreteMeasures": [
-				{ "id": 3, "outlierScore": 0.837856323, },
-				{ "id": 4, "outlierScore": 0.343504255, }
-			],
 			"data": [
 				{ "stimWidth": 0.200000003, "outlierScore": 0.857702599, },
 				{ "stimWidth": 0.400000006, "outlierScore": 0.83891319, },
@@ -86,24 +71,6 @@ outlierScore["rat"]["fake"] = {
 		},
 		"TE": {
 			"outlierScore": 0.109942,
-			"discreteMeasures": [
-				{ "id": 11, "outlierScore": 0.79907670343, },
-				{ "id": 22, "outlierScore": 0.299338613, },
-				{ "id": 24, "outlierScore": 0.549578225, },
-				{ "id": 30, "outlierScore": 0.499383585, },
-				{ "id": 31, "outlierScore": 0.8995000165, },
-				{ "id": 36, "outlierScore": 0.89950430231, },
-				{ "id": 12, "outlierScore": 0.6999972966, },
-				{ "id": 20, "outlierScore": 0.849738701, },
-				{ "id": 21, "outlierScore": 0.4990260076, },
-				{ "id": 23, "outlierScore": 0.429724699, },
-				{ "id": 25, "outlierScore": 0.5991977564, },
-				{ "id": 27, "outlierScore": 0.69055681, },
-				{ "id": 38, "outlierScore": 0.6890722518, },
-				{ "id": 26, "outlierScore": 0.7499818042, },
-				{ "id": 35, "outlierScore": 0.3993848033, },
-				{ "id": 37, "outlierScore": 0.1791512812, },
-			],
 			"data": {
 				"h40": [
 					{ "delay": 0, },
@@ -223,11 +190,6 @@ outlierScore["rat"]["fake"] = {
 		},
 		"IV": {
 			"outlierScore": 0.2497,
-			"discreteMeasures": [
-				{ "id": 7, "outlierScore": 0.59913604998, },
-				{ "id": 8, "outlierScore": 0.9692177188, },
-				{ "id": 28, "outlierScore": 0.0927850465, }
-			],
 			"data": [
 				{ "current": -100, "outlierScore": 0.229048671, },
 				{ "current": -90, "outlierScore": 0.189361533, },
@@ -249,15 +211,6 @@ outlierScore["rat"]["fake"] = {
 		},
 		"RC": {
 			"outlierScore": 0.8291,
-			"discreteMeasures": [
-				{ "id": 10, "outlierScore": 0.799968315, },
-				{ "id": 13, "outlierScore": 0.0966952233, },
-				{ "id": 14, "outlierScore": 0.529401311, },
-				{ "id": 29, "outlierScore": 0.8952572629, },
-				{ "id": 32, "outlierScore": 0.94023889813, },
-				{ "id": 33, "outlierScore": 0.999949769865, },
-				{ "id": 34, "outlierScore": 0.999968975746, }
-			],
 			"data": [
 				{ "delay": 2, "outlierScore": 0.309962962, },
 				{ "delay": 2.5, "outlierScore": 0.289560997, },
@@ -280,4 +233,41 @@ outlierScore["rat"]["fake"] = {
 			],
 		},
 	},
+	"exVars": [
+		{ "id": 9, "outlierScore": 0.293822225, },
+		{ "id": 17, "outlierScore": 0.92529859, },
+		{ "id": 18, "outlierScore": 0.391983892, },
+		{ "id": 19, "outlierScore": 0.202940720469, },
+		{ "id": 1, "outlierScore": 0.193835, },
+		{ "id": 6, "outlierScore": 0.119722, },
+		{ "id": 5, "outlierScore": 0.819638, },
+		{ "id": 3, "outlierScore": 0.837856323, },
+		{ "id": 4, "outlierScore": 0.343504255, },
+		{ "id": 11, "outlierScore": 0.79907670343, },
+		{ "id": 22, "outlierScore": 0.299338613, },
+		{ "id": 24, "outlierScore": 0.549578225, },
+		{ "id": 30, "outlierScore": 0.499383585, },
+		{ "id": 31, "outlierScore": 0.8995000165, },
+		{ "id": 36, "outlierScore": 0.89950430231, },
+		{ "id": 12, "outlierScore": 0.6999972966, },
+		{ "id": 20, "outlierScore": 0.849738701, },
+		{ "id": 21, "outlierScore": 0.4990260076, },
+		{ "id": 23, "outlierScore": 0.429724699, },
+		{ "id": 25, "outlierScore": 0.5991977564, },
+		{ "id": 27, "outlierScore": 0.69055681, },
+		{ "id": 38, "outlierScore": 0.6890722518, },
+		{ "id": 26, "outlierScore": 0.7499818042, },
+		{ "id": 35, "outlierScore": 0.3993848033, },
+		{ "id": 37, "outlierScore": 0.1791512812, },
+		{ "id": 7, "outlierScore": 0.59913604998, },
+		{ "id": 8, "outlierScore": 0.9692177188, },
+		{ "id": 28, "outlierScore": 0.0927850465, },
+		{ "id": 10, "outlierScore": 0.799968315, },
+		{ "id": 13, "outlierScore": 0.0966952233, },
+		{ "id": 14, "outlierScore": 0.529401311, },
+		{ "id": 29, "outlierScore": 0.8952572629, },
+		{ "id": 32, "outlierScore": 0.94023889813, },
+		{ "id": 33, "outlierScore": 0.999949769865, },
+		{ "id": 34, "outlierScore": 0.999968975746, }
+	],
 }

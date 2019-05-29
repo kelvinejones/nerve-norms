@@ -1,19 +1,8 @@
 participants["rat"] = {
 	"participant": "Rat on Drugs",
-	"discreteMeasures": [
-		{ "id": 9, "value": 37.5, },
-		{ "id": 17, "value": 10, "wasImputed": true, },
-		{ "id": 18, "value": "Female", },
-		{ "id": 19, "value": 3.067, }
-	],
 	"sections": {
 		"SR": {
 			"name": "Stimulus Response",
-			"discreteMeasures": [
-				{ "id": 1, "value": 1.835, },
-				{ "id": 6, "value": 1.722, },
-				{ "id": 5, "value": 8.638, }
-			],
 			"data": [
 				{ "valueX": 1.522521973, "valueY": 0.034440093, },
 				{ "valueX": 1.570888996, "valueY": 0.068880193, },
@@ -68,10 +57,6 @@ participants["rat"] = {
 		},
 		"CD": {
 			"name": "Charge Duration",
-			"discreteMeasures": [
-				{ "id": 3, "value": 0.212, },
-				{ "id": 4, "value": 1.474, }
-			],
 			"data": [
 				{ "stimWidth": 0.200000003, "value": 0.630329013, },
 				{ "stimWidth": 0.400000006, "value": 0.895919263, },
@@ -82,24 +67,6 @@ participants["rat"] = {
 		},
 		"TE": {
 			"name": "Threshold Electrotonus",
-			"discreteMeasures": [
-				{ "id": 11, "value": -44.29266667, },
-				{ "id": 22, "value": -42.914, },
-				{ "id": 24, "value": 4.1626, },
-				{ "id": 30, "value": -44.11333333, },
-				{ "id": 31, "value": 0.151466667, },
-				{ "id": 36, "value": 11.32333333, },
-				{ "id": 12, "value": 32.836, },
-				{ "id": 20, "value": 25.64266667, },
-				{ "id": 21, "value": 23.84733333, },
-				{ "id": 23, "value": -10.09826667, },
-				{ "id": 25, "value": 34.96266667, },
-				{ "id": 27, "value": 42.63, },
-				{ "id": 38, "value": -19.63, },
-				{ "id": 26, "value": 11.11486667, },
-				{ "id": 35, "value": 18.66133333, },
-				{ "id": 37, "value": 18, },
-			],
 			"data": {
 				"h40": [
 					{ "delay": 0, "value": 0, },
@@ -219,11 +186,6 @@ participants["rat"] = {
 		},
 		"IV": {
 			"name": "Threshold I/V",
-			"discreteMeasures": [
-				{ "id": 7, "value": 1.536, },
-				{ "id": 8, "value": 0.344, },
-				{ "id": 28, "value": 0.378, }
-			],
 			"data": [
 				{ "current": -100, "value": -182.1600037, },
 				{ "current": -90, "value": -157.8999939, },
@@ -245,15 +207,6 @@ participants["rat"] = {
 		},
 		"RC": {
 			"name": "Recovery Cycle",
-			"discreteMeasures": [
-				{ "id": 10, "value": 6.318333333, "wasImputed": true, },
-				{ "id": 13, "value": -11.75, },
-				{ "id": 14, "value": 0.602, },
-				{ "id": 29, "value": 35.17, },
-				{ "id": 32, "value": 67.94, },
-				{ "id": 33, "value": 8.734, },
-				{ "id": 34, "value": 9.144, }
-			],
 			"data": [
 				{ "delay": 2, "value": 67.94000244, },
 				{ "delay": 2.5, "value": 35.16999817, },
@@ -276,4 +229,41 @@ participants["rat"] = {
 			],
 		},
 	},
+	"exVars": [
+		{ "id": 9, "value": 37.5, },
+		{ "id": 17, "value": 10, "wasImputed": true, },
+		{ "id": 18, "value": "Female", },
+		{ "id": 19, "value": 3.067, },
+		{ "id": 1, "value": 1.835, },
+		{ "id": 6, "value": 1.722, },
+		{ "id": 5, "value": 8.638, },
+		{ "id": 3, "value": 0.212, },
+		{ "id": 4, "value": 1.474, },
+		{ "id": 11, "value": -44.29266667, },
+		{ "id": 22, "value": -42.914, },
+		{ "id": 24, "value": 4.1626, },
+		{ "id": 30, "value": -44.11333333, },
+		{ "id": 31, "value": 0.151466667, },
+		{ "id": 36, "value": 11.32333333, },
+		{ "id": 12, "value": 32.836, },
+		{ "id": 20, "value": 25.64266667, },
+		{ "id": 21, "value": 23.84733333, },
+		{ "id": 23, "value": -10.09826667, },
+		{ "id": 25, "value": 34.96266667, },
+		{ "id": 27, "value": 42.63, },
+		{ "id": 38, "value": -19.63, },
+		{ "id": 26, "value": 11.11486667, },
+		{ "id": 35, "value": 18.66133333, },
+		{ "id": 37, "value": 18, },
+		{ "id": 7, "value": 1.536, },
+		{ "id": 8, "value": 0.344, },
+		{ "id": 28, "value": 0.378, },
+		{ "id": 10, "value": 6.318333333, "wasImputed": true, },
+		{ "id": 13, "value": -11.75, },
+		{ "id": 14, "value": 0.602, },
+		{ "id": 29, "value": 35.17, },
+		{ "id": 32, "value": 67.94, },
+		{ "id": 33, "value": 8.734, },
+		{ "id": 34, "value": 9.144, }
+	],
 }

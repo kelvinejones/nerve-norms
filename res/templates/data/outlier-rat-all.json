@@ -4,20 +4,9 @@ outlierScore["rat"]["all"] = {
 	"outlierScore": 0.9998,
 	"ageFilter": null,
 	"sexFilter": null,
-	"discreteMeasures": [
-		{ "id": 9, "outlierScore": 0.392822225, },
-		{ "id": 17, "outlierScore": 0.52929859, },
-		{ "id": 18, "outlierScore": 0.193983892, },
-		{ "id": 19, "outlierScore": 0.202940720469, }
-	],
 	"sections": {
 		"SR": {
 			"outlierScore": 0.99766,
-			"discreteMeasures": [
-				{ "id": 1, "outlierScore": 0.391835, },
-				{ "id": 6, "outlierScore": 0.911722, },
-				{ "id": 5, "outlierScore": 0.918638, }
-			],
 			"data": [
 				{ "outlierScore": 0.927915689, },
 				{ "outlierScore": 0.927915692, },
@@ -72,10 +61,6 @@ outlierScore["rat"]["all"] = {
 		},
 		"CD": {
 			"outlierScore": 0.68259546,
-			"discreteMeasures": [
-				{ "id": 3, "outlierScore": 0.738856323, },
-				{ "id": 4, "outlierScore": 0.343504255, }
-			],
 			"data": [
 				{ "stimWidth": 0.200000003, "outlierScore": 0.758702599, },
 				{ "stimWidth": 0.400000006, "outlierScore": 0.83891319, },
@@ -86,24 +71,6 @@ outlierScore["rat"]["all"] = {
 		},
 		"TE": {
 			"outlierScore": 0.901942,
-			"discreteMeasures": [
-				{ "id": 11, "outlierScore": 0.99707670343, },
-				{ "id": 22, "outlierScore": 0.992338613, },
-				{ "id": 24, "outlierScore": 0.945578225, },
-				{ "id": 30, "outlierScore": 0.994383585, },
-				{ "id": 31, "outlierScore": 0.9985000165, },
-				{ "id": 36, "outlierScore": 0.99850430231, },
-				{ "id": 12, "outlierScore": 0.9969972966, },
-				{ "id": 20, "outlierScore": 0.948738701, },
-				{ "id": 21, "outlierScore": 0.9940260076, },
-				{ "id": 23, "outlierScore": 0.924724699, },
-				{ "id": 25, "outlierScore": 0.9951977564, },
-				{ "id": 27, "outlierScore": 0.09655681, },
-				{ "id": 38, "outlierScore": 0.9860722518, },
-				{ "id": 26, "outlierScore": 0.9479818042, },
-				{ "id": 35, "outlierScore": 0.9933848033, },
-				{ "id": 37, "outlierScore": 0.9711512812, },
-			],
 			"data": {
 				"h40": [
 					{ "delay": 0, },
@@ -223,11 +190,6 @@ outlierScore["rat"]["all"] = {
 		},
 		"IV": {
 			"outlierScore": 0.9427,
-			"discreteMeasures": [
-				{ "id": 7, "outlierScore": 0.99513604998, },
-				{ "id": 8, "outlierScore": 0.9692177188, },
-				{ "id": 28, "outlierScore": 0.2907850465, }
-			],
 			"data": [
 				{ "current": -100, "outlierScore": 0.922048671, },
 				{ "current": -90, "outlierScore": 0.981361533, },
@@ -249,15 +211,6 @@ outlierScore["rat"]["all"] = {
 		},
 		"RC": {
 			"outlierScore": 0.9281,
-			"discreteMeasures": [
-				{ "id": 10, "outlierScore": 0.997968315, },
-				{ "id": 13, "outlierScore": 0.6906952233, },
-				{ "id": 14, "outlierScore": 0.925401311, },
-				{ "id": 29, "outlierScore": 0.5982572629, },
-				{ "id": 32, "outlierScore": 0.04923889813, },
-				{ "id": 33, "outlierScore": 0.999949769865, },
-				{ "id": 34, "outlierScore": 0.999968975746, }
-			],
 			"data": [
 				{ "delay": 2, "outlierScore": 0.903962962, },
 				{ "delay": 2.5, "outlierScore": 0.982560997, },
@@ -280,4 +233,41 @@ outlierScore["rat"]["all"] = {
 			],
 		},
 	},
+	"exVars": [
+		{ "id": 9, "outlierScore": 0.392822225, },
+		{ "id": 17, "outlierScore": 0.52929859, },
+		{ "id": 18, "outlierScore": 0.193983892, },
+		{ "id": 19, "outlierScore": 0.202940720469, },
+		{ "id": 1, "outlierScore": 0.391835, },
+		{ "id": 6, "outlierScore": 0.911722, },
+		{ "id": 5, "outlierScore": 0.918638, },
+		{ "id": 3, "outlierScore": 0.738856323, },
+		{ "id": 4, "outlierScore": 0.343504255, },
+		{ "id": 11, "outlierScore": 0.99707670343, },
+		{ "id": 22, "outlierScore": 0.992338613, },
+		{ "id": 24, "outlierScore": 0.945578225, },
+		{ "id": 30, "outlierScore": 0.994383585, },
+		{ "id": 31, "outlierScore": 0.9985000165, },
+		{ "id": 36, "outlierScore": 0.99850430231, },
+		{ "id": 12, "outlierScore": 0.9969972966, },
+		{ "id": 20, "outlierScore": 0.948738701, },
+		{ "id": 21, "outlierScore": 0.9940260076, },
+		{ "id": 23, "outlierScore": 0.924724699, },
+		{ "id": 25, "outlierScore": 0.9951977564, },
+		{ "id": 27, "outlierScore": 0.09655681, },
+		{ "id": 38, "outlierScore": 0.9860722518, },
+		{ "id": 26, "outlierScore": 0.9479818042, },
+		{ "id": 35, "outlierScore": 0.9933848033, },
+		{ "id": 37, "outlierScore": 0.9711512812, },
+		{ "id": 7, "outlierScore": 0.99513604998, },
+		{ "id": 8, "outlierScore": 0.9692177188, },
+		{ "id": 28, "outlierScore": 0.2907850465, },
+		{ "id": 10, "outlierScore": 0.997968315, },
+		{ "id": 13, "outlierScore": 0.6906952233, },
+		{ "id": 14, "outlierScore": 0.925401311, },
+		{ "id": 29, "outlierScore": 0.5982572629, },
+		{ "id": 32, "outlierScore": 0.04923889813, },
+		{ "id": 33, "outlierScore": 0.999949769865, },
+		{ "id": 34, "outlierScore": 0.999968975746, }
+	],
 }

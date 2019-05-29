@@ -4,20 +4,9 @@ outlierScore["WI20S"]["all"] = {
 	"outlierScore": 0.758,
 	"ageFilter": null,
 	"sexFilter": null,
-	"discreteMeasures": [
-		{ "id": 9, "outlierScore": 0.18428396, },
-		{ "id": 17, "outlierScore": 0.362322, },
-		{ "id": 18, "outlierScore": 0.12484565487, },
-		{ "id": 19, "outlierScore": 0.683242, }
-	],
 	"sections": {
 		"SR": {
 			"outlierScore": 0.766,
-			"discreteMeasures": [
-				{ "id": 1, "outlierScore": 0.41681169, },
-				{ "id": 6, "outlierScore": 0.15619425, },
-				{ "id": 5, "outlierScore": 0.87073553, }
-			],
 			"data": [
 				{ "outlierScore": 0.27915689, },
 				{ "outlierScore": 0.27915692, },
@@ -72,10 +61,6 @@ outlierScore["WI20S"]["all"] = {
 		},
 		"CD": {
 			"outlierScore": 0.456,
-			"discreteMeasures": [
-				{ "id": 3, "outlierScore": 0.38856323, },
-				{ "id": 4, "outlierScore": 0.43504255, }
-			],
 			"data": [
 				{ "stimWidth": 0.200000003, "outlierScore": 0.58702599, },
 				{ "stimWidth": 0.400000006, "outlierScore": 0.3891319, },
@@ -86,24 +71,6 @@ outlierScore["WI20S"]["all"] = {
 		},
 		"TE": {
 			"outlierScore": 0.01942,
-			"discreteMeasures": [
-				{ "id": 11, "outlierScore": 0.07670343, },
-				{ "id": 22, "outlierScore": 0.92338613, },
-				{ "id": 24, "outlierScore": 0.45578225, },
-				{ "id": 30, "outlierScore": 0.24383585, },
-				{ "id": 31, "outlierScore": 0.85000165, },
-				{ "id": 36, "outlierScore": 0.50430231, },
-				{ "id": 12, "outlierScore": 0.69972966, },
-				{ "id": 20, "outlierScore": 0.38738701, },
-				{ "id": 21, "outlierScore": 0.0260076, },
-				{ "id": 23, "outlierScore": 0.84724699, },
-				{ "id": 25, "outlierScore": 0.1977564, },
-				{ "id": 27, "outlierScore": 0.655681, },
-				{ "id": 38, "outlierScore": 0.60722518, },
-				{ "id": 26, "outlierScore": 0.79818042, },
-				{ "id": 35, "outlierScore": 0.33848033, },
-				{ "id": 37, "outlierScore": 0.11512812, },
-			],
 			"data": {
 				"h40": [
 					{ "delay": 0, },
@@ -223,11 +190,6 @@ outlierScore["WI20S"]["all"] = {
 		},
 		"IV": {
 			"outlierScore": 0.427,
-			"discreteMeasures": [
-				{ "id": 7, "outlierScore": 0.13604998, },
-				{ "id": 8, "outlierScore": 0.92177188, },
-				{ "id": 28, "outlierScore": 0.07850465, }
-			],
 			"data": [
 				{ "current": -100, "outlierScore": 0.22048671, },
 				{ "current": -90, "outlierScore": 0.81361533, },
@@ -249,15 +211,6 @@ outlierScore["WI20S"]["all"] = {
 		},
 		"RC": {
 			"outlierScore": 0.281,
-			"discreteMeasures": [
-				{ "id": 10, "outlierScore": 0.97968315, },
-				{ "id": 13, "outlierScore": 0.06952233, },
-				{ "id": 14, "outlierScore": 0.25401311, },
-				{ "id": 29, "outlierScore": 0.82572629, },
-				{ "id": 32, "outlierScore": 0.23889813, },
-				{ "id": 33, "outlierScore": 0.49769865, },
-				{ "id": 34, "outlierScore": 0.68975746, }
-			],
 			"data": [
 				{ "delay": 2, "outlierScore": 0.03962962, },
 				{ "delay": 2.5, "outlierScore": 0.82560997, },
@@ -280,4 +233,41 @@ outlierScore["WI20S"]["all"] = {
 			],
 		},
 	},
+	"exVars": [
+		{ "id": 9, "outlierScore": 0.18428396, },
+		{ "id": 17, "outlierScore": 0.362322, },
+		{ "id": 18, "outlierScore": 0.12484565487, },
+		{ "id": 19, "outlierScore": 0.683242, },
+		{ "id": 1, "outlierScore": 0.41681169, },
+		{ "id": 6, "outlierScore": 0.15619425, },
+		{ "id": 5, "outlierScore": 0.87073553, },
+		{ "id": 3, "outlierScore": 0.38856323, },
+		{ "id": 4, "outlierScore": 0.43504255, },
+		{ "id": 11, "outlierScore": 0.07670343, },
+		{ "id": 22, "outlierScore": 0.92338613, },
+		{ "id": 24, "outlierScore": 0.45578225, },
+		{ "id": 30, "outlierScore": 0.24383585, },
+		{ "id": 31, "outlierScore": 0.85000165, },
+		{ "id": 36, "outlierScore": 0.50430231, },
+		{ "id": 12, "outlierScore": 0.69972966, },
+		{ "id": 20, "outlierScore": 0.38738701, },
+		{ "id": 21, "outlierScore": 0.0260076, },
+		{ "id": 23, "outlierScore": 0.84724699, },
+		{ "id": 25, "outlierScore": 0.1977564, },
+		{ "id": 27, "outlierScore": 0.655681, },
+		{ "id": 38, "outlierScore": 0.60722518, },
+		{ "id": 26, "outlierScore": 0.79818042, },
+		{ "id": 35, "outlierScore": 0.33848033, },
+		{ "id": 37, "outlierScore": 0.11512812, },
+		{ "id": 7, "outlierScore": 0.13604998, },
+		{ "id": 8, "outlierScore": 0.92177188, },
+		{ "id": 28, "outlierScore": 0.07850465, },
+		{ "id": 10, "outlierScore": 0.97968315, },
+		{ "id": 13, "outlierScore": 0.06952233, },
+		{ "id": 14, "outlierScore": 0.25401311, },
+		{ "id": 29, "outlierScore": 0.82572629, },
+		{ "id": 32, "outlierScore": 0.23889813, },
+		{ "id": 33, "outlierScore": 0.49769865, },
+		{ "id": 34, "outlierScore": 0.68975746, }
+	],
 }
