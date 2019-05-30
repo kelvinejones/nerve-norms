@@ -11,7 +11,7 @@ type ThresholdIV struct {
 	WasImputed      Column
 }
 
-func (tiv *ThresholdIV) LoadFromMem(mem *Mem) error {
+func (tiv *ThresholdIV) LoadFromMem(mem *rawMem) error {
 	tiv.Current = Column([]float64{50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -50, -60, -70, -80, -90, -100})
 
 	sec, err := mem.sectionContainingHeader("THRESHOLD I/V")

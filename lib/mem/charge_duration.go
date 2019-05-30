@@ -11,7 +11,7 @@ type ChargeDuration struct {
 	WasImputed   Column
 }
 
-func (cd *ChargeDuration) LoadFromMem(mem *Mem) error {
+func (cd *ChargeDuration) LoadFromMem(mem *rawMem) error {
 	cd.Duration = Column([]float64{0.2, 0.4, 0.6, 0.8, 1})
 
 	sec, err := mem.sectionContainingHeader("CHARGE DURATION")

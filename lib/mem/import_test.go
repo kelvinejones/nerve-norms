@@ -65,7 +65,7 @@ func TestImportEmpty(t *testing.T) {
 	t.Skip()
 	m, err := Import(strings.NewReader(""))
 	assert.NoError(t, err)
-	assert.Equal(t, m, Mem{})
+	assert.Equal(t, m, rawMem{})
 }
 
 func TestImportHeader(t *testing.T) {
@@ -380,7 +380,7 @@ func TestImportExcitabilityVariables(t *testing.T) {
 	assert.Equal(t, excitabilityVariablesExpected, actual)
 }
 
-var completeExpectedMem = Mem{
+var completeExpectedRawMem = rawMem{
 	Header: headerExpected,
 	Sections: []Section{
 		sResponseExpected,
@@ -401,8 +401,8 @@ func TestImportAll(t *testing.T) {
 	mem, err := Import(strings.NewReader(toWindows(memString)))
 	assert.NoError(t, err)
 
-	t.Run("MemStruct", func(t *testing.T) {
-		assert.Equal(t, completeExpectedMem, mem)
+	t.Run("rawMemStruct", func(t *testing.T) {
+		assert.Equal(t, completeExpectedRawMem, mem)
 	})
 	t.Run("StimulusResponse", func(t *testing.T) {
 		actualParsed, err := mem.StimulusResponse()
@@ -438,5 +438,5 @@ func TestImportFile(t *testing.T) {
 	mem, err := Import(bufio.NewReader(file))
 
 	assert.NoError(t, err)
-	assert.Equal(t, completeExpectedMem, mem)
+	assert.Equal(t, completeExpectedRawMem, mem)
 }

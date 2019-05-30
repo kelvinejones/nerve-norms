@@ -11,7 +11,7 @@ import (
 )
 
 type Section interface {
-	LoadFromMem(mem *Mem) error
+	LoadFromMem(mem *rawMem) error
 	MarshalJSON() ([]byte, error)
 }
 

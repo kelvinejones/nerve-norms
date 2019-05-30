@@ -8,13 +8,13 @@ import (
 	"strings"
 )
 
-type Mem struct {
+type rawMem struct {
 	Header
 	Sections []RawSection
 	ExcitabilityVariables
 }
 
-func (mem *Mem) MarshalJSON() ([]byte, error) {
+func (mem *rawMem) MarshalJSON() ([]byte, error) {
 	str := &struct {
 		Header   *Header               `json:"header"`
 		Sections map[string]Section    `json:"sections"`
@@ -41,9 +41,9 @@ func (mem *Mem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(str)
 }
 
-func Import(data io.Reader) (Mem, error) {
+func Import(data io.Reader) (rawMem, error) {
 	reader := NewReader(data)
-	mem := Mem{}
+	mem := rawMem{}
 	mem.ExcitabilityVariables.Values = make(map[int]float64)
 
 	err := mem.Header.Parse(reader)
@@ -62,7 +62,7 @@ func Import(data io.Reader) (Mem, error) {
 	return mem, nil
 }
 
-func (mem *Mem) importRawSection(reader *Reader) error {
+func (mem *rawMem) importRawSection(reader *Reader) error {
 	str, err := reader.skipEmptyLines()
 	if err != nil {
 		return err
@@ -86,8 +86,8 @@ func (mem *Mem) importRawSection(reader *Reader) error {
 	return nil
 }
 
-func (mem Mem) String() string {
-	str := "Mem{\n"
+func (mem rawMem) String() string {
+	str := "rawMem{\n"
 	str += "\t" + mem.Header.String() + ",\n"
 	for _, sec := range mem.Sections {
 		str += "\t" + sec.String() + ",\n"
@@ -99,7 +99,7 @@ func (mem Mem) String() string {
 
 // sectionContainingHeader returns a section containing the provided header.
 // Dashes are replaced with spaces for a slightly less sensitive search.
-func (mem Mem) sectionContainingHeader(header string) (RawSection, error) {
+func (mem rawMem) sectionContainingHeader(header string) (RawSection, error) {
 	for _, sec := range mem.Sections {
 		if strings.Contains(strings.Replace(sec.Header, "-", " ", -1), header) {
 			return sec, nil

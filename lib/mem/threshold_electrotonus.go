@@ -21,7 +21,7 @@ type ThresholdElectrotonus struct {
 	Depol100   *TEPair
 }
 
-func (te *ThresholdElectrotonus) LoadFromMem(mem *Mem) error {
+func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 	sec, err := mem.sectionContainingHeader("THRESHOLD ELECTROTONUS")
 	if err != nil {
 		return errors.New("Could not get threshold electrotonus: " + err.Error())
