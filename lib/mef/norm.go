@@ -4,6 +4,7 @@ type Norm struct {
 	CDNorm
 	RCNorm
 	SRNorm
+	IVNorm
 }
 
 func (mef *Mef) Norm() Norm {
@@ -13,5 +14,6 @@ func (mef *Mef) Norm() Norm {
 		CDNorm: mef.cdNorm(),
 		RCNorm: mef.rcNorm(),
 		SRNorm: mef.srNorm(),
+		IVNorm: mef.ivNorm(),
 	}
 }
