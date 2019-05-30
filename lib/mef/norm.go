@@ -3,6 +3,7 @@ package mef
 type Norm struct {
 	CDNorm
 	RCNorm
+	SRNorm
 }
 
 func (mef *Mef) Norm() Norm {
@@ -11,5 +12,6 @@ func (mef *Mef) Norm() Norm {
 	return Norm{
 		CDNorm: mef.cdNorm(),
 		RCNorm: mef.rcNorm(),
+		SRNorm: mef.srNorm(),
 	}
 }
