@@ -23,6 +23,7 @@ type TableSet struct {
 	Abbreviation string
 }
 
+// MarshalJSON swaps the order of rows and columns.
 func (tab Table) MarshalJSON() ([]byte, error) {
 	numCols := len(tab)
 	if numCols == 0 {
@@ -41,6 +42,31 @@ func (tab Table) MarshalJSON() ([]byte, error) {
 		}
 	}
 	return json.Marshal(&data)
+}
+
+// UnmarshalJSON swaps the order of rows and columns.
+func (tab *Table) UnmarshalJSON(value []byte) error {
+	rows := []Column{}
+	err := json.Unmarshal(value, &rows)
+	if err != nil {
+		return err
+	}
+
+	numRows := len(rows)
+	if numRows == 0 {
+		// Empty table
+		return nil
+	}
+
+	for i := range rows[0] {
+		thisCol := make(Column, numRows)
+		*tab = append(*tab, thisCol)
+		for j, val := range rows {
+			thisCol[j] = val[i]
+		}
+	}
+
+	return nil
 }
 
 func (tab *Table) appendRow(row []string) error {
