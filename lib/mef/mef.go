@@ -43,7 +43,26 @@ func (mef *Mef) FilterByAge(youngAge, oldAge int) *Mef {
 }
 
 func (mef *Mef) MarshalJSON() ([]byte, error) {
-	return json.Marshal(mef.mems)
+	mems := make([]*mem.Mem, len(mef.mems))
+
+	if mef.filters == nil || len(mef.filters) == 0 {
+		// There are no filters, so return all data
+		return json.Marshal(mef.mems)
+	}
+
+	for _, m := range mef.mems {
+		// For each Mem, check if it passes all filters
+		for _, filt := range mef.filters {
+			if !filt.Filter(m) {
+				// A filter was failed, so keep going.
+				continue
+			}
+		}
+		// This Mem passed, so append it
+		mems = append(mems, &m)
+	}
+
+	return json.Marshal(mems)
 }
 
 func (mef *Mef) UnmarshalJSON(value []byte) error {
