@@ -45,29 +45,35 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 		if err != nil {
 			return errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
+		teType := teTypeForCurrent(current)
 
-		// This is a quick and simple way to parse the data we expect to see
-		max := current.Maximum()
-		min := current.Minimum()
-		switch {
-		case max > 34 && max < 46 && min == 0:
-			te.Data["h40"] = &pair
-		case max > 14 && max < 26 && min == 0:
-			te.Data["h20"] = &pair
-		case max == 0 && min < -34 && min > -46:
-			te.Data["d40"] = &pair
-		case max == 0 && min < -14 && min > -26:
-			te.Data["d20"] = &pair
-		case max == 0 && min < -64 && min > -76:
-			te.Data["d70"] = &pair
-		case max == 0 && min < -94 && min > -106:
-			te.Data["d100"] = &pair
-		default:
-			fmt.Printf("TE contained unexpected current [%f, %f]\n", min, max)
-		}
+		te.Data[teType] = &pair
 	}
 
 	return nil
+}
+
+func teTypeForCurrent(current Column) string {
+	// This is a quick and simple way to parse the data we expect to see
+	max := current.Maximum()
+	min := current.Minimum()
+	switch {
+	case max > 34 && max < 46 && min == 0:
+		return "h40"
+	case max > 14 && max < 26 && min == 0:
+		return "h20"
+	case max == 0 && min < -34 && min > -46:
+		return "d40"
+	case max == 0 && min < -14 && min > -26:
+		return "d20"
+	case max == 0 && min < -64 && min > -76:
+		return "d70"
+	case max == 0 && min < -94 && min > -106:
+		return "d100"
+	default:
+		fmt.Printf("TE contained unexpected current [%f, %f]\n", min, max)
+		return ""
+	}
 }
 
 type jsonThresholdElectrotonus struct {
