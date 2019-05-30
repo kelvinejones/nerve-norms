@@ -15,6 +15,8 @@ type Section interface {
 	MarshalJSON() ([]byte, error)
 }
 
+type Sections map[string]Section
+
 type Column []float64
 type Table []Column
 type TableSet struct {

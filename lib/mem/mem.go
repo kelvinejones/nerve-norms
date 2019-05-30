@@ -14,15 +14,17 @@ type rawMem struct {
 	ExcitabilityVariables
 }
 
+type Mem struct {
+	Header   `json:"header"`
+	Sections `json:"sections"`
+	ExVars   ExcitabilityVariables `json:"exVars"`
+	Settings map[string]string     `json:"settings"`
+}
+
 func (mem *rawMem) MarshalJSON() ([]byte, error) {
-	str := &struct {
-		Header   *Header               `json:"header"`
-		Sections map[string]Section    `json:"sections"`
-		ExVars   ExcitabilityVariables `json:"exVars"`
-		Settings map[string]string     `json:"settings"`
-	}{
-		Header:   &mem.Header,
-		Sections: make(map[string]Section),
+	str := &Mem{
+		Header:   mem.Header,
+		Sections: make(Sections),
 		ExVars:   mem.ExcitabilityVariables,
 		Settings: mem.ExcitabilityVariables.ExcitabilitySettings,
 	}
