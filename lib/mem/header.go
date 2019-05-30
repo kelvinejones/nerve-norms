@@ -30,6 +30,9 @@ type Header struct {
 	NormalControl bool    `json:"normalControl"`
 	Operator      string  `json:"operator"`
 	Comment       string  `json:"comment"`
+	Country       string  `json:"country,omitempty"`
+	Nerve         string  `json:"nerve,omitempty"`
+	Species       string  `json:"species,omitempty"`
 }
 
 func (header *Header) Parse(reader *Reader) error {
