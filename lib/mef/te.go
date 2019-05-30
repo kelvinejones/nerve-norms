@@ -10,8 +10,8 @@ type TENorm struct {
 }
 
 type teSingle struct {
-	Interval mem.Column
-	section  string
+	Delay   mem.Column
+	section string
 	MatNorm
 	mef *Mef
 }
@@ -37,24 +37,24 @@ func (mef *Mef) teNorm() TENorm {
 		mef: mef,
 		singles: map[string]*teSingle{
 			"h40": &teSingle{
-				Interval: mem.TEDelay("h40"),
-				section:  "h40",
-				mef:      mef,
+				Delay:   mem.TEDelay("h40"),
+				section: "h40",
+				mef:     mef,
 			},
 			"h20": &teSingle{
-				Interval: mem.TEDelay("h20"),
-				section:  "h20",
-				mef:      mef,
+				Delay:   mem.TEDelay("h20"),
+				section: "h20",
+				mef:     mef,
 			},
 			"d40": &teSingle{
-				Interval: mem.TEDelay("d40"),
-				section:  "d40",
-				mef:      mef,
+				Delay:   mem.TEDelay("d40"),
+				section: "d40",
+				mef:     mef,
 			},
 			"d20": &teSingle{
-				Interval: mem.TEDelay("d20"),
-				section:  "d20",
-				mef:      mef,
+				Delay:   mem.TEDelay("d20"),
+				section: "d20",
+				mef:     mef,
 			},
 		},
 	}

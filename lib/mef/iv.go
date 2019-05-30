@@ -5,7 +5,7 @@ import (
 )
 
 type IVNorm struct {
-	Interval mem.Column
+	Current mem.Column
 	MatNorm
 	mef *Mef
 }
@@ -28,8 +28,8 @@ func (norm IVNorm) WasImputed(i int) mem.Column {
 
 func (mef *Mef) ivNorm() IVNorm {
 	norm := IVNorm{
-		Interval: mem.IVCurrent,
-		mef:      mef,
+		Current: mem.IVCurrent,
+		mef:     mef,
 	}
 	norm.MatNorm = MatrixNorm(norm)
 	return norm
