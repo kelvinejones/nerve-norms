@@ -13,31 +13,11 @@ type TEPair struct {
 }
 
 type ThresholdElectrotonus struct {
-	Hyperpol40 TEPair
-	Hyperpol20 TEPair
-	Depol40    TEPair
-	Depol20    TEPair
-	Depol70    TEPair
-	Depol100   TEPair
+	Data map[string]*TEPair
 }
 
 func (te *ThresholdElectrotonus) GetPair(name string) TEPair {
-	switch name {
-	case "h40":
-		return te.Hyperpol40
-	case "h20":
-		return te.Hyperpol20
-	case "d40":
-		return te.Depol40
-	case "d20":
-		return te.Depol20
-	case "d70":
-		return te.Depol70
-	case "d100":
-		return te.Depol100
-	default:
-		return TEPair{}
-	}
+	return *te.Data[name]
 }
 
 var TEDelay = Column([]float64{0, 9, 10, 11, 15, 20, 26, 30, 33, 30, 41, 50, 60, 70, 80, 90, 100, 109, 110, 111, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210})
@@ -47,6 +27,8 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 	if err != nil {
 		return errors.New("Could not get threshold electrotonus: " + err.Error())
 	}
+
+	te.Data = make(map[string]*TEPair, 4)
 
 	for i := range sec.Tables {
 		pair := TEPair{Delay: TEDelay}
@@ -73,17 +55,17 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 		min := current.Minimum()
 		switch {
 		case max > 34 && max < 46 && min == 0:
-			te.Hyperpol40 = pair
+			te.Data["h40"] = &pair
 		case max > 14 && max < 26 && min == 0:
-			te.Hyperpol20 = pair
+			te.Data["h20"] = &pair
 		case max == 0 && min < -34 && min > -46:
-			te.Depol40 = pair
+			te.Data["d40"] = &pair
 		case max == 0 && min < -14 && min > -26:
-			te.Depol20 = pair
+			te.Data["d20"] = &pair
 		case max == 0 && min < -64 && min > -76:
-			te.Depol70 = pair
+			te.Data["d70"] = &pair
 		case max == 0 && min < -94 && min > -106:
-			te.Depol100 = pair
+			te.Data["d100"] = &pair
 		default:
 			fmt.Printf("TE contained unexpected current [%f, %f]\n", min, max)
 		}
@@ -101,19 +83,19 @@ func (dat *ThresholdElectrotonus) MarshalJSON() ([]byte, error) {
 	str := &jsonThresholdElectrotonus{
 		Columns: []string{"Delay (ms)", "Threshold Reduction (%)"},
 		Data: map[string]Table{
-			"h40": []Column{dat.Hyperpol40.Delay, dat.Hyperpol40.ThreshReduction},
-			"h20": []Column{dat.Hyperpol20.Delay, dat.Hyperpol20.ThreshReduction},
-			"d40": []Column{dat.Depol40.Delay, dat.Depol40.ThreshReduction},
-			"d20": []Column{dat.Depol20.Delay, dat.Depol20.ThreshReduction},
+			"h40": []Column{dat.Data["h40"].Delay, dat.Data["h40"].ThreshReduction},
+			"h20": []Column{dat.Data["h20"].Delay, dat.Data["h20"].ThreshReduction},
+			"d40": []Column{dat.Data["d40"].Delay, dat.Data["d40"].ThreshReduction},
+			"d20": []Column{dat.Data["d20"].Delay, dat.Data["d20"].ThreshReduction},
 		},
 	}
 
-	if dat.Hyperpol40.WasImputed != nil || dat.Hyperpol20.WasImputed != nil || dat.Depol40.WasImputed != nil || dat.Depol20.WasImputed != nil {
+	if dat.Data["h40"].WasImputed != nil || dat.Data["h20"].WasImputed != nil || dat.Data["d40"].WasImputed != nil || dat.Data["d20"].WasImputed != nil {
 		str.Columns = append(str.Columns, "Was Imputed")
-		str.Data["h40"] = append(str.Data["h40"], dat.Hyperpol40.WasImputed)
-		str.Data["h20"] = append(str.Data["h20"], dat.Hyperpol20.WasImputed)
-		str.Data["d40"] = append(str.Data["d40"], dat.Depol40.WasImputed)
-		str.Data["d20"] = append(str.Data["d20"], dat.Depol20.WasImputed)
+		str.Data["h40"] = append(str.Data["h40"], dat.Data["h40"].WasImputed)
+		str.Data["h20"] = append(str.Data["h20"], dat.Data["h20"].WasImputed)
+		str.Data["d40"] = append(str.Data["d40"], dat.Data["d40"].WasImputed)
+		str.Data["d20"] = append(str.Data["d20"], dat.Data["d20"].WasImputed)
 	}
 
 	return json.Marshal(&str)
@@ -134,18 +116,22 @@ func (dat *ThresholdElectrotonus) UnmarshalJSON(value []byte) error {
 		return errors.New("Incorrect ThresholdElectrotonus column names in JSON")
 	}
 
-	dat.Hyperpol40.fromTable(jsDat.Data["h40"])
-	dat.Hyperpol20.fromTable(jsDat.Data["h20"])
-	dat.Depol40.fromTable(jsDat.Data["d40"])
-	dat.Depol20.fromTable(jsDat.Data["d20"])
+	dat.Data = make(map[string]*TEPair, 4)
+
+	dat.Data["h40"] = tePairFromTable(jsDat.Data["h40"])
+	dat.Data["h20"] = tePairFromTable(jsDat.Data["h20"])
+	dat.Data["d40"] = tePairFromTable(jsDat.Data["d40"])
+	dat.Data["d20"] = tePairFromTable(jsDat.Data["d20"])
 
 	return nil
 }
 
-func (tep *TEPair) fromTable(tab Table) {
+func tePairFromTable(tab Table) *TEPair {
+	tep := &TEPair{}
 	tep.Delay = tab[0]
 	tep.ThreshReduction = tab[1]
 	if len(tab) == 3 {
 		tep.WasImputed = tab[2]
 	}
+	return tep
 }
