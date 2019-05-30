@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"gogs.bellstone.ca/james/jitter/lib/mem"
+	"gogs.bellstone.ca/james/jitter/lib/mef"
 )
 
 var input = flag.String("input", "res/data/participants.json", "path to the JSON that should be loaded")
@@ -35,16 +35,16 @@ func main() {
 		panic(err)
 	}
 
-	var memData map[string]mem.Mem
+	var mefData mef.Mef
 
-	err = json.Unmarshal(bytes, &memData)
+	err = json.Unmarshal(bytes, &mefData)
 	if err != nil {
 		panic(err)
 	}
 
 	// TODO filter
 
-	jsArray, err := json.Marshal(&memData)
+	jsArray, err := json.Marshal(&mefData)
 	if err != nil {
 		fmt.Println("Could not concatenate JSON due to error: " + err.Error())
 	}
