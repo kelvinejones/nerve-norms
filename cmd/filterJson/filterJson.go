@@ -12,7 +12,7 @@ import (
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
-var input = flag.String("input", "res/data/participants.json", "path to the JSON that should be loaded")
+var input = flag.String("input", "res/data/all.json", "path to the JSON that should be loaded")
 var output = flag.String("output", "", "path to save the filtered JSON; otherwise, output to stdout")
 var sexString = flag.String("sex", "", "only include participants of this sex (M/F)")
 var minAge = flag.Int("minAge", 0, "only include participants at least this old")
