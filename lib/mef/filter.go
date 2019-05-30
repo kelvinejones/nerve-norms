@@ -7,17 +7,6 @@ type filter interface {
 	Filter(mem.Mem) bool
 }
 
-// filterWithConstraint updates the FilteredMef filter list based on the provided filter.
-// It returns the original object to support chaining.
-func (fmef *FilteredMef) filterWithConstraint(filt filter) *FilteredMef {
-	for _, memData := range fmef.Mef {
-		if filt.Filter(memData) {
-			fmef.IncludedNames = append(fmef.IncludedNames, memData.Header.Name)
-		}
-	}
-	return fmef
-}
-
 // SexFilter is a type that filters sex. It uses 'mem.UnknownSex' for the unfiltered setting.
 type SexFilter struct {
 	mem.Sex

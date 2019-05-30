@@ -39,10 +39,7 @@ func main() {
 		panic(err)
 	}
 
-	allData := append(caMef, jpMef...)
-	allData = append(allData, poMef...)
-	allData = append(allData, legMef...)
-	allData = append(allData, ratMef...)
+	allData := caMef.Append(jpMef).Append(poMef).Append(legMef).Append(ratMef)
 
 	jsArray, err := json.Marshal(&allData)
 	if err != nil {

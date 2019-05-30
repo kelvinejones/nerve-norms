@@ -49,7 +49,7 @@ func main() {
 		panic(err)
 	}
 
-	mefData.FilteredBySex(sex).FilteredByAge(*minAge, *maxAge)
+	mefData.FilterBySex(sex).FilterByAge(*minAge, *maxAge)
 
 	jsArray, err := json.Marshal(&mefData)
 	if err != nil {
