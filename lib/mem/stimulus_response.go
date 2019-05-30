@@ -41,13 +41,15 @@ func (sr *StimResponse) LoadFromMem(mem *rawMem) error {
 	return nil
 }
 
+type jsonStimResponse struct {
+	Columns   []string  `json:"columns"`
+	Data      Table     `json:"data"`
+	MaxCmaps  []MaxCmap `json:"maxCmaps"`
+	ValueType string    `json:"valueType"`
+}
+
 func (dat *StimResponse) MarshalJSON() ([]byte, error) {
-	str := &struct {
-		Columns   []string  `json:"columns"`
-		Data      Table     `json:"data"`
-		MaxCmaps  []MaxCmap `json:"maxCmaps"`
-		ValueType string    `json:"valueType"`
-	}{
+	str := &jsonStimResponse{
 		Columns:   []string{"% Max", "Stimulus"},
 		Data:      []Column{dat.PercentMax, dat.Stimulus},
 		MaxCmaps:  dat.MaxCmaps,
@@ -60,6 +62,33 @@ func (dat *StimResponse) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(&str)
+}
+
+func (dat *StimResponse) UnmarshalJSON(value []byte) error {
+	jsDat := jsonStimResponse{}
+	err := json.Unmarshal(value, &jsDat)
+	if err != nil {
+		return err
+	}
+	numCol := len(jsDat.Columns)
+
+	if numCol < 2 || numCol > 3 {
+		return errors.New("Incorrect number of StimResponse columns in JSON")
+	}
+	if jsDat.Columns[0] != "% Max" || jsDat.Columns[1] != "Stimulus" || (numCol == 3 && jsDat.Columns[2] != "Was Imputed") {
+		return errors.New("Incorrect StimResponse column names in JSON")
+	}
+
+	dat.PercentMax = jsDat.Data[0]
+	dat.Stimulus = jsDat.Data[1]
+	if numCol == 3 {
+		dat.WasImputed = jsDat.Data[2]
+	}
+
+	dat.MaxCmaps = jsDat.MaxCmaps
+	dat.ValueType = jsDat.ValueType
+
+	return nil
 }
 
 func parseValueType(strs []string) string {

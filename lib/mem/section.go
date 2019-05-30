@@ -17,6 +17,41 @@ type Section interface {
 
 type Sections map[string]Section
 
+func (secs *Sections) UnmarshalJSON(value []byte) error {
+	rawSecs := map[string]json.RawMessage{}
+	err := json.Unmarshal(value, &rawSecs)
+	if err != nil {
+		return err
+	}
+
+	for key, val := range rawSecs {
+		var sec Section
+		switch key {
+		case "CD":
+			sec = &ChargeDuration{}
+			err = json.Unmarshal(val, sec)
+		case "RC":
+			sec = &RecoveryCycle{}
+			err = json.Unmarshal(val, sec)
+		case "SR":
+			sec = &StimResponse{}
+			err = json.Unmarshal(val, sec)
+		case "TE":
+			sec = &ThresholdElectrotonus{}
+			err = json.Unmarshal(val, sec)
+		case "IV":
+			sec = &ThresholdIV{}
+			err = json.Unmarshal(val, sec)
+		}
+		if err != nil {
+			return err
+		}
+		(*secs)[key] = sec
+	}
+
+	return nil
+}
+
 type Column []float64
 type Table []Column
 type TableSet struct {

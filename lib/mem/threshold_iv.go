@@ -42,11 +42,13 @@ func (tiv *ThresholdIV) LoadFromMem(mem *rawMem) error {
 	return nil
 }
 
+type jsonThresholdIV struct {
+	Columns []string `json:"columns"`
+	Data    Table    `json:"data"`
+}
+
 func (dat *ThresholdIV) MarshalJSON() ([]byte, error) {
-	str := &struct {
-		Columns []string `json:"columns"`
-		Data    Table    `json:"data"`
-	}{
+	str := &jsonThresholdIV{
 		Columns: []string{"Current (%)", "Threshold Reduction (%)"},
 		Data:    []Column{dat.Current, dat.ThreshReduction},
 	}
@@ -57,4 +59,28 @@ func (dat *ThresholdIV) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(&str)
+}
+
+func (dat *ThresholdIV) UnmarshalJSON(value []byte) error {
+	jsDat := jsonThresholdIV{}
+	err := json.Unmarshal(value, &jsDat)
+	if err != nil {
+		return err
+	}
+	numCol := len(jsDat.Columns)
+
+	if numCol < 2 || numCol > 3 {
+		return errors.New("Incorrect number of ThresholdIV columns in JSON")
+	}
+	if jsDat.Columns[0] != "Current (%)" || jsDat.Columns[1] != "Threshold Reduction (%)" || (numCol == 3 && jsDat.Columns[2] != "Was Imputed") {
+		return errors.New("Incorrect ThresholdIV column names in JSON")
+	}
+
+	dat.Current = jsDat.Data[0]
+	dat.ThreshReduction = jsDat.Data[1]
+	if numCol == 3 {
+		dat.WasImputed = jsDat.Data[2]
+	}
+
+	return nil
 }

@@ -71,11 +71,13 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 	return nil
 }
 
+type jsonThresholdElectrotonus struct {
+	Columns []string         `json:"columns"`
+	Data    map[string]Table `json:"data"`
+}
+
 func (dat *ThresholdElectrotonus) MarshalJSON() ([]byte, error) {
-	str := &struct {
-		Columns []string         `json:"columns"`
-		Data    map[string]Table `json:"data"`
-	}{
+	str := &jsonThresholdElectrotonus{
 		Columns: []string{"Delay (ms)", "Threshold Reduction (%)"},
 		Data: map[string]Table{
 			"h40": []Column{dat.Hyperpol40.Delay, dat.Hyperpol40.ThreshReduction},
@@ -94,4 +96,35 @@ func (dat *ThresholdElectrotonus) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(&str)
+}
+
+func (dat *ThresholdElectrotonus) UnmarshalJSON(value []byte) error {
+	jsDat := jsonThresholdElectrotonus{}
+	err := json.Unmarshal(value, &jsDat)
+	if err != nil {
+		return err
+	}
+	numCol := len(jsDat.Columns)
+
+	if numCol < 2 || numCol > 3 {
+		return errors.New("Incorrect number of ThresholdElectrotonus columns in JSON")
+	}
+	if jsDat.Columns[0] != "Delay (ms)" || jsDat.Columns[1] != "Threshold Reduction (%)" || (numCol == 3 && jsDat.Columns[2] != "Was Imputed") {
+		return errors.New("Incorrect ThresholdElectrotonus column names in JSON")
+	}
+
+	dat.Hyperpol40.fromTable(jsDat.Data["h40"])
+	dat.Hyperpol20.fromTable(jsDat.Data["h20"])
+	dat.Depol40.fromTable(jsDat.Data["d40"])
+	dat.Depol20.fromTable(jsDat.Data["d20"])
+
+	return nil
+}
+
+func (tep *TEPair) fromTable(tab Table) {
+	tep.Delay = tab[0]
+	tep.ThreshReduction = tab[1]
+	if len(tab) == 3 {
+		tep.WasImputed = tab[2]
+	}
 }

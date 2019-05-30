@@ -33,19 +33,19 @@ func (exciteVar *ExcitabilityVariables) imputeZero() {
 	}
 }
 
+type jsonExVar struct {
+	Id         int     `json:"id"`
+	Value      float64 `json:"value"`
+	WasImputed bool    `json:"wasImputed,omitempty"`
+}
+
 // MarshalJSON marshals the excitability variables, but not the settings.
 func (exciteVar *ExcitabilityVariables) MarshalJSON() ([]byte, error) {
 	exciteVar.imputeZero()
 
-	type ExVar struct {
-		Id         int     `json:"id"`
-		Value      float64 `json:"value"`
-		WasImputed bool    `json:"wasImputed,omitempty"`
-	}
-
-	arr := []ExVar{}
+	arr := []jsonExVar{}
 	for id := range exciteVar.Values {
-		arr = append(arr, ExVar{
+		arr = append(arr, jsonExVar{
 			Id:         id,
 			Value:      exciteVar.Values[id],
 			WasImputed: exciteVar.WasImputed[id],
@@ -53,6 +53,25 @@ func (exciteVar *ExcitabilityVariables) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(&arr)
+}
+
+// UnmarshalJSON unmarshals the excitability variables, but not the settings.
+func (exciteVar *ExcitabilityVariables) UnmarshalJSON(value []byte) error {
+	arr := []jsonExVar{}
+	err := json.Unmarshal(value, &arr)
+	if err != nil {
+		return err
+	}
+
+	exciteVar.Values = make(map[int]float64, len(arr))
+	exciteVar.WasImputed = make(map[int]bool, len(arr))
+
+	for _, val := range arr {
+		exciteVar.Values[val.Id] = val.Value
+		exciteVar.WasImputed[val.Id] = val.WasImputed
+	}
+
+	return nil
 }
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {

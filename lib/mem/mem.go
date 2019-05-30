@@ -43,6 +43,14 @@ func (mem *rawMem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(str)
 }
 
+func (mem *Mem) UnmarshalJSON(value []byte) error {
+	mem.Sections = make(Sections) // This is necessary to intialize the nil map...
+	// ...and now we want to just to a regular json.Unmarshal, but that would cause recursion...
+	type aliasMem *Mem // ...so create an alias...
+	mem2 := aliasMem(mem)
+	return json.Unmarshal(value, mem2) // ...and now the alias's default Unmarshal does what we want.
+}
+
 func Import(data io.Reader) (rawMem, error) {
 	reader := NewReader(data)
 	mem := rawMem{}

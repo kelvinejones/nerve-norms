@@ -47,11 +47,13 @@ func (cd *ChargeDuration) LoadFromMem(mem *rawMem) error {
 	return nil
 }
 
+type jsonChargeDuration struct {
+	Columns []string `json:"columns"`
+	Data    Table    `json:"data"`
+}
+
 func (dat *ChargeDuration) MarshalJSON() ([]byte, error) {
-	str := &struct {
-		Columns []string `json:"columns"`
-		Data    Table    `json:"data"`
-	}{
+	str := &jsonChargeDuration{
 		Columns: []string{"Duration (ms)", "Threshold charge (mA•ms)"},
 		Data:    []Column{dat.Duration, dat.ThreshCharge},
 	}
@@ -62,6 +64,30 @@ func (dat *ChargeDuration) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(&str)
+}
+
+func (dat *ChargeDuration) UnmarshalJSON(value []byte) error {
+	jsDat := jsonChargeDuration{}
+	err := json.Unmarshal(value, &jsDat)
+	if err != nil {
+		return err
+	}
+	numCol := len(jsDat.Columns)
+
+	if numCol < 2 || numCol > 3 {
+		return errors.New("Incorrect number of ChargeDuration columns in JSON")
+	}
+	if jsDat.Columns[0] != "Duration (ms)" || jsDat.Columns[1] != "Threshold charge (mA•ms)" || (numCol == 3 && jsDat.Columns[2] != "Was Imputed") {
+		return errors.New("Incorrect ChargeDuration column names in JSON")
+	}
+
+	dat.Duration = jsDat.Data[0]
+	dat.ThreshCharge = jsDat.Data[1]
+	if numCol == 3 {
+		dat.WasImputed = jsDat.Data[2]
+	}
+
+	return nil
 }
 
 func (cd *ChargeDuration) importOldStyle(threshold Column) error {
