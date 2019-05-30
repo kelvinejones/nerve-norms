@@ -5,9 +5,9 @@ import (
 )
 
 type CDNorm struct {
-	Duration mem.Column
-	MatNorm
-	mef *Mef
+	Duration mem.Column `json:"duration"`
+	MatNorm  `json:"threshCharge"`
+	mef      *Mef
 }
 
 func (norm CDNorm) NColumns() int {

@@ -14,9 +14,9 @@ type Matrix interface {
 }
 
 type MatNorm struct {
-	Mean mem.Column
-	SD   mem.Column
-	Num  mem.Column
+	Mean mem.Column `json:"mean"`
+	SD   mem.Column `json:"sd"`
+	Num  mem.Column `json:"num"`
 }
 
 func MatrixNorm(mat Matrix) MatNorm {

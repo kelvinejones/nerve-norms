@@ -5,9 +5,9 @@ import (
 )
 
 type RCNorm struct {
-	Interval mem.Column
-	MatNorm
-	mef *Mef
+	Interval mem.Column `json:"interval"`
+	MatNorm  `json:"threshChange"`
+	mef      *Mef
 }
 
 func (norm RCNorm) NColumns() int {

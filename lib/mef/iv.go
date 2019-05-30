@@ -5,9 +5,9 @@ import (
 )
 
 type IVNorm struct {
-	Current mem.Column
-	MatNorm
-	mef *Mef
+	Current mem.Column `json:"current"`
+	MatNorm `json:"threshReduction"`
+	mef     *Mef
 }
 
 func (norm IVNorm) NColumns() int {

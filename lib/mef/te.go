@@ -5,15 +5,15 @@ import (
 )
 
 type TENorm struct {
+	Singles map[string]*teSingle `json:"data"`
 	mef     *Mef
-	singles map[string]*teSingle
 }
 
 type teSingle struct {
-	Delay   mem.Column
+	Delay   mem.Column `json:"delay"`
+	MatNorm `json:"threshReduction"`
 	section string
-	MatNorm
-	mef *Mef
+	mef     *Mef
 }
 
 func (norm teSingle) NColumns() int {
@@ -35,7 +35,7 @@ func (norm teSingle) WasImputed(i int) mem.Column {
 func (mef *Mef) teNorm() TENorm {
 	norm := TENorm{
 		mef: mef,
-		singles: map[string]*teSingle{
+		Singles: map[string]*teSingle{
 			"h40": &teSingle{
 				Delay:   mem.TEDelay("h40"),
 				section: "h40",
@@ -59,8 +59,8 @@ func (mef *Mef) teNorm() TENorm {
 		},
 	}
 
-	for i := range norm.singles {
-		norm.singles[i].MatNorm = MatrixNorm(*norm.singles[i])
+	for i := range norm.Singles {
+		norm.Singles[i].MatNorm = MatrixNorm(*norm.Singles[i])
 	}
 
 	return norm

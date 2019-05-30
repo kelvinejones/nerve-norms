@@ -5,10 +5,10 @@ import (
 )
 
 type SRNorm struct {
-	PercentMax mem.Column
-	MatNorm
-	Cmap maxCmapNorm
-	mef  *Mef
+	PercentMax mem.Column `json:"percentMax"`
+	MatNorm    `json:"stimulus"`
+	Cmap       maxCmapNorm
+	mef        *Mef
 }
 
 func (norm SRNorm) NColumns() int {

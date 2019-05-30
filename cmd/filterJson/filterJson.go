@@ -65,7 +65,7 @@ func main() {
 	}
 
 	jsNorm := mefData.Norm()
-	if *output == "" {
+	if *norm == "" {
 		fmt.Println(jsNorm)
 	} else {
 		jsNormArray, err := json.Marshal(&jsNorm)

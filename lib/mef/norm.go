@@ -1,11 +1,11 @@
 package mef
 
 type Norm struct {
-	CDNorm
-	RCNorm
-	SRNorm
-	IVNorm
-	TENorm
+	CDNorm `json:"cd"`
+	RCNorm `json:"rc"`
+	SRNorm `json:"sr"`
+	IVNorm `json:"iv"`
+	TENorm `json:"te"`
 }
 
 func (mef *Mef) Norm() Norm {
