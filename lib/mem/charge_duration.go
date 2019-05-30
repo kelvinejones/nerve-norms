@@ -11,8 +11,10 @@ type ChargeDuration struct {
 	WasImputed   Column
 }
 
+var CDDuration = Column([]float64{0.2, 0.4, 0.6, 0.8, 1})
+
 func (cd *ChargeDuration) LoadFromMem(mem *rawMem) error {
-	cd.Duration = Column([]float64{0.2, 0.4, 0.6, 0.8, 1})
+	cd.Duration = CDDuration
 
 	sec, err := mem.sectionContainingHeader("CHARGE DURATION")
 	if err != nil {
