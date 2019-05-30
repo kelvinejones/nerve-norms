@@ -16,10 +16,6 @@ type ThresholdElectrotonus struct {
 	Data map[string]*TEPair
 }
 
-func (te *ThresholdElectrotonus) GetPair(name string) TEPair {
-	return *te.Data[name]
-}
-
 var TEDelay = Column([]float64{0, 9, 10, 11, 15, 20, 26, 30, 33, 30, 41, 50, 60, 70, 80, 90, 100, 109, 110, 111, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210})
 
 func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {

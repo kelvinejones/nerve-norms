@@ -25,11 +25,11 @@ func (norm teSingle) NRows() int {
 }
 
 func (norm teSingle) Column(i int) mem.Column {
-	return norm.mef.mems[i].Sections["TE"].(*mem.ThresholdElectrotonus).GetPair(norm.section).ThreshReduction
+	return norm.mef.mems[i].Sections["TE"].(*mem.ThresholdElectrotonus).Data[norm.section].ThreshReduction
 }
 
 func (norm teSingle) WasImputed(i int) mem.Column {
-	return norm.mef.mems[i].Sections["TE"].(*mem.ThresholdElectrotonus).GetPair(norm.section).WasImputed
+	return norm.mef.mems[i].Sections["TE"].(*mem.ThresholdElectrotonus).Data[norm.section].WasImputed
 }
 
 func (mef *Mef) teNorm() TENorm {
