@@ -2,17 +2,19 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
 
 	"gogs.bellstone.ca/james/jitter/lib/mef"
+	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
 var input = flag.String("input", "res/data/participants.json", "path to the JSON that should be loaded")
 var output = flag.String("output", "", "path to save the filtered JSON; otherwise, output to stdout")
-var sex = flag.String("sex", "", "only include participants of this sex (male/female)")
+var sexString = flag.String("sex", "", "only include participants of this sex (M/F)")
 var minAge = flag.Int("minAge", 0, "only include participants at least this old")
 var maxAge = flag.Int("maxAge", 200, "only include participants this age or younger")
 var country = flag.String("country", "", "only include participants from this country (CA/PO/JP)")
@@ -22,6 +24,11 @@ func main() {
 
 	if *minAge > *maxAge {
 		panic("minAge > maxAge is not valid")
+	}
+
+	sex, err := parseSex(*sexString)
+	if err != nil {
+		panic(err)
 	}
 
 	file, err := os.Open(*input)
@@ -42,7 +49,7 @@ func main() {
 		panic(err)
 	}
 
-	// TODO filter
+	mefData.FilteredBySex(sex).FilteredByAge(*minAge, *maxAge)
 
 	jsArray, err := json.Marshal(&mefData)
 	if err != nil {
@@ -56,5 +63,18 @@ func main() {
 		if err != nil {
 			fmt.Println("Could not save JSON due to error: " + err.Error())
 		}
+	}
+}
+
+func parseSex(sex string) (mem.Sex, error) {
+	switch sex {
+	case "male", "Male", "M", "m":
+		return mem.MaleSex, nil
+	case "female", "Female", "F", "f":
+		return mem.MaleSex, nil
+	case "":
+		return mem.UnknownSex, nil
+	default:
+		return mem.UnknownSex, errors.New("Invalid sex '" + sex + "'")
 	}
 }
