@@ -27,6 +27,12 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 	te.Data = make(map[string]*TEPair, 4)
 
 	for i := range sec.Tables {
+		current, err := sec.columnContainsName("Current (%)", i)
+		if err != nil {
+			return errors.New("Could not get threshold electrotonus: " + err.Error())
+		}
+		teType := teTypeForCurrent(current)
+
 		pair := TEPair{Delay: TEDelay}
 
 		delay, err := sec.columnContainsName("Delay (ms)", i)
@@ -40,12 +46,6 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 		}
 
 		pair.WasImputed = pair.ThreshReduction.ImputeWithValue(delay, pair.Delay, 0.01, false)
-
-		current, err := sec.columnContainsName("Current (%)", i)
-		if err != nil {
-			return errors.New("Could not get threshold electrotonus: " + err.Error())
-		}
-		teType := teTypeForCurrent(current)
 
 		te.Data[teType] = &pair
 	}
