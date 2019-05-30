@@ -78,20 +78,22 @@ type jsonThresholdElectrotonus struct {
 func (dat *ThresholdElectrotonus) MarshalJSON() ([]byte, error) {
 	str := &jsonThresholdElectrotonus{
 		Columns: []string{"Delay (ms)", "Threshold Reduction (%)"},
-		Data: map[string]Table{
-			"h40": []Column{dat.Data["h40"].Delay, dat.Data["h40"].ThreshReduction},
-			"h20": []Column{dat.Data["h20"].Delay, dat.Data["h20"].ThreshReduction},
-			"d40": []Column{dat.Data["d40"].Delay, dat.Data["d40"].ThreshReduction},
-			"d20": []Column{dat.Data["d20"].Delay, dat.Data["d20"].ThreshReduction},
-		},
+		Data:    make(map[string]Table, 4),
 	}
 
-	if dat.Data["h40"].WasImputed != nil || dat.Data["h20"].WasImputed != nil || dat.Data["d40"].WasImputed != nil || dat.Data["d20"].WasImputed != nil {
+	somethingWasImputed := false
+	for key, val := range dat.Data {
+		str.Data[key] = []Column{val.Delay, val.ThreshReduction}
+		if val.WasImputed != nil {
+			somethingWasImputed = true
+		}
+	}
+
+	if somethingWasImputed {
 		str.Columns = append(str.Columns, "Was Imputed")
-		str.Data["h40"] = append(str.Data["h40"], dat.Data["h40"].WasImputed)
-		str.Data["h20"] = append(str.Data["h20"], dat.Data["h20"].WasImputed)
-		str.Data["d40"] = append(str.Data["d40"], dat.Data["d40"].WasImputed)
-		str.Data["d20"] = append(str.Data["d20"], dat.Data["d20"].WasImputed)
+		for key, val := range dat.Data {
+			str.Data[key] = append(str.Data[key], val.WasImputed)
+		}
 	}
 
 	return json.Marshal(&str)
@@ -113,11 +115,9 @@ func (dat *ThresholdElectrotonus) UnmarshalJSON(value []byte) error {
 	}
 
 	dat.Data = make(map[string]*TEPair, 4)
-
-	dat.Data["h40"] = tePairFromTable(jsDat.Data["h40"])
-	dat.Data["h20"] = tePairFromTable(jsDat.Data["h20"])
-	dat.Data["d40"] = tePairFromTable(jsDat.Data["d40"])
-	dat.Data["d20"] = tePairFromTable(jsDat.Data["d20"])
+	for key := range jsDat.Data {
+		dat.Data[key] = tePairFromTable(jsDat.Data[key])
+	}
 
 	return nil
 }
