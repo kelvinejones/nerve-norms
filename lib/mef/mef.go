@@ -42,14 +42,13 @@ func (mef *Mef) FilterByAge(youngAge, oldAge int) *Mef {
 	return mef.addFilter(&AgeFilter{youngAge: youngAge, oldAge: oldAge})
 }
 
-func (mef *Mef) MarshalJSON() ([]byte, error) {
-	mems := make([]*mem.Mem, 0, len(mef.mems))
-
+func (mef *Mef) FilteredMef() *Mef {
 	if mef.filters == nil || len(mef.filters) == 0 {
 		// There are no filters, so return all data
-		return json.Marshal(mef.mems)
+		return mef
 	}
 
+	mems := make([]*mem.Mem, 0, len(mef.mems))
 	for _, m := range mef.mems {
 		// For each Mem, check if it passes all filters
 		shouldInclude := true
@@ -66,7 +65,11 @@ func (mef *Mef) MarshalJSON() ([]byte, error) {
 		}
 	}
 
-	return json.Marshal(mems)
+	return &Mef{mems: mems}
+}
+
+func (mef *Mef) MarshalJSON() ([]byte, error) {
+	return json.Marshal(mef.FilteredMef().mems)
 }
 
 func (mef *Mef) UnmarshalJSON(value []byte) error {
