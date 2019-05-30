@@ -10,9 +10,9 @@ type filter interface {
 // filterWithConstraint updates the FilteredMef filter list based on the provided filter.
 // It returns the original object to support chaining.
 func (fmef *FilteredMef) filterWithConstraint(filt filter) *FilteredMef {
-	for name, memData := range fmef.Mef {
+	for _, memData := range fmef.Mef {
 		if filt.Filter(memData) {
-			fmef.IncludedNames = append(fmef.IncludedNames, name)
+			fmef.IncludedNames = append(fmef.IncludedNames, memData.Header.Name)
 		}
 	}
 	return fmef

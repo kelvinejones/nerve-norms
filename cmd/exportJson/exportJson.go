@@ -21,7 +21,7 @@ type ExpectedFiles map[string]struct{}
 func main() {
 	flag.Parse()
 
-	jsonStrings := make(map[string]json.RawMessage)
+	jsonStrings := make([]json.RawMessage, 0)
 	expect := ExpectedFiles(nil)
 
 	ext := filepath.Ext(*input)
@@ -56,15 +56,12 @@ func main() {
 			return nil
 		}
 
-		name, js, err := loadMemAsJson(subpath)
+		js, err := loadMemAsJson(subpath)
 		if err != nil {
 			fmt.Println("Could not parse '" + basename + "' due to error: " + err.Error())
 			return nil
 		}
-		if _, ok := jsonStrings[name]; ok {
-			fmt.Println("Warning: Participant '" + name + "' already exists and has been overwritten")
-		}
-		jsonStrings[name] = js
+		jsonStrings = append(jsonStrings, js)
 
 		if expect != nil {
 			expect.Remove(basename)
@@ -92,19 +89,19 @@ func main() {
 	}
 }
 
-func loadMemAsJson(path string) (string, []byte, error) {
+func loadMemAsJson(path string) ([]byte, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		return "", nil, err
+		return nil, err
 	}
 
 	memData, err := mem.Import(bufio.NewReader(file))
 	if err != nil {
-		return "", nil, err
+		return nil, err
 	}
 
 	js, err := json.Marshal(&memData)
-	return memData.Header.Name, js, err
+	return js, err
 }
 
 func (ef ExpectedFiles) Contains(path string) bool {

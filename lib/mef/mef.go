@@ -2,7 +2,7 @@ package mef
 
 import "gogs.bellstone.ca/james/jitter/lib/mem"
 
-type Mef map[string]mem.Mem
+type Mef []mem.Mem
 
 type FilteredMef struct {
 	Mef
