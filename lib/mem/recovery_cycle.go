@@ -11,8 +11,10 @@ type RecoveryCycle struct {
 	WasImputed   Column
 }
 
+var RCInterval = Column([]float64{2, 2.5, 3.2, 4, 5, 6.3, 7.9, 10, 13, 18, 24, 32, 42, 56, 75, 100, 140, 200})
+
 func (rc *RecoveryCycle) LoadFromMem(mem *rawMem) error {
-	rc.Interval = Column([]float64{2, 2.5, 3.2, 4, 5, 6.3, 7.9, 10, 13, 18, 24, 32, 42, 56, 75, 100, 140, 200})
+	rc.Interval = RCInterval
 
 	sec, err := mem.sectionContainingHeader("RECOVERY CYCLE")
 	if err != nil {
