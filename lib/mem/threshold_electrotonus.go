@@ -21,6 +21,27 @@ type ThresholdElectrotonus struct {
 	Depol100   TEPair
 }
 
+func (te *ThresholdElectrotonus) GetPair(name string) TEPair {
+	switch name {
+	case "h40":
+		return te.Hyperpol40
+	case "h20":
+		return te.Hyperpol20
+	case "d40":
+		return te.Depol40
+	case "d20":
+		return te.Depol20
+	case "d70":
+		return te.Depol70
+	case "d100":
+		return te.Depol100
+	default:
+		return TEPair{}
+	}
+}
+
+var TEDelay = Column([]float64{0, 9, 10, 11, 15, 20, 26, 30, 33, 30, 41, 50, 60, 70, 80, 90, 100, 109, 110, 111, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210})
+
 func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 	sec, err := mem.sectionContainingHeader("THRESHOLD ELECTROTONUS")
 	if err != nil {
@@ -28,7 +49,7 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 	}
 
 	for i := range sec.Tables {
-		pair := TEPair{Delay: Column([]float64{0, 9, 10, 11, 15, 20, 26, 30, 33, 30, 41, 50, 60, 70, 80, 90, 100, 109, 110, 111, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210})}
+		pair := TEPair{Delay: TEDelay}
 
 		delay, err := sec.columnContainsName("Delay (ms)", i)
 		if err != nil {
