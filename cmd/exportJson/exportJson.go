@@ -89,7 +89,6 @@ func main() {
 		if err != nil {
 			fmt.Println("Could not save JSON due to error: " + err.Error())
 		}
-
 	}
 }
 
