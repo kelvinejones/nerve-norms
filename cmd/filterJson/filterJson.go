@@ -13,7 +13,8 @@ import (
 )
 
 var input = flag.String("input", "res/data/all.json", "path to the JSON that should be loaded")
-var output = flag.String("output", "", "path to save the filtered JSON; otherwise, output to stdout")
+var output = flag.String("output", "", "path to save the filtered JSON; otherwise, do nothing with it")
+var norm = flag.String("norm", "", "path to save the norm JSON; otherwise, output to stdout")
 var sexString = flag.String("sex", "", "only include participants of this sex (M/F)")
 var minAge = flag.Int("minAge", 0, "only include participants at least this old")
 var maxAge = flag.Int("maxAge", 200, "only include participants this age or younger")
@@ -56,12 +57,24 @@ func main() {
 		fmt.Println("Could not concatenate JSON due to error: " + err.Error())
 	}
 
-	if *output == "" {
-		fmt.Printf("%v\n", string(jsArray))
-	} else {
+	if *output != "" {
 		err = ioutil.WriteFile(*output, jsArray, 0644)
 		if err != nil {
 			fmt.Println("Could not save JSON due to error: " + err.Error())
+		}
+	}
+
+	jsNorm := mefData.Norm()
+	if *output == "" {
+		fmt.Println(jsNorm)
+	} else {
+		jsNormArray, err := json.Marshal(&jsNorm)
+		if err != nil {
+			fmt.Println("Could not create norm JSON due to error: " + err.Error())
+		}
+		err = ioutil.WriteFile(*norm, jsNormArray, 0644)
+		if err != nil {
+			fmt.Println("Could not save norm JSON due to error: " + err.Error())
 		}
 	}
 }
