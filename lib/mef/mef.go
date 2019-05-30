@@ -43,7 +43,7 @@ func (mef *Mef) FilterByAge(youngAge, oldAge int) *Mef {
 }
 
 func (mef *Mef) MarshalJSON() ([]byte, error) {
-	mems := make([]*mem.Mem, len(mef.mems))
+	mems := make([]*mem.Mem, 0, len(mef.mems))
 
 	if mef.filters == nil || len(mef.filters) == 0 {
 		// There are no filters, so return all data
