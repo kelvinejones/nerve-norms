@@ -7,7 +7,7 @@ import (
 )
 
 type Mef struct {
-	mems    []mem.Mem
+	mems    []*mem.Mem
 	filters []filter
 }
 
@@ -50,11 +50,11 @@ func (mef *Mef) MarshalJSON() ([]byte, error) {
 		return json.Marshal(mef.mems)
 	}
 
-	for i, m := range mef.mems {
+	for _, m := range mef.mems {
 		// For each Mem, check if it passes all filters
 		shouldInclude := true
 		for _, filt := range mef.filters {
-			if !filt.Filter(m) {
+			if !filt.Filter(*m) {
 				// A filter was failed, so keep going.
 				shouldInclude = false
 				break
@@ -62,7 +62,7 @@ func (mef *Mef) MarshalJSON() ([]byte, error) {
 		}
 		if shouldInclude {
 			// This Mem passed, so append it
-			mems = append(mems, &mef.mems[i])
+			mems = append(mems, m)
 		}
 	}
 
