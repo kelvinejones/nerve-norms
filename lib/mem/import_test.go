@@ -108,7 +108,7 @@ SR.20               	 20                 	 4.9239
 
 var sResponsePercentMaxColumn = Column{2., 4., 6., 8., 10., 12., 14., 16., 18., 20.}
 var sResponseStimulusColumn = Column{3.915578, 4.073214, 4.144141, 4.20404, 4.435846, 4.601757, 4.824213, 4.86682, 4.89536, 4.9239}
-var sResponseExpected = Section{
+var sResponseExpected = RawSection{
 	Header: "STIMULUS-RESPONSE DATA (2.4-1.9m)",
 	TableSet: TableSet{
 		ColCount: 2,
@@ -143,7 +143,7 @@ var sResponseParsed = StimResponse{
 }
 
 func TestImportSRResponse(t *testing.T) {
-	sec := Section{Header: sResponseExpected.Header}
+	sec := RawSection{Header: sResponseExpected.Header}
 	err := sec.parse(NewStringReader(toWindows(sResponseString)))
 	assert.Equal(t, io.EOF, err)
 	assert.Equal(t, sResponseExpected, sec)
@@ -165,7 +165,7 @@ QT.5                	 1                  	 5.187509           	 5.187509
 
 var chargeDurationDurationColumn = Column{.2, .4, .6, .8, 1.}
 var chargeDurationThreshChargeColumn = Column{1.958192, 2.762345, 3.587318, 4.354728, 5.187509}
-var chargeDurationExpected = Section{
+var chargeDurationExpected = RawSection{
 	Header: "CHARGE DURATION DATA (2.4-3.5m)",
 	TableSet: TableSet{
 		ColCount: 3,
@@ -183,7 +183,7 @@ var chargeDurationParsed = ChargeDuration{
 }
 
 func TestImportChargeDuration(t *testing.T) {
-	sec := Section{Header: chargeDurationExpected.Header}
+	sec := RawSection{Header: chargeDurationExpected.Header}
 	err := sec.parse(NewStringReader(toWindows(chargeDurationString)))
 	assert.Equal(t, io.EOF, err)
 	assert.Equal(t, chargeDurationExpected, sec)
@@ -212,7 +212,7 @@ var thresholdElectrotonusHyp40DelayColumn = Column{0., 9., 10., 11., 11.}
 var thresholdElectrotonusHyp40ThreshReductionColumn = Column{0.00, 0.00, 40.02, 42.71, -42.71}
 var thresholdElectrotonusDep40DelayColumn = Column{0., 9., 10., 11.}
 var thresholdElectrotonusDep40ThreshReductionColumn = Column{0.00, 0.00, -39.34, -40.92}
-var thresholdElectrotonusExpected = Section{
+var thresholdElectrotonusExpected = RawSection{
 	Header: "THRESHOLD ELECTROTONUS DATA (3.5-8.8m)",
 	TableSet: TableSet{
 		ColCount: 3,
@@ -232,18 +232,18 @@ var thresholdElectrotonusExpected = Section{
 	},
 }
 var thresholdElectrotonusParsed = ThresholdElectrotonus{
-	Hyperpol40: &TEPair{
+	Hyperpol40: TEPair{
 		Delay:           thresholdElectrotonusHyp40DelayColumn,
 		ThreshReduction: thresholdElectrotonusHyp40ThreshReductionColumn,
 	},
-	Depol40: &TEPair{
+	Depol40: TEPair{
 		Delay:           thresholdElectrotonusDep40DelayColumn,
 		ThreshReduction: thresholdElectrotonusDep40ThreshReductionColumn,
 	},
 }
 
 func TestImportThresholdElectrotonus(t *testing.T) {
-	sec := Section{Header: thresholdElectrotonusExpected.Header}
+	sec := RawSection{Header: thresholdElectrotonusExpected.Header}
 	err := sec.parse(NewStringReader(toWindows(thresholdElectrotonusString)))
 	assert.Equal(t, io.EOF, err)
 	assert.Equal(t, thresholdElectrotonusExpected, sec)
@@ -265,7 +265,7 @@ RC1.5               	 7.9                	-24.05
 
 var recoveryCycleIntervalColumn = Column{3.2, 4., 5., 6.3, 7.9}
 var recoveryCycleThreshChangeColumn = Column{4.99, -12.75, -22.24, -24.45, -24.05}
-var recoveryCycleExpected = Section{
+var recoveryCycleExpected = RawSection{
 	Header: "RECOVERY CYCLE DATA (11.1-15.3m)",
 	TableSet: TableSet{
 		ColCount: 2,
@@ -282,7 +282,7 @@ var recoveryCycleParsed = RecoveryCycle{
 }
 
 func TestImportRecoveryCycle(t *testing.T) {
-	sec := Section{Header: recoveryCycleExpected.Header}
+	sec := RawSection{Header: recoveryCycleExpected.Header}
 	err := sec.parse(NewStringReader(toWindows(recoveryCycleString)))
 	assert.Equal(t, io.EOF, err)
 	assert.Equal(t, recoveryCycleExpected, sec)
@@ -307,7 +307,7 @@ IV1.8               	-20                 	-39.31
 
 var thresholdIVCurrentColumn = Column{50., 40., 30., 20., 10., 0., -10., -20.}
 var thresholdIVThreshReductionColumn = Column{49.28, 39.01, 31.59, 22.58, 13.06, -0.78, -17.58, -39.31}
-var thresholdIVExpected = Section{
+var thresholdIVExpected = RawSection{
 	Header: "THRESHOLD I/V DATA (8.9-11m)",
 	TableSet: TableSet{
 		ColCount: 2,
@@ -324,7 +324,7 @@ var thresholdIVParsed = ThresholdIV{
 }
 
 func TestImportThresholdIV(t *testing.T) {
-	sec := Section{Header: thresholdIVExpected.Header}
+	sec := RawSection{Header: thresholdIVExpected.Header}
 	err := sec.parse(NewStringReader(toWindows(thresholdIVString)))
 	assert.Equal(t, io.EOF, err)
 	assert.Equal(t, thresholdIVExpected, sec)
@@ -355,16 +355,16 @@ TESTINGxTABx                  	=  23.7
 `
 
 var excitabilityVariablesExpected = ExcitabilityVariables{
-	Values: map[string]float64{
-		`Stimulus (mA) for 50% max response`:   5.307,
-		`Strength-duration\time constant (ms)`: 0.287,
-		`Polarizing current\(mA)`:              0.000,
-		`Sex (M=1, F=2)`:                       1,
-		`TEh(10-20ms)`:                         -64.192,
-		`TEd40(Accom)`:                         19.6,
-		`TEd20(10-20ms)`:                       30.8,
-		`TEh20(10-20ms)`:                       -32.2,
-		`TESTINGxTABx`:                         23.7,
+	Values: map[int]float64{
+		1:    5.307,   // 		`Stimulus (mA) for 50% max response`
+		3:    0.287,   // 		`Strength-duration\time constant (ms)`
+		16:   0.000,   // 		`Polarizing current\(mA)`
+		18:   1,       // 		`Sex (M=1, F=2)`
+		22:   -64.192, // 		`TEh(10-20ms)`
+		1001: 19.6,    // 		`TEd40(Accom)`
+		1002: 30.8,    // 		`TEd20(10-20ms)`
+		1003: -32.2,   // 		`TEh20(10-20ms)`
+		1020: 23.7,    // 		`MRCsumscore`
 	},
 	ExcitabilitySettings: map[string]string{
 		"Program":          "QTracP 9/12/2016",
@@ -374,7 +374,7 @@ var excitabilityVariablesExpected = ExcitabilityVariables{
 }
 
 func TestImportExcitabilityVariables(t *testing.T) {
-	actual := ExcitabilityVariables{Values: make(map[string]float64)}
+	actual := ExcitabilityVariables{Values: make(map[int]float64)}
 	err := actual.Parse(NewStringReader(toWindows(excitabilityVariablesString)))
 	assert.NoError(t, err)
 	assert.Equal(t, excitabilityVariablesExpected, actual)
@@ -382,7 +382,7 @@ func TestImportExcitabilityVariables(t *testing.T) {
 
 var completeExpectedRawMem = rawMem{
 	Header: headerExpected,
-	Sections: []Section{
+	Sections: []RawSection{
 		sResponseExpected,
 		chargeDurationExpected,
 		thresholdElectrotonusExpected,
@@ -405,27 +405,32 @@ func TestImportAll(t *testing.T) {
 		assert.Equal(t, completeExpectedRawMem, mem)
 	})
 	t.Run("StimulusResponse", func(t *testing.T) {
-		actualParsed, err := mem.StimulusResponse()
+		actualParsed := StimResponse{}
+		err := actualParsed.LoadFromMem(&mem)
 		assert.NoError(t, err)
 		assert.Equal(t, sResponseParsed, actualParsed)
 	})
 	t.Run("ThresholdElectrotonus", func(t *testing.T) {
-		actualParsed, err := mem.ThresholdElectrotonus()
+		actualParsed := ThresholdElectrotonus{}
+		err := actualParsed.LoadFromMem(&mem)
 		assert.NoError(t, err)
 		assert.Equal(t, thresholdElectrotonusParsed, actualParsed)
 	})
 	t.Run("ThresholdIV", func(t *testing.T) {
-		actualParsed, err := mem.ThresholdIV()
+		actualParsed := ThresholdIV{}
+		err := actualParsed.LoadFromMem(&mem)
 		assert.NoError(t, err)
 		assert.Equal(t, thresholdIVParsed, actualParsed)
 	})
 	t.Run("RecoveryCycle", func(t *testing.T) {
-		actualParsed, err := mem.RecoveryCycle()
+		actualParsed := RecoveryCycle{}
+		err := actualParsed.LoadFromMem(&mem)
 		assert.NoError(t, err)
 		assert.Equal(t, recoveryCycleParsed, actualParsed)
 	})
 	t.Run("ChargeDuration", func(t *testing.T) {
-		actualParsed, err := mem.ChargeDuration()
+		actualParsed := ChargeDuration{}
+		err := actualParsed.LoadFromMem(&mem)
 		assert.NoError(t, err)
 		assert.Equal(t, chargeDurationParsed, actualParsed)
 	})
