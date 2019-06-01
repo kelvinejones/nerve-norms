@@ -6,30 +6,20 @@ import (
 
 type RCNorm struct {
 	Interval mem.Column `json:"interval"`
-	MatNorm  `json:"threshChange"`
-	mef      *Mef
+	GenericNorm
 }
 
-func (norm RCNorm) NColumns() int {
-	return len(norm.mef.mems)
-}
-
-func (norm RCNorm) NRows() int {
-	return len(mem.RCInterval)
-}
-
-func (norm RCNorm) Column(i int) mem.Column {
-	return norm.mef.mems[i].Sections["RC"].(*mem.RecoveryCycle).YColumn
-}
-
-func (norm RCNorm) WasImputed(i int) mem.Column {
-	return norm.mef.mems[i].Sections["RC"].(*mem.RecoveryCycle).WasImputed
+func rcTable(mData *mem.Mem) *mem.LabelledTable {
+	return &mData.Sections["RC"].(*mem.RecoveryCycle).LabelledTable
 }
 
 func (mef *Mef) rcNorm() RCNorm {
 	norm := RCNorm{
 		Interval: mem.RCInterval,
-		mef:      mef,
+		GenericNorm: GenericNorm{
+			mef:  mef,
+			ltfm: rcTable,
+		},
 	}
 	norm.MatNorm = MatrixNorm(norm)
 	return norm

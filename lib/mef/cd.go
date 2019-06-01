@@ -6,30 +6,20 @@ import (
 
 type CDNorm struct {
 	Duration mem.Column `json:"duration"`
-	MatNorm  `json:"threshCharge"`
-	mef      *Mef
+	GenericNorm
 }
 
-func (norm CDNorm) NColumns() int {
-	return len(norm.mef.mems)
-}
-
-func (norm CDNorm) NRows() int {
-	return len(mem.CDDuration)
-}
-
-func (norm CDNorm) Column(i int) mem.Column {
-	return norm.mef.mems[i].Sections["CD"].(*mem.ChargeDuration).YColumn
-}
-
-func (norm CDNorm) WasImputed(i int) mem.Column {
-	return norm.mef.mems[i].Sections["CD"].(*mem.ChargeDuration).WasImputed
+func cdTable(mData *mem.Mem) *mem.LabelledTable {
+	return &mData.Sections["CD"].(*mem.ChargeDuration).LabelledTable
 }
 
 func (mef *Mef) cdNorm() CDNorm {
 	norm := CDNorm{
 		Duration: mem.CDDuration,
-		mef:      mef,
+		GenericNorm: GenericNorm{
+			mef:  mef,
+			ltfm: cdTable,
+		},
 	}
 	norm.MatNorm = MatrixNorm(norm)
 	return norm

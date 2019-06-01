@@ -13,6 +13,30 @@ type Matrix interface {
 	WasImputed(int) mem.Column
 }
 
+type LabelledTableFromMem func(*mem.Mem) *mem.LabelledTable
+
+type GenericNorm struct {
+	MatNorm `json:"norms"`
+	ltfm    LabelledTableFromMem
+	mef     *Mef
+}
+
+func (norm GenericNorm) NColumns() int {
+	return len(norm.mef.mems)
+}
+
+func (norm GenericNorm) NRows() int {
+	return len(norm.ltfm(norm.mef.mems[0]).XColumn)
+}
+
+func (norm GenericNorm) Column(i int) mem.Column {
+	return norm.ltfm(norm.mef.mems[i]).YColumn
+}
+
+func (norm GenericNorm) WasImputed(i int) mem.Column {
+	return norm.ltfm(norm.mef.mems[i]).WasImputed
+}
+
 type MatNorm struct {
 	Mean mem.Column `json:"mean"`
 	SD   mem.Column `json:"sd"`

@@ -6,32 +6,22 @@ import (
 
 type SRNorm struct {
 	PercentMax mem.Column `json:"percentMax"`
-	MatNorm    `json:"stimulus"`
-	Cmap       maxCmapNorm
-	mef        *Mef
+	GenericNorm
+	Cmap maxCmapNorm
 }
 
-func (norm SRNorm) NColumns() int {
-	return len(norm.mef.mems)
-}
-
-func (norm SRNorm) NRows() int {
-	return len(mem.SRPercentMax)
-}
-
-func (norm SRNorm) Column(i int) mem.Column {
-	return norm.mef.mems[i].Sections["SR"].(*mem.StimResponse).LT.YColumn
-}
-
-func (norm SRNorm) WasImputed(i int) mem.Column {
-	return norm.mef.mems[i].Sections["SR"].(*mem.StimResponse).LT.WasImputed
+func srTable(mData *mem.Mem) *mem.LabelledTable {
+	return &mData.Sections["SR"].(*mem.StimResponse).LT
 }
 
 func (mef *Mef) srNorm() SRNorm {
 	norm := SRNorm{
 		PercentMax: mem.SRPercentMax,
-		mef:        mef,
-		Cmap:       maxCmapNorm{mef: mef},
+		GenericNorm: GenericNorm{
+			mef:  mef,
+			ltfm: srTable,
+		},
+		Cmap: maxCmapNorm{mef: mef},
 	}
 	norm.MatNorm = MatrixNorm(norm)
 	norm.Cmap.calcNorm()

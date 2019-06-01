@@ -6,30 +6,20 @@ import (
 
 type IVNorm struct {
 	Current mem.Column `json:"current"`
-	MatNorm `json:"threshReduction"`
-	mef     *Mef
+	GenericNorm
 }
 
-func (norm IVNorm) NColumns() int {
-	return len(norm.mef.mems)
-}
-
-func (norm IVNorm) NRows() int {
-	return len(mem.IVCurrent)
-}
-
-func (norm IVNorm) Column(i int) mem.Column {
-	return norm.mef.mems[i].Sections["IV"].(*mem.ThresholdIV).YColumn
-}
-
-func (norm IVNorm) WasImputed(i int) mem.Column {
-	return norm.mef.mems[i].Sections["IV"].(*mem.ThresholdIV).WasImputed
+func ivTable(mData *mem.Mem) *mem.LabelledTable {
+	return &mData.Sections["IV"].(*mem.ThresholdIV).LabelledTable
 }
 
 func (mef *Mef) ivNorm() IVNorm {
 	norm := IVNorm{
 		Current: mem.IVCurrent,
-		mef:     mef,
+		GenericNorm: GenericNorm{
+			mef:  mef,
+			ltfm: ivTable,
+		},
 	}
 	norm.MatNorm = MatrixNorm(norm)
 	return norm
