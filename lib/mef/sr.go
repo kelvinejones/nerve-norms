@@ -15,18 +15,10 @@ func srTable(mData *mem.Mem) *mem.LabelledTable {
 
 func (mef *Mef) srNorm() SRNorm {
 	norm := SRNorm{
-		GenericNorm: GenericNorm{
-			XValues: mem.SRPercentMax,
-			mef:     mef,
-			ltfm:    srTable,
-		},
-		Cmap: GenericNorm{
-			mef:  mef,
-			ltfm: maxCmapTable,
-		},
+		GenericNorm: GenericNorm{XValues: mem.SRPercentMax},
 	}
-	norm.CalculateNorms()
-	norm.Cmap.CalculateNorms()
+	norm.CalculateNorms(srTable, mef)
+	norm.Cmap.CalculateNorms(maxCmapTable, mef)
 	return norm
 }
 

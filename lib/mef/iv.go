@@ -12,12 +12,8 @@ func ivTable(mData *mem.Mem) *mem.LabelledTable {
 
 func (mef *Mef) ivNorm() IVNorm {
 	norm := IVNorm{
-		GenericNorm: GenericNorm{
-			XValues: mem.IVCurrent,
-			mef:     mef,
-			ltfm:    ivTable,
-		},
+		GenericNorm: GenericNorm{XValues: mem.IVCurrent},
 	}
-	norm.CalculateNorms()
+	norm.CalculateNorms(ivTable, mef)
 	return norm
 }

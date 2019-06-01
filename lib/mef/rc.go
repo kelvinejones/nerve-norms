@@ -12,12 +12,8 @@ func rcTable(mData *mem.Mem) *mem.LabelledTable {
 
 func (mef *Mef) rcNorm() RCNorm {
 	norm := RCNorm{
-		GenericNorm: GenericNorm{
-			XValues: mem.RCInterval,
-			mef:     mef,
-			ltfm:    rcTable,
-		},
+		GenericNorm: GenericNorm{XValues: mem.RCInterval},
 	}
-	norm.CalculateNorms()
+	norm.CalculateNorms(rcTable, mef)
 	return norm
 }

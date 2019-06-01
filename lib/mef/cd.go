@@ -12,12 +12,8 @@ func cdTable(mData *mem.Mem) *mem.LabelledTable {
 
 func (mef *Mef) cdNorm() CDNorm {
 	norm := CDNorm{
-		GenericNorm: GenericNorm{
-			XValues: mem.CDDuration,
-			mef:     mef,
-			ltfm:    cdTable,
-		},
+		GenericNorm: GenericNorm{XValues: mem.CDDuration},
 	}
-	norm.CalculateNorms()
+	norm.CalculateNorms(cdTable, mef)
 	return norm
 }

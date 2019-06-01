@@ -14,13 +14,9 @@ func (mef *Mef) teNorm() TENorm {
 
 	for _, name := range names {
 		norm.Singles[name] = &teSingle{
-			GenericNorm: GenericNorm{
-				XValues: mem.IVCurrent,
-				mef:     mef,
-				ltfm:    teTableForSection(name),
-			},
+			GenericNorm: GenericNorm{XValues: mem.IVCurrent},
 		}
-		norm.Singles[name].CalculateNorms()
+		norm.Singles[name].CalculateNorms(teTableForSection(name), mef)
 	}
 
 	return norm

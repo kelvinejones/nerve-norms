@@ -13,21 +13,19 @@ type GenericNorm struct {
 	Mean    mem.Column `json:"mean"`
 	SD      mem.Column `json:"sd"`
 	Num     mem.Column `json:"num"`
-	ltfm    LabelledTableFromMem
-	mef     *Mef
 }
 
-func (mat *GenericNorm) CalculateNorms() {
-	numEl := len(mat.ltfm(mat.mef.mems[0]).XColumn)
+func (mat *GenericNorm) CalculateNorms(ltfm LabelledTableFromMem, mef *Mef) {
+	numEl := len(ltfm(mef.mems[0]).XColumn)
 	mat.Mean = make(mem.Column, numEl)
 	mat.SD = make(mem.Column, numEl)
 	mat.Num = make(mem.Column, numEl)
 
 	// Sum the values
-	for colN, mm := range mat.mef.mems {
-		col := mat.ltfm(mm).YColumn
+	for _, mm := range mef.mems {
+		col := ltfm(mm).YColumn
 		for rowN := range col {
-			if !mat.wasImp(colN, rowN) {
+			if !mat.wasImp(ltfm(mm), rowN) {
 				mat.Mean[rowN] += col[rowN]
 				mat.Num[rowN]++
 			}
@@ -40,10 +38,10 @@ func (mat *GenericNorm) CalculateNorms() {
 	}
 
 	// Calculate SD
-	for colN, mm := range mat.mef.mems {
-		col := mat.ltfm(mm).YColumn
+	for _, mm := range mef.mems {
+		col := ltfm(mm).YColumn
 		for rowN := range col {
-			if !mat.wasImp(colN, rowN) {
+			if !mat.wasImp(ltfm(mm), rowN) {
 				mat.SD[rowN] += math.Pow(col[rowN]-mat.Mean[rowN], 2)
 			}
 		}
@@ -55,8 +53,8 @@ func (mat *GenericNorm) CalculateNorms() {
 	}
 }
 
-func (mat *GenericNorm) wasImp(colN, rowN int) bool {
-	col := mat.ltfm(mat.mef.mems[colN]).WasImputed
+func (mat *GenericNorm) wasImp(lt *mem.LabelledTable, rowN int) bool {
+	col := lt.WasImputed
 	// Yes, this is terrible, but wasImputed is a float column
 	return len(col) != 0 && col[rowN] > 0.5
 }
