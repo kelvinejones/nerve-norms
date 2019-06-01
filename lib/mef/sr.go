@@ -25,8 +25,8 @@ func (mef *Mef) srNorm() SRNorm {
 			ltfm: maxCmapTable,
 		},
 	}
-	norm.MatNorm = MatrixNorm(norm)
-	norm.Cmap.MatNorm = MatrixNorm(norm.Cmap)
+	norm.CalculateNorms()
+	norm.Cmap.CalculateNorms()
 	return norm
 }
 

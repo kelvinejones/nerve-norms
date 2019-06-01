@@ -18,6 +18,6 @@ func (mef *Mef) rcNorm() RCNorm {
 			ltfm:    rcTable,
 		},
 	}
-	norm.MatNorm = MatrixNorm(norm)
+	norm.CalculateNorms()
 	return norm
 }

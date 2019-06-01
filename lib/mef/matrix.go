@@ -6,13 +6,6 @@ import (
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
-type Matrix interface {
-	NColumns() int
-	NRows() int
-	Column(int) mem.Column
-	WasImputed(int) mem.Column
-}
-
 type LabelledTableFromMem func(*mem.Mem) *mem.LabelledTable
 
 type GenericNorm struct {
@@ -44,49 +37,45 @@ type MatNorm struct {
 	Num  mem.Column `json:"num"`
 }
 
-func MatrixNorm(mat Matrix) MatNorm {
+func (mat *GenericNorm) CalculateNorms() {
 	numEl := mat.NRows()
-	norm := MatNorm{
-		Mean: make(mem.Column, numEl),
-		SD:   make(mem.Column, numEl),
-		Num:  make(mem.Column, numEl),
-	}
+	mat.MatNorm.Mean = make(mem.Column, numEl)
+	mat.MatNorm.SD = make(mem.Column, numEl)
+	mat.MatNorm.Num = make(mem.Column, numEl)
 
 	// Sum the values
 	for colN := 0; colN < mat.NColumns(); colN++ {
 		col := mat.Column(colN)
 		for rowN := range col {
-			if !wasImp(mat, colN, rowN) {
-				norm.Mean[rowN] += col[rowN]
-				norm.Num[rowN]++
+			if !mat.wasImp(colN, rowN) {
+				mat.MatNorm.Mean[rowN] += col[rowN]
+				mat.MatNorm.Num[rowN]++
 			}
 		}
 	}
 
 	// Normalize to get mean
-	for rowN := range norm.Mean {
-		norm.Mean[rowN] /= norm.Num[rowN]
+	for rowN := range mat.MatNorm.Mean {
+		mat.MatNorm.Mean[rowN] /= mat.MatNorm.Num[rowN]
 	}
 
 	// Calculate SD
 	for colN := 0; colN < mat.NColumns(); colN++ {
 		col := mat.Column(colN)
 		for rowN := range col {
-			if !wasImp(mat, colN, rowN) {
-				norm.SD[rowN] += math.Pow(col[rowN]-norm.Mean[rowN], 2)
+			if !mat.wasImp(colN, rowN) {
+				mat.MatNorm.SD[rowN] += math.Pow(col[rowN]-mat.MatNorm.Mean[rowN], 2)
 			}
 		}
 	}
 
 	// Normalize to get SD
-	for rowN := range norm.Mean {
-		norm.SD[rowN] = math.Sqrt(norm.SD[rowN] / norm.Num[rowN])
+	for rowN := range mat.MatNorm.Mean {
+		mat.MatNorm.SD[rowN] = math.Sqrt(mat.MatNorm.SD[rowN] / mat.MatNorm.Num[rowN])
 	}
-
-	return norm
 }
 
-func wasImp(mat Matrix, colN, rowN int) bool {
+func (mat *GenericNorm) wasImp(colN, rowN int) bool {
 	col := mat.WasImputed(colN)
 	// Yes, this is terrible, but wasImputed is a float column
 	return len(col) != 0 && col[rowN] > 0.5

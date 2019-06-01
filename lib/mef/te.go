@@ -20,7 +20,7 @@ func (mef *Mef) teNorm() TENorm {
 				ltfm:    teTableForSection(name),
 			},
 		}
-		norm.Singles[name].MatNorm = MatrixNorm(*norm.Singles[name])
+		norm.Singles[name].CalculateNorms()
 	}
 
 	return norm

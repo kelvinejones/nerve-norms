@@ -18,6 +18,6 @@ func (mef *Mef) ivNorm() IVNorm {
 			ltfm:    ivTable,
 		},
 	}
-	norm.MatNorm = MatrixNorm(norm)
+	norm.CalculateNorms()
 	return norm
 }

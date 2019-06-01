@@ -18,6 +18,6 @@ func (mef *Mef) cdNorm() CDNorm {
 			ltfm:    cdTable,
 		},
 	}
-	norm.MatNorm = MatrixNorm(norm)
+	norm.CalculateNorms()
 	return norm
 }
