@@ -14,7 +14,7 @@ import (
 
 var input = flag.String("input", "json/all.json", "path to the JSON that should be loaded")
 var output = flag.String("output", "", "path to save the filtered JSON; otherwise, do nothing with it")
-var norm = flag.String("norm", "", "path to save the norm JSON; otherwise, output to stdout")
+var norm = flag.String("norm", "json/norm.json", "path to save the norm JSON; otherwise, output to stdout")
 var sexString = flag.String("sex", "", "only include participants of this sex (M/F)")
 var minAge = flag.Int("minAge", 0, "only include participants at least this old")
 var maxAge = flag.Int("maxAge", 200, "only include participants this age or younger")
