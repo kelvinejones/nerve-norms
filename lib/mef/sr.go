@@ -7,7 +7,7 @@ import (
 type SRNorm struct {
 	PercentMax mem.Column `json:"percentMax"`
 	GenericNorm
-	Cmap maxCmapNorm
+	Cmap GenericNorm
 }
 
 func srTable(mData *mem.Mem) *mem.LabelledTable {
@@ -21,45 +21,26 @@ func (mef *Mef) srNorm() SRNorm {
 			mef:  mef,
 			ltfm: srTable,
 		},
-		Cmap: maxCmapNorm{mef: mef},
+		Cmap: GenericNorm{
+			mef:  mef,
+			ltfm: maxCmapTable,
+		},
 	}
 	norm.MatNorm = MatrixNorm(norm)
-	norm.Cmap.calcNorm()
+	norm.Cmap.MatNorm = MatrixNorm(norm.Cmap)
 	return norm
 }
 
-type maxCmapNorm struct {
-	Mean float64
-	SD   float64
-	Num  float64
-	mef  *Mef
-}
-
-func (norm maxCmapNorm) NColumns() int {
-	return len(norm.mef.mems)
-}
-
-func (norm maxCmapNorm) NRows() int {
-	return 1
-}
-
-func (norm maxCmapNorm) Column(i int) mem.Column {
-	cmap, _ := norm.mef.mems[i].Sections["SR"].(*mem.StimResponse).MaxCmaps.AsFloat()
-	return mem.Column{cmap}
-}
-
-func (norm maxCmapNorm) WasImputed(i int) mem.Column {
-	_, err := norm.mef.mems[i].Sections["SR"].(*mem.StimResponse).MaxCmaps.AsFloat()
-	wasImp := mem.Column(nil)
-	if err != nil {
-		wasImp = mem.Column{1.0}
+func maxCmapTable(mData *mem.Mem) *mem.LabelledTable {
+	cmap, err := mData.Sections["SR"].(*mem.StimResponse).MaxCmaps.AsFloat()
+	lt := mem.LabelledTable{
+		XName:   "Time (ms)",
+		YName:   "CMAP",
+		XColumn: mem.Column{1},
+		YColumn: mem.Column{cmap},
 	}
-	return wasImp
-}
-
-func (mcn *maxCmapNorm) calcNorm() {
-	matN := MatrixNorm(mcn)
-	mcn.Mean = matN.Mean[0]
-	mcn.SD = matN.SD[0]
-	mcn.Num = matN.Num[0]
+	if err != nil {
+		lt.WasImputed = mem.Column{1}
+	}
+	return &lt
 }
