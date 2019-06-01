@@ -33,34 +33,19 @@ func (norm teSingle) WasImputed(i int) mem.Column {
 }
 
 func (mef *Mef) teNorm() TENorm {
+	names := []string{"h40", "h20", "d40", "d20"}
 	norm := TENorm{
-		mef: mef,
-		Singles: map[string]*teSingle{
-			"h40": &teSingle{
-				Delay:   mem.TEDelay("h40"),
-				section: "h40",
-				mef:     mef,
-			},
-			"h20": &teSingle{
-				Delay:   mem.TEDelay("h20"),
-				section: "h20",
-				mef:     mef,
-			},
-			"d40": &teSingle{
-				Delay:   mem.TEDelay("d40"),
-				section: "d40",
-				mef:     mef,
-			},
-			"d20": &teSingle{
-				Delay:   mem.TEDelay("d20"),
-				section: "d20",
-				mef:     mef,
-			},
-		},
+		mef:     mef,
+		Singles: map[string]*teSingle{},
 	}
 
-	for i := range norm.Singles {
-		norm.Singles[i].MatNorm = MatrixNorm(*norm.Singles[i])
+	for _, name := range names {
+		norm.Singles[name] = &teSingle{
+			Delay:   mem.TEDelay(name),
+			section: name,
+			mef:     mef,
+		}
+		norm.Singles[name].MatNorm = MatrixNorm(*norm.Singles[name])
 	}
 
 	return norm
