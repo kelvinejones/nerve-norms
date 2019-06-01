@@ -5,39 +5,38 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"os"
 
 	"gogs.bellstone.ca/james/jitter/lib/mef"
 )
 
-var caPath = flag.String("caPath", "json/CA.json", "path to the CA JSON")
-var jpPath = flag.String("jpPath", "", "path to the JP JSON")
-var poPath = flag.String("poPath", "json/PO.json", "path to the PO JSON")
-var legPath = flag.String("legPath", "json/leg.json", "path to the leg JSON")
-var ratPath = flag.String("ratPath", "", "path to the rat JSON")
-var output = flag.String("output", "json/all.json", "path to save the filtered JSON; otherwise, output to stdout")
+var caPath = flag.String("caPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/CA/FESmedianAPB.MEF", "path to the CA MEF")
+var jpPath = flag.String("jpPath", "", "path to the JP MEF")
+var poPath = flag.String("poPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/PO/Portugal.MEF", "path to the PO MEF")
+var legPath = flag.String("legPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/CA/FEScommonperonealTA.MEF", "path to the leg MEF")
+var ratPath = flag.String("ratPath", "", "path to the rat MEF")
+var output = flag.String("output", "json/all.json", "path to save the JSON; otherwise, output to stdout")
 
 func main() {
 	flag.Parse()
 
-	caMef, err := loadJson(*caPath)
-	if err != nil {
+	caMef, err := mef.Import(*caPath)
+	if err != nil && *caPath != "" {
 		panic(err)
 	}
-	jpMef, err := loadJson(*jpPath)
-	if err != nil {
+	jpMef, err := mef.Import(*jpPath)
+	if err != nil && *jpPath != "" {
 		panic(err)
 	}
-	poMef, err := loadJson(*poPath)
-	if err != nil {
+	poMef, err := mef.Import(*poPath)
+	if err != nil && *poPath != "" {
 		panic(err)
 	}
-	legMef, err := loadJson(*legPath)
-	if err != nil {
+	legMef, err := mef.Import(*legPath)
+	if err != nil && *legPath != "" {
 		panic(err)
 	}
-	ratMef, err := loadJson(*ratPath)
-	if err != nil {
+	ratMef, err := mef.Import(*ratPath)
+	if err != nil && *ratPath != "" {
 		panic(err)
 	}
 
@@ -56,26 +55,4 @@ func main() {
 			fmt.Println("Could not save JSON due to error: " + err.Error())
 		}
 	}
-}
-
-func loadJson(path string) (mef.Mef, error) {
-	if path == "" {
-		// No data to load, so just return empty
-		return mef.Mef{}, nil
-	}
-
-	file, err := os.Open(path)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer file.Close()
-
-	bytes, err := ioutil.ReadAll(file)
-	if err != nil {
-		return mef.Mef{}, err
-	}
-
-	var mefData mef.Mef
-	err = json.Unmarshal(bytes, &mefData)
-	return mefData, err
 }
