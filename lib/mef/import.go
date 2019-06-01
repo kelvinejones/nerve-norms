@@ -26,7 +26,7 @@ func Import(input string) (Mef, error) {
 			return Mef{}, errors.New("Loaded bad MEF: " + err.Error())
 		}
 		input = filepath.Dir(input)
-	case err != nil && fi.IsDir():
+	case err == nil && fi.IsDir():
 		// Do nothing
 	default:
 		return Mef{}, errors.New("Provided import path is neither MEF nor directory")
