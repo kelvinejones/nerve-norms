@@ -5,25 +5,19 @@ import (
 )
 
 type TENorm struct {
-	Singles map[string]*teSingle `json:"data"`
+	Singles map[string]*GenericNorm `json:"data"`
 }
 
 func (mef *Mef) teNorm() TENorm {
 	names := []string{"h40", "h20", "d40", "d20"}
-	norm := TENorm{Singles: map[string]*teSingle{}}
+	norm := TENorm{Singles: map[string]*GenericNorm{}}
 
 	for _, name := range names {
-		norm.Singles[name] = &teSingle{
-			GenericNorm: GenericNorm{XValues: mem.IVCurrent},
-		}
-		norm.Singles[name].CalculateNorms(teTableForSection(name), mef)
+		gn := NewGenericNorm(mem.TEDelay(name), teTableForSection(name), mef)
+		norm.Singles[name] = &gn
 	}
 
 	return norm
-}
-
-type teSingle struct {
-	GenericNorm
 }
 
 func teTableForSection(sec string) LabelledTableFromMem {

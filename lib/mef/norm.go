@@ -1,10 +1,10 @@
 package mef
 
 type Norm struct {
-	CDNorm `json:"cd"`
-	RCNorm `json:"rc"`
+	CDNorm GenericNorm `json:"cd"`
+	RCNorm GenericNorm `json:"rc"`
 	SRNorm `json:"sr"`
-	IVNorm `json:"iv"`
+	IVNorm GenericNorm `json:"iv"`
 	TENorm `json:"te"`
 }
 

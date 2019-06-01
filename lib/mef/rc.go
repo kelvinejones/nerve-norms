@@ -4,16 +4,10 @@ import (
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
-type RCNorm struct{ GenericNorm }
-
 func rcTable(mData *mem.Mem) *mem.LabelledTable {
 	return &mData.Sections["RC"].(*mem.RecoveryCycle).LabelledTable
 }
 
-func (mef *Mef) rcNorm() RCNorm {
-	norm := RCNorm{
-		GenericNorm: GenericNorm{XValues: mem.RCInterval},
-	}
-	norm.CalculateNorms(rcTable, mef)
-	return norm
+func (mef *Mef) rcNorm() GenericNorm {
+	return NewGenericNorm(mem.RCInterval, rcTable, mef)
 }

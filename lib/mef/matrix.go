@@ -15,11 +15,14 @@ type GenericNorm struct {
 	Num     mem.Column `json:"num"`
 }
 
-func (mat *GenericNorm) CalculateNorms(ltfm LabelledTableFromMem, mef *Mef) {
+func NewGenericNorm(xv mem.Column, ltfm LabelledTableFromMem, mef *Mef) GenericNorm {
 	numEl := len(ltfm(mef.mems[0]).XColumn)
-	mat.Mean = make(mem.Column, numEl)
-	mat.SD = make(mem.Column, numEl)
-	mat.Num = make(mem.Column, numEl)
+	mat := GenericNorm{
+		XValues: xv,
+		Mean:    make(mem.Column, numEl),
+		SD:      make(mem.Column, numEl),
+		Num:     make(mem.Column, numEl),
+	}
 
 	// Sum the values
 	for _, mm := range mef.mems {
@@ -51,6 +54,8 @@ func (mat *GenericNorm) CalculateNorms(ltfm LabelledTableFromMem, mef *Mef) {
 	for rowN := range mat.Mean {
 		mat.SD[rowN] = math.Sqrt(mat.SD[rowN] / mat.Num[rowN])
 	}
+
+	return mat
 }
 
 func (mat *GenericNorm) wasImp(lt *mem.LabelledTable, rowN int) bool {
