@@ -8,81 +8,39 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strings"
 
+	"gogs.bellstone.ca/james/jitter/lib/mef"
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
 var input = flag.String("input", "res/data/FESB70821B.MEM", "path to the file or folder that should be imported")
 var output = flag.String("output", "", "name of the file to save the JSON into; if blank, print to stdout")
 
-type ExpectedFiles map[string]struct{}
-
 func main() {
 	flag.Parse()
 
-	jsonStrings := make([]json.RawMessage, 0)
-	expect := ExpectedFiles(nil)
-
-	ext := filepath.Ext(*input)
-	switch ext {
-	case ".MEM":
-		expect := make(map[string]struct{})
-		expect[*input] = struct{}{}
-	case ".MEF":
-		var err error
-		expect, err = loadFilenamesFromMEF(*input)
+	var js []byte
+	var err error
+	if filepath.Ext(*input) == ".MEM" {
+		js, err = loadMemAsJson(*input)
 		if err != nil {
-			panic("Loaded bad MEF: " + err.Error())
+			panic("Could not load MEM due to error: " + err.Error())
 		}
-		*input = filepath.Dir(*input)
-	}
-
-	// This works regardless of whether *input is a file or a directory, though if it's an invalid file, it will be silently skipped
-	filepath.Walk(*input, func(subpath string, info os.FileInfo, err error) error {
+	} else {
+		mf, err := mef.Import(*input)
 		if err != nil {
-			fmt.Println("Could not walk '" + subpath + "' due to error: " + err.Error())
-			return nil
+			panic("Could not load MEF due to error: " + err.Error())
 		}
-
-		basename := filepath.Base(subpath)
-		// If we're expecting specific files, make sure we only look for those ones
-		if expect != nil && !expect.Contains(basename) {
-			return nil // Skip it
-		}
-
-		if !strings.Contains(subpath, ".MEM") || info.Mode().IsDir() {
-			// Skip directories and invalid files
-			return nil
-		}
-
-		js, err := loadMemAsJson(subpath)
+		js, err = json.Marshal(&mf)
 		if err != nil {
-			fmt.Println("Could not parse '" + basename + "' due to error: " + err.Error())
-			return nil
+			panic("Could not marshal JSON due to error: " + err.Error())
 		}
-		jsonStrings = append(jsonStrings, js)
-
-		if expect != nil {
-			expect.Remove(basename)
-		}
-
-		return nil
-	})
-
-	if expect != nil && len(expect) > 0 {
-		fmt.Println("Not all expected files were found", expect)
-	}
-
-	jsArray, err := json.Marshal(&jsonStrings)
-	if err != nil {
-		fmt.Println("Could not concatenate JSON due to error: " + err.Error())
 	}
 
 	if *output == "" {
-		fmt.Printf("%v\n", string(jsArray))
+		fmt.Printf("%v\n", string(js))
 	} else {
-		err = ioutil.WriteFile(*output, jsArray, 0644)
+		err = ioutil.WriteFile(*output, js, 0644)
 		if err != nil {
 			fmt.Println("Could not save JSON due to error: " + err.Error())
 		}
@@ -102,29 +60,4 @@ func loadMemAsJson(path string) ([]byte, error) {
 
 	js, err := json.Marshal(&memData)
 	return js, err
-}
-
-func (ef ExpectedFiles) Contains(path string) bool {
-	_, ok := ef[path]
-	return ok
-}
-
-func (ef *ExpectedFiles) Remove(path string) {
-	delete(*ef, path)
-}
-
-func loadFilenamesFromMEF(path string) (ExpectedFiles, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	expect := make(map[string]struct{})
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		expect[scanner.Text()+".MEM"] = struct{}{}
-	}
-
-	return expect, scanner.Err()
 }
