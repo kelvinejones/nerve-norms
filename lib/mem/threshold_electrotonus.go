@@ -1,20 +1,11 @@
 package mem
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 )
 
-type TEPair struct {
-	Delay           Column
-	ThreshReduction Column
-	WasImputed      Column
-}
-
-type ThresholdElectrotonus struct {
-	Data map[string]*TEPair
-}
+type ThresholdElectrotonus map[string]*LabelledTable
 
 func TEDelay(teType string) Column {
 	switch teType {
@@ -31,7 +22,7 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 		return errors.New("Could not get threshold electrotonus: " + err.Error())
 	}
 
-	te.Data = make(map[string]*TEPair, 4)
+	*te = make(map[string]*LabelledTable, 4)
 
 	for i := range sec.Tables {
 		current, err := sec.columnContainsName("Current (%)", i)
@@ -40,21 +31,24 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 		}
 		teType := teTypeForCurrent(current)
 
-		pair := TEPair{Delay: TEDelay(teType)}
+		pair := LabelledTable{}
+		pair.XName = "Delay (ms)"
+		pair.YName = "Threshold Reduction (%)"
+		pair.XColumn = TEDelay(teType)
 
 		delay, err := sec.columnContainsName("Delay (ms)", i)
 		if err != nil {
 			return errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
 
-		pair.ThreshReduction, err = sec.columnContainsName("Thresh redn. (%)", i)
+		pair.YColumn, err = sec.columnContainsName("Thresh redn. (%)", i)
 		if err != nil {
 			return errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
 
-		pair.WasImputed = pair.ThreshReduction.ImputeWithValue(delay, pair.Delay, 0.01, false)
+		pair.WasImputed = pair.YColumn.ImputeWithValue(delay, pair.XColumn, 0.01, false)
 
-		te.Data[teType] = &pair
+		(*te)[teType] = &pair
 	}
 
 	return nil
@@ -81,66 +75,4 @@ func teTypeForCurrent(current Column) string {
 		fmt.Printf("TE contained unexpected current [%f, %f]\n", min, max)
 		return ""
 	}
-}
-
-type jsonThresholdElectrotonus struct {
-	Columns []string         `json:"columns"`
-	Data    map[string]Table `json:"data"`
-}
-
-func (dat *ThresholdElectrotonus) MarshalJSON() ([]byte, error) {
-	str := &jsonThresholdElectrotonus{
-		Columns: []string{"Delay (ms)", "Threshold Reduction (%)"},
-		Data:    make(map[string]Table, 4),
-	}
-
-	somethingWasImputed := false
-	for key, val := range dat.Data {
-		str.Data[key] = []Column{val.Delay, val.ThreshReduction}
-		if val.WasImputed != nil {
-			somethingWasImputed = true
-		}
-	}
-
-	if somethingWasImputed {
-		str.Columns = append(str.Columns, "Was Imputed")
-		for key, val := range dat.Data {
-			str.Data[key] = append(str.Data[key], val.WasImputed)
-		}
-	}
-
-	return json.Marshal(&str)
-}
-
-func (dat *ThresholdElectrotonus) UnmarshalJSON(value []byte) error {
-	jsDat := jsonThresholdElectrotonus{}
-	err := json.Unmarshal(value, &jsDat)
-	if err != nil {
-		return err
-	}
-	numCol := len(jsDat.Columns)
-
-	if numCol < 2 || numCol > 3 {
-		return errors.New("Incorrect number of ThresholdElectrotonus columns in JSON")
-	}
-	if jsDat.Columns[0] != "Delay (ms)" || jsDat.Columns[1] != "Threshold Reduction (%)" || (numCol == 3 && jsDat.Columns[2] != "Was Imputed") {
-		return errors.New("Incorrect ThresholdElectrotonus column names in JSON")
-	}
-
-	dat.Data = make(map[string]*TEPair, 4)
-	for key := range jsDat.Data {
-		dat.Data[key] = tePairFromTable(jsDat.Data[key])
-	}
-
-	return nil
-}
-
-func tePairFromTable(tab Table) *TEPair {
-	tep := &TEPair{}
-	tep.Delay = tab[0]
-	tep.ThreshReduction = tab[1]
-	if len(tab) == 3 {
-		tep.WasImputed = tab[2]
-	}
-	return tep
 }

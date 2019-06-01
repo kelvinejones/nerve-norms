@@ -19,7 +19,7 @@ func (norm RCNorm) NRows() int {
 }
 
 func (norm RCNorm) Column(i int) mem.Column {
-	return norm.mef.mems[i].Sections["RC"].(*mem.RecoveryCycle).ThreshChange
+	return norm.mef.mems[i].Sections["RC"].(*mem.RecoveryCycle).YColumn
 }
 
 func (norm RCNorm) WasImputed(i int) mem.Column {

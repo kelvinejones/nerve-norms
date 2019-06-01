@@ -19,7 +19,7 @@ func (norm CDNorm) NRows() int {
 }
 
 func (norm CDNorm) Column(i int) mem.Column {
-	return norm.mef.mems[i].Sections["CD"].(*mem.ChargeDuration).ThreshCharge
+	return norm.mef.mems[i].Sections["CD"].(*mem.ChargeDuration).YColumn
 }
 
 func (norm CDNorm) WasImputed(i int) mem.Column {

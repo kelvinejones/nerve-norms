@@ -20,11 +20,11 @@ func (norm SRNorm) NRows() int {
 }
 
 func (norm SRNorm) Column(i int) mem.Column {
-	return norm.mef.mems[i].Sections["SR"].(*mem.StimResponse).Stimulus
+	return norm.mef.mems[i].Sections["SR"].(*mem.StimResponse).LT.YColumn
 }
 
 func (norm SRNorm) WasImputed(i int) mem.Column {
-	return norm.mef.mems[i].Sections["SR"].(*mem.StimResponse).WasImputed
+	return norm.mef.mems[i].Sections["SR"].(*mem.StimResponse).LT.WasImputed
 }
 
 func (mef *Mef) srNorm() SRNorm {

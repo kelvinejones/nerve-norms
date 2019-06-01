@@ -19,7 +19,7 @@ func (norm IVNorm) NRows() int {
 }
 
 func (norm IVNorm) Column(i int) mem.Column {
-	return norm.mef.mems[i].Sections["IV"].(*mem.ThresholdIV).ThreshReduction
+	return norm.mef.mems[i].Sections["IV"].(*mem.ThresholdIV).YColumn
 }
 
 func (norm IVNorm) WasImputed(i int) mem.Column {

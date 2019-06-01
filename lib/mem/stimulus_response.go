@@ -1,24 +1,23 @@
 package mem
 
 import (
-	"encoding/json"
 	"errors"
 	"regexp"
 	"strconv"
 )
 
 type StimResponse struct {
-	MaxCmaps
-	ValueType  string
-	PercentMax Column
-	Stimulus   Column
-	WasImputed Column
+	MaxCmaps  `json:"maxCmaps"`
+	ValueType string        `json:"valueType"`
+	LT        LabelledTable `json:"data"`
 }
 
 var SRPercentMax = Column([]float64{2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98})
 
 func (sr *StimResponse) LoadFromMem(mem *rawMem) error {
-	sr.PercentMax = SRPercentMax
+	sr.LT.XName = "% Max"
+	sr.LT.YName = "Stimulus"
+	sr.LT.XColumn = SRPercentMax
 
 	sec, err := mem.sectionContainingHeader("STIMULUS RESPONSE")
 	if err != nil {
@@ -30,65 +29,15 @@ func (sr *StimResponse) LoadFromMem(mem *rawMem) error {
 		return errors.New("Could not get stimulus response: " + err.Error())
 	}
 
-	sr.Stimulus, err = sec.columnContainsName("Stimulus", 0)
+	sr.LT.YColumn, err = sec.columnContainsName("Stimulus", 0)
 	if err != nil {
 		return errors.New("Could not get stimulus response: " + err.Error())
 	}
 
-	sr.WasImputed = sr.Stimulus.ImputeWithValue(perMax, sr.PercentMax, 0.1, false)
+	sr.LT.WasImputed = sr.LT.YColumn.ImputeWithValue(perMax, sr.LT.XColumn, 0.1, false)
 
 	sr.ValueType = parseValueType(sec.ExtraLines)
 	sr.MaxCmaps = parseMaxCmap(sec.ExtraLines)
-
-	return nil
-}
-
-type jsonStimResponse struct {
-	Columns   []string `json:"columns"`
-	Data      Table    `json:"data"`
-	MaxCmaps  `json:"maxCmaps"`
-	ValueType string `json:"valueType"`
-}
-
-func (dat *StimResponse) MarshalJSON() ([]byte, error) {
-	str := &jsonStimResponse{
-		Columns:   []string{"% Max", "Stimulus"},
-		Data:      []Column{dat.PercentMax, dat.Stimulus},
-		MaxCmaps:  dat.MaxCmaps,
-		ValueType: dat.ValueType,
-	}
-
-	if dat.WasImputed != nil {
-		str.Columns = append(str.Columns, "Was Imputed")
-		str.Data = append(str.Data, dat.WasImputed)
-	}
-
-	return json.Marshal(&str)
-}
-
-func (dat *StimResponse) UnmarshalJSON(value []byte) error {
-	jsDat := jsonStimResponse{}
-	err := json.Unmarshal(value, &jsDat)
-	if err != nil {
-		return err
-	}
-	numCol := len(jsDat.Columns)
-
-	if numCol < 2 || numCol > 3 {
-		return errors.New("Incorrect number of StimResponse columns in JSON")
-	}
-	if jsDat.Columns[0] != "% Max" || jsDat.Columns[1] != "Stimulus" || (numCol == 3 && jsDat.Columns[2] != "Was Imputed") {
-		return errors.New("Incorrect StimResponse column names in JSON")
-	}
-
-	dat.PercentMax = jsDat.Data[0]
-	dat.Stimulus = jsDat.Data[1]
-	if numCol == 3 {
-		dat.WasImputed = jsDat.Data[2]
-	}
-
-	dat.MaxCmaps = jsDat.MaxCmaps
-	dat.ValueType = jsDat.ValueType
 
 	return nil
 }

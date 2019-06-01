@@ -9,7 +9,6 @@ import (
 
 type Section interface {
 	LoadFromMem(mem *rawMem) error
-	MarshalJSON() ([]byte, error)
 }
 
 type Sections map[string]Section
