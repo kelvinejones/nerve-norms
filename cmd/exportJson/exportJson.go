@@ -42,7 +42,7 @@ func main() {
 	} else {
 		err = ioutil.WriteFile(*output, js, 0644)
 		if err != nil {
-			fmt.Println("Could not save JSON due to error: " + err.Error())
+			panic("Could not save JSON due to error: " + err.Error())
 		}
 	}
 }

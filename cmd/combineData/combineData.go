@@ -44,7 +44,7 @@ func main() {
 
 	jsArray, err := json.Marshal(&allData)
 	if err != nil {
-		fmt.Println("Could not concatenate JSON due to error: " + err.Error())
+		panic("Could not concatenate JSON due to error: " + err.Error())
 	}
 
 	if *output == "" {
@@ -52,7 +52,7 @@ func main() {
 	} else {
 		err = ioutil.WriteFile(*output, jsArray, 0644)
 		if err != nil {
-			fmt.Println("Could not save JSON due to error: " + err.Error())
+			panic("Could not save JSON due to error: " + err.Error())
 		}
 	}
 }

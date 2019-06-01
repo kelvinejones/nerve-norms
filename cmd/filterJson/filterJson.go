@@ -54,13 +54,13 @@ func main() {
 
 	jsArray, err := json.Marshal(&mefData)
 	if err != nil {
-		fmt.Println("Could not concatenate JSON due to error: " + err.Error())
+		panic("Could not concatenate JSON due to error: " + err.Error())
 	}
 
 	if *output != "" {
 		err = ioutil.WriteFile(*output, jsArray, 0644)
 		if err != nil {
-			fmt.Println("Could not save JSON due to error: " + err.Error())
+			panic("Could not save JSON due to error: " + err.Error())
 		}
 	}
 
@@ -70,11 +70,11 @@ func main() {
 	} else {
 		jsNormArray, err := json.Marshal(&jsNorm)
 		if err != nil {
-			fmt.Println("Could not create norm JSON due to error: " + err.Error())
+			panic("Could not create norm JSON due to error: " + err.Error())
 		}
 		err = ioutil.WriteFile(*norm, jsNormArray, 0644)
 		if err != nil {
-			fmt.Println("Could not save norm JSON due to error: " + err.Error())
+			panic("Could not save norm JSON due to error: " + err.Error())
 		}
 	}
 }
