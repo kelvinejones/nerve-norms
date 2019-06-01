@@ -8,6 +8,10 @@ type ThresholdIV struct{ LabTab }
 
 var IVCurrent = Column([]float64{50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -50, -60, -70, -80, -90, -100})
 
+func IVLabelledTable(mem *Mem) LabelledTable {
+	return &mem.Sections["IV"].(*ThresholdIV).LabTab
+}
+
 func (tiv *ThresholdIV) LoadFromMem(mem *rawMem) error {
 	tiv.xname = "Current (%)"
 	tiv.yname = "Threshold Reduction (%)"

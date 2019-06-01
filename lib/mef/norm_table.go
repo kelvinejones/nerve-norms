@@ -6,8 +6,6 @@ import (
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
-type LabelledTableFromMem func(*mem.Mem) mem.LabelledTable
-
 type NormTable struct {
 	XValues mem.Column `json:"xvalues,omitempty"`
 	Mean    mem.Column `json:"mean"`
@@ -15,7 +13,7 @@ type NormTable struct {
 	Num     mem.Column `json:"num"`
 }
 
-func NewNormTable(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) NormTable {
+func NewNormTable(xv mem.Column, mef *Mef, ltfm mem.LabelledTableFromMem) NormTable {
 	numEl := ltfm(mef.mems[0]).Len()
 	norm := NormTable{
 		XValues: xv,

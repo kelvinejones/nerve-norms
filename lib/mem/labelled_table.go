@@ -15,6 +15,8 @@ type LabelledTable interface {
 	Len() int
 }
 
+type LabelledTableFromMem func(*Mem) LabelledTable
+
 type LabTab struct {
 	xname  string
 	yname  string

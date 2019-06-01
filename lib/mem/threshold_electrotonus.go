@@ -16,6 +16,12 @@ func TEDelay(teType string) Column {
 	}
 }
 
+func TELabelledTable(name string) LabelledTableFromMem {
+	return func(mem *Mem) LabelledTable {
+		return (*mem.Sections["TE"].(*ThresholdElectrotonus))[name]
+	}
+}
+
 func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 	sec, err := mem.sectionContainingHeader("THRESHOLD ELECTROTONUS")
 	if err != nil {
