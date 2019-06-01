@@ -15,22 +15,6 @@ type GenericNorm struct {
 	mef     *Mef
 }
 
-func (norm GenericNorm) NColumns() int {
-	return len(norm.mef.mems)
-}
-
-func (norm GenericNorm) NRows() int {
-	return len(norm.ltfm(norm.mef.mems[0]).XColumn)
-}
-
-func (norm GenericNorm) Column(i int) mem.Column {
-	return norm.ltfm(norm.mef.mems[i]).YColumn
-}
-
-func (norm GenericNorm) WasImputed(i int) mem.Column {
-	return norm.ltfm(norm.mef.mems[i]).WasImputed
-}
-
 type MatNorm struct {
 	Mean mem.Column `json:"mean"`
 	SD   mem.Column `json:"sd"`
@@ -38,14 +22,14 @@ type MatNorm struct {
 }
 
 func (mat *GenericNorm) CalculateNorms() {
-	numEl := mat.NRows()
+	numEl := len(mat.ltfm(mat.mef.mems[0]).XColumn)
 	mat.MatNorm.Mean = make(mem.Column, numEl)
 	mat.MatNorm.SD = make(mem.Column, numEl)
 	mat.MatNorm.Num = make(mem.Column, numEl)
 
 	// Sum the values
-	for colN := 0; colN < mat.NColumns(); colN++ {
-		col := mat.Column(colN)
+	for colN := 0; colN < len(mat.mef.mems); colN++ {
+		col := mat.ltfm(mat.mef.mems[colN]).YColumn
 		for rowN := range col {
 			if !mat.wasImp(colN, rowN) {
 				mat.MatNorm.Mean[rowN] += col[rowN]
@@ -60,8 +44,8 @@ func (mat *GenericNorm) CalculateNorms() {
 	}
 
 	// Calculate SD
-	for colN := 0; colN < mat.NColumns(); colN++ {
-		col := mat.Column(colN)
+	for colN := 0; colN < len(mat.mef.mems); colN++ {
+		col := mat.ltfm(mat.mef.mems[colN]).YColumn
 		for rowN := range col {
 			if !mat.wasImp(colN, rowN) {
 				mat.MatNorm.SD[rowN] += math.Pow(col[rowN]-mat.MatNorm.Mean[rowN], 2)
@@ -76,7 +60,7 @@ func (mat *GenericNorm) CalculateNorms() {
 }
 
 func (mat *GenericNorm) wasImp(colN, rowN int) bool {
-	col := mat.WasImputed(colN)
+	col := mat.ltfm(mat.mef.mems[colN]).WasImputed
 	// Yes, this is terrible, but wasImputed is a float column
 	return len(col) != 0 && col[rowN] > 0.5
 }
