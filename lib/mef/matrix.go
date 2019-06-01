@@ -17,7 +17,7 @@ type GenericNorm struct {
 
 func NewGenericNorm(xv mem.Column, ltfm LabelledTableFromMem, mef *Mef) GenericNorm {
 	numEl := len(ltfm(mef.mems[0]).XColumn)
-	mat := GenericNorm{
+	norm := GenericNorm{
 		XValues: xv,
 		Mean:    make(mem.Column, numEl),
 		SD:      make(mem.Column, numEl),
@@ -28,37 +28,37 @@ func NewGenericNorm(xv mem.Column, ltfm LabelledTableFromMem, mef *Mef) GenericN
 	for _, mm := range mef.mems {
 		col := ltfm(mm).YColumn
 		for rowN := range col {
-			if !mat.wasImp(ltfm(mm), rowN) {
-				mat.Mean[rowN] += col[rowN]
-				mat.Num[rowN]++
+			if !norm.wasImp(ltfm(mm), rowN) {
+				norm.Mean[rowN] += col[rowN]
+				norm.Num[rowN]++
 			}
 		}
 	}
 
 	// Normalize to get mean
-	for rowN := range mat.Mean {
-		mat.Mean[rowN] /= mat.Num[rowN]
+	for rowN := range norm.Mean {
+		norm.Mean[rowN] /= norm.Num[rowN]
 	}
 
 	// Calculate SD
 	for _, mm := range mef.mems {
 		col := ltfm(mm).YColumn
 		for rowN := range col {
-			if !mat.wasImp(ltfm(mm), rowN) {
-				mat.SD[rowN] += math.Pow(col[rowN]-mat.Mean[rowN], 2)
+			if !norm.wasImp(ltfm(mm), rowN) {
+				norm.SD[rowN] += math.Pow(col[rowN]-norm.Mean[rowN], 2)
 			}
 		}
 	}
 
 	// Normalize to get SD
-	for rowN := range mat.Mean {
-		mat.SD[rowN] = math.Sqrt(mat.SD[rowN] / mat.Num[rowN])
+	for rowN := range norm.Mean {
+		norm.SD[rowN] = math.Sqrt(norm.SD[rowN] / norm.Num[rowN])
 	}
 
-	return mat
+	return norm
 }
 
-func (mat *GenericNorm) wasImp(lt *mem.LabelledTable, rowN int) bool {
+func (norm *GenericNorm) wasImp(lt *mem.LabelledTable, rowN int) bool {
 	col := lt.WasImputed
 	// Yes, this is terrible, but wasImputed is a float column
 	return len(col) != 0 && col[rowN] > 0.5
