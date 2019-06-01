@@ -4,16 +4,14 @@ import (
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
-type TENorm struct {
-	Singles map[string]GenericNorm `json:"data"`
-}
+type TENorm map[string]GenericNorm
 
 func (mef *Mef) teNorm() TENorm {
 	names := []string{"h40", "h20", "d40", "d20"}
-	norm := TENorm{Singles: map[string]GenericNorm{}}
+	norm := TENorm(map[string]GenericNorm{})
 
 	for _, name := range names {
-		norm.Singles[name] = NewGenericNorm(mem.TEDelay(name), teTableForSection(name), mef)
+		norm[name] = NewGenericNorm(mem.TEDelay(name), teTableForSection(name), mef)
 	}
 
 	return norm
