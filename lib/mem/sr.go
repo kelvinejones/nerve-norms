@@ -37,12 +37,51 @@ func (sr *StimResponse) LoadFromMem(mem *rawMem) error {
 
 func (sr *StimResponse) LabelledTable(subsec string) LabelledTable {
 	switch subsec {
+	case "calculatedX":
+		return sr.fullyCalculatedX()
+	case "calculatedY":
+		return sr.fullyCalculatedY()
+	case "relative":
+		return sr.relative()
 	case "CMAP":
 		return sr.MC.AsLabelledTable()
 	case "":
 		return sr.LT
 	default:
 		return nil
+	}
+}
+
+func (sr StimResponse) fullyCalculatedX() LabelledTable {
+	return &LabTab{
+		yname: "Stimulus Current (mA)",
+		ycol:  sr.LT.ycol,
+	}
+}
+
+func (sr StimResponse) fullyCalculatedY() LabelledTable {
+	col := make([]float64, len(SRPercentMax))
+	for idx, val := range sr.LT.xcol {
+		col[idx] = val / 100 * sr.MC.standard
+	}
+
+	return &LabTab{
+		yname: "Peak Response (mV)",
+		ycol:  col,
+	}
+}
+
+func (sr StimResponse) relative() LabelledTable {
+	stimFor50PercentMax := sr.LT.ycol[24]
+
+	col := make([]float64, len(SRPercentMax))
+	for idx, val := range sr.LT.ycol {
+		col[idx] = val / stimFor50PercentMax * 100
+	}
+
+	return &LabTab{
+		yname: "Stimulus (% Mean Threshold)",
+		ycol:  col,
 	}
 }
 

@@ -69,7 +69,7 @@ func (lt LabTab) WasImputedAt(idx int) bool {
 }
 
 func (lt LabTab) Len() int {
-	return len(lt.xcol)
+	return len(lt.ycol)
 }
 
 // jsonTable is used to restructure LabTab data for json.
