@@ -18,6 +18,8 @@ var ratPath = flag.String("ratPath", "", "path to the rat JSON")
 var output = flag.String("output", "res/data/all.json", "path to save the filtered JSON; otherwise, output to stdout")
 
 func main() {
+	flag.Parse()
+
 	caMef, err := loadJson(*caPath)
 	if err != nil {
 		panic(err)
