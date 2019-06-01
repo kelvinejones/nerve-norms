@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type ThresholdElectrotonus map[string]*LabelledTable
+type ThresholdElectrotonus map[string]*LabTab
 
 func TEDelay(teType string) Column {
 	switch teType {
@@ -22,7 +22,7 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 		return errors.New("Could not get threshold electrotonus: " + err.Error())
 	}
 
-	*te = make(map[string]*LabelledTable, 4)
+	*te = make(map[string]*LabTab, 4)
 
 	for i := range sec.Tables {
 		current, err := sec.columnContainsName("Current (%)", i)
@@ -31,22 +31,22 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 		}
 		teType := teTypeForCurrent(current)
 
-		pair := LabelledTable{}
-		pair.XName = "Delay (ms)"
-		pair.YName = "Threshold Reduction (%)"
-		pair.XColumn = TEDelay(teType)
+		pair := LabTab{}
+		pair.xname = "Delay (ms)"
+		pair.yname = "Threshold Reduction (%)"
+		pair.xcol = TEDelay(teType)
 
 		delay, err := sec.columnContainsName("Delay (ms)", i)
 		if err != nil {
 			return errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
 
-		pair.YColumn, err = sec.columnContainsName("Thresh redn. (%)", i)
+		pair.ycol, err = sec.columnContainsName("Thresh redn. (%)", i)
 		if err != nil {
 			return errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
 
-		pair.WasImputed = pair.YColumn.ImputeWithValue(delay, pair.XColumn, 0.01, false)
+		pair.wasimp = pair.ycol.ImputeWithValue(delay, pair.xcol, 0.01, false)
 
 		(*te)[teType] = &pair
 	}

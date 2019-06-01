@@ -4,14 +4,14 @@ import (
 	"errors"
 )
 
-type ThresholdIV struct{ LabelledTable }
+type ThresholdIV struct{ LabTab }
 
 var IVCurrent = Column([]float64{50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -50, -60, -70, -80, -90, -100})
 
 func (tiv *ThresholdIV) LoadFromMem(mem *rawMem) error {
-	tiv.XName = "Current (%)"
-	tiv.YName = "Threshold Reduction (%)"
-	tiv.XColumn = IVCurrent
+	tiv.xname = "Current (%)"
+	tiv.yname = "Threshold Reduction (%)"
+	tiv.xcol = IVCurrent
 
 	sec, err := mem.sectionContainingHeader("THRESHOLD I/V")
 	if err != nil {
@@ -27,16 +27,16 @@ func (tiv *ThresholdIV) LoadFromMem(mem *rawMem) error {
 		return errors.New("Could not get threshold IV: " + err.Error())
 	}
 
-	tiv.YColumn, err = sec.columnContainsName("Threshold redn. (%)", 0)
+	tiv.ycol, err = sec.columnContainsName("Threshold redn. (%)", 0)
 	if err != nil {
 		// Try alternative spelling
-		tiv.YColumn, err = sec.columnContainsName("Threshold change (%)", 0)
+		tiv.ycol, err = sec.columnContainsName("Threshold change (%)", 0)
 		if err != nil {
 			return errors.New("Could not get threshold IV: " + err.Error())
 		}
 	}
 
-	tiv.WasImputed = tiv.YColumn.ImputeWithValue(curr, tiv.XColumn, 0.01, false)
+	tiv.wasimp = tiv.ycol.ImputeWithValue(curr, tiv.xcol, 0.01, false)
 
 	return nil
 }

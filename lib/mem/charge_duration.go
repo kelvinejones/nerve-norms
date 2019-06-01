@@ -4,14 +4,14 @@ import (
 	"errors"
 )
 
-type ChargeDuration struct{ LabelledTable }
+type ChargeDuration struct{ LabTab }
 
 var CDDuration = Column([]float64{0.2, 0.4, 0.6, 0.8, 1})
 
 func (cd *ChargeDuration) LoadFromMem(mem *rawMem) error {
-	cd.XName = "Duration (ms)"
-	cd.YName = "Threshold charge (mA•ms)"
-	cd.XColumn = CDDuration
+	cd.xname = "Duration (ms)"
+	cd.yname = "Threshold charge (mA•ms)"
+	cd.xcol = CDDuration
 
 	sec, err := mem.sectionContainingHeader("CHARGE DURATION")
 	if err != nil {
@@ -27,7 +27,7 @@ func (cd *ChargeDuration) LoadFromMem(mem *rawMem) error {
 		}
 	}
 
-	cd.YColumn, err = sec.columnContainsName("Threshold charge (mA.mS)", 0)
+	cd.ycol, err = sec.columnContainsName("Threshold charge (mA.mS)", 0)
 	if err != nil {
 		// Some old formats use this mis-labeled column that must be converted
 		threshold, err := sec.columnContainsName("Threshold change (%)", 0)
@@ -41,19 +41,19 @@ func (cd *ChargeDuration) LoadFromMem(mem *rawMem) error {
 		}
 	}
 
-	cd.WasImputed = cd.YColumn.ImputeWithValue(dur, cd.XColumn, 0.0000001, false)
+	cd.wasimp = cd.ycol.ImputeWithValue(dur, cd.xcol, 0.0000001, false)
 
 	return nil
 }
 
 func (cd *ChargeDuration) importOldStyle(threshold Column) error {
-	if len(threshold) != len(cd.XColumn) {
+	if len(threshold) != len(cd.xcol) {
 		return errors.New("Length mis-match in alternative import")
 	}
-	cd.YColumn = Column(make([]float64, len(threshold)))
+	cd.ycol = Column(make([]float64, len(threshold)))
 
 	for i := range threshold {
-		cd.YColumn[i] = cd.XColumn[i] * threshold[i]
+		cd.ycol[i] = cd.xcol[i] * threshold[i]
 	}
 	return nil
 }

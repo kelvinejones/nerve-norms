@@ -6,7 +6,7 @@ import (
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
-type LabelledTableFromMem func(*mem.Mem) *mem.LabelledTable
+type LabelledTableFromMem func(*mem.Mem) mem.LabelledTable
 
 type NormTable struct {
 	XValues mem.Column `json:"xvalues,omitempty"`
@@ -16,7 +16,7 @@ type NormTable struct {
 }
 
 func NewNormTable(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) NormTable {
-	numEl := len(ltfm(mef.mems[0]).XColumn)
+	numEl := ltfm(mef.mems[0]).Len()
 	norm := NormTable{
 		XValues: xv,
 		Mean:    make(mem.Column, numEl),
@@ -27,10 +27,9 @@ func NewNormTable(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) NormTable 
 	// Sum the values
 	for _, mm := range mef.mems {
 		lt := ltfm(mm)
-		col := lt.YColumn
-		for rowN := range col {
-			if !norm.wasImp(lt, rowN) {
-				norm.Mean[rowN] += col[rowN]
+		for rowN := 0; rowN < lt.Len(); rowN++ {
+			if !lt.WasImputedAt(rowN) {
+				norm.Mean[rowN] += lt.YColumnAt(rowN)
 				norm.Num[rowN]++
 			}
 		}
@@ -44,10 +43,9 @@ func NewNormTable(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) NormTable 
 	// Calculate SD
 	for _, mm := range mef.mems {
 		lt := ltfm(mm)
-		col := lt.YColumn
-		for rowN := range col {
-			if !norm.wasImp(lt, rowN) {
-				norm.SD[rowN] += math.Pow(col[rowN]-norm.Mean[rowN], 2)
+		for rowN := 0; rowN < lt.Len(); rowN++ {
+			if !lt.WasImputedAt(rowN) {
+				norm.SD[rowN] += math.Pow(lt.YColumnAt(rowN)-norm.Mean[rowN], 2)
 			}
 		}
 	}
@@ -58,10 +56,4 @@ func NewNormTable(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) NormTable 
 	}
 
 	return norm
-}
-
-func (norm *NormTable) wasImp(lt *mem.LabelledTable, rowN int) bool {
-	col := lt.WasImputed
-	// Yes, this is terrible, but wasImputed is a float column
-	return len(col) != 0 && col[rowN] > 0.5
 }

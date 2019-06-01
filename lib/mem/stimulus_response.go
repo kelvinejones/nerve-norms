@@ -8,16 +8,16 @@ import (
 
 type StimResponse struct {
 	MaxCmaps  `json:"maxCmaps"`
-	ValueType string        `json:"valueType"`
-	LT        LabelledTable `json:"data"`
+	ValueType string `json:"valueType"`
+	LT        LabTab `json:"data"`
 }
 
 var SRPercentMax = Column([]float64{2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98})
 
 func (sr *StimResponse) LoadFromMem(mem *rawMem) error {
-	sr.LT.XName = "% Max"
-	sr.LT.YName = "Stimulus"
-	sr.LT.XColumn = SRPercentMax
+	sr.LT.xname = "% Max"
+	sr.LT.yname = "Stimulus"
+	sr.LT.xcol = SRPercentMax
 
 	sec, err := mem.sectionContainingHeader("STIMULUS RESPONSE")
 	if err != nil {
@@ -29,12 +29,12 @@ func (sr *StimResponse) LoadFromMem(mem *rawMem) error {
 		return errors.New("Could not get stimulus response: " + err.Error())
 	}
 
-	sr.LT.YColumn, err = sec.columnContainsName("Stimulus", 0)
+	sr.LT.ycol, err = sec.columnContainsName("Stimulus", 0)
 	if err != nil {
 		return errors.New("Could not get stimulus response: " + err.Error())
 	}
 
-	sr.LT.WasImputed = sr.LT.YColumn.ImputeWithValue(perMax, sr.LT.XColumn, 0.1, false)
+	sr.LT.wasimp = sr.LT.ycol.ImputeWithValue(perMax, sr.LT.xcol, 0.1, false)
 
 	sr.ValueType = parseValueType(sec.ExtraLines)
 	sr.MaxCmaps = parseMaxCmap(sec.ExtraLines)
@@ -67,16 +67,16 @@ type MaxCmap struct {
 
 type MaxCmaps []MaxCmap
 
-func (mc MaxCmaps) AsLabelledTable() *LabelledTable {
+func (mc MaxCmaps) AsLabelledTable() LabelledTable {
 	cmap, err := mc.asFloat()
-	lt := LabelledTable{
-		XName:   "Time (ms)",
-		YName:   "CMAP",
-		XColumn: Column{1},
-		YColumn: Column{cmap},
+	lt := LabTab{
+		xname: "Time (ms)",
+		yname: "CMAP",
+		xcol:  Column{1},
+		ycol:  Column{cmap},
 	}
 	if err != nil {
-		lt.WasImputed = Column{1}
+		lt.wasimp = Column{1}
 	}
 	return &lt
 }
