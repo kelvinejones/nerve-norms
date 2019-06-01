@@ -28,8 +28,8 @@ func (mat *GenericNorm) CalculateNorms() {
 	mat.MatNorm.Num = make(mem.Column, numEl)
 
 	// Sum the values
-	for colN := 0; colN < len(mat.mef.mems); colN++ {
-		col := mat.ltfm(mat.mef.mems[colN]).YColumn
+	for colN, mm := range mat.mef.mems {
+		col := mat.ltfm(mm).YColumn
 		for rowN := range col {
 			if !mat.wasImp(colN, rowN) {
 				mat.MatNorm.Mean[rowN] += col[rowN]
@@ -44,8 +44,8 @@ func (mat *GenericNorm) CalculateNorms() {
 	}
 
 	// Calculate SD
-	for colN := 0; colN < len(mat.mef.mems); colN++ {
-		col := mat.ltfm(mat.mef.mems[colN]).YColumn
+	for colN, mm := range mat.mef.mems {
+		col := mat.ltfm(mm).YColumn
 		for rowN := range col {
 			if !mat.wasImp(colN, rowN) {
 				mat.MatNorm.SD[rowN] += math.Pow(col[rowN]-mat.MatNorm.Mean[rowN], 2)
