@@ -10,37 +10,33 @@ type LabelledTableFromMem func(*mem.Mem) *mem.LabelledTable
 
 type GenericNorm struct {
 	XValues mem.Column `json:"xvalues,omitempty"`
-	MatNorm `json:"norms"`
+	Mean    mem.Column `json:"mean"`
+	SD      mem.Column `json:"sd"`
+	Num     mem.Column `json:"num"`
 	ltfm    LabelledTableFromMem
 	mef     *Mef
 }
 
-type MatNorm struct {
-	Mean mem.Column `json:"mean"`
-	SD   mem.Column `json:"sd"`
-	Num  mem.Column `json:"num"`
-}
-
 func (mat *GenericNorm) CalculateNorms() {
 	numEl := len(mat.ltfm(mat.mef.mems[0]).XColumn)
-	mat.MatNorm.Mean = make(mem.Column, numEl)
-	mat.MatNorm.SD = make(mem.Column, numEl)
-	mat.MatNorm.Num = make(mem.Column, numEl)
+	mat.Mean = make(mem.Column, numEl)
+	mat.SD = make(mem.Column, numEl)
+	mat.Num = make(mem.Column, numEl)
 
 	// Sum the values
 	for colN, mm := range mat.mef.mems {
 		col := mat.ltfm(mm).YColumn
 		for rowN := range col {
 			if !mat.wasImp(colN, rowN) {
-				mat.MatNorm.Mean[rowN] += col[rowN]
-				mat.MatNorm.Num[rowN]++
+				mat.Mean[rowN] += col[rowN]
+				mat.Num[rowN]++
 			}
 		}
 	}
 
 	// Normalize to get mean
-	for rowN := range mat.MatNorm.Mean {
-		mat.MatNorm.Mean[rowN] /= mat.MatNorm.Num[rowN]
+	for rowN := range mat.Mean {
+		mat.Mean[rowN] /= mat.Num[rowN]
 	}
 
 	// Calculate SD
@@ -48,14 +44,14 @@ func (mat *GenericNorm) CalculateNorms() {
 		col := mat.ltfm(mm).YColumn
 		for rowN := range col {
 			if !mat.wasImp(colN, rowN) {
-				mat.MatNorm.SD[rowN] += math.Pow(col[rowN]-mat.MatNorm.Mean[rowN], 2)
+				mat.SD[rowN] += math.Pow(col[rowN]-mat.Mean[rowN], 2)
 			}
 		}
 	}
 
 	// Normalize to get SD
-	for rowN := range mat.MatNorm.Mean {
-		mat.MatNorm.SD[rowN] = math.Sqrt(mat.MatNorm.SD[rowN] / mat.MatNorm.Num[rowN])
+	for rowN := range mat.Mean {
+		mat.SD[rowN] = math.Sqrt(mat.SD[rowN] / mat.Num[rowN])
 	}
 }
 
