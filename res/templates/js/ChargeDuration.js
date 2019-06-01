@@ -2,10 +2,7 @@ class ChargeDuration extends Chart {
 	constructor(participant, norms) {
 		super([0, 1], [0, 10])
 		this.participant = participant.sections.CD.data
-		this.norms = norms.sections.CD.data
-		this.yMeanName = 'mean'
-		this.xMeanName = 'stimWidth'
-		this.ySDName = 'SD'
+		this.norms = norms.CD.data
 	}
 
 	get name() { return "Charge Duration" }
@@ -18,7 +15,7 @@ class ChargeDuration extends Chart {
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.sections.CD.data
+		this.norms = norms.CD.data
 		this.animateNorms(this.norms, "cd")
 	}
 

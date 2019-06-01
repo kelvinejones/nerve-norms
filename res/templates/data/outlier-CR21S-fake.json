@@ -1,5 +1,5 @@
 outlierScore["CR21S"] = outlierScore["CR21S"] || {};
-outlierScore["CR21S"]["Garbage Norms"] = {
+outlierScore["CR21S"]["F65 Norms"] = {
 	"participant": "CR21S",
 	"outlierScore": 0.48528,
 	"ageFilter": "50-59",

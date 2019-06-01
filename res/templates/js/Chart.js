@@ -15,9 +15,9 @@ class Chart {
 		this.xIndex = 0
 		this.yIndex = 1
 		this.xSDName = undefined // If undefined, then there is no standard deviation in the x direction.
-		this.ySDName = 'SD'
-		this.yMeanName = 'mean' // Defaults to this.yIndex if undefined by subclass.
-		this.xMeanName = undefined // Defaults to this.xIndex if undefined by subclass.
+		this.ySDName = 1
+		this.yMeanName = 0 // Defaults to this.yIndex if undefined by subclass.
+		this.xMeanName = 3
 		this.wasImputedIndex = 2
 
 		this.yAnimStart = this.animationStartValue(this.yRange)

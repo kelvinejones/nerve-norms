@@ -2,13 +2,13 @@ class ThresholdIV extends Chart {
 	constructor(participant, norms) {
 		super([-400, 50], [-100, 50])
 		this.participant = participant.sections.IV.data
-		this.norms = norms.sections.IV.data
+		this.norms = norms.IV.data
 		this.xIndex = 1
 		this.yIndex = 0
 		this.ySDName = undefined
-		this.yMeanName = 'current'
-		this.xSDName = 'SD'
-		this.xMeanName = 'mean'
+		this.yMeanName = 3
+		this.xSDName = 1
+		this.xMeanName = 0
 	}
 
 	get name() { return "Threshold I/V" }
@@ -21,7 +21,7 @@ class ThresholdIV extends Chart {
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.sections.IV.data
+		this.norms = norms.IV.data
 		this.animateNorms(this.norms, "tiv")
 	}
 

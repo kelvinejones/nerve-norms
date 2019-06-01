@@ -2,11 +2,7 @@ class StimulusResponse extends Chart {
 	constructor(participant, norms) {
 		super([1, 20], [0.01, 20], Chart.scaleType.LOG, Chart.scaleType.LOG)
 		this.participant = this.calculateParticipant(participant)
-		this.norms = norms.sections.SR.data
-		this.xMeanName = 'meanX'
-		this.yMeanName = 'meanY'
-		this.xSDName = 'SDlogX'
-		this.ySDName = 'SDlogY'
+		this.norms = norms.SRY.data
 		this.sdFunc = Chart.logSD
 	}
 
@@ -26,7 +22,6 @@ class StimulusResponse extends Chart {
 		})
 	}
 
-
 	get name() { return "Stimulus Response" }
 	get xLabel() { return "Stimulus Current (mA)" }
 	get yLabel() { return "Peak Response (mV)" }
@@ -37,14 +32,14 @@ class StimulusResponse extends Chart {
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.sections.SR.data
-		this.animateNorms(this.norms, "sr")
+		this.norms = norms.SR.data
+		// this.animateNorms(this.norms, "sr")
 	}
 
 	drawLines(svg) {
 		this.createXYLine(this.participant, "sr")
-		this.createNorms(this.norms, "sr")
+		// this.createNorms(this.norms, "sr")
 		this.animateXYLine(this.participant, "sr")
-		this.animateNorms(this.norms, "sr")
+		// this.animateNorms(this.norms, "sr")
 	}
 }
