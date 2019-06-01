@@ -15,7 +15,7 @@ type GenericNorm struct {
 	Num     mem.Column `json:"num"`
 }
 
-func NewGenericNorm(xv mem.Column, ltfm LabelledTableFromMem, mef *Mef) GenericNorm {
+func NewGenericNorm(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) GenericNorm {
 	numEl := len(ltfm(mef.mems[0]).XColumn)
 	norm := GenericNorm{
 		XValues: xv,
