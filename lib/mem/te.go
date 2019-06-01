@@ -16,12 +16,6 @@ func TEDelay(teType string) Column {
 	}
 }
 
-func TELabelledTable(name string) LabelledTableFromMem {
-	return func(mem *Mem) LabelledTable {
-		return (*mem.Sections["TE"].(*ThresholdElectrotonus))[name]
-	}
-}
-
 func teLabTabForType(teType string, tableNum int) *LabTab {
 	return &LabTab{
 		section:   "THRESHOLD ELECTROTONUS",
@@ -59,6 +53,10 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 	}
 
 	return nil
+}
+
+func (te *ThresholdElectrotonus) LabelledTable(subsec string) LabelledTable {
+	return (*te)[subsec]
 }
 
 func teTypeForCurrent(current Column) string {

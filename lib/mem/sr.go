@@ -14,10 +14,6 @@ type StimResponse struct {
 
 var SRPercentMax = Column([]float64{2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98})
 
-func SRLabelledTable(mem *Mem) LabelledTable {
-	return &mem.Sections["SR"].(*StimResponse).LT
-}
-
 func newSR() *StimResponse {
 	sr := &StimResponse{
 		LT: LabTab{
@@ -37,6 +33,17 @@ func newSR() *StimResponse {
 
 func (sr *StimResponse) LoadFromMem(mem *rawMem) error {
 	return sr.LT.LoadFromMem(mem)
+}
+
+func (sr *StimResponse) LabelledTable(subsec string) LabelledTable {
+	switch subsec {
+	case "CMAP":
+		return sr.MaxCmaps.AsLabelledTable()
+	case "":
+		return sr.LT
+	default:
+		return nil
+	}
 }
 
 func parseValueType(strs []string) string {
@@ -63,10 +70,6 @@ type MaxCmap struct {
 }
 
 type MaxCmaps []MaxCmap
-
-func CMAPLabelledTable(mem *Mem) LabelledTable {
-	return mem.Sections["SR"].(*StimResponse).MaxCmaps.AsLabelledTable()
-}
 
 func (mc MaxCmaps) AsLabelledTable() LabelledTable {
 	cmap, err := mc.asFloat()

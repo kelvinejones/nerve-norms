@@ -9,6 +9,7 @@ import (
 
 type Section interface {
 	LoadFromMem(mem *rawMem) error
+	LabelledTable(string) LabelledTable
 }
 
 type Sections map[string]Section

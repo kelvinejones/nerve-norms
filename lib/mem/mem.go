@@ -21,6 +21,10 @@ type Mem struct {
 	Settings map[string]string     `json:"settings"`
 }
 
+func (mem *Mem) LabelledTable(name, subsec string) LabelledTable {
+	return mem.Sections[name].LabelledTable(subsec)
+}
+
 func (mem *rawMem) AsMem() (*Mem, error) {
 	trueMem := &Mem{
 		Header:   mem.Header,

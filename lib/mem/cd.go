@@ -4,10 +4,6 @@ type ChargeDuration struct{ LabTab }
 
 var CDDuration = Column([]float64{0.2, 0.4, 0.6, 0.8, 1})
 
-func CDLabelledTable(mem *Mem) LabelledTable {
-	return &mem.Sections["CD"].(*ChargeDuration).LabTab
-}
-
 func newCD() *ChargeDuration {
 	return &ChargeDuration{LabTab{
 		section:  "CHARGE DURATION",

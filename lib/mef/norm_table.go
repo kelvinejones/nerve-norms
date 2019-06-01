@@ -13,8 +13,9 @@ type NormTable struct {
 	Num     mem.Column `json:"num"`
 }
 
-func NewNormTable(xv mem.Column, mef *Mef, ltfm mem.LabelledTableFromMem) NormTable {
-	numEl := ltfm(mef.mems[0]).Len()
+func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
+	lt := mef.mems[0].LabelledTable(sec, subsec)
+	numEl := lt.Len()
 	norm := NormTable{
 		XValues: xv,
 		Mean:    make(mem.Column, numEl),
@@ -24,7 +25,7 @@ func NewNormTable(xv mem.Column, mef *Mef, ltfm mem.LabelledTableFromMem) NormTa
 
 	// Sum the values
 	for _, mm := range mef.mems {
-		lt := ltfm(mm)
+		lt := mm.LabelledTable(sec, subsec)
 		for rowN := 0; rowN < lt.Len(); rowN++ {
 			if !lt.WasImputedAt(rowN) {
 				norm.Mean[rowN] += lt.YColumnAt(rowN)
@@ -40,7 +41,7 @@ func NewNormTable(xv mem.Column, mef *Mef, ltfm mem.LabelledTableFromMem) NormTa
 
 	// Calculate SD
 	for _, mm := range mef.mems {
-		lt := ltfm(mm)
+		lt := mm.LabelledTable(sec, subsec)
 		for rowN := 0; rowN < lt.Len(); rowN++ {
 			if !lt.WasImputedAt(rowN) {
 				norm.SD[rowN] += math.Pow(lt.YColumnAt(rowN)-norm.Mean[rowN], 2)

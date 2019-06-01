@@ -14,15 +14,15 @@ func (mef *Mef) Norm() Norm {
 	mef = mef.FilteredMef()
 
 	norm := Norm{
-		CDNorm: NewNormTable(mem.CDDuration, mef, mem.CDLabelledTable),
-		IVNorm: NewNormTable(mem.IVCurrent, mef, mem.IVLabelledTable),
-		RCNorm: NewNormTable(mem.RCInterval, mef, mem.RCLabelledTable),
+		CDNorm: NewNormTable(mem.CDDuration, mef, "CD", ""),
+		IVNorm: NewNormTable(mem.IVCurrent, mef, "IV", ""),
+		RCNorm: NewNormTable(mem.RCInterval, mef, "RC", ""),
 		SRNorm: mef.srNorm(),
 		TENorm: map[string]NormTable{},
 	}
 
 	for _, name := range []string{"h40", "h20", "d40", "d20"} {
-		norm.TENorm[name] = NewNormTable(mem.TEDelay(name), mef, mem.TELabelledTable(name))
+		norm.TENorm[name] = NewNormTable(mem.TEDelay(name), mef, "TE", name)
 	}
 
 	return norm

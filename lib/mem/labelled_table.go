@@ -170,3 +170,7 @@ func (lt *LabTab) LoadFromMem(mem *rawMem) error {
 
 	return nil
 }
+
+func (lt *LabTab) LabelledTable(unused string) LabelledTable {
+	return lt
+}
