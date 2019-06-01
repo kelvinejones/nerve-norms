@@ -2,7 +2,6 @@ package mef
 
 import (
 	"bufio"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -79,19 +78,7 @@ func loadMem(path string) (*mem.Mem, error) {
 		return nil, err
 	}
 
-	memData, err := mem.Import(bufio.NewReader(file))
-	if err != nil {
-		return nil, err
-	}
-
-	js, err := json.Marshal(&memData)
-	if err != nil {
-		return nil, err
-	}
-
-	var mm mem.Mem
-	err = json.Unmarshal(js, &mm)
-	return &mm, err
+	return mem.Import(bufio.NewReader(file))
 }
 
 func (ef ExpectedFiles) Contains(path string) bool {

@@ -21,26 +21,33 @@ type Mem struct {
 	Settings map[string]string     `json:"settings"`
 }
 
-func (mem *rawMem) MarshalJSON() ([]byte, error) {
-	str := &Mem{
+func (mem *rawMem) AsMem() (*Mem, error) {
+	trueMem := &Mem{
 		Header:   mem.Header,
 		Sections: make(Sections),
 		ExVars:   mem.ExcitabilityVariables,
 		Settings: mem.ExcitabilityVariables.ExcitabilitySettings,
 	}
 
-	str.Sections["CD"] = &ChargeDuration{}
-	str.Sections["RC"] = &RecoveryCycle{}
-	str.Sections["SR"] = &StimResponse{}
-	str.Sections["TE"] = &ThresholdElectrotonus{}
-	str.Sections["IV"] = &ThresholdIV{}
-	for _, sec := range str.Sections {
+	trueMem.Sections["CD"] = &ChargeDuration{}
+	trueMem.Sections["RC"] = &RecoveryCycle{}
+	trueMem.Sections["SR"] = &StimResponse{}
+	trueMem.Sections["TE"] = &ThresholdElectrotonus{}
+	trueMem.Sections["IV"] = &ThresholdIV{}
+	for _, sec := range trueMem.Sections {
 		if err := sec.LoadFromMem(mem); err != nil {
 			return nil, err
 		}
 	}
+	return trueMem, nil
+}
 
-	return json.Marshal(str)
+func (mem *rawMem) MarshalJSON() ([]byte, error) {
+	trueMem, err := mem.AsMem()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(trueMem)
 }
 
 func (mem *Mem) UnmarshalJSON(value []byte) error {
@@ -51,14 +58,14 @@ func (mem *Mem) UnmarshalJSON(value []byte) error {
 	return json.Unmarshal(value, mem2) // ...and now the alias's default Unmarshal does what we want.
 }
 
-func Import(data io.Reader) (rawMem, error) {
+func Import(data io.Reader) (*Mem, error) {
 	reader := NewReader(data)
 	mem := rawMem{}
 	mem.ExcitabilityVariables.Values = make(map[int]float64)
 
 	err := mem.Header.Parse(reader)
 	if err != nil {
-		return mem, err
+		return nil, err
 	}
 
 	for err == nil {
@@ -66,10 +73,10 @@ func Import(data io.Reader) (rawMem, error) {
 	}
 
 	if err != io.EOF && err != nil {
-		return mem, fmt.Errorf("Error encountered at line %d: %s", reader.GetLastLineNumber(), err.Error())
+		return nil, fmt.Errorf("Error encountered at line %d: %s", reader.GetLastLineNumber(), err.Error())
 	}
 
-	return mem, nil
+	return mem.AsMem()
 }
 
 func (mem *rawMem) importRawSection(reader *Reader) error {
