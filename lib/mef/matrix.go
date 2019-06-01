@@ -16,6 +16,7 @@ type Matrix interface {
 type LabelledTableFromMem func(*mem.Mem) *mem.LabelledTable
 
 type GenericNorm struct {
+	XValues mem.Column `json:"xvalues,omitempty"`
 	MatNorm `json:"norms"`
 	ltfm    LabelledTableFromMem
 	mef     *Mef

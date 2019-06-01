@@ -14,10 +14,10 @@ func (mef *Mef) teNorm() TENorm {
 
 	for _, name := range names {
 		norm.Singles[name] = &teSingle{
-			Delay: mem.IVCurrent,
 			GenericNorm: GenericNorm{
-				mef:  mef,
-				ltfm: teTableForSection(name),
+				XValues: mem.IVCurrent,
+				mef:     mef,
+				ltfm:    teTableForSection(name),
 			},
 		}
 		norm.Singles[name].MatNorm = MatrixNorm(*norm.Singles[name])
@@ -27,7 +27,6 @@ func (mef *Mef) teNorm() TENorm {
 }
 
 type teSingle struct {
-	Delay mem.Column `json:"delay"`
 	GenericNorm
 }
 

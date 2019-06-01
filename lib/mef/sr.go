@@ -5,7 +5,6 @@ import (
 )
 
 type SRNorm struct {
-	PercentMax mem.Column `json:"percentMax"`
 	GenericNorm
 	Cmap GenericNorm
 }
@@ -16,10 +15,10 @@ func srTable(mData *mem.Mem) *mem.LabelledTable {
 
 func (mef *Mef) srNorm() SRNorm {
 	norm := SRNorm{
-		PercentMax: mem.SRPercentMax,
 		GenericNorm: GenericNorm{
-			mef:  mef,
-			ltfm: srTable,
+			XValues: mem.SRPercentMax,
+			mef:     mef,
+			ltfm:    srTable,
 		},
 		Cmap: GenericNorm{
 			mef:  mef,
