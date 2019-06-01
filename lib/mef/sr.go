@@ -13,17 +13,7 @@ func (mef *Mef) srNorm() SRNorm {
 			return &mData.Sections["SR"].(*mem.StimResponse).LT
 		}),
 		Cmap: NewNormTable(nil, mef, func(mData *mem.Mem) *mem.LabelledTable {
-			cmap, err := mData.Sections["SR"].(*mem.StimResponse).MaxCmaps.AsFloat()
-			lt := mem.LabelledTable{
-				XName:   "Time (ms)",
-				YName:   "CMAP",
-				XColumn: mem.Column{1},
-				YColumn: mem.Column{cmap},
-			}
-			if err != nil {
-				lt.WasImputed = mem.Column{1}
-			}
-			return &lt
+			return mData.Sections["SR"].(*mem.StimResponse).MaxCmaps.AsLabelledTable()
 		}),
 	}
 }

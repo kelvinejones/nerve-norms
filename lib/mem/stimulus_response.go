@@ -67,7 +67,21 @@ type MaxCmap struct {
 
 type MaxCmaps []MaxCmap
 
-func (mc MaxCmaps) AsFloat() (float64, error) {
+func (mc MaxCmaps) AsLabelledTable() *LabelledTable {
+	cmap, err := mc.asFloat()
+	lt := LabelledTable{
+		XName:   "Time (ms)",
+		YName:   "CMAP",
+		XColumn: Column{1},
+		YColumn: Column{cmap},
+	}
+	if err != nil {
+		lt.WasImputed = Column{1}
+	}
+	return &lt
+}
+
+func (mc MaxCmaps) asFloat() (float64, error) {
 	for _, val := range mc {
 		if val.Time > 0.99 && val.Time < 1.01 {
 			scale := 1.0
