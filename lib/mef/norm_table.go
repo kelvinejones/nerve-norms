@@ -8,16 +8,16 @@ import (
 
 type LabelledTableFromMem func(*mem.Mem) *mem.LabelledTable
 
-type GenericNorm struct {
+type NormTable struct {
 	XValues mem.Column `json:"xvalues,omitempty"`
 	Mean    mem.Column `json:"mean"`
 	SD      mem.Column `json:"sd"`
 	Num     mem.Column `json:"num"`
 }
 
-func NewGenericNorm(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) GenericNorm {
+func NewNormTable(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) NormTable {
 	numEl := len(ltfm(mef.mems[0]).XColumn)
-	norm := GenericNorm{
+	norm := NormTable{
 		XValues: xv,
 		Mean:    make(mem.Column, numEl),
 		SD:      make(mem.Column, numEl),
@@ -58,7 +58,7 @@ func NewGenericNorm(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) GenericN
 	return norm
 }
 
-func (norm *GenericNorm) wasImp(lt *mem.LabelledTable, rowN int) bool {
+func (norm *NormTable) wasImp(lt *mem.LabelledTable, rowN int) bool {
 	col := lt.WasImputed
 	// Yes, this is terrible, but wasImputed is a float column
 	return len(col) != 0 && col[rowN] > 0.5

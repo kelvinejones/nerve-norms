@@ -3,37 +3,37 @@ package mef
 import "gogs.bellstone.ca/james/jitter/lib/mem"
 
 type Norm struct {
-	CDNorm GenericNorm `json:"cd"`
-	RCNorm GenericNorm `json:"rc"`
+	CDNorm NormTable `json:"cd"`
+	RCNorm NormTable `json:"rc"`
 	SRNorm `json:"sr"`
-	IVNorm GenericNorm            `json:"iv"`
-	TENorm map[string]GenericNorm `json:"te"`
+	IVNorm NormTable            `json:"iv"`
+	TENorm map[string]NormTable `json:"te"`
 }
 
 type SRNorm struct {
-	GenericNorm
-	Cmap GenericNorm
+	NormTable
+	Cmap NormTable
 }
 
 func (mef *Mef) Norm() Norm {
 	mef = mef.FilteredMef()
 
 	norm := Norm{
-		CDNorm: NewGenericNorm(mem.CDDuration, mef, func(mData *mem.Mem) *mem.LabelledTable {
+		CDNorm: NewNormTable(mem.CDDuration, mef, func(mData *mem.Mem) *mem.LabelledTable {
 			return &mData.Sections["CD"].(*mem.ChargeDuration).LabelledTable
 		}),
-		IVNorm: NewGenericNorm(mem.IVCurrent, mef, func(mData *mem.Mem) *mem.LabelledTable {
+		IVNorm: NewNormTable(mem.IVCurrent, mef, func(mData *mem.Mem) *mem.LabelledTable {
 			return &mData.Sections["IV"].(*mem.ThresholdIV).LabelledTable
 		}),
-		RCNorm: NewGenericNorm(mem.RCInterval, mef, func(mData *mem.Mem) *mem.LabelledTable {
+		RCNorm: NewNormTable(mem.RCInterval, mef, func(mData *mem.Mem) *mem.LabelledTable {
 			return &mData.Sections["RC"].(*mem.RecoveryCycle).LabelledTable
 		}),
-		TENorm: map[string]GenericNorm{},
+		TENorm: map[string]NormTable{},
 		SRNorm: SRNorm{
-			GenericNorm: NewGenericNorm(mem.SRPercentMax, mef, func(mData *mem.Mem) *mem.LabelledTable {
+			NormTable: NewNormTable(mem.SRPercentMax, mef, func(mData *mem.Mem) *mem.LabelledTable {
 				return &mData.Sections["SR"].(*mem.StimResponse).LT
 			}),
-			Cmap: NewGenericNorm(nil, mef, func(mData *mem.Mem) *mem.LabelledTable {
+			Cmap: NewNormTable(nil, mef, func(mData *mem.Mem) *mem.LabelledTable {
 				cmap, err := mData.Sections["SR"].(*mem.StimResponse).MaxCmaps.AsFloat()
 				lt := mem.LabelledTable{
 					XName:   "Time (ms)",
@@ -50,7 +50,7 @@ func (mef *Mef) Norm() Norm {
 	}
 
 	for _, name := range []string{"h40", "h20", "d40", "d20"} {
-		norm.TENorm[name] = NewGenericNorm(mem.TEDelay(name), mef, func(mData *mem.Mem) *mem.LabelledTable {
+		norm.TENorm[name] = NewNormTable(mem.TEDelay(name), mef, func(mData *mem.Mem) *mem.LabelledTable {
 			return (*mData.Sections["TE"].(*mem.ThresholdElectrotonus))[name]
 		})
 	}
