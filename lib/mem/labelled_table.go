@@ -18,11 +18,30 @@ type LabelledTable interface {
 type LabelledTableFromMem func(*Mem) LabelledTable
 
 type LabTab struct {
-	xname  string
-	yname  string
-	xcol   Column
-	ycol   Column
-	wasimp Column
+	section string
+	xname   string
+	yname   string
+	xcol    Column
+	ycol    Column
+	wasimp  Column
+
+	// TE has more than one table
+	tableNum int
+
+	// Set to true if using log interpolation
+	logScale bool
+
+	// These fields can be set to run an alternative column import
+	altSection    string
+	altXname      string
+	altYname      string
+	altImportFunc func(*LabTab)
+
+	// This can be set to import extra data
+	extraImport func(RawSection)
+
+	// precision is the float precision
+	precision float64
 }
 
 func (lt LabTab) XName() string {
@@ -100,6 +119,53 @@ func (lt *LabTab) UnmarshalJSON(value []byte) error {
 			return errors.New("Incorrect TablelledTable column names in JSON")
 		}
 		lt.wasimp = jt.Data[2]
+	}
+
+	return nil
+}
+
+func (lt *LabTab) LoadFromMem(mem *rawMem) error {
+	sec, err := mem.sectionContainingHeader(lt.section)
+	if err != nil && lt.altSection != "" {
+		// Sometimes an old format spelled this incorrectly
+		sec, err = mem.sectionContainingHeader(lt.altSection)
+	}
+	if err != nil {
+		return errors.New("Could not get LT section " + lt.section + ": " + err.Error())
+	}
+
+	xcol, err := sec.columnContainsName(lt.xname, lt.tableNum)
+	if err != nil && lt.altXname != "" {
+		// For some reason this column sometimes has the wrong name in older files
+		xcol, err = sec.columnContainsName(lt.altXname, lt.tableNum)
+	}
+	if err != nil {
+		return errors.New("Could not get LT " + lt.section + " xcol: " + err.Error())
+	}
+
+	lt.ycol, err = sec.columnContainsName(lt.yname, lt.tableNum)
+	if err != nil && lt.altYname != "" {
+		// Some old formats use this mis-labeled column that must be converted
+		lt.ycol, err = sec.columnContainsName(lt.altYname, lt.tableNum)
+		if err != nil {
+			return errors.New("Could not get LT " + lt.section + " alt ycol: " + err.Error())
+		}
+
+		if lt.altImportFunc != nil {
+			lt.altImportFunc(lt)
+		}
+	} else if err != nil {
+		return errors.New("Could not get LT " + lt.section + " ycol: " + err.Error())
+	}
+
+	lt.wasimp = lt.ycol.ImputeWithValue(xcol, lt.xcol, lt.precision, lt.logScale)
+
+	if len(lt.xcol) != len(lt.ycol) {
+		return errors.New("Mismatching LT " + lt.section + " lengths")
+	}
+
+	if lt.extraImport != nil {
+		lt.extraImport(sec)
 	}
 
 	return nil

@@ -18,32 +18,25 @@ func SRLabelledTable(mem *Mem) LabelledTable {
 	return &mem.Sections["SR"].(*StimResponse).LT
 }
 
+func newSR() *StimResponse {
+	sr := &StimResponse{
+		LT: LabTab{
+			section:   "STIMULUS RESPONSE",
+			xname:     "% Max",
+			yname:     "Stimulus",
+			xcol:      SRPercentMax,
+			precision: 0.1,
+		},
+	}
+	sr.LT.extraImport = func(sec RawSection) {
+		sr.ValueType = parseValueType(sec.ExtraLines)
+		sr.MaxCmaps = parseMaxCmap(sec.ExtraLines)
+	}
+	return sr
+}
+
 func (sr *StimResponse) LoadFromMem(mem *rawMem) error {
-	sr.LT.xname = "% Max"
-	sr.LT.yname = "Stimulus"
-	sr.LT.xcol = SRPercentMax
-
-	sec, err := mem.sectionContainingHeader("STIMULUS RESPONSE")
-	if err != nil {
-		return errors.New("Could not get stimulus response: " + err.Error())
-	}
-
-	perMax, err := sec.columnContainsName("% Max", 0)
-	if err != nil {
-		return errors.New("Could not get stimulus response: " + err.Error())
-	}
-
-	sr.LT.ycol, err = sec.columnContainsName("Stimulus", 0)
-	if err != nil {
-		return errors.New("Could not get stimulus response: " + err.Error())
-	}
-
-	sr.LT.wasimp = sr.LT.ycol.ImputeWithValue(perMax, sr.LT.xcol, 0.1, false)
-
-	sr.ValueType = parseValueType(sec.ExtraLines)
-	sr.MaxCmaps = parseMaxCmap(sec.ExtraLines)
-
-	return nil
+	return sr.LT.LoadFromMem(mem)
 }
 
 func parseValueType(strs []string) string {

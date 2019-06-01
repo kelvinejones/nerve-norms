@@ -22,13 +22,27 @@ func TELabelledTable(name string) LabelledTableFromMem {
 	}
 }
 
+func teLabTabForType(teType string, tableNum int) *LabTab {
+	return &LabTab{
+		section:   "THRESHOLD ELECTROTONUS",
+		xname:     "Delay (ms)",
+		yname:     "Thresh redn. (%)",
+		xcol:      TEDelay(teType),
+		precision: 0.01,
+		tableNum:  tableNum,
+	}
+}
+
+func newTE() *ThresholdElectrotonus {
+	te := ThresholdElectrotonus(make(map[string]*LabTab, 4))
+	return &te
+}
+
 func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 	sec, err := mem.sectionContainingHeader("THRESHOLD ELECTROTONUS")
 	if err != nil {
 		return errors.New("Could not get threshold electrotonus: " + err.Error())
 	}
-
-	*te = make(map[string]*LabTab, 4)
 
 	for i := range sec.Tables {
 		current, err := sec.columnContainsName("Current (%)", i)
@@ -36,25 +50,12 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 			return errors.New("Could not get threshold electrotonus: " + err.Error())
 		}
 		teType := teTypeForCurrent(current)
-
-		pair := LabTab{}
-		pair.xname = "Delay (ms)"
-		pair.yname = "Threshold Reduction (%)"
-		pair.xcol = TEDelay(teType)
-
-		delay, err := sec.columnContainsName("Delay (ms)", i)
+		lt := teLabTabForType(teType, i)
+		err = lt.LoadFromMem(mem)
 		if err != nil {
-			return errors.New("Could not get threshold electrotonus: " + err.Error())
+			return errors.New("Could not load threshold electrotonus: " + err.Error())
 		}
-
-		pair.ycol, err = sec.columnContainsName("Thresh redn. (%)", i)
-		if err != nil {
-			return errors.New("Could not get threshold electrotonus: " + err.Error())
-		}
-
-		pair.wasimp = pair.ycol.ImputeWithValue(delay, pair.xcol, 0.01, false)
-
-		(*te)[teType] = &pair
+		(*te)[teType] = lt
 	}
 
 	return nil

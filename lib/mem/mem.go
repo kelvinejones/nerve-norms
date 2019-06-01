@@ -29,11 +29,11 @@ func (mem *rawMem) AsMem() (*Mem, error) {
 		Settings: mem.ExcitabilityVariables.ExcitabilitySettings,
 	}
 
-	trueMem.Sections["CD"] = &ChargeDuration{}
-	trueMem.Sections["RC"] = &RecoveryCycle{}
-	trueMem.Sections["SR"] = &StimResponse{}
-	trueMem.Sections["TE"] = &ThresholdElectrotonus{}
-	trueMem.Sections["IV"] = &ThresholdIV{}
+	trueMem.Sections["CD"] = newCD()
+	trueMem.Sections["RC"] = newRC()
+	trueMem.Sections["SR"] = newSR()
+	trueMem.Sections["TE"] = newTE()
+	trueMem.Sections["IV"] = newIV()
 	for _, sec := range trueMem.Sections {
 		if err := sec.LoadFromMem(mem); err != nil {
 			return nil, err
