@@ -26,9 +26,10 @@ func NewNormTable(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) NormTable 
 
 	// Sum the values
 	for _, mm := range mef.mems {
-		col := ltfm(mm).YColumn
+		lt := ltfm(mm)
+		col := lt.YColumn
 		for rowN := range col {
-			if !norm.wasImp(ltfm(mm), rowN) {
+			if !norm.wasImp(lt, rowN) {
 				norm.Mean[rowN] += col[rowN]
 				norm.Num[rowN]++
 			}
@@ -42,9 +43,10 @@ func NewNormTable(xv mem.Column, mef *Mef, ltfm LabelledTableFromMem) NormTable 
 
 	// Calculate SD
 	for _, mm := range mef.mems {
-		col := ltfm(mm).YColumn
+		lt := ltfm(mm)
+		col := lt.YColumn
 		for rowN := range col {
-			if !norm.wasImp(ltfm(mm), rowN) {
+			if !norm.wasImp(lt, rowN) {
 				norm.SD[rowN] += math.Pow(col[rowN]-norm.Mean[rowN], 2)
 			}
 		}
