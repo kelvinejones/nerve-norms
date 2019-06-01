@@ -10,12 +10,12 @@ import (
 	"gogs.bellstone.ca/james/jitter/lib/mef"
 )
 
-var caPath = flag.String("caPath", "res/data/CA.json", "path to the CA JSON")
+var caPath = flag.String("caPath", "json/CA.json", "path to the CA JSON")
 var jpPath = flag.String("jpPath", "", "path to the JP JSON")
-var poPath = flag.String("poPath", "res/data/PO.json", "path to the PO JSON")
-var legPath = flag.String("legPath", "res/data/leg.json", "path to the leg JSON")
+var poPath = flag.String("poPath", "json/PO.json", "path to the PO JSON")
+var legPath = flag.String("legPath", "json/leg.json", "path to the leg JSON")
 var ratPath = flag.String("ratPath", "", "path to the rat JSON")
-var output = flag.String("output", "res/data/all.json", "path to save the filtered JSON; otherwise, output to stdout")
+var output = flag.String("output", "json/all.json", "path to save the filtered JSON; otherwise, output to stdout")
 
 func main() {
 	flag.Parse()
