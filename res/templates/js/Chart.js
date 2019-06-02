@@ -14,10 +14,10 @@ class Chart {
 		// Set default config values
 		this.xIndex = 0
 		this.yIndex = 1
-		this.xSDName = undefined // If undefined, then there is no standard deviation in the x direction.
-		this.ySDName = 1
 		this.yMeanName = 0 // Defaults to this.yIndex if undefined by subclass.
+		this.ySDName = 1
 		this.xMeanName = 3
+		this.xSDName = undefined // If undefined, then there is no standard deviation in the x direction.
 		this.wasImputedIndex = 2
 
 		this.yAnimStart = this.animationStartValue(this.yRange)
