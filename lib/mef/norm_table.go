@@ -103,3 +103,38 @@ func (norm *NormTable) UnmarshalJSON(value []byte) error {
 
 	return nil
 }
+
+type DoubleNormTable struct {
+	YNorm NormTable
+	XNorm NormTable
+}
+
+func (norm DoubleNormTable) MarshalJSON() ([]byte, error) {
+	jt := jsonTable{
+		Columns: []string{"ymean", "ysd", "ynum", "xmean", "xsd", "xnum"},
+		Data:    []mem.Column{norm.YNorm.Mean, norm.YNorm.SD, norm.YNorm.Num, norm.XNorm.Mean, norm.XNorm.SD, norm.XNorm.Num},
+	}
+
+	return json.Marshal(&jt)
+}
+
+func (norm *DoubleNormTable) UnmarshalJSON(value []byte) error {
+	var jt jsonTable
+	err := json.Unmarshal(value, &jt)
+	if err != nil {
+		return err
+	}
+
+	if len(jt.Columns) != 6 || len(jt.Data) != 6 {
+		return errors.New("Incorrect number of DoubleNormTable columns in JSON")
+	}
+
+	norm.YNorm.Mean = jt.Data[0]
+	norm.YNorm.SD = jt.Data[1]
+	norm.YNorm.Num = jt.Data[3]
+	norm.XNorm.Mean = jt.Data[4]
+	norm.XNorm.SD = jt.Data[5]
+	norm.XNorm.Num = jt.Data[6]
+
+	return nil
+}
