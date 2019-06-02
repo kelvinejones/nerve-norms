@@ -21,7 +21,7 @@ func (mef *Mef) Norm() Norm {
 		RCNorm:    NewNormTable(mem.RCInterval, mef, "RC", ""),
 		SRXNorm:   NewNormTable(nil, mef, "SR", "calculatedX"),
 		SRYNorm:   NewNormTable(nil, mef, "SR", "calculatedY"),
-		SRelXNorm: NewNormTable(nil, mef, "SR", "relative"),
+		SRelXNorm: NewNormTable(mem.SRPercentMax, mef, "SR", "relative"),
 		TENorm:    map[string]NormTable{},
 	}
 
