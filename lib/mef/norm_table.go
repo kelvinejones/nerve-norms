@@ -1,16 +1,18 @@
 package mef
 
 import (
+	"encoding/json"
+	"errors"
 	"math"
 
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
 type NormTable struct {
-	XValues mem.Column `json:"xvalues,omitempty"`
-	Mean    mem.Column `json:"mean"`
-	SD      mem.Column `json:"sd"`
-	Num     mem.Column `json:"num"`
+	XValues mem.Column
+	Mean    mem.Column
+	SD      mem.Column
+	Num     mem.Column
 }
 
 func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
@@ -55,4 +57,52 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
 	}
 
 	return norm
+}
+
+// jsonTable is used to restructure LabTab data for json.
+type jsonTable struct {
+	Columns []string  `json:"columns"`
+	Data    mem.Table `json:"data"`
+}
+
+func (norm NormTable) MarshalJSON() ([]byte, error) {
+	jt := jsonTable{
+		Columns: []string{"mean", "sd", "num"},
+		Data:    []mem.Column{norm.Mean, norm.SD, norm.Num},
+	}
+
+	if norm.XValues != nil {
+		jt.Columns = append(jt.Columns, "xvalues")
+		jt.Data = append(jt.Data, norm.XValues)
+	}
+
+	return json.Marshal(&jt)
+}
+
+func (norm *NormTable) UnmarshalJSON(value []byte) error {
+	var jt jsonTable
+	err := json.Unmarshal(value, &jt)
+	if err != nil {
+		return err
+	}
+
+	if err != nil {
+		return err
+	}
+	numCol := len(jt.Columns)
+	numDat := len(jt.Data)
+
+	if numCol < 3 || numCol > 4 || numDat < 3 || numDat > 4 {
+		return errors.New("Incorrect number of NormTable columns in JSON")
+	}
+
+	norm.Mean = jt.Data[0]
+	norm.SD = jt.Data[1]
+	norm.Num = jt.Data[3]
+
+	if numCol == 4 {
+		norm.XValues = jt.Data[4]
+	}
+
+	return nil
 }
