@@ -29,7 +29,7 @@ class StimulusRelative extends Chart {
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.SRY.data
+		this.norms = norms.SRel.data
 		this.animateNorms(this.norms, "srel")
 	}
 
