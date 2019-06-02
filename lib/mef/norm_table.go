@@ -9,20 +9,20 @@ import (
 )
 
 type NormTable struct {
-	XValues mem.Column
-	Mean    mem.Column
-	SD      mem.Column
-	Num     mem.Column
+	Values mem.Column // Usually these are the x-values for a y-mean.
+	Mean   mem.Column
+	SD     mem.Column
+	Num    mem.Column
 }
 
 func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
 	lt := mef.mems[0].LabelledTable(sec, subsec)
 	numEl := lt.Len()
 	norm := NormTable{
-		XValues: xv,
-		Mean:    make(mem.Column, numEl),
-		SD:      make(mem.Column, numEl),
-		Num:     make(mem.Column, numEl),
+		Values: xv,
+		Mean:   make(mem.Column, numEl),
+		SD:     make(mem.Column, numEl),
+		Num:    make(mem.Column, numEl),
 	}
 
 	// Sum the values
@@ -71,9 +71,9 @@ func (norm NormTable) MarshalJSON() ([]byte, error) {
 		Data:    []mem.Column{norm.Mean, norm.SD, norm.Num},
 	}
 
-	if norm.XValues != nil {
-		jt.Columns = append(jt.Columns, "xvalues")
-		jt.Data = append(jt.Data, norm.XValues)
+	if norm.Values != nil {
+		jt.Columns = append(jt.Columns, "values")
+		jt.Data = append(jt.Data, norm.Values)
 	}
 
 	return json.Marshal(&jt)
@@ -101,7 +101,7 @@ func (norm *NormTable) UnmarshalJSON(value []byte) error {
 	norm.Num = jt.Data[3]
 
 	if numCol == 4 {
-		norm.XValues = jt.Data[4]
+		norm.Values = jt.Data[4]
 	}
 
 	return nil
