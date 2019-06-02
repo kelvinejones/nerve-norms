@@ -15,7 +15,19 @@ type NormTable struct {
 	Num    mem.Column
 }
 
+type transform func(float64) float64
+
+func NewExpNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
+	return newNormTable(xv, mef, sec, subsec, math.Log10, func(x float64) float64 {
+		return math.Pow(10, x)
+	})
+}
+
 func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
+	return newNormTable(xv, mef, sec, subsec, nil, nil)
+}
+
+func newNormTable(xv mem.Column, mef *Mef, sec, subsec string, forward, reverse transform) NormTable {
 	lt := mef.mems[0].LabelledTable(sec, subsec)
 	numEl := lt.Len()
 	norm := NormTable{
@@ -30,7 +42,11 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
 		lt := mm.LabelledTable(sec, subsec)
 		for rowN := 0; rowN < lt.Len(); rowN++ {
 			if !lt.WasImputedAt(rowN) {
-				norm.Mean[rowN] += lt.YColumnAt(rowN)
+				val := lt.YColumnAt(rowN)
+				if forward != nil {
+					val = forward(val)
+				}
+				norm.Mean[rowN] += val
 				norm.Num[rowN]++
 			}
 		}
@@ -46,7 +62,11 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
 		lt := mm.LabelledTable(sec, subsec)
 		for rowN := 0; rowN < lt.Len(); rowN++ {
 			if !lt.WasImputedAt(rowN) {
-				norm.SD[rowN] += math.Pow(lt.YColumnAt(rowN)-norm.Mean[rowN], 2)
+				val := lt.YColumnAt(rowN)
+				if forward != nil {
+					val = forward(val)
+				}
+				norm.SD[rowN] += math.Pow(val-norm.Mean[rowN], 2)
 			}
 		}
 	}
@@ -54,6 +74,15 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
 	// Normalize to get SD
 	for rowN := range norm.Mean {
 		norm.SD[rowN] = math.Sqrt(norm.SD[rowN] / norm.Num[rowN])
+		if reverse != nil {
+			norm.SD[rowN] = reverse(norm.SD[rowN])
+		}
+	}
+
+	if reverse != nil {
+		for rowN := range norm.Mean {
+			norm.Mean[rowN] = reverse(norm.Mean[rowN])
+		}
 	}
 
 	return norm
