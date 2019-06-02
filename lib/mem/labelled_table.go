@@ -3,6 +3,7 @@ package mem
 import (
 	"encoding/json"
 	"errors"
+	"math"
 )
 
 type LabelledTable interface {
@@ -70,6 +71,12 @@ func (lt LabTab) WasImputedAt(idx int) bool {
 
 func (lt LabTab) Len() int {
 	return len(lt.ycol)
+}
+
+type LabTabLog struct{ LabTab }
+
+func (lt LabTabLog) YColumnAt(idx int) float64 {
+	return math.Log10(lt.ycol[idx])
 }
 
 // jsonTable is used to restructure LabTab data for json.
