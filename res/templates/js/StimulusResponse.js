@@ -2,8 +2,9 @@ class StimulusResponse extends Chart {
 	constructor(participant, norms) {
 		super([1, 20], [0.01, 20], Chart.scaleType.LOG, Chart.scaleType.LOG)
 		this.participant = this.calculateParticipant(participant)
-		this.norms = norms.SRY.data
+		this.norms = norms.SR.data
 		this.sdFunc = Chart.logSD
+		this.xSDName = 4
 	}
 
 	calculateParticipant(participant) {
@@ -33,13 +34,13 @@ class StimulusResponse extends Chart {
 
 	updateNorms(norms) {
 		this.norms = norms.SR.data
-		// this.animateNorms(this.norms, "sr")
+		this.animateNorms(this.norms, "sr")
 	}
 
 	drawLines(svg) {
 		this.createXYLine(this.participant, "sr")
-		// this.createNorms(this.norms, "sr")
+		this.createNorms(this.norms, "sr")
 		this.animateXYLine(this.participant, "sr")
-		// this.animateNorms(this.norms, "sr")
+		this.animateNorms(this.norms, "sr")
 	}
 }

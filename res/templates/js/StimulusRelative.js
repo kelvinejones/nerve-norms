@@ -2,7 +2,7 @@ class StimulusRelative extends Chart {
 	constructor(participant, norms) {
 		super([0, 200], [0, 100])
 		this.participant = this.calculateParticipant(participant.sections.SR.data)
-		this.norms = norms.SRelX.data
+		this.norms = norms.SRel.data
 		this.ySDName = undefined
 		this.yMeanName = 3
 		this.xSDName = 1
