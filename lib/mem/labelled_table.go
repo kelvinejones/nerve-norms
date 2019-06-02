@@ -99,9 +99,6 @@ func (lt *LabTab) UnmarshalJSON(value []byte) error {
 		return err
 	}
 
-	if err != nil {
-		return err
-	}
 	numCol := len(jt.Columns)
 	numDat := len(jt.Data)
 
