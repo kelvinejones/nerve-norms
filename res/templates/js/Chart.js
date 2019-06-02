@@ -124,7 +124,7 @@ class Chart {
 	}
 
 	static logSD(val, sign, numSD, sdSize) {
-		return val * Math.pow(10, sign * numSD * (sdSize || 0))
+		return val * Math.pow((sdSize || 0), sign * numSD)
 	}
 
 	// sdAtLoc calculates limits based on the standard deviations
