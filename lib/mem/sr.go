@@ -53,10 +53,10 @@ func (sr *StimResponse) LabelledTable(subsec string) LabelledTable {
 }
 
 func (sr StimResponse) fullyCalculatedX() LabelledTable {
-	return &LabTabLog{LabTab{ // log norm
+	return &LabTab{
 		yname: "Stimulus Current (mA)",
 		ycol:  sr.LT.ycol,
-	}}
+	}
 }
 
 func (sr StimResponse) fullyCalculatedY() LabelledTable {
@@ -65,10 +65,10 @@ func (sr StimResponse) fullyCalculatedY() LabelledTable {
 		col[idx] = val / 100 * sr.MC.standard
 	}
 
-	return &LabTabLog{LabTab{ // log norm
+	return &LabTab{
 		yname: "Peak Response (mV)",
 		ycol:  col,
-	}}
+	}
 }
 
 func (sr StimResponse) relative() LabelledTable {
