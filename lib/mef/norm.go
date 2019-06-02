@@ -3,13 +3,13 @@ package mef
 import "gogs.bellstone.ca/james/jitter/lib/mem"
 
 type Norm struct {
-	CDNorm    NormTable            `json:"cd"`
-	RCNorm    NormTable            `json:"rc"`
-	SRXNorm   NormTable            `json:"srx"`
-	SRYNorm   NormTable            `json:"sry"`
-	SRelXNorm NormTable            `json:"srelx"`
-	IVNorm    NormTable            `json:"iv"`
-	TENorm    map[string]NormTable `json:"te"`
+	CDNorm    NormTable            `json:"CD"`
+	RCNorm    NormTable            `json:"RC"`
+	SRXNorm   NormTable            `json:"SRX"`
+	SRYNorm   NormTable            `json:"SRY"`
+	SRelXNorm NormTable            `json:"SRelX"`
+	IVNorm    NormTable            `json:"IV"`
+	TENorm    map[string]NormTable `json:"TE"`
 }
 
 func (mef *Mef) Norm() Norm {
