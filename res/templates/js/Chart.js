@@ -27,7 +27,7 @@ class Chart {
 
 		this.group = {}
 
-		this.numSD = 2
+		this.numSD = 2.58 // for 99% CI, assuming normally distributed
 		this.sdFunc = Chart.linearSD
 	}
 
