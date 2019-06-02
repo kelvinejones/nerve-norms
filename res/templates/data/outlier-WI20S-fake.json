@@ -271,3 +271,4 @@ outlierScore["WI20S"]["F65 Norms"] = {
 		{ "id": 34, "outlierScore": 0.98675746, }
 	],
 }
+outlierScore["WI20S"]["M30 Norms"] = outlierScore["WI20S"]["F65 Norms"]
