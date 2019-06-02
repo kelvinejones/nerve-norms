@@ -129,8 +129,8 @@ class Chart {
 
 	// sdAtLoc calculates limits based on the standard deviations
 	sdAtLoc(dpt, loc) {
-		const xmn = this.xMeanName || this.xIndex
-		const ymn = this.yMeanName || this.yIndex
+		const xmn = (this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
+		const ymn = (this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
 		const xsd = this.xSDName
 		const ysd = this.ySDName
 		const numSD = this.numSD
@@ -297,8 +297,10 @@ class Chart {
 	}
 
 	createNorms(lineData, name) {
+		const xmn = (this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
+		const ymn = (this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
 		this.createPath(this.ciLayer, this.normativeLimits(lineData), name, "confidenceinterval")
-		this.createPath(this.meanLayer, this.dataAsXY(lineData, this.xMeanName || this.xIndex, this.yMeanName || this.yIndex), name, "meanline")
+		this.createPath(this.meanLayer, this.dataAsXY(lineData, xmn, ymn), name, "meanline")
 	}
 
 	createXYLine(lineData, name) {
@@ -307,8 +309,10 @@ class Chart {
 	}
 
 	animateNorms(lineData, name) {
+		const xmn = (this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
+		const ymn = (this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
 		this.animatePath(this.normativeLimits(lineData), name, "confidenceinterval")
-		this.animatePath(this.dataAsXY(lineData, this.xMeanName || this.xIndex, this.yMeanName || this.yIndex), name, "meanline")
+		this.animatePath(this.dataAsXY(lineData, xmn, ymn), name, "meanline")
 	}
 
 	animateXYLine(lineData, name) {
