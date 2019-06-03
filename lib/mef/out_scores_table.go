@@ -14,6 +14,8 @@ type OutScoresTable struct {
 	Scores mem.Column
 }
 
+var dist = stats.NormalDist{Mu: 0.0, Sigma: 1.0}
+
 func NewOutScoresTable(norm NormTable, mm *mem.Mem) OutScoresTable {
 	lt := mm.LabelledTable(norm.sec, norm.subsec)
 	numEl := lt.Len()
@@ -22,22 +24,25 @@ func NewOutScoresTable(norm NormTable, mm *mem.Mem) OutScoresTable {
 		Scores: make(mem.Column, numEl),
 	}
 
-	dist := stats.NormalDist{Mu: 0.0, Sigma: 1.0}
-
 	for rowN := 0; rowN < numEl; rowN++ {
-		// TODO account for GeometricMean
-		if norm.SD[rowN] == 0.0 {
-			ost.Scores[rowN] = 0.0
-		} else {
-			diff := (norm.Mean[rowN] - lt.YColumnAt(rowN)) / norm.SD[rowN]
-			if diff > 0 {
-				diff *= -1
-			}
-			ost.Scores[rowN] = 1 - 2*dist.CDF(diff)
-		}
+		ost.Scores[rowN] = norm.numSD(rowN, lt.YColumnAt(rowN))
 	}
 
 	return ost
+}
+
+func (norm NormTable) numSD(rowN int, val float64) float64 {
+	if norm.SD[rowN] == 0.0 {
+		return 0.0
+	}
+	switch norm.MeanType {
+	case ArithmeticMean:
+		return (norm.Mean[rowN] - val) / norm.SD[rowN]
+	case GeometricMean:
+		return 0.0
+	default:
+		return 0.0
+	}
 }
 
 func (ost OutScoresTable) MarshalJSON() ([]byte, error) {
