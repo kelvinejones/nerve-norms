@@ -17,9 +17,17 @@ type ExcitabilityVariables struct {
 	ExcitabilitySettings
 }
 
-func (exciteVar *ExcitabilityVariables) imputeZero() {
-	expectedIndices := []int{1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38}
+var expectedIndices = []int{1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38}
+var ExVarIndices = Column{}
 
+func init() {
+	ExVarIndices = make(Column, len(expectedIndices))
+	for i, val := range expectedIndices {
+		ExVarIndices[i] = float64(val)
+	}
+}
+
+func (exciteVar *ExcitabilityVariables) imputeZero() {
 	if exciteVar.WasImputed == nil {
 		exciteVar.WasImputed = make(map[int]bool, len(expectedIndices))
 	}
