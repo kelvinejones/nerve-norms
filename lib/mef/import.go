@@ -15,7 +15,8 @@ type ExpectedFiles map[string]struct{}
 
 // Import imports the MEF at the provided path, assuming all MEM are in the same directory.
 // If the input path is not an MEF, then assume it's a directory and import all
-func Import(input string) (Mef, error) {
+// The prefix is prepended to all Mems added to the Mef.
+func Import(prefix, input string) (Mef, error) {
 	var expect ExpectedFiles
 	fi, err := os.Stat(input)
 	switch {
@@ -56,7 +57,7 @@ func Import(input string) (Mef, error) {
 			fmt.Println("Could not parse '" + basename + "' due to error: " + err.Error())
 			return nil
 		}
-		mf = append(mf, mm)
+		mf[prefix+mm.Header.Name] = mm
 
 		if expect != nil {
 			expect.Remove(basename)

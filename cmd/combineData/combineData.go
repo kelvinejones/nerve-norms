@@ -19,23 +19,23 @@ var output = flag.String("output", "json/all.json", "path to save the JSON; othe
 func main() {
 	flag.Parse()
 
-	caMef, err := mef.Import(*caPath)
+	caMef, err := mef.Import("CA-", *caPath)
 	if err != nil && *caPath != "" {
 		panic(err)
 	}
-	jpMef, err := mef.Import(*jpPath)
+	jpMef, err := mef.Import("JP-", *jpPath)
 	if err != nil && *jpPath != "" {
 		panic(err)
 	}
-	poMef, err := mef.Import(*poPath)
+	poMef, err := mef.Import("PO-", *poPath)
 	if err != nil && *poPath != "" {
 		panic(err)
 	}
-	legMef, err := mef.Import(*legPath)
+	legMef, err := mef.Import("leg-", *legPath)
 	if err != nil && *legPath != "" {
 		panic(err)
 	}
-	ratMef, err := mef.Import(*ratPath)
+	ratMef, err := mef.Import("rat-", *ratPath)
 	if err != nil && *ratPath != "" {
 		panic(err)
 	}

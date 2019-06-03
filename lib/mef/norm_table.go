@@ -28,13 +28,13 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
 }
 
 func newNormTable(xv mem.Column, mef *Mef, sec, subsec string, forward, reverse transform) NormTable {
-	lt := (*mef)[0].LabelledTable(sec, subsec)
-	numEl := lt.Len()
-	norm := NormTable{
-		Values: xv,
-		Mean:   make(mem.Column, numEl),
-		SD:     make(mem.Column, numEl),
-		Num:    make(mem.Column, numEl),
+	norm := NormTable{Values: xv}
+	for _, mm := range *mef {
+		lt := mm.LabelledTable(sec, subsec)
+		numEl := lt.Len()
+		norm.Mean = make(mem.Column, numEl)
+		norm.SD = make(mem.Column, numEl)
+		norm.Num = make(mem.Column, numEl)
 	}
 
 	// Sum the values
