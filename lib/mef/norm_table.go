@@ -31,9 +31,10 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) Norm
 		sec:      sec,
 		subsec:   subsec,
 	}
+	numEl := 0
 	for _, mm := range *mef {
 		lt := mm.LabelledTable(norm.sec, norm.subsec)
-		numEl := lt.Len()
+		numEl = lt.Len()
 		norm.Mean = make(mem.Column, numEl)
 		norm.SD = make(mem.Column, numEl)
 		norm.Num = make(mem.Column, numEl)
@@ -42,7 +43,7 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) Norm
 	// Sum the values
 	for _, mm := range *mef {
 		lt := mm.LabelledTable(norm.sec, norm.subsec)
-		for rowN := 0; rowN < lt.Len(); rowN++ {
+		for rowN := 0; rowN < numEl; rowN++ {
 			if !lt.WasImputedAt(rowN) {
 				norm.Mean[rowN] += norm.forward(lt.YColumnAt(rowN))
 				norm.Num[rowN]++
@@ -58,7 +59,7 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) Norm
 	// Calculate SD
 	for _, mm := range *mef {
 		lt := mm.LabelledTable(norm.sec, norm.subsec)
-		for rowN := 0; rowN < lt.Len(); rowN++ {
+		for rowN := 0; rowN < numEl; rowN++ {
 			if !lt.WasImputedAt(rowN) {
 				norm.SD[rowN] += math.Pow(norm.forward(lt.YColumnAt(rowN))-norm.Mean[rowN], 2)
 			}
