@@ -8,7 +8,7 @@ import (
 
 type Mef struct {
 	mems []*mem.Mem
-	CompositeFilter
+	Filter
 }
 
 // Append appends the data from the second Mef, but ignores its filters. The original/combined Mef is returned.
@@ -51,7 +51,7 @@ func (mef *Mef) FilteredMef() *Mef {
 	mems := make([]*mem.Mem, 0, len(mef.mems))
 	for _, m := range mef.mems {
 		// For each Mem, check if it passes all filters
-		if mef.CompositeFilter.Apply(*m) {
+		if mef.Filter.Apply(*m) {
 			// This Mem passed, so append it
 			mems = append(mems, m)
 		}
