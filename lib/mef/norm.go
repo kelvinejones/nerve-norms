@@ -13,19 +13,19 @@ type Norm struct {
 
 func (mef *Mef) Norm() Norm {
 	norm := Norm{
-		CDNorm: NewNormTable(mem.CDDuration, mef, "CD", ""),
-		IVNorm: NewNormTable(mem.IVCurrent, mef, "IV", ""),
-		RCNorm: NewNormTable(mem.RCInterval, mef, "RC", ""),
+		CDNorm: NewNormTable(mem.CDDuration, mef, "CD", "", ArithmeticMean),
+		IVNorm: NewNormTable(mem.IVCurrent, mef, "IV", "", ArithmeticMean),
+		RCNorm: NewNormTable(mem.RCInterval, mef, "RC", "", ArithmeticMean),
 		SRNorm: DoubleNormTable{
-			XNorm: NewExpNormTable(nil, mef, "SR", "calculatedX"),
-			YNorm: NewExpNormTable(nil, mef, "SR", "calculatedY"),
+			XNorm: NewNormTable(nil, mef, "SR", "calculatedX", GeometricMean),
+			YNorm: NewNormTable(nil, mef, "SR", "calculatedY", GeometricMean),
 		},
-		SRelNorm: NewNormTable(mem.SRPercentMax, mef, "SR", "relative"),
+		SRelNorm: NewNormTable(mem.SRPercentMax, mef, "SR", "relative", ArithmeticMean),
 		TENorm:   map[string]NormTable{},
 	}
 
 	for _, name := range []string{"h40", "h20", "d40", "d20"} {
-		norm.TENorm[name] = NewNormTable(mem.TEDelay(name), mef, "TE", name)
+		norm.TENorm[name] = NewNormTable(mem.TEDelay(name), mef, "TE", name, ArithmeticMean)
 	}
 
 	return norm
