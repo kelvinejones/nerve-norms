@@ -17,8 +17,7 @@ type rawMem struct {
 type Mem struct {
 	Header   `json:"header"`
 	Sections `json:"sections"`
-	ExVars   ExcitabilityVariables `json:"exVars"`
-	Settings map[string]string     `json:"settings"`
+	Settings map[string]string `json:"settings"`
 }
 
 func (mem *Mem) LabelledTable(name, subsec string) LabelledTable {
@@ -29,7 +28,6 @@ func (mem *rawMem) AsMem() (*Mem, error) {
 	trueMem := &Mem{
 		Header:   mem.Header,
 		Sections: make(Sections),
-		ExVars:   mem.ExcitabilityVariables,
 		Settings: mem.ExcitabilityVariables.ExcitabilitySettings,
 	}
 
@@ -38,6 +36,7 @@ func (mem *rawMem) AsMem() (*Mem, error) {
 	trueMem.Sections["SR"] = newSR()
 	trueMem.Sections["TE"] = newTE()
 	trueMem.Sections["IV"] = newIV()
+	trueMem.Sections["ExVars"] = newExVar()
 	for _, sec := range trueMem.Sections {
 		if err := sec.LoadFromMem(mem); err != nil {
 			return nil, err

@@ -39,6 +39,9 @@ func (secs *Sections) UnmarshalJSON(value []byte) error {
 		case "IV":
 			sec = &ThresholdIV{}
 			err = json.Unmarshal(val, sec)
+		case "ExVars":
+			sec = &ExcitabilityVariablesSection{}
+			err = json.Unmarshal(val, sec)
 		}
 		if err != nil {
 			return err

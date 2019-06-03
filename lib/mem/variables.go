@@ -9,12 +9,15 @@ import (
 	"strings"
 )
 
+type ExcitabilityVariablesSection struct{ LabTab }
+
 type ExcitabilitySettings map[string]string
 
 type ExcitabilityVariables struct {
 	Values     map[int]float64
 	WasImputed map[int]bool
 	ExcitabilitySettings
+	lt LabTab // Must call LoadFromMem for this to be set up
 }
 
 var expectedIndices = []int{1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38}
@@ -27,59 +30,63 @@ func init() {
 	}
 }
 
-func (exciteVar *ExcitabilityVariables) imputeZero() {
+func (exciteVar *ExcitabilityVariables) imputeZero() bool {
 	if exciteVar.WasImputed == nil {
 		exciteVar.WasImputed = make(map[int]bool, len(expectedIndices))
 	}
 
 	// Go through all expected variables and impute any that are missing
+	imputedAtLeastOne := false
 	for _, id := range expectedIndices {
 		if _, ok := exciteVar.Values[id]; !ok {
 			exciteVar.Values[id] = 0.0
 			exciteVar.WasImputed[id] = true
+			imputedAtLeastOne = true
 		}
 	}
+	return imputedAtLeastOne
 }
 
-type jsonExVar struct {
-	Id         int     `json:"id"`
-	Value      float64 `json:"value"`
-	WasImputed bool    `json:"wasImputed,omitempty"`
+func newExVar() *ExcitabilityVariablesSection {
+	return &ExcitabilityVariablesSection{LabTab{
+		section:   "Excitability Variables",
+		xname:     "Index",
+		yname:     "Variable Value",
+		precision: 0.0000001,
+	}}
+}
+
+func (evs *ExcitabilityVariablesSection) LoadFromMem(mem *rawMem) error {
+	imputedAtLeastOne := mem.ExcitabilityVariables.imputeZero()
+
+	for key, val := range mem.ExcitabilityVariables.Values {
+		evs.xcol = append(evs.xcol, float64(key))
+		evs.ycol = append(evs.ycol, val)
+		wasImp := 0.0
+		if mem.ExcitabilityVariables.WasImputed[key] {
+			wasImp = 1.0
+		}
+		evs.wasimp = append(evs.wasimp, wasImp)
+	}
+	if !imputedAtLeastOne {
+		evs.wasimp = nil
+	}
+
+	if len(evs.xcol) != len(evs.ycol) {
+		return errors.New("Mismatching ExVar lengths")
+	}
+
+	return nil
 }
 
 // MarshalJSON marshals the excitability variables, but not the settings.
 func (exciteVar *ExcitabilityVariables) MarshalJSON() ([]byte, error) {
-	exciteVar.imputeZero()
-
-	arr := []jsonExVar{}
-	for id := range exciteVar.Values {
-		arr = append(arr, jsonExVar{
-			Id:         id,
-			Value:      exciteVar.Values[id],
-			WasImputed: exciteVar.WasImputed[id],
-		})
-	}
-
-	return json.Marshal(&arr)
+	return json.Marshal(&exciteVar.lt)
 }
 
 // UnmarshalJSON unmarshals the excitability variables, but not the settings.
 func (exciteVar *ExcitabilityVariables) UnmarshalJSON(value []byte) error {
-	arr := []jsonExVar{}
-	err := json.Unmarshal(value, &arr)
-	if err != nil {
-		return err
-	}
-
-	exciteVar.Values = make(map[int]float64, len(arr))
-	exciteVar.WasImputed = make(map[int]bool, len(arr))
-
-	for _, val := range arr {
-		exciteVar.Values[val.Id] = val.Value
-		exciteVar.WasImputed[val.Id] = val.WasImputed
-	}
-
-	return nil
+	return json.Unmarshal(value, &exciteVar.lt)
 }
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
