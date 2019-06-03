@@ -53,7 +53,7 @@ func (mef *Mef) FilteredMef() *Mef {
 		// For each Mem, check if it passes all filters
 		shouldInclude := true
 		for _, filt := range mef.filters {
-			if !filt.Filter(*m) {
+			if !filt.Apply(*m) {
 				// A filter was failed, so keep going.
 				shouldInclude = false
 				break
