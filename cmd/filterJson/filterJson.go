@@ -51,7 +51,7 @@ func main() {
 	}
 
 	filt := (&mef.Filter{}).BySex(sex).ByAge(*minAge, *maxAge)
-	mefData.Filter = *filt
+	mefData.Filter(filt)
 
 	jsArray, err := json.Marshal(&mefData)
 	if err != nil {

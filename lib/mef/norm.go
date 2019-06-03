@@ -12,8 +12,6 @@ type Norm struct {
 }
 
 func (mef *Mef) Norm() Norm {
-	mef = mef.FilteredMef()
-
 	norm := Norm{
 		CDNorm: NewNormTable(mem.CDDuration, mef, "CD", ""),
 		IVNorm: NewNormTable(mem.IVCurrent, mef, "IV", ""),

@@ -31,7 +31,7 @@ func Import(input string) (Mef, error) {
 		return Mef{}, errors.New("Provided import path is neither MEF nor directory")
 	}
 
-	mf := Mef{mems: []*mem.Mem{}}
+	mf := Mef{}
 
 	// This works regardless of whether input is a file or a directory, though if it's an invalid file, it will be silently skipped
 	filepath.Walk(input, func(subpath string, info os.FileInfo, err error) error {
@@ -56,7 +56,7 @@ func Import(input string) (Mef, error) {
 			fmt.Println("Could not parse '" + basename + "' due to error: " + err.Error())
 			return nil
 		}
-		mf.mems = append(mf.mems, mm)
+		mf = append(mf, mm)
 
 		if expect != nil {
 			expect.Remove(basename)

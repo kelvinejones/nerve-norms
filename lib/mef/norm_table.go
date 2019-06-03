@@ -28,7 +28,7 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string) NormTable {
 }
 
 func newNormTable(xv mem.Column, mef *Mef, sec, subsec string, forward, reverse transform) NormTable {
-	lt := mef.mems[0].LabelledTable(sec, subsec)
+	lt := (*mef)[0].LabelledTable(sec, subsec)
 	numEl := lt.Len()
 	norm := NormTable{
 		Values: xv,
@@ -38,7 +38,7 @@ func newNormTable(xv mem.Column, mef *Mef, sec, subsec string, forward, reverse 
 	}
 
 	// Sum the values
-	for _, mm := range mef.mems {
+	for _, mm := range *mef {
 		lt := mm.LabelledTable(sec, subsec)
 		for rowN := 0; rowN < lt.Len(); rowN++ {
 			if !lt.WasImputedAt(rowN) {
@@ -58,7 +58,7 @@ func newNormTable(xv mem.Column, mef *Mef, sec, subsec string, forward, reverse 
 	}
 
 	// Calculate SD
-	for _, mm := range mef.mems {
+	for _, mm := range *mef {
 		lt := mm.LabelledTable(sec, subsec)
 		for rowN := 0; rowN < lt.Len(); rowN++ {
 			if !lt.WasImputedAt(rowN) {
