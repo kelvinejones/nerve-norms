@@ -3,6 +3,7 @@ package mef
 import (
 	"encoding/json"
 	"errors"
+	"math"
 
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 
@@ -39,7 +40,7 @@ func (norm NormTable) numSD(rowN int, val float64) float64 {
 	case ArithmeticMean:
 		return (norm.Mean[rowN] - val) / norm.SD[rowN]
 	case GeometricMean:
-		return 0.0
+		return math.Log10(norm.Mean[rowN]/val) / math.Log10(norm.SD[rowN])
 	default:
 		return 0.0
 	}
