@@ -22,11 +22,11 @@ func (mef *Mef) Filter(filt *Filter) *Mef {
 	}
 
 	mems := make(Mef)
-	for _, m := range *mef {
+	for key, m := range *mef {
 		// For each Mem, check if it passes all filters
 		if filt.Apply(*m) {
 			// This Mem passed, so append it
-			mems[m.Header.Name] = m
+			mems[key] = m
 		}
 	}
 
