@@ -3,19 +3,21 @@ package mef
 import "gogs.bellstone.ca/james/jitter/lib/mem"
 
 type Norm struct {
-	CDNorm   NormTable            `json:"CD"`
-	RCNorm   NormTable            `json:"RC"`
-	SRNorm   DoubleNormTable      `json:"SR"`
-	SRelNorm NormTable            `json:"SRel"`
-	IVNorm   NormTable            `json:"IV"`
-	TENorm   map[string]NormTable `json:"TE"`
+	CDNorm     NormTable            `json:"CD"`
+	RCNorm     NormTable            `json:"RC"`
+	SRNorm     DoubleNormTable      `json:"SR"`
+	SRelNorm   NormTable            `json:"SRel"`
+	IVNorm     NormTable            `json:"IV"`
+	TENorm     map[string]NormTable `json:"TE"`
+	ExVarsNorm NormTable            `json:"ExVars"`
 }
 
 func (mef *Mef) Norm() Norm {
 	norm := Norm{
-		CDNorm: NewNormTable(mem.CDDuration, mef, "CD", "", ArithmeticMean),
-		IVNorm: NewNormTable(mem.IVCurrent, mef, "IV", "", ArithmeticMean),
-		RCNorm: NewNormTable(mem.RCInterval, mef, "RC", "", ArithmeticMean),
+		CDNorm:     NewNormTable(mem.CDDuration, mef, "CD", "", ArithmeticMean),
+		IVNorm:     NewNormTable(mem.IVCurrent, mef, "IV", "", ArithmeticMean),
+		RCNorm:     NewNormTable(mem.RCInterval, mef, "RC", "", ArithmeticMean),
+		ExVarsNorm: NewNormTable(mem.ExVarIndices, mef, "ExVars", "", ArithmeticMean),
 		SRNorm: DoubleNormTable{
 			XNorm: NewNormTable(nil, mef, "SR", "calculatedX", GeometricMean),
 			YNorm: NewNormTable(nil, mef, "SR", "calculatedY", GeometricMean),
