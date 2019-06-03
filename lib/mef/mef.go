@@ -33,3 +33,13 @@ func (mef *Mef) Filter(filt *Filter) *Mef {
 	*mef = mems
 	return mef
 }
+
+// MemWithName returns the first Mem with the provided key.
+func (mef *Mef) MemWithKey(key string) *mem.Mem {
+	for k, m := range *mef {
+		if key == k {
+			return m
+		}
+	}
+	return nil
+}
