@@ -23,22 +23,31 @@ func main() {
 	if err != nil && *caPath != "" {
 		panic(err)
 	}
+	caMef.LabelWithSpecies("human").LabelWithNerve("median").LabelWithCountry("CA")
+
 	jpMef, err := mef.Import("JP-", *jpPath)
 	if err != nil && *jpPath != "" {
 		panic(err)
 	}
+	jpMef.LabelWithSpecies("human").LabelWithNerve("median").LabelWithCountry("JP")
+
 	poMef, err := mef.Import("PO-", *poPath)
 	if err != nil && *poPath != "" {
 		panic(err)
 	}
+	poMef.LabelWithSpecies("human").LabelWithNerve("median").LabelWithCountry("PO")
+
 	legMef, err := mef.Import("leg-", *legPath)
 	if err != nil && *legPath != "" {
 		panic(err)
 	}
+	legMef.LabelWithSpecies("human").LabelWithNerve("CP").LabelWithCountry("CA")
+
 	ratMef, err := mef.Import("rat-", *ratPath)
 	if err != nil && *ratPath != "" {
 		panic(err)
 	}
+	ratMef.LabelWithSpecies("rat").LabelWithCountry("CA")
 
 	allData := caMef.Append(jpMef).Append(poMef).Append(legMef).Append(ratMef)
 

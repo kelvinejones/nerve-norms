@@ -19,6 +19,8 @@ var sexString = flag.String("sex", "", "only include participants of this sex (M
 var minAge = flag.Int("minAge", 0, "only include participants at least this old")
 var maxAge = flag.Int("maxAge", 200, "only include participants this age or younger")
 var country = flag.String("country", "", "only include participants from this country (CA/PO/JP)")
+var species = flag.String("species", "human", "only include participants from this species (human/rat)")
+var nerve = flag.String("nerve", "median", "only include participants from this nerve (median/CP)")
 
 func main() {
 	flag.Parse()
@@ -50,7 +52,7 @@ func main() {
 		panic(err)
 	}
 
-	mefData.Filter(mef.NewFilter().BySex(sex).ByAge(*minAge, *maxAge))
+	mefData.Filter(mef.NewFilter().BySex(sex).ByAge(*minAge, *maxAge).ByCountry(*country).BySpecies(*species).ByNerve(*nerve))
 
 	jsArray, err := json.Marshal(&mefData)
 	if err != nil {

@@ -64,3 +64,57 @@ func (cf *Filter) ByAge(youngAge, oldAge int) *Filter {
 	}
 	return cf.add(&AgeFilter{youngAge: youngAge, oldAge: oldAge})
 }
+
+// CountryFilter is a type that filters by country.
+type CountryFilter struct {
+	country string
+}
+
+func (filt CountryFilter) Apply(m mem.Mem) bool {
+	country := m.Header.Country
+	return country == filt.country || "" == filt.country
+}
+
+func (cf *Filter) ByCountry(country string) *Filter {
+	if country == "" {
+		// This means no country filtering, so don't add a filter!
+		return cf
+	}
+	return cf.add(&CountryFilter{country: country})
+}
+
+// SpeciesFilter is a type that filters by species.
+type SpeciesFilter struct {
+	species string
+}
+
+func (filt SpeciesFilter) Apply(m mem.Mem) bool {
+	species := m.Header.Species
+	return species == filt.species || "" == filt.species
+}
+
+func (cf *Filter) BySpecies(species string) *Filter {
+	if species == "" {
+		// This means no species filtering, so don't add a filter!
+		return cf
+	}
+	return cf.add(&SpeciesFilter{species: species})
+}
+
+// NerveFilter is a type that filters by nerve.
+type NerveFilter struct {
+	nerve string
+}
+
+func (filt NerveFilter) Apply(m mem.Mem) bool {
+	nerve := m.Header.Nerve
+	return nerve == filt.nerve || "" == filt.nerve
+}
+
+func (cf *Filter) ByNerve(nerve string) *Filter {
+	if nerve == "" {
+		// This means no nerve filtering, so don't add a filter!
+		return cf
+	}
+	return cf.add(&NerveFilter{nerve: nerve})
+}
