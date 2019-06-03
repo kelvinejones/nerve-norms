@@ -6,6 +6,10 @@ type Filter struct {
 	filters []filter
 }
 
+func NewFilter() *Filter {
+	return &Filter{}
+}
+
 func (cf *Filter) add(f filter) *Filter {
 	cf.filters = append(cf.filters, f)
 	return cf
