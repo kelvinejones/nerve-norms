@@ -32,3 +32,34 @@ func (mef *Mef) Norm() Norm {
 
 	return norm
 }
+
+type OutScores struct {
+	CDOutScores     OutScoresTable            `json:"CD"`
+	RCOutScores     OutScoresTable            `json:"RC"`
+	SROutScores     DoubleOutScoresTable      `json:"SR"`
+	SRelOutScores   OutScoresTable            `json:"SRel"`
+	IVOutScores     OutScoresTable            `json:"IV"`
+	TEOutScores     map[string]OutScoresTable `json:"TE"`
+	ExVarsOutScores OutScoresTable            `json:"ExVars"`
+}
+
+func (norm *Norm) OutlierScores(mm *mem.Mem) OutScores {
+	os := OutScores{
+		CDOutScores:     NewOutScoresTable(norm.CDNorm, mm),
+		IVOutScores:     NewOutScoresTable(norm.IVNorm, mm),
+		RCOutScores:     NewOutScoresTable(norm.RCNorm, mm),
+		ExVarsOutScores: NewOutScoresTable(norm.ExVarsNorm, mm),
+		SROutScores: DoubleOutScoresTable{
+			XOutScores: NewOutScoresTable(norm.SRNorm.XNorm, mm),
+			YOutScores: NewOutScoresTable(norm.SRNorm.YNorm, mm),
+		},
+		SRelOutScores: NewOutScoresTable(norm.SRelNorm, mm),
+		TEOutScores:   map[string]OutScoresTable{},
+	}
+
+	for _, name := range []string{"h40", "h20", "d40", "d20"} {
+		os.TEOutScores[name] = NewOutScoresTable(norm.TENorm[name], mm)
+	}
+
+	return os
+}
