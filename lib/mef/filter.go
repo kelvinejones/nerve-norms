@@ -6,7 +6,7 @@ type Filter struct {
 	filters []filter
 }
 
-func (cf *Filter) Combine(f filter) filter {
+func (cf *Filter) add(f filter) *Filter {
 	cf.filters = append(cf.filters, f)
 	return cf
 }
@@ -34,6 +34,14 @@ func (filt SexFilter) Apply(m mem.Mem) bool {
 	return m.Header.Sex == filt.Sex || filt.Sex == mem.UnknownSex
 }
 
+func (cf *Filter) BySex(sex mem.Sex) *Filter {
+	if sex == mem.UnknownSex {
+		// This means no sex filtering, so don't add a filter!
+		return cf
+	}
+	return cf.add(&SexFilter{Sex: sex})
+}
+
 // AgeFilter is a type that filters by age. It doesn't care if oldAge<youngAge, and it considers '0' to mean a value is unset.
 type AgeFilter struct {
 	youngAge int
@@ -43,4 +51,12 @@ type AgeFilter struct {
 func (filt AgeFilter) Apply(m mem.Mem) bool {
 	age := m.Header.Age
 	return (filt.youngAge == 0 || age >= filt.youngAge) && (filt.oldAge == 0 || age <= filt.oldAge)
+}
+
+func (cf *Filter) ByAge(youngAge, oldAge int) *Filter {
+	if youngAge == 0 && oldAge == 0 {
+		// This means no age filtering, so don't add a filter!
+		return cf
+	}
+	return cf.add(&AgeFilter{youngAge: youngAge, oldAge: oldAge})
 }

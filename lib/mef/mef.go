@@ -17,31 +17,6 @@ func (mef *Mef) Append(mef2 Mef) *Mef {
 	return mef
 }
 
-func (mef *Mef) ClearFilters() {
-	mef.filters = nil
-}
-
-func (mef *Mef) addFilter(filt filter) *Mef {
-	mef.filters = append(mef.filters, filt)
-	return mef
-}
-
-func (mef *Mef) FilterBySex(sex mem.Sex) *Mef {
-	if sex == mem.UnknownSex {
-		// This means no sex filtering, so don't add a filter!
-		return mef
-	}
-	return mef.addFilter(&SexFilter{Sex: sex})
-}
-
-func (mef *Mef) FilterByAge(youngAge, oldAge int) *Mef {
-	if youngAge == 0 && oldAge == 0 {
-		// This means no age filtering, so don't add a filter!
-		return mef
-	}
-	return mef.addFilter(&AgeFilter{youngAge: youngAge, oldAge: oldAge})
-}
-
 func (mef *Mef) FilteredMef() *Mef {
 	if mef.filters == nil || len(mef.filters) == 0 {
 		// There are no filters, so return all data
