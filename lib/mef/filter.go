@@ -6,9 +6,9 @@ type Filter struct {
 	filters []filter
 }
 
-func (cf Filter) Combine(f filter) filter {
+func (cf *Filter) Combine(f filter) filter {
 	cf.filters = append(cf.filters, f)
-	return &cf
+	return cf
 }
 
 func (cf Filter) Apply(m mem.Mem) bool {
