@@ -43,8 +43,8 @@ func (val *Column) ImputeWithValue(oldLabel, newLabel Column, eps float64, logX 
 		}
 	}
 
+	*val = col
 	if colChanged {
-		*val = col
 		return wasImp
 	} else {
 		return Column(nil)
