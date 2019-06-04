@@ -49,33 +49,20 @@ class ExVars {
 	}
 
 	static updateScores(scores) {
-
-	}
-
-	static update(scores, values) {
-		// ExVars._setHeaderScore(".participant-header", scores.outlierScore)
-		// const healthLabel = ExVars._labelForScore(scores.outlierScore)
-		// ExVars._setExcitabilityVariable("overall-score", healthLabel + " (" + scores.outlierScore.toFixed(2) + ")", 0)
-		// const nameSpan = document.getElementById("participant-name");
-		// nameSpan.innerHTML = scores.participant + " (" + healthLabel + ")"
-
-		// Object.keys(scores).forEach(function(key) {
-		// 	ExVars._setHeaderScore("." + key + "-header", scores[key].outlierScore)
-		// })
-
-		const exinds = {}
 		scores.ExVars.data.forEach(function(exind) {
 			if (exind[1] === 0) {
 				return // This means it doesn't have an index
 			}
 			ExVars._setExcitabilityVariableScore("qtrac-excite-" + exind[1], exind[0])
 		})
+	}
+
+	static updateValues(values) {
 		values.sections.ExVars.data.forEach(function(exind) {
-			const idx = exind[0]
-			if (idx === 0) {
-				return // This means it doesn't have an idx
+			if (exind[0] === 0) {
+				return // This means it doesn't have an index
 			}
-			ExVars._setExcitabilityVariableValue("qtrac-excite-" + idx, exind[1])
+			ExVars._setExcitabilityVariableValue("qtrac-excite-" + exind[0], exind[1])
 		})
 	}
 }

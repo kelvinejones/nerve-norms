@@ -10,7 +10,8 @@ class ChartFactory {
 
 		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
 			this.osAccessor.participant = name
-			ExVars.update(this.osAccessor.getScores(), currentParticipant);
+			ExVars.updateScores(this.osAccessor.getScores());
+			ExVars.updateValues(currentParticipant);
 			Object.values(plots).forEach(pl => {
 				pl.updateParticipant(currentParticipant)
 			})
@@ -18,7 +19,8 @@ class ChartFactory {
 
 		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, (name, currentNormative) => {
 			this.osAccessor.normative = name
-			ExVars.update(this.osAccessor.getScores(), this.partDropDown.data);
+			ExVars.updateScores(this.osAccessor.getScores());
+			ExVars.updateValues(this.partDropDown.data);
 			Object.values(plots).forEach(pl => {
 				pl.updateNorms(currentNormative)
 			})
@@ -43,7 +45,8 @@ class ChartFactory {
 		})
 
 		// Now set all excitability variables
-		ExVars.update(this.osAccessor.getScores(), this.partDropDown.data);
+		ExVars.updateScores(this.osAccessor.getScores());
+		ExVars.updateValues(this.partDropDown.data);
 	}
 
 	drawModal(typeStr) {
