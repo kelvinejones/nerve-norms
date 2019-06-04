@@ -74,7 +74,7 @@ func parseSex(sex string) (mem.Sex, error) {
 func parseQuery(r *http.Request) (filterParameters, error) {
 	fp := filterParameters{
 		country: r.FormValue("country"),
-		species: r.FormValue("species"),
+		species: "human", // for now, rat doesn't work
 		nerve:   r.FormValue("nerve"),
 	}
 	var err error
