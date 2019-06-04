@@ -20,10 +20,9 @@ func NormHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var mefData mef.Mef
-	err = json.Unmarshal([]byte(data.Participants), &mefData)
+	mefData, err := data.AsMef()
 	if err != nil {
-		setError(w, "Error unmarshaling participants: "+err.Error())
+		setError(w, "Error loading MEF: "+err.Error())
 		return
 	}
 
