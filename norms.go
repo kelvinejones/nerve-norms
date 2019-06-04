@@ -16,20 +16,20 @@ import (
 func NormHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		setError(w, err.Error())
+		setError(w, "Error parsing form: "+err.Error())
 		return
 	}
 
 	var mefData mef.Mef
 	err = json.Unmarshal([]byte(data.Participants), &mefData)
 	if err != nil {
-		setError(w, err.Error())
+		setError(w, "Error unmarshaling participants: "+err.Error())
 		return
 	}
 
 	sex, err := parseSex(r.FormValue("sex"))
 	if err != nil {
-		setError(w, err.Error())
+		setError(w, "Error parsing sex: "+err.Error())
 		return
 	}
 	minAge, err := strconv.Atoi(r.FormValue("minAge"))

@@ -14,7 +14,7 @@ import (
 func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		setError(w, err.Error())
+		setError(w, "Error parsing form: "+err.Error())
 		return
 	}
 	name := r.FormValue("name")
@@ -26,7 +26,7 @@ func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
 	var mefData mef.Mef
 	err = json.Unmarshal([]byte(data.Participants), &mefData)
 	if err != nil {
-		setError(w, err.Error())
+		setError(w, "Error unmarshaling participants: "+err.Error())
 		return
 	}
 
@@ -38,7 +38,7 @@ func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
 
 	sex, err := parseSex(r.FormValue("sex"))
 	if err != nil {
-		setError(w, err.Error())
+		setError(w, "Error parsing sex: "+err.Error())
 		return
 	}
 	minAge, err := strconv.Atoi(r.FormValue("minAge"))
