@@ -13,6 +13,15 @@ import (
 	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
+type filterParameters struct {
+	sex     mem.Sex
+	minAge  int
+	maxAge  int
+	country string
+	species string
+	nerve   string
+}
+
 func NormHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -26,23 +35,12 @@ func NormHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sex, err := parseSex(r.FormValue("sex"))
+	fp, err := parseQuery(r)
 	if err != nil {
-		setError(w, "Error parsing sex: "+err.Error())
+		setError(w, "Error parsing query: "+err.Error())
 		return
 	}
-	minAge, err := strconv.Atoi(r.FormValue("minAge"))
-	if err != nil {
-		setError(w, "Could not parse minAge due to error: "+err.Error())
-		return
-	}
-	maxAge, err := strconv.Atoi(r.FormValue("maxAge"))
-	if err != nil {
-		setError(w, "Could not parse minAge due to error: "+err.Error())
-		return
-	}
-
-	mefData.Filter(mef.NewFilter().BySex(sex).ByAge(minAge, maxAge).ByCountry(r.FormValue("country")).BySpecies(r.FormValue("species")).ByNerve(r.FormValue("nerve")))
+	mefData.Filter(mef.NewFilter().BySex(fp.sex).ByAge(fp.minAge, fp.maxAge).ByCountry(fp.country).BySpecies(fp.species).ByNerve(fp.nerve))
 
 	jsNorm := mefData.Norm()
 	jsNormArray, err := json.Marshal(&jsNorm)
@@ -71,4 +69,27 @@ func parseSex(sex string) (mem.Sex, error) {
 	default:
 		return mem.UnknownSex, errors.New("Invalid sex '" + sex + "'")
 	}
+}
+
+func parseQuery(r *http.Request) (filterParameters, error) {
+	fp := filterParameters{
+		country: r.FormValue("country"),
+		species: r.FormValue("species"),
+		nerve:   r.FormValue("nerve"),
+	}
+	var err error
+	fp.sex, err = parseSex(r.FormValue("sex"))
+	if err != nil {
+		return fp, errors.New("Error parsing sex: " + err.Error())
+	}
+	fp.minAge, err = strconv.Atoi(r.FormValue("minAge"))
+	if r.FormValue("minAge") != "" && err != nil {
+		return fp, errors.New("Could not parse minAge due to error: " + err.Error())
+	}
+	fp.maxAge, err = strconv.Atoi(r.FormValue("maxAge"))
+	if r.FormValue("maxAge") != "" && err != nil {
+		return fp, errors.New("Could not parse maxAge due to error: " + err.Error())
+	}
+
+	return fp, nil
 }

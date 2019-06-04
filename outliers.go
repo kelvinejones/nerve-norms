@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 
 	"gogs.bellstone.ca/james/jitter/lib/data"
 	"gogs.bellstone.ca/james/jitter/lib/mef"
@@ -35,23 +34,12 @@ func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sex, err := parseSex(r.FormValue("sex"))
+	fp, err := parseQuery(r)
 	if err != nil {
-		setError(w, "Error parsing sex: "+err.Error())
+		setError(w, "Error parsing query: "+err.Error())
 		return
 	}
-	minAge, err := strconv.Atoi(r.FormValue("minAge"))
-	if err != nil {
-		setError(w, "Could not parse minAge due to error: "+err.Error())
-		return
-	}
-	maxAge, err := strconv.Atoi(r.FormValue("maxAge"))
-	if err != nil {
-		setError(w, "Could not parse minAge due to error: "+err.Error())
-		return
-	}
-
-	mefData.Filter(mef.NewFilter().BySex(sex).ByAge(minAge, maxAge).ByCountry(r.FormValue("country")).BySpecies(r.FormValue("species")).ByNerve(r.FormValue("nerve")))
+	mefData.Filter(mef.NewFilter().BySex(fp.sex).ByAge(fp.minAge, fp.maxAge).ByCountry(fp.country).BySpecies(fp.species).ByNerve(fp.nerve))
 	norm := mefData.Norm()
 	os := norm.OutlierScores(mm)
 
