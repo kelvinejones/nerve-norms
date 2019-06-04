@@ -7,6 +7,7 @@ import (
 )
 
 func TestUnmarshalParticipants(t *testing.T) {
-	_, err := AsMef()
+	md, err := AsMef()
+	assert.NotEqual(t, 0, len(md))
 	assert.NoError(t, err)
 }

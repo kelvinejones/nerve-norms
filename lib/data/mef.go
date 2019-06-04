@@ -7,13 +7,7 @@ import (
 )
 
 func AsMef() (mef.Mef, error) {
-	rawIn := json.RawMessage(Participants)
-	bytes, err := rawIn.MarshalJSON()
-	if err != nil {
-		return mef.Mef{}, err
-	}
-
 	var mefData mef.Mef
-	err = json.Unmarshal(bytes, &mefData)
-	return mefData, nil
+	err := json.Unmarshal(jsonMef, &mefData)
+	return mefData, err
 }
