@@ -11,16 +11,25 @@ class ExVars {
 		return function(score) { return intr(Math.pow(score, 3)) }
 	}
 
-	static _setExcitabilityVariable(idString, value, score) {
+	static _setExcitabilityVariableScore(idString, score) {
+		if (score === undefined) {
+			return
+		}
+		const row = document.getElementById(idString);
+		if (row === null) {
+			// We don't care about this variable
+			return
+		}
+		row.style.background = "linear-gradient(to right, " + ExVars._interpolate(score) + " " + score * 100 + "%, #ffffff 0%)"
+	}
+
+	static _setExcitabilityVariableValue(idString, value) {
 		const row = document.getElementById(idString);
 		if (row === null) {
 			// We don't care about this variable
 			return
 		}
 		row.getElementsByClassName("excite-value")[0].innerHTML = value
-		if (score !== undefined) {
-			row.style.background = "linear-gradient(to right, " + ExVars._interpolate(score) + " " + score * 100 + "%, #ffffff 0%)"
-		}
 	}
 
 	static _setHeaderScore(str, score) {
@@ -39,6 +48,10 @@ class ExVars {
 		}
 	}
 
+	static updateScores(scores) {
+
+	}
+
 	static update(scores, values) {
 		// ExVars._setHeaderScore(".participant-header", scores.outlierScore)
 		// const healthLabel = ExVars._labelForScore(scores.outlierScore)
@@ -55,19 +68,14 @@ class ExVars {
 			if (exind[1] === 0) {
 				return // This means it doesn't have an index
 			}
-			exinds[exind[1]] = { score: exind[0] }
+			ExVars._setExcitabilityVariableScore("qtrac-excite-" + exind[1], exind[0])
 		})
 		values.sections.ExVars.data.forEach(function(exind) {
 			const idx = exind[0]
 			if (idx === 0) {
 				return // This means it doesn't have an idx
 			}
-			exinds[idx] = exinds[idx] || {}; // Unknown score
-			exinds[idx].value = exind[1]
-		})
-
-		Object.keys(exinds).forEach(function(id) {
-			ExVars._setExcitabilityVariable("qtrac-excite-" + id, exinds[id].value, exinds[id].score)
+			ExVars._setExcitabilityVariableValue("qtrac-excite-" + idx, exind[1])
 		})
 	}
 }
