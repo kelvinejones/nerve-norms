@@ -13,7 +13,7 @@ var caPath = flag.String("caPath", "/Users/james/Documents/Education/UofA/MSc/Re
 var jpPath = flag.String("jpPath", "", "path to the JP MEF")
 var poPath = flag.String("poPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/PO/Portugal.MEF", "path to the PO MEF")
 var legPath = flag.String("legPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/CA/FEScommonperonealTA.MEF", "path to the leg MEF")
-var ratPath = flag.String("ratPath", "", "path to the rat MEF")
+var ratPath = flag.String("ratPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/rat/all.MEF", "path to the rat MEF")
 var output = flag.String("output", "json/all.json", "path to save the JSON; otherwise, output to stdout")
 
 func main() {
