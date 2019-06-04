@@ -24,7 +24,7 @@ class StimulusRelative extends Chart {
 	get yLabel() { return "Peak Response (% Max)" }
 
 	updateParticipant(participant) {
-		this.participant = this.calculateParticipant(participant.sections.SR.data)
+		this.participant = this.calculateParticipant(participant.sections.SR.data.data)
 		this.animateXYLine(this.participant, "srel")
 	}
 
