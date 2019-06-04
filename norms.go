@@ -49,6 +49,7 @@ func NormHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println("Served norms")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintln(w, string(jsNormArray))
 }
 
