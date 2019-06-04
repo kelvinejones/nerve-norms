@@ -9,7 +9,7 @@ echo -e "normative[\"Human Norms\"] = \n$(cat res/templates/data/normAll.json)" 
 go run cmd/filterJson/filterJson.go -sex M -minAge 25 -maxAge 35 -norm res/templates/data/normM30.json
 echo -e "normative[\"M30 Norms\"] = \n$(cat res/templates/data/normM30.json)" > res/templates/data/normM30.json
 
-# echo "Calculating outlier scores..."
+echo "Calculating outlier scores..."
 go run cmd/outlierScores/outlierScores.go -name "Rat on Drugs" -sex M -minAge 25 -maxAge 35 -output "res/templates/data/outlier-rat-M30.json"
 echo -e "outlierScore[\"Rat on Drugs\"] = outlierScore[\"Rat on Drugs\"] || {};\noutlierScore[\"Rat on Drugs\"][\"M30 Norms\"] = \n$(cat res/templates/data/outlier-rat-M30.json)" > res/templates/data/outlier-rat-M30.json
 go run cmd/outlierScores/outlierScores.go -name "Rat on Drugs" -output "res/templates/data/outlier-rat-all.json"
