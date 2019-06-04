@@ -12,13 +12,13 @@ class ExVars {
 	}
 
 	static _setExcitabilityVariableScore(idString, score) {
-		if (score === undefined) {
-			return
-		}
 		const row = document.getElementById(idString);
 		if (row === null) {
 			// We don't care about this variable
 			return
+		}
+		if (score === undefined) {
+			score = 0
 		}
 		row.style.background = "linear-gradient(to right, " + ExVars._interpolate(score) + " " + score * 100 + "%, #ffffff 0%)"
 	}
@@ -29,7 +29,11 @@ class ExVars {
 			// We don't care about this variable
 			return
 		}
-		row.getElementsByClassName("excite-value")[0].innerHTML = value
+		if (value === undefined) {
+			row.getElementsByClassName("excite-value")[0].innerHTML = ""
+		} else {
+			row.getElementsByClassName("excite-value")[0].innerHTML = value
+		}
 	}
 
 	static _setHeaderScore(str, score) {
@@ -64,5 +68,13 @@ class ExVars {
 			}
 			ExVars._setExcitabilityVariableValue("qtrac-excite-" + exind[0], exind[1])
 		})
+	}
+
+	static setToZero() {
+		const elms = document.getElementsByClassName('qtrac-excite')
+		for (let elm of elms) {
+			ExVars._setExcitabilityVariableScore(elm.id, undefined)
+			ExVars._setExcitabilityVariableValue(elm.id, undefined)
+		}
 	}
 }

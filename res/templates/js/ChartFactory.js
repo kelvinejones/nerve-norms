@@ -10,20 +10,22 @@ class ChartFactory {
 
 		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
 			this.osAccessor.participant = name
-			ExVars.updateScores(this.osAccessor.getScores());
-			ExVars.updateValues(currentParticipant);
+			ExVars.setToZero()
 			Object.values(plots).forEach(pl => {
 				pl.updateParticipant(currentParticipant)
 			})
+			ExVars.updateScores(this.osAccessor.getScores());
+			ExVars.updateValues(currentParticipant);
 		}, ["CA-CR21S", "CA-WI20S", "Rat on Drugs", ])
 
 		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, (name, currentNormative) => {
 			this.osAccessor.normative = name
-			ExVars.updateScores(this.osAccessor.getScores());
-			ExVars.updateValues(this.partDropDown.data);
+			ExVars.setToZero()
 			Object.values(plots).forEach(pl => {
 				pl.updateNorms(currentNormative)
 			})
+			ExVars.updateScores(this.osAccessor.getScores());
+			ExVars.updateValues(this.partDropDown.data);
 		}, ["Human Norms", "M30 Norms", ])
 
 		this.osAccessor.participant = this.partDropDown.selection
