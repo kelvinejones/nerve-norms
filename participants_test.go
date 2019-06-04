@@ -9,7 +9,7 @@ import (
 	"gogs.bellstone.ca/james/jitter/lib/data"
 )
 
-func TestHealthCheckHandler(t *testing.T) {
+func TestParticipantsHandler(t *testing.T) {
 	req, err := http.NewRequest("GET", "", nil)
 	if err != nil {
 		t.Fatal(err)
