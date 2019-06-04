@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gogs.bellstone.ca/james/jitter/lib/data"
 )
 
 func TestHealthCheckHandler(t *testing.T) {
@@ -21,5 +22,5 @@ func TestHealthCheckHandler(t *testing.T) {
 	status := rr.Code
 	assert.Equal(t, http.StatusOK, status)
 
-	// assert.Equal(t, "This is too long to actually test", rr.Body.String())
+	assert.Equal(t, data.Participants+"\n", rr.Body.String())
 }
