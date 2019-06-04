@@ -40,21 +40,27 @@ class ExVars {
 	}
 
 	static update(scores, values) {
-		ExVars._setHeaderScore(".participant-header", scores.outlierScore)
-		const healthLabel = ExVars._labelForScore(scores.outlierScore)
-		ExVars._setExcitabilityVariable("overall-score", healthLabel + " (" + scores.outlierScore.toFixed(2) + ")", 0)
-		const nameSpan = document.getElementById("participant-name");
-		nameSpan.innerHTML = scores.participant + " (" + healthLabel + ")"
+		// ExVars._setHeaderScore(".participant-header", scores.outlierScore)
+		// const healthLabel = ExVars._labelForScore(scores.outlierScore)
+		// ExVars._setExcitabilityVariable("overall-score", healthLabel + " (" + scores.outlierScore.toFixed(2) + ")", 0)
+		// const nameSpan = document.getElementById("participant-name");
+		// nameSpan.innerHTML = scores.participant + " (" + healthLabel + ")"
 
-		Object.keys(scores.sections).forEach(function(key) {
-			ExVars._setHeaderScore("." + key + "-header", scores.sections[key].outlierScore)
-		})
+		// Object.keys(scores).forEach(function(key) {
+		// 	ExVars._setHeaderScore("." + key + "-header", scores[key].outlierScore)
+		// })
 
 		const exinds = {}
-		scores.exVars.forEach(function(exind) {
-			exinds[exind.id] = { score: exind.outlierScore }
+		scores.ExVars.data.forEach(function(exind) {
+			if (exind[1] === 0) {
+				return // This means it doesn't have an index
+			}
+			exinds[exind[1]] = { score: exind[0] }
 		})
 		values.exVars.forEach(function(exind) {
+			if (exind.id === 0) {
+				return // This means it doesn't have an index
+			}
 			exinds[exind.id] = exinds[exind.id] || {}; // Unknown score
 			exinds[exind.id].value = exind.value
 		})

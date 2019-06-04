@@ -43,7 +43,7 @@ func main() {
 	}
 	legMef.LabelWithSpecies("human").LabelWithNerve("CP").LabelWithCountry("CA")
 
-	ratMef, err := mef.Import("rat-", *ratPath)
+	ratMef, err := mef.Import("Rat ", *ratPath)
 	if err != nil && *ratPath != "" {
 		panic(err)
 	}
