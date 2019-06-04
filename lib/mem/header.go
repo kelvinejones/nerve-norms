@@ -54,6 +54,12 @@ func (header *Header) ParseLine(result []string) error {
 
 	var err error
 	val := strings.TrimSpace(result[2])
+
+	if val == "" {
+		// Nothing to do here
+		return nil
+	}
+
 	switch result[1] {
 	case "NC/disease":
 		if val == "NC" {
@@ -66,30 +72,28 @@ func (header *Header) ParseLine(result []string) error {
 			header.Sex = MaleSex
 		case "F":
 			header.Sex = FemaleSex
-		default:
-			header.Sex = UnknownSex
 		}
 	case "Temperature":
 		header.Temperature, err = strconv.ParseFloat(extractPotentialDoubleValue(val), 64)
 		if err != nil {
-			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
+			fmt.Println("WARNING: Line \"" + result[0] + "\" (section '" + val + "') may have imported incorrectly for '" + header.Name + "': " + err.Error())
 		}
 	case "Age":
 		header.Age, err = strconv.Atoi(extractPotentialDoubleValue(val))
 		if err != nil {
-			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
+			fmt.Println("WARNING: Line \"" + result[0] + "\" (section '" + val + "') may have imported incorrectly for '" + header.Name + "': " + err.Error())
 		}
 	case "Date":
 		layout := "2/1/06"
 		header.Date, err = time.Parse(layout, extractPotentialDoubleValue(val))
 		if err != nil {
-			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
+			fmt.Println("WARNING: Line \"" + result[0] + "\" (section '" + val + "') may have imported incorrectly for '" + header.Name + "': " + err.Error())
 		}
 	case "Start time":
 		layout := "2/1/06 15:04:05"
 		header.StartTime, err = time.Parse(layout, "2/1/06 "+extractPotentialDoubleValue(val))
 		if err != nil {
-			fmt.Println("WARNING: Line \"" + result[0] + "\" may have imported incorrectly: " + err.Error())
+			fmt.Println("WARNING: Line \"" + result[0] + "\" (section '" + val + "') may have imported incorrectly for '" + header.Name + "': " + err.Error())
 		}
 	case "File":
 		header.File = val
