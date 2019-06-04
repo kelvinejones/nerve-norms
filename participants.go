@@ -1,4 +1,4 @@
-package participants
+package jitter
 
 import (
 	"fmt"
