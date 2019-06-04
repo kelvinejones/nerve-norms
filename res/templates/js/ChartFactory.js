@@ -14,7 +14,7 @@ class ChartFactory {
 			Object.values(plots).forEach(pl => {
 				pl.updateParticipant(currentParticipant)
 			})
-		}, ["CR21S", "WI20S", "Rat on Drugs", ])
+		}, ["CA-CR21S", "CA-WI20S", "Rat on Drugs", ])
 
 		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, (name, currentNormative) => {
 			this.osAccessor.normative = name

@@ -1,7 +1,7 @@
 class ThresholdElectrotonus extends Chart {
 	constructor(participant, norms) {
 		super([0, 200], [-150, 100])
-		this.participant = participant.sections.TE.data
+		this.participant = participant.sections.TE
 		this.norms = norms.TE
 	}
 
@@ -10,7 +10,7 @@ class ThresholdElectrotonus extends Chart {
 	get yLabel() { return "Delay (ms)" }
 
 	updateParticipant(participant) {
-		this.participant = participant.sections.TE.data
+		this.participant = participant.sections.TE
 		this.animateParticipant()
 	}
 
@@ -21,7 +21,7 @@ class ThresholdElectrotonus extends Chart {
 
 	drawLines(svg) {
 		Object.keys(this.participant).forEach(key => {
-			this.createXYLine(this.participant[key], key)
+			this.createXYLine(this.participant[key].data, key)
 			this.createNorms(this.norms[key].data, key)
 		})
 		this.drawHorizontalLine(this.linesLayer, 0)
@@ -31,7 +31,7 @@ class ThresholdElectrotonus extends Chart {
 
 	animateParticipant() {
 		Object.keys(this.participant).forEach(key => {
-			this.animateXYLine(this.participant[key], key)
+			this.animateXYLine(this.participant[key].data, key)
 		})
 	}
 

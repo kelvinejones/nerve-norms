@@ -57,12 +57,13 @@ class ExVars {
 			}
 			exinds[exind[1]] = { score: exind[0] }
 		})
-		values.exVars.forEach(function(exind) {
-			if (exind.id === 0) {
-				return // This means it doesn't have an index
+		values.sections.ExVars.data.forEach(function(exind) {
+			const idx = exind[0]
+			if (idx === 0) {
+				return // This means it doesn't have an idx
 			}
-			exinds[exind.id] = exinds[exind.id] || {}; // Unknown score
-			exinds[exind.id].value = exind.value
+			exinds[idx] = exinds[idx] || {}; // Unknown score
+			exinds[idx].value = exind[1]
 		})
 
 		Object.keys(exinds).forEach(function(id) {

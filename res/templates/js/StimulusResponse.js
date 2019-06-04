@@ -9,13 +9,13 @@ class StimulusResponse extends Chart {
 
 	calculateParticipant(participant) {
 		let peakResponse = 0;
-		participant.exVars.forEach(function(exvar) {
-			if (exvar.id == 6) {
-				peakResponse = exvar.value;
+		participant.sections.ExVars.data.forEach(function(exvar) {
+			if (exvar[0] == 6) {
+				peakResponse = exvar[1];
 			}
 		})
 
-		return participant.sections.SR.data.map((d, i) => {
+		return participant.sections.SR.data.data.map((d, i) => {
 			return [
 				d[1],
 				(i + 1) * 2 / 100 * peakResponse,
