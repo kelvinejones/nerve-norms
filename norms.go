@@ -49,7 +49,7 @@ func NormHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println("Served norms")
-	fmt.Fprintln(w, jsNormArray)
+	fmt.Fprintln(w, string(jsNormArray))
 }
 
 func setError(w http.ResponseWriter, str string) {

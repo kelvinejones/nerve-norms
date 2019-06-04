@@ -49,5 +49,5 @@ func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println("Served outlier scores for " + name)
-	fmt.Fprintln(w, jsOSArray)
+	fmt.Fprintln(w, string(jsOSArray))
 }
