@@ -3,6 +3,7 @@ package mem
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 )
 
 type LabelledTable interface {
@@ -158,7 +159,7 @@ func (lt *LabTab) LoadFromMem(mem *rawMem) error {
 	lt.wasimp = lt.ycol.ImputeWithValue(xcol, lt.xcol, lt.precision, lt.logScale)
 
 	if len(lt.xcol) != len(lt.ycol) {
-		return errors.New("Mismatching LT " + lt.section + " lengths")
+		return fmt.Errorf("Mismatching LT "+lt.section+" lengths %d and %d (%v and %v)", len(lt.xcol), len(lt.ycol), lt.xcol, lt.ycol)
 	}
 
 	if lt.extraImport != nil {
