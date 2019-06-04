@@ -230,6 +230,8 @@ func idForName(name string) int {
 		return 1023
 	case "S3(-100%)":
 		return 1024
+	case "SubEx2(%)":
+		return 1025
 	default:
 		return -1
 	}
