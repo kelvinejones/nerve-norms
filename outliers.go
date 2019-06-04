@@ -49,5 +49,6 @@ func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println("Served outlier scores for " + name)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintln(w, string(jsOSArray))
 }
