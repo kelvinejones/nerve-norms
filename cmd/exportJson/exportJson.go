@@ -27,7 +27,7 @@ func main() {
 			panic("Could not load MEM due to error: " + err.Error())
 		}
 	} else {
-		mf, err := mef.Import(*input)
+		mf, err := mef.Import("", *input)
 		if err != nil {
 			panic("Could not load MEF due to error: " + err.Error())
 		}
