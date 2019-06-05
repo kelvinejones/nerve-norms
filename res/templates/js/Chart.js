@@ -127,14 +127,18 @@ class Chart {
 		return val * Math.pow((sdSize || 0), sign * numSD)
 	}
 
+	static noSD(val, sign, numSD, sdSize) {
+		return val
+	}
+
 	// sdAtLoc calculates limits based on the standard deviations
-	sdAtLoc(dpt, loc) {
-		const xmn = (this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
-		const ymn = (this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
-		const xsd = this.xSDName
-		const ysd = this.ySDName
+	sdAtLoc(dpt, loc, useSD) {
+		const xmn = (useSD && this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
+		const ymn = (useSD && this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
+		const xsd = useSD ? this.xSDName : undefined
+		const ysd = useSD ? this.ySDName : undefined
 		const numSD = this.numSD
-		const sdFunc = this.sdFunc
+		const sdFunc = useSD ? this.sdFunc : Chart.noSD
 
 		function stPoint(xSign, ySign) {
 			let scale = numSD
@@ -165,21 +169,21 @@ class Chart {
 		}
 	}
 
-	normativeLimits(data) {
+	normativeLimits(data, useSD = true) {
 		if (this.sdNum == 0) {
 			return []
 		}
 
 		// this.sdAtLoc can be changed if a different calculation is more appropriate.
 		return this.scaleArrayWithinRange((Array.from(data)
-				.map(d => { return this.sdAtLoc(d, Chart.limLoc.UPPER_LEFT) }))
-			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.UPPER))
-			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT))
-			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.RIGHT))
-			.concat(Array.from(data).reverse().map(d => { return this.sdAtLoc(d, Chart.limLoc.LOWER_RIGHT) }))
-			.concat(this.sdAtLoc(data[0], Chart.limLoc.LOWER))
-			.concat(this.sdAtLoc(data[0], Chart.limLoc.LOWER_LEFT))
-			.concat(this.sdAtLoc(data[0], Chart.limLoc.LEFT)))
+				.map(d => { return this.sdAtLoc(d, Chart.limLoc.UPPER_LEFT, useSD) }))
+			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.UPPER, useSD))
+			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.UPPER_RIGHT, useSD))
+			.concat(this.sdAtLoc(data[data.length - 1], Chart.limLoc.RIGHT, useSD))
+			.concat(Array.from(data).reverse().map(d => { return this.sdAtLoc(d, Chart.limLoc.LOWER_RIGHT, useSD) }))
+			.concat(this.sdAtLoc(data[0], Chart.limLoc.LOWER, useSD))
+			.concat(this.sdAtLoc(data[0], Chart.limLoc.LOWER_LEFT, useSD))
+			.concat(this.sdAtLoc(data[0], Chart.limLoc.LEFT, useSD)))
 	}
 
 	scaleArrayWithinRange(ar) {
