@@ -47,7 +47,11 @@ class ChartFactory {
 		this.osAccessor.normative = this.normDropDown.selection
 
 		this.applyFilter = (event) => {
-			fetch(this.url + "norms" + Filter.asQueryString())
+			ExVars.setScoresToZero()
+
+			let queryString = Filter.asQueryString()
+
+			fetch(this.url + "norms" + queryString)
 				.then(function(response) {
 					return response.json()
 				})
@@ -55,6 +59,20 @@ class ChartFactory {
 					Object.values(plots).forEach(pl => {
 						pl.updateNorms(norms)
 					})
+				})
+
+			if (queryString.length > 1) {
+				queryString = queryString + "&"
+			} else {
+				queryString = queryString + "?"
+			}
+			queryString = queryString + "name=" + this.osAccessor.participant
+			fetch(this.url + "outliers" + queryString)
+				.then(function(response) {
+					return response.json()
+				})
+				.then(function(scores) {
+					ExVars.updateScores(scores)
 				})
 			event.preventDefault()
 		}
