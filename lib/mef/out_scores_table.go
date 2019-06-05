@@ -30,7 +30,7 @@ func NewOutScoresTable(norm NormTable, mm *mem.Mem) OutScoresTable {
 		if diff > 0 {
 			diff *= -1
 		}
-		ost.Scores[rowN] = 1 - 2*dist.CDF(diff)
+		ost.Scores[rowN] = 2 * dist.CDF(diff)
 	}
 
 	return ost

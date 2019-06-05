@@ -20,6 +20,7 @@ class ExVars {
 		if (score === undefined) {
 			score = 0
 		}
+		score = 1 - score // invert it to make bad scores more obvious
 		row.style.background = "linear-gradient(to right, " + ExVars._interpolate(score) + " " + score * 100 + "%, #ffffff 0%)"
 	}
 
@@ -43,9 +44,9 @@ class ExVars {
 	}
 
 	static _labelForScore(score) {
-		if (score < 0.75) {
+		if (score > 0.25) {
 			return "Healthy"
-		} else if (score < .95) {
+		} else if (score > .05) {
 			return "Atypical"
 		} else {
 			return "Extremely Atypical"
