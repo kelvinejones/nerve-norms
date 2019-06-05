@@ -50,7 +50,7 @@
 
     <script>
       function toggle(id) {
-        $(id + " .measures").toggleClass("d-none d-sm-flex")
+        $(id + " .measures").toggleClass("d-none d-flex")
       }
     </script>
   </head>
@@ -107,12 +107,12 @@
       <div id="thresholdElectrotonus" class="card border-dark">
         <div class="card-header font-weight-bold TE-header">Threshold Electrotonus</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('thresholdElectrotonus')"></svg></div>
-        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+        <ul class="list-group list-group-flush d-sm-flex measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#thresholdElectrotonus')" class="btn btn-sm float-left">Show Discrete Measures</button>
           </li>
         </ul>
-        <ul class="list-group list-group-flush d-none d-md-flex measures">
+        <ul class="list-group list-group-flush d-none measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#thresholdElectrotonus')" class="btn btn-sm float-left d-md-none">Hide Discrete Measures</button>
           </li>
@@ -138,12 +138,12 @@
       <div id="recoveryCycle" class="card border-dark">
         <div class="card-header font-weight-bold RC-header">Recovery Cycle</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('recoveryCycle')"></svg></div>
-        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+        <ul class="list-group list-group-flush d-sm-flex measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-left">Show Discrete Measures</button>
           </li>
         </ul>
-        <ul class="list-group list-group-flush d-none d-md-flex measures">
+        <ul class="list-group list-group-flush d-none measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#recoveryCycle')" class="btn btn-sm float-left d-md-none">Hide Discrete Measures</button>
           </li>
@@ -160,12 +160,12 @@
       <div id="chargeDuration" class="card border-dark">
         <div class="card-header font-weight-bold CD-header">Charge Duration</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('chargeDuration')"></svg></div>
-        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+        <ul class="list-group list-group-flush d-sm-flex measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#chargeDuration')" class="btn btn-sm float-left">Show Discrete Measures</button>
           </li>
         </ul>
-        <ul class="list-group list-group-flush d-none d-md-flex measures">
+        <ul class="list-group list-group-flush d-none measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#chargeDuration')" class="btn btn-sm float-left d-md-none">Hide Discrete Measures</button>
           </li>
@@ -177,12 +177,12 @@
       <div id="thresholdIV" class="card border-dark">
         <div class="card-header font-weight-bold IV-header">Threshold I/V</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('thresholdIV')"></svg></div>
-        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+        <ul class="list-group list-group-flush d-sm-flex measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#thresholdIV')" class="btn btn-sm float-left">Show Discrete Measures</button>
           </li>
         </ul>
-        <ul class="list-group list-group-flush d-none d-md-flex measures">
+        <ul class="list-group list-group-flush d-none measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#thresholdIV')" class="btn btn-sm float-left d-md-none">Hide Discrete Measures</button>
           </li>
@@ -195,12 +195,12 @@
       <div id="stimulusResponse" class="card border-dark">
         <div class="card-header font-weight-bold SR-header">Stimulus Response</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('stimulusResponse')"></svg></div>
-        <ul class="list-group list-group-flush d-sm-flex d-md-none measures">
+        <ul class="list-group list-group-flush d-sm-flex measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#stimulusResponse')" class="btn btn-sm float-left">Show Discrete Measures</button>
           </li>
         </ul>
-        <ul class="list-group list-group-flush d-none d-md-flex measures">
+        <ul class="list-group list-group-flush d-none measures">
           <li class="list-group-item bg-light">
             <button onclick="toggle('#stimulusResponse')" class="btn btn-sm float-left d-md-none">Hide Discrete Measures</button>
           </li>
