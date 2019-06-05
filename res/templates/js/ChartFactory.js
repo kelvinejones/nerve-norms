@@ -11,7 +11,7 @@ class ChartFactory {
 
 		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
 			this.osAccessor.participant = name
-			ExVars.setToZero()
+			ExVars.setScoresToZero()
 			Object.values(plots).forEach(pl => {
 				pl.updateParticipant(currentParticipant)
 			})
@@ -28,7 +28,7 @@ class ChartFactory {
 
 		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, (name, currentNormative) => {
 			this.osAccessor.normative = name
-			ExVars.setToZero()
+			ExVars.setScoresToZero()
 			Object.values(plots).forEach(pl => {
 				pl.updateNorms(currentNormative)
 			})

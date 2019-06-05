@@ -70,11 +70,10 @@ class ExVars {
 		})
 	}
 
-	static setToZero() {
+	static setScoresToZero() {
 		const elms = document.getElementsByClassName('qtrac-excite')
 		for (let elm of elms) {
 			ExVars._setExcitabilityVariableScore(elm.id, undefined)
-			ExVars._setExcitabilityVariableValue(elm.id, undefined)
 		}
 	}
 }
