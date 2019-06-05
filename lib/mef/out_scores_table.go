@@ -58,7 +58,7 @@ func (norm NormTable) numSD(rowN int, val float64) float64 {
 type osJsonTable struct {
 	Columns []string  `json:"columns"`
 	Data    mem.Table `json:"data"`
-	Overall float64   `json:"overall"`
+	Overall float64   `json:"Overall"`
 }
 
 func (ost OutScoresTable) MarshalJSON() ([]byte, error) {
