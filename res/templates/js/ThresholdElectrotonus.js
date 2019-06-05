@@ -22,11 +22,11 @@ class ThresholdElectrotonus extends Chart {
 	drawLines(svg) {
 		Object.keys(this.participant).forEach(key => {
 			this.createXYLine(this.participant[key].data, key)
-			this.createNorms(this.norms[key].data, key)
+			this.createNorms(this.norms[key].data, key, false)
 		})
 		this.drawHorizontalLine(this.linesLayer, 0)
 		this.animateParticipant()
-		this.animateUpdatedNorms()
+		this.animateUpdatedNorms(false)
 	}
 
 	animateParticipant() {
@@ -35,9 +35,9 @@ class ThresholdElectrotonus extends Chart {
 		})
 	}
 
-	animateUpdatedNorms() {
+	animateUpdatedNorms(useSD = true) {
 		Object.keys(this.norms).forEach(key => {
-			this.animateNorms(this.norms[key].data, key)
+			this.animateNorms(this.norms[key].data, key, useSD)
 		})
 	}
 }

@@ -27,10 +27,10 @@ class ThresholdIV extends Chart {
 
 	drawLines(svg) {
 		this.createXYLine(this.participant, "tiv")
-		this.createNorms(this.norms, "tiv")
+		this.createNorms(this.norms, "tiv", false)
 		this.drawHorizontalLine(this.linesLayer, 0)
 		this.drawVerticalLine(this.linesLayer, 0)
 		this.animateXYLine(this.participant, "tiv")
-		this.animateNorms(this.norms, "tiv")
+		this.animateNorms(this.norms, "tiv", false)
 	}
 }

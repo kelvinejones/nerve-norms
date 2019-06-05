@@ -22,7 +22,7 @@ class ChargeDuration extends Chart {
 	drawLines(svg) {
 		this.createXYLine(this.participant, "cd")
 		this.animateXYLine(this.participant, "cd")
-		this.createNorms(this.norms, "cd")
-		this.animateNorms(this.norms, "cd")
+		this.createNorms(this.norms, "cd", false)
+		this.animateNorms(this.norms, "cd", false)
 	}
 }

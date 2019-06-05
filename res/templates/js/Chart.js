@@ -300,10 +300,10 @@ class Chart {
 			.attr("cx", d => this.xscale(d[this.xIndex] || 0))
 	}
 
-	createNorms(lineData, name) {
+	createNorms(lineData, name, useSD = true) {
 		const xmn = (this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
 		const ymn = (this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
-		this.createPath(this.ciLayer, this.normativeLimits(lineData), name, "confidenceinterval")
+		this.createPath(this.ciLayer, this.normativeLimits(lineData, useSD), name, "confidenceinterval")
 		this.createPath(this.meanLayer, this.dataAsXY(lineData, xmn, ymn), name, "meanline")
 	}
 
@@ -312,10 +312,10 @@ class Chart {
 		this.createCircles(this.circlesLayer, lineData, name)
 	}
 
-	animateNorms(lineData, name) {
+	animateNorms(lineData, name, useSD = true) {
 		const xmn = (this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
 		const ymn = (this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
-		this.animatePath(this.normativeLimits(lineData), name, "confidenceinterval")
+		this.animatePath(this.normativeLimits(lineData, useSD), name, "confidenceinterval")
 		this.animatePath(this.dataAsXY(lineData, xmn, ymn), name, "meanline")
 	}
 

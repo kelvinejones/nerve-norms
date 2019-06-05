@@ -35,8 +35,8 @@ class StimulusRelative extends Chart {
 
 	drawLines(svg) {
 		this.createXYLine(this.participant, "srel")
-		this.createNorms(this.norms, "srel")
+		this.createNorms(this.norms, "srel", false)
 		this.animateXYLine(this.participant, "srel")
-		this.animateNorms(this.norms, "srel")
+		this.animateNorms(this.norms, "srel", false)
 	}
 }

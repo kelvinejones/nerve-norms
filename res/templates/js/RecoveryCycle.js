@@ -21,11 +21,11 @@ class RecoveryCycle extends Chart {
 
 	drawLines(svg) {
 		this.createXYLine(this.participant, "rc")
-		this.createNorms(this.norms, "rc")
+		this.createNorms(this.norms, "rc", false)
 
 		this.drawHorizontalLine(this.linesLayer, 0)
 
 		this.animateXYLine(this.participant, "rc")
-		this.animateNorms(this.norms, "rc")
+		this.animateNorms(this.norms, "rc", false)
 	}
 }
