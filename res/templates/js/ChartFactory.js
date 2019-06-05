@@ -46,6 +46,13 @@ class ChartFactory {
 		this.osAccessor.participant = this.partDropDown.selection
 		this.osAccessor.normative = this.normDropDown.selection
 
+		const postNormUpdate = function(norms) {
+			Object.values(plots).forEach(pl => {
+				pl.updateNorms(norms)
+			})
+		}
+		new Filter(this.url + "norms", postNormUpdate)
+
 		const plots = {
 			"recoveryCycle": null,
 			"thresholdElectrotonus": null,
