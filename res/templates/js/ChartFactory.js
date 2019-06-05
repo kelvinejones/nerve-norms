@@ -16,14 +16,7 @@ class ChartFactory {
 				pl.updateParticipant(currentParticipant)
 			})
 			ExVars.updateValues(currentParticipant)
-
-			fetch(this.url + "outliers?name=" + this.osAccessor.participant)
-				.then(function(response) {
-					return response.json()
-				})
-				.then(function(myJson) {
-					ExVars.updateScores(myJson)
-				})
+			this.updateOutliers(this.osAccessor.participant)
 		}, ["CA-CR21S", "CA-WI20S", "Rat on Drugs", ])
 
 		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, (name, currentNormative) => {
@@ -33,14 +26,7 @@ class ChartFactory {
 				pl.updateNorms(currentNormative)
 			})
 			ExVars.updateValues(this.partDropDown.data);
-
-			fetch("https://us-central1-nervenorms.cloudfunctions.net/outliers?name=" + this.osAccessor.participant)
-				.then(function(response) {
-					return response.json();
-				})
-				.then(function(myJson) {
-					ExVars.updateScores(myJson);
-				});
+			this.updateOutliers(this.osAccessor.participant)
 		}, ["Human Norms", "M30 Norms", ])
 
 		this.osAccessor.participant = this.partDropDown.selection
@@ -125,5 +111,15 @@ class ChartFactory {
 			case "stimulusResponseRelative":
 				return new StimulusRelative(this.partDropDown.data, this.normDropDown.data)
 		}
+	}
+
+	updateOutliers(name) {
+		fetch(this.url + "outliers?name=" + name)
+			.then(function(response) {
+				return response.json()
+			})
+			.then(function(myJson) {
+				ExVars.updateScores(myJson)
+			})
 	}
 }
