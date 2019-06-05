@@ -1,8 +1,9 @@
 class ThresholdElectrotonus extends Chart {
-	constructor(participant) {
+	constructor(participant, norms) {
 		super([0, 200], [-150, 100])
 		this.participant = participant.sections.TE
-		this.norms = this.participant
+		this.norms = (norms === undefined) ? undefined : norms.TE
+		this.norms = norms
 	}
 
 	get name() { return "Threshold Electrotonus" }
@@ -16,17 +17,19 @@ class ThresholdElectrotonus extends Chart {
 
 	updateNorms(norms) {
 		this.norms = norms.TE
-		this.animateUpdatedNorms()
+		this.animateUpdatedNorms(this.norms)
 	}
 
 	drawLines(svg) {
+		const useSD = (this.norms !== undefined)
+		const norms = (this.norms === undefined) ? this.participant : this.norms
 		Object.keys(this.participant).forEach(key => {
 			this.createXYLine(this.participant[key].data, key)
-			this.createNorms(this.norms[key].data, key, false)
+			this.createNorms(norms[key].data, key, useSD)
 		})
 		this.drawHorizontalLine(this.linesLayer, 0)
 		this.animateParticipant()
-		this.animateUpdatedNorms(false)
+		this.animateUpdatedNorms(norms, useSD)
 	}
 
 	animateParticipant() {
@@ -35,9 +38,9 @@ class ThresholdElectrotonus extends Chart {
 		})
 	}
 
-	animateUpdatedNorms(useSD = true) {
-		Object.keys(this.norms).forEach(key => {
-			this.animateNorms(this.norms[key].data, key, useSD)
+	animateUpdatedNorms(norms, useSD = true) {
+		Object.keys(norms).forEach(key => {
+			this.animateNorms(norms[key].data, key, useSD)
 		})
 	}
 }

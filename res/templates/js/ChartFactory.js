@@ -60,17 +60,17 @@ class ChartFactory {
 	build(typeStr) {
 		switch (typeStr) {
 			case "recoveryCycle":
-				return new RecoveryCycle(this.partDropDown.data)
+				return new RecoveryCycle(this.partDropDown.data, this.norms)
 			case "thresholdElectrotonus":
-				return new ThresholdElectrotonus(this.partDropDown.data)
+				return new ThresholdElectrotonus(this.partDropDown.data, this.norms)
 			case "chargeDuration":
-				return new ChargeDuration(this.partDropDown.data)
+				return new ChargeDuration(this.partDropDown.data, this.norms)
 			case "thresholdIV":
-				return new ThresholdIV(this.partDropDown.data)
+				return new ThresholdIV(this.partDropDown.data, this.norms)
 			case "stimulusResponse":
-				return new StimulusResponse(this.partDropDown.data)
+				return new StimulusResponse(this.partDropDown.data, this.norms)
 			case "stimulusResponseRelative":
-				return new StimulusRelative(this.partDropDown.data)
+				return new StimulusRelative(this.partDropDown.data, this.norms)
 		}
 	}
 
@@ -84,6 +84,7 @@ class ChartFactory {
 				return response.json()
 			})
 			.then(scores => {
+				this.scores = scores
 				ExVars.updateScores(scores)
 			})
 	}
@@ -98,6 +99,7 @@ class ChartFactory {
 				return response.json()
 			})
 			.then(norms => {
+				this.norms = norms
 				Object.values(this.plots).forEach(pl => {
 					pl.updateNorms(norms)
 				})

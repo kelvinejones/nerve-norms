@@ -1,8 +1,8 @@
 class RecoveryCycle extends Chart {
-	constructor(participant) {
+	constructor(participant, norms) {
 		super([1, 200], [-50, 110], Chart.scaleType.LOG)
 		this.participant = participant.sections.RC.data
-		this.norms = this.participant
+		this.norms = (norms === undefined) ? undefined : norms.RC.data
 	}
 
 	get name() { return "Recovery Cycle" }
@@ -20,12 +20,14 @@ class RecoveryCycle extends Chart {
 	}
 
 	drawLines(svg) {
+		const useSD = (this.norms !== undefined)
+		const norms = (this.norms === undefined) ? this.participant : this.norms
 		this.createXYLine(this.participant, "rc")
-		this.createNorms(this.norms, "rc", false)
+		this.createNorms(norms, "rc", useSD)
 
 		this.drawHorizontalLine(this.linesLayer, 0)
 
 		this.animateXYLine(this.participant, "rc")
-		this.animateNorms(this.norms, "rc", false)
+		this.animateNorms(norms, "rc", useSD)
 	}
 }

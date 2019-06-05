@@ -1,8 +1,8 @@
 class StimulusRelative extends Chart {
-	constructor(participant) {
+	constructor(participant, norms) {
 		super([0, 200], [0, 100])
 		this.participant = this.calculateParticipant(participant.sections.SR.data.data)
-		this.norms = this.participant
+		this.norms = (norms === undefined) ? undefined : norms.SRel.data
 		this.ySDName = undefined
 		this.yMeanName = 3
 		this.xSDName = 1
@@ -34,9 +34,11 @@ class StimulusRelative extends Chart {
 	}
 
 	drawLines(svg) {
+		const useSD = (this.norms !== undefined)
+		const norms = (this.norms === undefined) ? this.participant : this.norms
 		this.createXYLine(this.participant, "srel")
-		this.createNorms(this.norms, "srel", false)
+		this.createNorms(norms, "srel", useSD)
 		this.animateXYLine(this.participant, "srel")
-		this.animateNorms(this.norms, "srel", false)
+		this.animateNorms(norms, "srel", useSD)
 	}
 }
