@@ -24,7 +24,6 @@ class Filter {
 	}
 
 	static setAgeOptions(filter, opts) {
-		console.log(opts)
 		switch (opts) {
 			case "any":
 				filter.minAge = 0
