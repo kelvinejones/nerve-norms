@@ -17,7 +17,7 @@ class ChartFactory {
 		this.updateNorms(queryString)
 		this.updateOutliers(this.participant, queryString)
 
-		this.applyFilter = (event) => {
+		document.querySelector("form").addEventListener("submit", (event) => {
 			ExVars.setScoresToZero()
 
 			const queryString = Filter.asQueryString()
@@ -25,9 +25,7 @@ class ChartFactory {
 			this.updateOutliers(this.participant, queryString)
 
 			event.preventDefault()
-		}
-
-		document.querySelector("form").addEventListener("submit", this.applyFilter)
+		})
 
 		this.plots = {
 			"recoveryCycle": null,
