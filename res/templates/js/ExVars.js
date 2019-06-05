@@ -18,7 +18,7 @@ class ExVars {
 			return
 		}
 		if (score === undefined) {
-			score = 0
+			score = 1
 		}
 		score = 1 - score // invert it to make bad scores more obvious
 		row.style.background = "linear-gradient(to right, " + ExVars._interpolate(score) + " " + score * 100 + "%, #ffffff 0%)"
@@ -39,7 +39,11 @@ class ExVars {
 
 	static _setHeaderScore(str, score) {
 		[...document.querySelectorAll(str)].forEach(elm => {
-			elm.style.background = ExVars._interpolate(score);
+			if (score === undefined) {
+				elm.style.background = ''
+			} else {
+				elm.style.background = ExVars._interpolate(score)
+			}
 		})
 	}
 
@@ -71,7 +75,8 @@ class ExVars {
 		})
 	}
 
-	static setScoresToZero() {
+	static clearScores() {
+		ExVars._setHeaderScore(".participant-header", undefined)
 		const elms = document.getElementsByClassName('qtrac-excite')
 		for (let elm of elms) {
 			ExVars._setExcitabilityVariableScore(elm.id, undefined)

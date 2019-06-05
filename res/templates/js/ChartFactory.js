@@ -4,7 +4,8 @@ class ChartFactory {
 
 		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
 			this.participant = name
-			ExVars.setScoresToZero()
+
+			ExVars.clearScores()
 			Object.values(this.plots).forEach(pl => {
 				pl.updateParticipant(currentParticipant)
 			})
@@ -18,7 +19,7 @@ class ChartFactory {
 		this.updateOutliers(this.participant, queryString)
 
 		document.querySelector("form").addEventListener("submit", (event) => {
-			ExVars.setScoresToZero()
+			ExVars.clearScores()
 
 			const queryString = Filter.asQueryString()
 			this.updateNorms(queryString)
