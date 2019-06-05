@@ -8,7 +8,7 @@ class ExVars {
 		green.opacity = opacity
 
 		const intr = d3.interpolateHsl(green, red);
-		return function(score) { return intr(Math.pow(score, 3)) }
+		return function(score) { return intr(Math.pow(1 - score, 3)) }
 	}
 
 	static _setExcitabilityVariableScore(idString, score) {
@@ -20,8 +20,7 @@ class ExVars {
 		if (score === undefined) {
 			score = 1
 		}
-		score = 1 - score // invert it to make bad scores more obvious
-		row.style.background = "linear-gradient(to right, " + ExVars._interpolate(score) + " " + score * 100 + "%, #ffffff 0%)"
+		row.style.background = "linear-gradient(to right, " + ExVars._interpolate(score) + " " + (1 - score) * 100 + "%, #ffffff 0%)"
 	}
 
 	static _setExcitabilityVariableValue(idString, value) {
