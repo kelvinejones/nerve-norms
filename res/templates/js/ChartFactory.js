@@ -14,15 +14,15 @@ class ChartFactory {
 			Object.values(plots).forEach(pl => {
 				pl.updateParticipant(currentParticipant)
 			})
-			ExVars.updateValues(currentParticipant);
+			ExVars.updateValues(currentParticipant)
 
 			fetch("https://us-central1-nervenorms.cloudfunctions.net/outliers?name=" + this.osAccessor.participant)
 				.then(function(response) {
-					return response.json();
+					return response.json()
 				})
 				.then(function(myJson) {
-					ExVars.updateScores(myJson);
-				});
+					ExVars.updateScores(myJson)
+				})
 		}, ["CA-CR21S", "CA-WI20S", "Rat on Drugs", ])
 
 		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, (name, currentNormative) => {
@@ -31,7 +31,7 @@ class ChartFactory {
 			Object.values(plots).forEach(pl => {
 				pl.updateNorms(currentNormative)
 			})
-			ExVars.updateValues(this.partDropDown.data);
+			ExVars.updateValues(this.partDropDown.data)
 
 			fetch("https://us-central1-nervenorms.cloudfunctions.net/outliers?name=" + this.osAccessor.participant)
 				.then(function(response) {
@@ -61,8 +61,8 @@ class ChartFactory {
 		})
 
 		// Now set all excitability variables
-		ExVars.updateScores(this.osAccessor.getScores());
-		ExVars.updateValues(this.partDropDown.data);
+		ExVars.updateScores(this.osAccessor.getScores())
+		ExVars.updateValues(this.partDropDown.data)
 	}
 
 	drawModal(typeStr) {
