@@ -12,7 +12,7 @@ class ChartFactory {
 		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
 			this.osAccessor.participant = name
 			ExVars.setScoresToZero()
-			Object.values(plots).forEach(pl => {
+			Object.values(this.plots).forEach(pl => {
 				pl.updateParticipant(currentParticipant)
 			})
 			ExVars.updateValues(currentParticipant)
@@ -22,7 +22,7 @@ class ChartFactory {
 		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, (name, currentNormative) => {
 			this.osAccessor.normative = name
 			ExVars.setScoresToZero()
-			Object.values(plots).forEach(pl => {
+			Object.values(this.plots).forEach(pl => {
 				pl.updateNorms(currentNormative)
 			})
 			ExVars.updateValues(this.partDropDown.data);
@@ -36,30 +36,15 @@ class ChartFactory {
 			ExVars.setScoresToZero()
 
 			const queryString = Filter.asQueryString()
+			this.updateNorms(queryString)
+			this.updateOutliers(this.osAccessor.participant, queryString)
 
-			fetch(this.url + "norms" + queryString)
-				.then(function(response) {
-					return response.json()
-				})
-				.then(function(norms) {
-					Object.values(plots).forEach(pl => {
-						pl.updateNorms(norms)
-					})
-				})
-
-			fetch(this.url + "outliers" + queryString + "&name=" + this.osAccessor.participant)
-				.then(function(response) {
-					return response.json()
-				})
-				.then(function(scores) {
-					ExVars.updateScores(scores)
-				})
 			event.preventDefault()
 		}
 
 		document.querySelector("form").addEventListener("submit", this.applyFilter)
 
-		const plots = {
+		this.plots = {
 			"recoveryCycle": null,
 			"thresholdElectrotonus": null,
 			"chargeDuration": null,
@@ -68,10 +53,10 @@ class ChartFactory {
 			"stimulusResponseRelative": null,
 		}
 
-		Object.keys(plots).forEach(key => {
-			plots[key] = this.build(key)
-			plots[key].draw(d3.select("#" + key + " svg"), true)
-			plots[key].setDelayTime(Chart.fastDelay) // After initial setup, remove the delay
+		Object.keys(this.plots).forEach(key => {
+			this.plots[key] = this.build(key)
+			this.plots[key].draw(d3.select("#" + key + " svg"), true)
+			this.plots[key].setDelayTime(Chart.fastDelay) // After initial setup, remove the delay
 		})
 
 		// Now set all excitability variables
@@ -107,13 +92,33 @@ class ChartFactory {
 		}
 	}
 
-	updateOutliers(name) {
-		fetch(this.url + "outliers?name=" + name)
-			.then(function(response) {
+	updateOutliers(name, queryString) {
+		if (queryString === undefined) {
+			queryString = Filter.asQueryString()
+		}
+
+		fetch(this.url + "outliers" + queryString + "&name=" + name)
+			.then(response => {
 				return response.json()
 			})
-			.then(function(myJson) {
-				ExVars.updateScores(myJson)
+			.then(scores => {
+				ExVars.updateScores(scores)
+			})
+	}
+
+	updateNorms(queryString) {
+		if (queryString === undefined) {
+			queryString = Filter.asQueryString()
+		}
+
+		fetch(this.url + "norms" + queryString)
+			.then(response => {
+				return response.json()
+			})
+			.then(norms => {
+				Object.values(this.plots).forEach(pl => {
+					pl.updateNorms(norms)
+				})
 			})
 	}
 }
