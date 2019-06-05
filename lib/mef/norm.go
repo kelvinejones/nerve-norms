@@ -1,6 +1,10 @@
 package mef
 
-import "gogs.bellstone.ca/james/jitter/lib/mem"
+import (
+	"math"
+
+	"gogs.bellstone.ca/james/jitter/lib/mem"
+)
 
 type Norm struct {
 	CDNorm     NormTable            `json:"CD"`
@@ -34,13 +38,14 @@ func (mef *Mef) Norm() Norm {
 }
 
 type OutScores struct {
-	CDOutScores     OutScoresTable            `json:"CD"`
-	RCOutScores     OutScoresTable            `json:"RC"`
-	SROutScores     DoubleOutScoresTable      `json:"SR"`
-	SRelOutScores   OutScoresTable            `json:"SRel"`
-	IVOutScores     OutScoresTable            `json:"IV"`
-	TEOutScores     map[string]OutScoresTable `json:"TE"`
-	ExVarsOutScores OutScoresTable            `json:"ExVars"`
+	CDOutScores     OutScoresTable       `json:"CD"`
+	RCOutScores     OutScoresTable       `json:"RC"`
+	SROutScores     DoubleOutScoresTable `json:"SR"`
+	SRelOutScores   OutScoresTable       `json:"SRel"`
+	IVOutScores     OutScoresTable       `json:"IV"`
+	TEOutScores     TEOutScores          `json:"TE"`
+	ExVarsOutScores OutScoresTable       `json:"ExVars"`
+	Overall         float64              `json:"Overall"`
 }
 
 func (norm *Norm) OutlierScores(mm *mem.Mem) OutScores {
@@ -49,17 +54,20 @@ func (norm *Norm) OutlierScores(mm *mem.Mem) OutScores {
 		IVOutScores:     NewOutScoresTable(norm.IVNorm, mm),
 		RCOutScores:     NewOutScoresTable(norm.RCNorm, mm),
 		ExVarsOutScores: NewOutScoresTable(norm.ExVarsNorm, mm),
-		SROutScores: DoubleOutScoresTable{
-			XOutScores: NewOutScoresTable(norm.SRNorm.XNorm, mm),
-			YOutScores: NewOutScoresTable(norm.SRNorm.YNorm, mm),
-		},
-		SRelOutScores: NewOutScoresTable(norm.SRelNorm, mm),
-		TEOutScores:   map[string]OutScoresTable{},
+		SROutScores:     NewDoubleOutScoresTable(norm.SRNorm.XNorm, norm.SRNorm.YNorm, mm),
+		SRelOutScores:   NewOutScoresTable(norm.SRelNorm, mm),
+		TEOutScores:     NewTEOutScores(norm.TENorm, mm),
 	}
 
-	for _, name := range []string{"h40", "h20", "d40", "d20"} {
-		os.TEOutScores[name] = NewOutScoresTable(norm.TENorm[name], mm)
-	}
+	os.Overall = math.Pow(1*
+		os.CDOutScores.Overall*
+		os.RCOutScores.Overall*
+		os.SROutScores.Overall*
+		os.SRelOutScores.Overall*
+		os.IVOutScores.Overall*
+		os.TEOutScores.Overall*
+		os.ExVarsOutScores.Overall,
+		1.0/7.0)
 
 	return os
 }

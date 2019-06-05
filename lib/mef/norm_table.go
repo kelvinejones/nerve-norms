@@ -97,14 +97,14 @@ func (norm NormTable) reverse(val float64) float64 {
 	}
 }
 
-// jsonTable is used to restructure LabTab data for json.
-type jsonTable struct {
+// normJsonTable is used to restructure LabTab data for json.
+type normJsonTable struct {
 	Columns []string  `json:"columns"`
 	Data    mem.Table `json:"data"`
 }
 
 func (norm NormTable) MarshalJSON() ([]byte, error) {
-	jt := jsonTable{
+	jt := normJsonTable{
 		Columns: []string{"mean", "sd", "num"},
 		Data:    []mem.Column{norm.Mean, norm.SD, norm.Num},
 	}
@@ -118,7 +118,7 @@ func (norm NormTable) MarshalJSON() ([]byte, error) {
 }
 
 func (norm *NormTable) UnmarshalJSON(value []byte) error {
-	var jt jsonTable
+	var jt normJsonTable
 	err := json.Unmarshal(value, &jt)
 	if err != nil {
 		return err
@@ -148,7 +148,7 @@ type DoubleNormTable struct {
 }
 
 func (norm DoubleNormTable) MarshalJSON() ([]byte, error) {
-	jt := jsonTable{
+	jt := normJsonTable{
 		Columns: []string{"ymean", "ysd", "ynum", "xmean", "xsd", "xnum"},
 		Data:    []mem.Column{norm.YNorm.Mean, norm.YNorm.SD, norm.YNorm.Num, norm.XNorm.Mean, norm.XNorm.SD, norm.XNorm.Num},
 	}
@@ -157,7 +157,7 @@ func (norm DoubleNormTable) MarshalJSON() ([]byte, error) {
 }
 
 func (norm *DoubleNormTable) UnmarshalJSON(value []byte) error {
-	var jt jsonTable
+	var jt normJsonTable
 	err := json.Unmarshal(value, &jt)
 	if err != nil {
 		return err
