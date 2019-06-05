@@ -48,7 +48,7 @@ func (norm NormTable) numSD(rowN int, val float64) float64 {
 	case ArithmeticMean:
 		return (norm.Mean[rowN] - val) / norm.SD[rowN]
 	case GeometricMean:
-		return math.Log10(norm.Mean[rowN]/val) / math.Log10(norm.SD[rowN])
+		return (math.Log10(norm.Mean[rowN]) - math.Log10(val)) / norm.SD[rowN]
 	default:
 		return 0.0
 	}
