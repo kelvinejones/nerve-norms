@@ -100,6 +100,7 @@ class ExVars {
 		ExVars._setHeaderScore(".SR-header", undefined)
 		ExVars._setHeaderScore(".SRel-header", undefined)
 		ExVars._setHeaderScore(".ExVars-header", undefined)
+		ExVars._setExcitabilityVariableValue("overall-score", "loading...", false)
 		const elms = document.getElementsByClassName('qtrac-excite')
 		for (let elm of elms) {
 			ExVars._setExcitabilityVariableScore(elm.id, undefined)
