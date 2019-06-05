@@ -1,43 +1,35 @@
 class ChartFactory {
 	constructor(participants, norms, outlierScores) {
-		this.osAccessor = {
-			participant: "",
-			normative: "",
-			getScores: function() {
-				return outlierScores[this.participant][this.normative]
-			},
-		}
+		this.participant = ""
 		this.url = "https://us-central1-nervenorms.cloudfunctions.net/"
 
 		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
-			this.osAccessor.participant = name
+			this.participant = name
 			ExVars.setScoresToZero()
 			Object.values(this.plots).forEach(pl => {
 				pl.updateParticipant(currentParticipant)
 			})
 			ExVars.updateValues(currentParticipant)
-			this.updateOutliers(this.osAccessor.participant)
+			this.updateOutliers(this.participant)
 		}, ["CA-CR21S", "CA-WI20S", "Rat on Drugs", ])
 
 		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, (name, currentNormative) => {
-			this.osAccessor.normative = name
 			ExVars.setScoresToZero()
 			Object.values(this.plots).forEach(pl => {
 				pl.updateNorms(currentNormative)
 			})
 			ExVars.updateValues(this.partDropDown.data);
-			this.updateOutliers(this.osAccessor.participant)
+			this.updateOutliers(this.participant)
 		}, ["Human Norms", "M30 Norms", ])
 
-		this.osAccessor.participant = this.partDropDown.selection
-		this.osAccessor.normative = this.normDropDown.selection
+		this.participant = this.partDropDown.selection
 
 		this.applyFilter = (event) => {
 			ExVars.setScoresToZero()
 
 			const queryString = Filter.asQueryString()
 			this.updateNorms(queryString)
-			this.updateOutliers(this.osAccessor.participant, queryString)
+			this.updateOutliers(this.participant, queryString)
 
 			event.preventDefault()
 		}
@@ -60,7 +52,6 @@ class ChartFactory {
 		})
 
 		// Now set all excitability variables
-		ExVars.updateScores(this.osAccessor.getScores())
 		ExVars.updateValues(this.partDropDown.data)
 	}
 
