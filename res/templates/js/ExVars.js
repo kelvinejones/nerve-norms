@@ -57,7 +57,17 @@ class ExVars {
 		}
 	}
 
-	static updateScores(scores) {
+	static updateScores(name, scores) {
+		ExVars._setHeaderScore(".participant-header", scores.Overall)
+		const healthLabel = ExVars._labelForScore(scores.Overall)
+		ExVars._setExcitabilityVariableValue("overall-score", healthLabel + " (" + scores.Overall.toFixed(2) + ")")
+		const nameSpan = document.getElementById("participant-name");
+		nameSpan.innerHTML = name + " (" + healthLabel + ")"
+
+		Object.keys(scores).forEach(function(key) {
+			ExVars._setHeaderScore("." + key + "-header", scores[key].Overall)
+		})
+
 		scores.ExVars.data.forEach(function(exind) {
 			if (exind[1] === 0) {
 				return // This means it doesn't have an index
