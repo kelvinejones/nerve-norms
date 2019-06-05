@@ -1,6 +1,5 @@
 class ChartFactory {
 	constructor(participants) {
-		this.participant = ""
 		this.url = "https://us-central1-nervenorms.cloudfunctions.net/"
 
 		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
@@ -12,8 +11,11 @@ class ChartFactory {
 			ExVars.updateValues(currentParticipant)
 			this.updateOutliers(this.participant)
 		}, ["CA-CR21S", "CA-WI20S", "Rat on Drugs", ])
-
 		this.participant = this.partDropDown.selection
+
+		const queryString = Filter.asQueryString()
+		this.updateNorms(queryString)
+		this.updateOutliers(this.participant, queryString)
 
 		this.applyFilter = (event) => {
 			ExVars.setScoresToZero()
