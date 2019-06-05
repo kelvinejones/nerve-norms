@@ -12,8 +12,8 @@ class ExVars {
 	}
 
 	static _setExcitabilityVariableScore(idString, score) {
-		const row = document.getElementById(idString);
-		if (row === null) {
+		const row = document.getElementById(idString)
+		if (row === null || !row.classList.contains('display-bar')) {
 			// We don't care about this variable
 			return
 		}
