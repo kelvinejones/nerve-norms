@@ -32,7 +32,7 @@ class ChartFactory {
 			Object.values(plots).forEach(pl => {
 				pl.updateNorms(currentNormative)
 			})
-			ExVars.updateValues(this.partDropDown.data)
+			ExVars.updateValues(this.partDropDown.data);
 
 			fetch("https://us-central1-nervenorms.cloudfunctions.net/outliers?name=" + this.osAccessor.participant)
 				.then(function(response) {
