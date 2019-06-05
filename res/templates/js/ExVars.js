@@ -86,6 +86,13 @@ class ExVars {
 
 	static clearScores() {
 		ExVars._setHeaderScore(".participant-header", undefined)
+		ExVars._setHeaderScore(".TE-header", undefined)
+		ExVars._setHeaderScore(".RC-header", undefined)
+		ExVars._setHeaderScore(".IV-header", undefined)
+		ExVars._setHeaderScore(".CD-header", undefined)
+		ExVars._setHeaderScore(".SR-header", undefined)
+		ExVars._setHeaderScore(".SRel-header", undefined)
+		ExVars._setHeaderScore(".ExVars-header", undefined)
 		const elms = document.getElementsByClassName('qtrac-excite')
 		for (let elm of elms) {
 			ExVars._setExcitabilityVariableScore(elm.id, undefined)
