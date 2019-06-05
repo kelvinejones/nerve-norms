@@ -35,7 +35,7 @@ class ChartFactory {
 		this.applyFilter = (event) => {
 			ExVars.setScoresToZero()
 
-			let queryString = Filter.asQueryString()
+			const queryString = Filter.asQueryString()
 
 			fetch(this.url + "norms" + queryString)
 				.then(function(response) {
@@ -47,13 +47,7 @@ class ChartFactory {
 					})
 				})
 
-			if (queryString.length > 1) {
-				queryString = queryString + "&"
-			} else {
-				queryString = queryString + "?"
-			}
-			queryString = queryString + "name=" + this.osAccessor.participant
-			fetch(this.url + "outliers" + queryString)
+			fetch(this.url + "outliers" + queryString + "&name=" + this.osAccessor.participant)
 				.then(function(response) {
 					return response.json()
 				})
