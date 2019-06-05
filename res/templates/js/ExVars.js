@@ -84,10 +84,20 @@ class ExVars {
 
 	static updateValues(values) {
 		values.sections.ExVars.data.forEach(function(exind) {
-			if (exind[0] === 0) {
+			const idx = exind[0]
+			if (idx === 0) {
 				return // This means it doesn't have an index
 			}
-			ExVars._setExcitabilityVariableValue("qtrac-excite-" + exind[0], exind[1], exind[2] == 1)
+			let val = exind[1]
+			if (idx == 18) {
+				// This is sex, so treat it differently
+				if (exind[1] == 1) {
+					val = "Male"
+				} else {
+					val = "Female"
+				}
+			}
+			ExVars._setExcitabilityVariableValue("qtrac-excite-" + idx, val, exind[2] == 1)
 		})
 	}
 
