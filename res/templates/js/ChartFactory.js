@@ -52,30 +52,20 @@ class ChartFactory {
 	}
 
 	/**
-	 * Detect the current active responsive breakpoint in Bootstrap
-	 * @returns {string}
-	 * @author farside {@link https://stackoverflow.com/users/4354249/farside}
+	 * Detect if the current active responsive breakpoint in Bootstrap is not XS
+	 * Modified from code by farside {@link https://stackoverflow.com/users/4354249/farside}
 	 */
-	static getResponsiveBreakpoint() {
-		var envs = { xs: "d-none", sm: "d-sm-none", md: "d-md-none", lg: "d-lg-none", xl: "d-xl-none" };
-		var env = "";
-
-		var $el = $("<div>");
-		$el.appendTo($("body"));
-
-		for (var i = Object.keys(envs).length - 1; i >= 0; i--) {
-			env = Object.keys(envs)[i];
-			$el.addClass(envs[env]);
-			if ($el.is(":hidden")) {
-				break; // env detected
-			}
-		}
-		$el.remove();
-		return env;
+	static bootstrapSizeIsXS() {
+		const $el = $("<div>")
+		$el.appendTo($("body"))
+		$el.addClass("d-sm-none")
+		const isBiggerThanXS = $el.is(":hidden")
+		$el.remove()
+		return !isBiggerThanXS
 	};
 
 	drawModal(typeStr) {
-		if (ChartFactory.getResponsiveBreakpoint() == "xs") {
+		if (ChartFactory.bootstrapSizeIsXS()) {
 			// Screen is too small to display this properly
 			return
 		}
