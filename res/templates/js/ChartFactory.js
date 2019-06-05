@@ -7,6 +7,7 @@ class ChartFactory {
 				return outlierScores[this.participant][this.normative]
 			},
 		}
+		this.url = "https://us-central1-nervenorms.cloudfunctions.net/"
 
 		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
 			this.osAccessor.participant = name
@@ -16,7 +17,7 @@ class ChartFactory {
 			})
 			ExVars.updateValues(currentParticipant)
 
-			fetch("https://us-central1-nervenorms.cloudfunctions.net/outliers?name=" + this.osAccessor.participant)
+			fetch(this.url + "outliers?name=" + this.osAccessor.participant)
 				.then(function(response) {
 					return response.json()
 				})
