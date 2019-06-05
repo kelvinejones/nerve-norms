@@ -17,17 +17,24 @@ class ExVars {
 			// We don't care about this variable
 			return
 		}
+		if (row.classList.contains('was-imp')) {
+			row.style.background = "#98AFC7"
+			return
+		}
 		if (score === undefined) {
 			score = 1
 		}
 		row.style.background = "linear-gradient(to right, " + ExVars._interpolate(score) + " " + (1 - score) * 100 + "%, #ffffff 0%)"
 	}
 
-	static _setExcitabilityVariableValue(idString, value) {
+	static _setExcitabilityVariableValue(idString, value, wasimp) {
 		const row = document.getElementById(idString);
 		if (row === null) {
 			// We don't care about this variable
 			return
+		}
+		if (wasimp != row.classList.contains("was-imp")) {
+			row.classList.toggle("was-imp");
 		}
 		if (value === undefined) {
 			row.getElementsByClassName("excite-value")[0].innerHTML = ""
@@ -59,7 +66,7 @@ class ExVars {
 	static updateScores(name, scores) {
 		ExVars._setHeaderScore(".participant-header", scores.Overall)
 		const healthLabel = ExVars._labelForScore(scores.Overall)
-		ExVars._setExcitabilityVariableValue("overall-score", healthLabel + " (" + scores.Overall.toFixed(2) + ")")
+		ExVars._setExcitabilityVariableValue("overall-score", healthLabel + " (" + scores.Overall.toFixed(2) + ")", false)
 		const nameSpan = document.getElementById("participant-name");
 		nameSpan.innerHTML = name + " (" + healthLabel + ")"
 
@@ -80,7 +87,7 @@ class ExVars {
 			if (exind[0] === 0) {
 				return // This means it doesn't have an index
 			}
-			ExVars._setExcitabilityVariableValue("qtrac-excite-" + exind[0], exind[1])
+			ExVars._setExcitabilityVariableValue("qtrac-excite-" + exind[0], exind[1], exind[2] == 1)
 		})
 	}
 
