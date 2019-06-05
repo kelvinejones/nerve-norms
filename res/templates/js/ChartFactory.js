@@ -46,12 +46,20 @@ class ChartFactory {
 		this.osAccessor.participant = this.partDropDown.selection
 		this.osAccessor.normative = this.normDropDown.selection
 
-		const postNormUpdate = function(norms) {
-			Object.values(plots).forEach(pl => {
-				pl.updateNorms(norms)
-			})
+		this.applyFilter = (event) => {
+			fetch(this.url + "norms" + Filter.asQueryString())
+				.then(function(response) {
+					return response.json()
+				})
+				.then(function(norms) {
+					Object.values(plots).forEach(pl => {
+						pl.updateNorms(norms)
+					})
+				})
+			event.preventDefault()
 		}
-		new Filter(this.url + "norms", postNormUpdate)
+
+		document.querySelector("form").addEventListener("submit", this.applyFilter)
 
 		const plots = {
 			"recoveryCycle": null,
