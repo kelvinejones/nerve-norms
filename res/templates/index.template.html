@@ -14,15 +14,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
     <!-- Test Data -->
-    <script>const normative = {}; const outlierScore = {};</script>
-    <script src="data/normAll.json"></script>
-    <script src="data/normM30.json"></script>
-    <script src="data/outlier-WI20S-all.json"></script>
-    <script src="data/outlier-CR21S-all.json"></script>
-    <script src="data/outlier-rat-all.json"></script>
-    <script src="data/outlier-WI20S-M30.json"></script>
-    <script src="data/outlier-CR21S-M30.json"></script>
-    <script src="data/outlier-rat-M30.json"></script>
     <script src="data/participants.json"></script>
 
     <!-- Application Code -->
@@ -108,7 +99,6 @@
         <div class="card-header font-weight-bold participant-header">Participant: <span id="participant-name">None</span></div>
         <div class="card-body">
           <select id="select-participant-dropdown" class="btn btn-secondary float-left"></select>
-          <select id="select-normative-dropdown" class="btn btn-secondary float-left"></select>
         </div>
       </div>
     </div>
@@ -256,7 +246,7 @@
 
 
     <script>
-      const chartFactory = new ChartFactory(participants, normative, outlierScore)
+      const chartFactory = new ChartFactory(participants)
     </script>
   </body>
 </html>

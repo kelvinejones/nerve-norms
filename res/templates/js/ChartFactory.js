@@ -1,5 +1,5 @@
 class ChartFactory {
-	constructor(participants, norms, outlierScores) {
+	constructor(participants) {
 		this.participant = ""
 		this.url = "https://us-central1-nervenorms.cloudfunctions.net/"
 
@@ -12,15 +12,6 @@ class ChartFactory {
 			ExVars.updateValues(currentParticipant)
 			this.updateOutliers(this.participant)
 		}, ["CA-CR21S", "CA-WI20S", "Rat on Drugs", ])
-
-		this.normDropDown = new DataDropDown("select-normative-dropdown", norms, (name, currentNormative) => {
-			ExVars.setScoresToZero()
-			Object.values(this.plots).forEach(pl => {
-				pl.updateNorms(currentNormative)
-			})
-			ExVars.updateValues(this.partDropDown.data);
-			this.updateOutliers(this.participant)
-		}, ["Human Norms", "M30 Norms", ])
 
 		this.participant = this.partDropDown.selection
 
