@@ -69,28 +69,39 @@
     </div>
     <div class="card-group">
       <div class="card border-dark">
-        <div class="card-header bg-secondary font-weight-bold">Filter (Not yet functional; the below buttons do nothing)</div>
-        <div class="card-body row">
+        <div class="card-header bg-secondary font-weight-bold">Filter</div>
+        <form class="card-body row">
           <div>
             <label>Sex:</label>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active"> <input type="radio" name="options" id="option1" autocomplete="off" checked> Any </label>
-              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> Male </label>
-              <label class="btn btn-secondary"> <input type="radio" name="options" id="option3" autocomplete="off"> Female </label>
+              <label class="btn btn-secondary active"> <input type="radio" name="sex-options" id="sex-option1" autocomplete="off" value="" checked> Any </label>
+              <label class="btn btn-secondary"> <input type="radio" name="sex-options" id="sex-option2" autocomplete="off" value="male"> Male </label>
+              <label class="btn btn-secondary"> <input type="radio" name="sex-options" id="sex-option3" autocomplete="off" value="female"> Female </label>
             </div>
           </div>
-          <div class="">
+          <div>
+            <label>Country:</label>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary active"> <input type="radio" name="country-options" id="country-option1" autocomplete="off" value="" checked> Any </label>
+              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option2" autocomplete="off" value="CA"> Canada </label>
+              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option3" autocomplete="off" value="PO"> Portugal </label>
+            </div>
+          </div>
+          <div>
             <label>Age:</label>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active"> <input type="radio" name="options" id="option1" autocomplete="off" checked> Any </label>
-              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> 10 - 20 </label>
-              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> 20 - 30 </label>
-              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> 30 - 45 </label>
-              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> 45 - 65 </label>
-              <label class="btn btn-secondary"> <input type="radio" name="options" id="option2" autocomplete="off"> 65+ </label>
+              <label class="btn btn-secondary active"> <input type="radio" name="age-options" id="age-option1" autocomplete="off" value="any" checked> Any </label>
+              <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option2" autocomplete="off" value="-30"> &lt;30 </label>
+              <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option3" autocomplete="off" value="31-40"> 31&ndash;40 </label>
+              <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option4" autocomplete="off" value="41-50"> 41&ndash;50 </label>
+              <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option5" autocomplete="off" value="51-60"> 51&ndash;60 </label>
+              <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option6" autocomplete="off" value="61-"> 60+ </label>
             </div>
           </div>
-        </div>
+          <div>
+            <button id="apply-filter" type="submit" class="btn btn-secondary active">Apply</button>
+          </div>
+        </form>
       </div>
       <div class="card border-dark">
         <div class="card-header font-weight-bold participant-header">Participant: <span id="participant-name">None</span></div>
