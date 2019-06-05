@@ -3,7 +3,6 @@ class ThresholdElectrotonus extends Chart {
 		super([0, 200], [-150, 100])
 		this.participant = participant.sections.TE
 		this.norms = (norms === undefined) ? undefined : norms.TE
-		this.norms = norms
 	}
 
 	get name() { return "Threshold Electrotonus" }
