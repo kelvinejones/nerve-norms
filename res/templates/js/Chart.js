@@ -186,6 +186,12 @@ class Chart {
 			.concat(this.sdAtLoc(data[0], Chart.limLoc.LEFT, useSD)))
 	}
 
+	meanLine(data, useSD) {
+		const xmn = (useSD && this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
+		const ymn = (useSD && this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
+		return this.dataAsXY(data, xmn, ymn)
+	}
+
 	scaleArrayWithinRange(ar) {
 		// With a log scale, values can't be plotted at or below zero.
 		if (this.xscale.scaleType == Chart.scaleType.LOG) {
@@ -301,10 +307,8 @@ class Chart {
 	}
 
 	createNorms(lineData, name, useSD = true) {
-		const xmn = (this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
-		const ymn = (this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
 		this.createPath(this.ciLayer, this.normativeLimits(lineData, useSD), name, "confidenceinterval")
-		this.createPath(this.meanLayer, this.dataAsXY(lineData, xmn, ymn), name, "meanline")
+		this.createPath(this.meanLayer, this.meanLine(lineData, useSD), name, "meanline")
 	}
 
 	createXYLine(lineData, name) {
@@ -313,10 +317,8 @@ class Chart {
 	}
 
 	animateNorms(lineData, name, useSD = true) {
-		const xmn = (this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
-		const ymn = (this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
 		this.animatePath(this.normativeLimits(lineData, useSD), name, "confidenceinterval")
-		this.animatePath(this.dataAsXY(lineData, xmn, ymn), name, "meanline")
+		this.animatePath(this.meanLine(lineData, useSD), name, "meanline")
 	}
 
 	animateXYLine(lineData, name) {

@@ -78,17 +78,17 @@ class ChartFactory {
 	build(typeStr) {
 		switch (typeStr) {
 			case "recoveryCycle":
-				return new RecoveryCycle(this.partDropDown.data, this.normDropDown.data)
+				return new RecoveryCycle(this.partDropDown.data)
 			case "thresholdElectrotonus":
-				return new ThresholdElectrotonus(this.partDropDown.data, this.normDropDown.data)
+				return new ThresholdElectrotonus(this.partDropDown.data)
 			case "chargeDuration":
-				return new ChargeDuration(this.partDropDown.data, this.normDropDown.data)
+				return new ChargeDuration(this.partDropDown.data)
 			case "thresholdIV":
-				return new ThresholdIV(this.partDropDown.data, this.normDropDown.data)
+				return new ThresholdIV(this.partDropDown.data)
 			case "stimulusResponse":
-				return new StimulusResponse(this.partDropDown.data, this.normDropDown.data)
+				return new StimulusResponse(this.partDropDown.data)
 			case "stimulusResponseRelative":
-				return new StimulusRelative(this.partDropDown.data, this.normDropDown.data)
+				return new StimulusRelative(this.partDropDown.data)
 		}
 	}
 

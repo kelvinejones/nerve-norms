@@ -1,8 +1,8 @@
 class RecoveryCycle extends Chart {
-	constructor(participant, norms) {
+	constructor(participant) {
 		super([1, 200], [-50, 110], Chart.scaleType.LOG)
 		this.participant = participant.sections.RC.data
-		this.norms = norms.RC.data
+		this.norms = this.participant
 	}
 
 	get name() { return "Recovery Cycle" }

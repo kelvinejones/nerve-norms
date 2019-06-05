@@ -1,8 +1,8 @@
 class ThresholdIV extends Chart {
-	constructor(participant, norms) {
+	constructor(participant) {
 		super([-400, 50], [-100, 50])
 		this.participant = participant.sections.IV.data
-		this.norms = norms.IV.data
+		this.norms = this.participant
 		this.xIndex = 1
 		this.yIndex = 0
 		this.ySDName = undefined

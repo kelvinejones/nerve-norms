@@ -1,8 +1,8 @@
 class ThresholdElectrotonus extends Chart {
-	constructor(participant, norms) {
+	constructor(participant) {
 		super([0, 200], [-150, 100])
 		this.participant = participant.sections.TE
-		this.norms = norms.TE
+		this.norms = this.participant
 	}
 
 	get name() { return "Threshold Electrotonus" }

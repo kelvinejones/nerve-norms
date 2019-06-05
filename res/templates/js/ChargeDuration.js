@@ -1,8 +1,8 @@
 class ChargeDuration extends Chart {
-	constructor(participant, norms) {
+	constructor(participant) {
 		super([0, 1], [0, 10])
 		this.participant = participant.sections.CD.data
-		this.norms = norms.CD.data
+		this.norms = this.participant
 	}
 
 	get name() { return "Charge Duration" }

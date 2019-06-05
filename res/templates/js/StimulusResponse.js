@@ -1,8 +1,8 @@
 class StimulusResponse extends Chart {
-	constructor(participant, norms) {
+	constructor(participant) {
 		super([1, 20], [0.01, 20], Chart.scaleType.LOG, Chart.scaleType.LOG)
 		this.participant = this.calculateParticipant(participant)
-		this.norms = norms.SR.data
+		this.norms = this.participant
 		this.sdFunc = Chart.logSD
 		this.xSDName = 4
 	}
