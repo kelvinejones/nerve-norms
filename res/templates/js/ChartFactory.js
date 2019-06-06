@@ -13,7 +13,7 @@ class ChartFactory {
 			})
 			ExVars.updateValues(currentParticipant)
 			this.updateOutliers(this.participant)
-		}, ["CA-CR21S", "CA-WI20S", "PO-00d97e84", "PO-017182a5", "Rat on Drugs", "Rat Slow Twitch Axon", "Rat Fast Twitch Axon"])
+		}, ["CA-CR21S", "CA-WI20S", "PO-00d97e84", "PO-017182a5", "Rat on Drugs"])
 		this.participant = this.partDropDown.selection
 
 		document.getElementById("participant-name").innerHTML = this.participant + " (loading scores...)"
