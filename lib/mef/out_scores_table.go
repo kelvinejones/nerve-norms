@@ -27,6 +27,7 @@ func NewOutScoresTable(norm NormTable, mm *mem.Mem) OutScoresTable {
 		Overall: 1,
 	}
 
+	numScored := 0
 	for rowN := 0; rowN < numEl; rowN++ {
 		diff := norm.numSD(rowN, lt.YColumnAt(rowN))
 		if diff > 0 {
@@ -35,9 +36,10 @@ func NewOutScoresTable(norm NormTable, mm *mem.Mem) OutScoresTable {
 		ost.Scores[rowN] = 2 * dist.CDF(diff)
 		if lt.IncludeOutlierScore(rowN) {
 			ost.Overall *= ost.Scores[rowN]
+			numScored++
 		}
 	}
-	ost.Overall = math.Pow(ost.Overall, 1.0/float64(numEl))
+	ost.Overall = math.Pow(ost.Overall, 1.0/float64(numScored))
 
 	return ost
 }
