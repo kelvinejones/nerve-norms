@@ -20,6 +20,7 @@ type ExcitabilityVariables struct {
 	lt LabTab // Must call LoadFromMem for this to be set up
 }
 
+var skipIndices = []int{9, 17, 18, 19} // temperature, sex, age, latency
 var expectedIndices = []int{1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 1001, 1002, 1003}
 var ExVarIndices = Column{}
 
@@ -77,6 +78,20 @@ func (evs *ExcitabilityVariablesSection) LoadFromMem(mem *rawMem) error {
 	}
 
 	return nil
+}
+
+func (evs *ExcitabilityVariablesSection) LabelledTable(unused string) LabelledTable {
+	return evs
+}
+
+func (evs *ExcitabilityVariablesSection) IncludeOutlierScore(idx int) bool {
+	xval := evs.XColumnAt(idx)
+	for _, val := range skipIndices {
+		if val == int(xval) {
+			return false
+		}
+	}
+	return true
 }
 
 // MarshalJSON marshals the excitability variables, but not the settings.

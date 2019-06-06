@@ -33,7 +33,9 @@ func NewOutScoresTable(norm NormTable, mm *mem.Mem) OutScoresTable {
 			diff *= -1
 		}
 		ost.Scores[rowN] = 2 * dist.CDF(diff)
-		ost.Overall *= ost.Scores[rowN]
+		if lt.IncludeOutlierScore(rowN) {
+			ost.Overall *= ost.Scores[rowN]
+		}
 	}
 	ost.Overall = math.Pow(ost.Overall, 1.0/float64(numEl))
 

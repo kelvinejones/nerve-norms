@@ -14,6 +14,7 @@ type LabelledTable interface {
 	HasImputed() bool
 	WasImputedAt(int) bool
 	Len() int
+	IncludeOutlierScore(int) bool
 }
 
 type LabelledTableFromMem func(*Mem) LabelledTable
@@ -71,6 +72,10 @@ func (lt LabTab) WasImputedAt(idx int) bool {
 
 func (lt LabTab) Len() int {
 	return len(lt.ycol)
+}
+
+func (lt LabTab) IncludeOutlierScore(idx int) bool {
+	return true
 }
 
 // jsonTable is used to restructure LabTab data for json.
