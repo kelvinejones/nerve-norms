@@ -75,7 +75,8 @@ func (lt LabTab) Len() int {
 }
 
 func (lt LabTab) IncludeOutlierScore(idx int) bool {
-	return true
+	// Don't include ones that were imputed
+	return !lt.WasImputedAt(idx)
 }
 
 // jsonTable is used to restructure LabTab data for json.

@@ -85,6 +85,9 @@ func (evs *ExcitabilityVariablesSection) LabelledTable(unused string) LabelledTa
 }
 
 func (evs *ExcitabilityVariablesSection) IncludeOutlierScore(idx int) bool {
+	if !evs.LabTab.IncludeOutlierScore(idx) {
+		return false
+	}
 	xval := evs.XColumnAt(idx)
 	for _, val := range skipIndices {
 		if val == int(xval) {
