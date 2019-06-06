@@ -120,9 +120,9 @@
 
     </div>
     <div style="height: 10px;"> </div>
-    <div class="card-columns">
+    <div class="row">
 
-      <div id="stimulusResponse" class="card border-dark">
+      <div id="stimulusResponse" class="card border-dark col-md-6 col-lg-4">
         <div class="card-header font-weight-bold SR-header">Stimulus Response</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('stimulusResponse')"></svg></div>
         <ul class="list-group list-group-flush d-flex measures">
@@ -140,12 +140,7 @@
         </ul>
       </div>
 
-      <div id="stimulusResponseRelative" class="card border-dark">
-        <div class="card-header font-weight-bold SRel-header">Stimulus Response (Relative)</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('stimulusResponseRelative')"></svg></div>
-      </div>
-
-      <div id="chargeDuration" class="card border-dark">
+      <div id="chargeDuration" class="card border-dark col-md-6 col-lg-4">
         <div class="card-header font-weight-bold CD-header">Charge Duration</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('chargeDuration')"></svg></div>
         <ul class="list-group list-group-flush d-flex measures">
@@ -162,7 +157,34 @@
         </ul>
       </div>
 
-      <div id="thresholdElectrotonus" class="card border-dark">
+      <div id="recoveryCycle" class="card border-dark col-md-6 col-lg-4">
+        <div class="card-header font-weight-bold RC-header">Recovery Cycle</div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('recoveryCycle')"></svg></div>
+        <ul class="list-group list-group-flush d-flex measures">
+          <li class="list-group-item bg-light">
+            <button onclick="toggle('#recoveryCycle')" class="btn float-left">Show Discrete Measures</button>
+          </li>
+        </ul>
+        <ul class="list-group list-group-flush d-none measures">
+          <li class="list-group-item bg-light">
+            <button onclick="toggle('#recoveryCycle')" class="btn float-left">Hide Discrete Measures</button>
+          </li>
+          <li id="qtrac-excite-10" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">RRP (ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-13" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-14" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Subexcitability (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-29" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Refractoriness at 2.5ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-32" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Refractoriness at 2 ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-33" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability at 7 ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-34" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability at 5 ms (%)</span>: <span class="excite-value"></span></li>
+        </ul>
+      </div>
+
+      <div id="stimulusResponseRelative" class="card border-dark col-md-6 col-lg-4">
+        <div class="card-header font-weight-bold SRel-header">Stimulus Response (Relative)</div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('stimulusResponseRelative')"></svg></div>
+      </div>
+
+      <div id="thresholdElectrotonus" class="card border-dark col-md-6 col-lg-4">
         <div class="card-header font-weight-bold TE-header">Threshold Electrotonus</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('thresholdElectrotonus')"></svg></div>
         <ul class="list-group list-group-flush d-flex measures">
@@ -193,29 +215,7 @@
         </ul>
       </div>
 
-      <div id="recoveryCycle" class="card border-dark">
-        <div class="card-header font-weight-bold RC-header">Recovery Cycle</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('recoveryCycle')"></svg></div>
-        <ul class="list-group list-group-flush d-flex measures">
-          <li class="list-group-item bg-light">
-            <button onclick="toggle('#recoveryCycle')" class="btn float-left">Show Discrete Measures</button>
-          </li>
-        </ul>
-        <ul class="list-group list-group-flush d-none measures">
-          <li class="list-group-item bg-light">
-            <button onclick="toggle('#recoveryCycle')" class="btn float-left">Hide Discrete Measures</button>
-          </li>
-          <li id="qtrac-excite-10" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">RRP (ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-13" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-14" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Subexcitability (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-29" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Refractoriness at 2.5ms (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-32" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Refractoriness at 2 ms (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-33" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability at 7 ms (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-34" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability at 5 ms (%)</span>: <span class="excite-value"></span></li>
-        </ul>
-      </div>
-
-      <div id="thresholdIV" class="card border-dark">
+      <div id="thresholdIV" class="card border-dark col-md-6 col-lg-4">
         <div class="card-header font-weight-bold IV-header">Threshold I/V</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('thresholdIV')"></svg></div>
         <ul class="list-group list-group-flush d-flex measures">
