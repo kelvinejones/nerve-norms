@@ -58,7 +58,8 @@ func newExVar() *ExcitabilityVariablesSection {
 func (evs *ExcitabilityVariablesSection) LoadFromMem(mem *rawMem) error {
 	imputedAtLeastOne := mem.ExcitabilityVariables.imputeZero()
 
-	for key, val := range mem.ExcitabilityVariables.Values {
+	for _, key := range expectedIndices {
+		val := mem.ExcitabilityVariables.Values[key]
 		evs.xcol = append(evs.xcol, float64(key))
 		evs.ycol = append(evs.ycol, val)
 		wasImp := 0.0
