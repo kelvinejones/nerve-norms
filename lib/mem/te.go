@@ -81,7 +81,7 @@ func teTypeForCurrent(current Column) string {
 	case max == 0 && min < -94 && min > -108:
 		return "d100"
 	default:
-		fmt.Printf("TE contained unexpected current [%f, %f]\n", min, max)
+		fmt.Printf("TE contained unexpected current [%f, %f] in %v\n", min, max, current)
 		return ""
 	}
 }
