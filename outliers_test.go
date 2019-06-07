@@ -8,8 +8,22 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestOutliersHandler(t *testing.T) {
+func TestOutliersHandlerNoParticipant(t *testing.T) {
 	req, err := http.NewRequest("GET", "", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	http.HandlerFunc(OutlierScoreHandler).ServeHTTP(rr, req)
+
+	status := rr.Code
+	assert.Equal(t, http.StatusInternalServerError, status)
+}
+
+func TestOutliersHandler(t *testing.T) {
+	req, err := http.NewRequest("GET", "?name=CA-CR21S", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
