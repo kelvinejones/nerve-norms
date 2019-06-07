@@ -1,7 +1,6 @@
 package mem
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"regexp"
@@ -17,7 +16,6 @@ type ExcitabilityVariables struct {
 	Values     map[int]float64
 	WasImputed map[int]bool
 	ExcitabilitySettings
-	lt LabTab // Must call LoadFromMem for this to be set up
 }
 
 var skipIndices = []int{9, 17, 18, 19} // temperature, sex, age, latency
@@ -95,16 +93,6 @@ func (evs *ExcitabilityVariablesSection) IncludeOutlierScore(idx int) bool {
 		}
 	}
 	return true
-}
-
-// MarshalJSON marshals the excitability variables, but not the settings.
-func (exciteVar *ExcitabilityVariables) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&exciteVar.lt)
-}
-
-// UnmarshalJSON unmarshals the excitability variables, but not the settings.
-func (exciteVar *ExcitabilityVariables) UnmarshalJSON(value []byte) error {
-	return json.Unmarshal(value, &exciteVar.lt)
 }
 
 func (exciteVar *ExcitabilityVariables) Parse(reader *Reader) error {
