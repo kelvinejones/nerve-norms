@@ -37,10 +37,11 @@ func (mem *rawMem) AsMem() (*Mem, error) {
 	trueMem.Sections["TE"] = newTE()
 	trueMem.Sections["IV"] = newIV()
 	trueMem.Sections["ExVars"] = newExVar()
-	for _, sec := range trueMem.Sections {
+	for name, sec := range trueMem.Sections {
 		if err := sec.LoadFromMem(mem); err != nil {
 			if _, ok := err.(MissingSection); ok {
-				continue // It's okay if a section is missing
+				// It's okay if a section is missing, but it should be removed
+				delete(trueMem.Sections, name)
 			} else {
 				return nil, err
 			}
