@@ -59,15 +59,27 @@ func (norm *Norm) OutlierScores(mm *mem.Mem) OutScores {
 		TEOutScores:     NewTEOutScores(norm.TENorm, mm),
 	}
 
-	os.Overall = math.Pow(1*
-		os.CDOutScores.Overall*
-		os.RCOutScores.Overall*
-		os.SROutScores.Overall*
-		os.SRelOutScores.Overall*
-		os.IVOutScores.Overall*
-		os.TEOutScores.Overall*
+	os.Overall = nonZeroOverall([]float64{
+		os.CDOutScores.Overall,
+		os.RCOutScores.Overall,
+		os.SROutScores.Overall,
+		os.SRelOutScores.Overall,
+		os.IVOutScores.Overall,
+		os.TEOutScores.Overall,
 		os.ExVarsOutScores.Overall,
-		1.0/7.0)
+	})
 
 	return os
+}
+
+func nonZeroOverall(scores []float64) float64 {
+	num := 0
+	overall := 1.0
+	for _, val := range scores {
+		if val != 0 {
+			num++
+			overall *= val
+		}
+	}
+	return math.Pow(overall, 1.0/float64(num))
 }
