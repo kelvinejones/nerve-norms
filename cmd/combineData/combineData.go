@@ -10,7 +10,7 @@ import (
 )
 
 var caPath = flag.String("caPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/CA/FESmedianAPB.MEF", "path to the CA MEF")
-var jpPath = flag.String("jpPath", "", "path to the JP MEF")
+var jpPath = flag.String("jpPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/JP/JP.MEF", "path to the JP MEF")
 var poPath = flag.String("poPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/PO/Portugal.MEF", "path to the PO MEF")
 var legPath = flag.String("legPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/CA/FEScommonperonealTA.MEF", "path to the leg MEF")
 var ratPath = flag.String("ratPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/rat/all.MEF", "path to the rat MEF")
