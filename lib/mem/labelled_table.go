@@ -11,7 +11,6 @@ type LabelledTable interface {
 	YName() string
 	XColumnAt(int) float64
 	YColumnAt(int) float64
-	HasImputed() bool
 	WasImputedAt(int) bool
 	Len() int
 	IncludeOutlierScore(int) bool
@@ -60,10 +59,6 @@ func (lt LabTab) XColumnAt(idx int) float64 {
 
 func (lt LabTab) YColumnAt(idx int) float64 {
 	return lt.ycol[idx]
-}
-
-func (lt LabTab) HasImputed() bool {
-	return lt.wasimp != nil
 }
 
 func (lt LabTab) WasImputedAt(idx int) bool {
