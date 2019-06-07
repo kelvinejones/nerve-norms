@@ -74,6 +74,16 @@ func (lt LabTab) IncludeOutlierScore(idx int) bool {
 	return !lt.WasImputedAt(idx)
 }
 
+type emptyLT struct{}
+
+func (lt emptyLT) XName() string                    { return "" }
+func (lt emptyLT) YName() string                    { return "" }
+func (lt emptyLT) XColumnAt(idx int) float64        { return 0 }
+func (lt emptyLT) YColumnAt(idx int) float64        { return 0 }
+func (lt emptyLT) WasImputedAt(idx int) bool        { return true }
+func (lt emptyLT) Len() int                         { return 0 }
+func (lt emptyLT) IncludeOutlierScore(idx int) bool { return false }
+
 // jsonTable is used to restructure LabTab data for json.
 type jsonTable struct {
 	Columns []string `json:"columns"`

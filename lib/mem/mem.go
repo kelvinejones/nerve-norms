@@ -21,7 +21,11 @@ type Mem struct {
 }
 
 func (mem *Mem) LabelledTable(name, subsec string) LabelledTable {
-	return mem.Sections[name].LabelledTable(subsec)
+	sec, ok := mem.Sections[name]
+	if !ok {
+		return &emptyLT{}
+	}
+	return sec.LabelledTable(subsec)
 }
 
 func (mem *rawMem) AsMem() (*Mem, error) {
