@@ -35,7 +35,7 @@ func newTE() *ThresholdElectrotonus {
 func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 	sec, err := mem.sectionContainingHeader("THRESHOLD ELECTROTONUS")
 	if err != nil {
-		return errors.New("Could not get threshold electrotonus: " + err.Error())
+		return MissingSection(errors.New("Could not get threshold electrotonus: " + err.Error()))
 	}
 
 	for i := range sec.Tables {
@@ -47,7 +47,11 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 		lt := teLabTabForType(teType, i)
 		err = lt.LoadFromMem(mem)
 		if err != nil {
-			return errors.New("Could not load threshold electrotonus: " + err.Error())
+			if _, ok := err.(MissingSection); ok {
+				continue // this is okay, but don't add it
+			} else {
+				return errors.New("Could not load threshold electrotonus: " + err.Error())
+			}
 		}
 		(*te)[teType] = lt
 	}

@@ -128,6 +128,8 @@ func (lt *LabTab) UnmarshalJSON(value []byte) error {
 	return nil
 }
 
+type MissingSection error
+
 func (lt *LabTab) LoadFromMem(mem *rawMem) error {
 	sec, err := mem.sectionContainingHeader(lt.section)
 	if err != nil && lt.altSection != "" {
@@ -135,7 +137,7 @@ func (lt *LabTab) LoadFromMem(mem *rawMem) error {
 		sec, err = mem.sectionContainingHeader(lt.altSection)
 	}
 	if err != nil {
-		return errors.New("Could not get LT section " + lt.section + ": " + err.Error())
+		return MissingSection(errors.New("Could not get LT section " + lt.section + ": " + err.Error()))
 	}
 
 	xcol, err := sec.columnContainsName(lt.xname, lt.tableNum)

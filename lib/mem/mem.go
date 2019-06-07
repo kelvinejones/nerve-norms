@@ -39,7 +39,11 @@ func (mem *rawMem) AsMem() (*Mem, error) {
 	trueMem.Sections["ExVars"] = newExVar()
 	for _, sec := range trueMem.Sections {
 		if err := sec.LoadFromMem(mem); err != nil {
-			return nil, err
+			if _, ok := err.(MissingSection); ok {
+				continue // It's okay if a section is missing
+			} else {
+				return nil, err
+			}
 		}
 	}
 	return trueMem, nil
