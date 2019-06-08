@@ -61,55 +61,43 @@
       <div>Developed by <a href="https://bellstone.ca">Bellstone Engineering</a></div>
     </div>
     <div class="row">
-      <div class="col-lg-4"><div class="card border-dark">
+      <div class="col-lg-8 col-md-8"><div class="card border-dark">
         <div class="card-header bg-secondary font-weight-bold">Filter</div>
-        <form class="card-body row">
-          <div>
-            <label>Sex:</label>
+        <form class="card-body"><ul class="list-group list-group-flush d-flex measures">
+          <li class="list-group-item">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active"> <input type="radio" name="sex-options" id="sex-option1" autocomplete="off" value="" checked> Any </label>
+              <label class="btn btn-secondary active"> <input type="radio" name="sex-options" id="sex-option1" autocomplete="off" value="" checked> Either Sex </label>
               <label class="btn btn-secondary"> <input type="radio" name="sex-options" id="sex-option2" autocomplete="off" value="male"> Male </label>
               <label class="btn btn-secondary"> <input type="radio" name="sex-options" id="sex-option3" autocomplete="off" value="female"> Female </label>
             </div>
-          </div>
-          &nbsp; &nbsp;
-          <div>
-            <label>Country:</label>
+          </li>
+          <li class="list-group-item">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active"> <input type="radio" name="country-options" id="country-option1" autocomplete="off" value="" checked> Any </label>
+              <label class="btn btn-secondary active"> <input type="radio" name="country-options" id="country-option1" autocomplete="off" value="" checked> All Countries </label>
               <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option2" autocomplete="off" value="CA"> Canada </label>
               <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option2" autocomplete="off" value="JP"> Japan </label>
               <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option3" autocomplete="off" value="PO"> Portugal </label>
             </div>
-          </div>
-          &nbsp; &nbsp;
-          <div>
-            <label>Age:</label>
+          </li>
+          <li class="list-group-item">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active"> <input type="radio" name="age-options" id="age-option1" autocomplete="off" value="any" checked> Any </label>
+              <label class="btn btn-secondary active"> <input type="radio" name="age-options" id="age-option1" autocomplete="off" value="any" checked> Any Age </label>
               <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option2" autocomplete="off" value="-30"> &lt;30 </label>
               <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option3" autocomplete="off" value="31-40"> 31&ndash;40 </label>
               <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option4" autocomplete="off" value="41-50"> 41&ndash;50 </label>
               <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option5" autocomplete="off" value="51-60"> 51&ndash;60 </label>
               <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option6" autocomplete="off" value="61-"> 60+ </label>
             </div>
-          </div>
-          &nbsp; &nbsp;
-          <div>
-            <button id="apply-filter" type="submit" class="btn btn-secondary active">Apply</button>
-          </div>
-        </form>
+          </li>
+          <li class="list-group-item">
+            <button id="apply-filter" type="submit" class="btn btn-secondary active">Apply Filter</button>
+            <select id="select-participant-dropdown" class="btn btn-secondary float-right"></select>
+          </li>
+        </ul></form>
       </div></div>
 
-      <div class="col-md-6 col-lg-4"><div class="card border-dark">
+      <div class="col-lg-4 col-md-4"><div id="participantInfo" class="card border-dark">
         <div class="card-header font-weight-bold participant-header">Participant: <span id="participant-name">None</span></div>
-        <div class="card-body">
-          <select id="select-participant-dropdown" class="btn btn-secondary float-left"></select>
-        </div>
-      </div></div>
-
-      <div class="col-md-6 col-lg-4"><div id="participantInfo" class="card border-dark">
-        <div class="card-header font-weight-bold ExVars-header">Participant Info</div>
         <ul class="list-group list-group-flush d-flex measures">
           <li id="overall-score" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Overall Nerve Health</span>: <span class="excite-value"></span></li>
           <li id="qtrac-excite-9" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Temperature (&deg;C)</span>: <span class="excite-value"></span></li>
