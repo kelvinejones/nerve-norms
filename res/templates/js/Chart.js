@@ -14,10 +14,10 @@ class Chart {
 		// Set default config values
 		this.xIndex = 0
 		this.yIndex = 1
-		this.yMeanName = 0 // Defaults to this.yIndex if undefined by subclass.
-		this.ySDName = 1
-		this.xMeanName = 3
-		this.xSDName = undefined // If undefined, then there is no standard deviation in the x direction.
+		this.yMeanIndex = 0 // Defaults to this.yIndex if undefined by subclass.
+		this.ySDIndex = 1
+		this.xMeanIndex = 3
+		this.xSDIndex = undefined // If undefined, then there is no standard deviation in the x direction.
 		this.wasImputedIndex = 2
 
 		this.yAnimStart = this.animationStartValue(this.yRange)
@@ -133,10 +133,10 @@ class Chart {
 
 	// sdAtLoc calculates limits based on the standard deviations
 	sdAtLoc(dpt, loc, useSD) {
-		const xmn = (useSD && this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
-		const ymn = (useSD && this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
-		const xsd = useSD ? this.xSDName : undefined
-		const ysd = useSD ? this.ySDName : undefined
+		const xmn = (useSD && this.xMeanIndex !== undefined) ? this.xMeanIndex : this.xIndex
+		const ymn = (useSD && this.yMeanIndex !== undefined) ? this.yMeanIndex : this.yIndex
+		const xsd = useSD ? this.xSDIndex : undefined
+		const ysd = useSD ? this.ySDIndex : undefined
 		const numSD = this.numSD
 		const sdFunc = useSD ? this.sdFunc : Chart.noSD
 
@@ -187,8 +187,8 @@ class Chart {
 	}
 
 	meanLine(data, useSD) {
-		const xmn = (useSD && this.xMeanName !== undefined) ? this.xMeanName : this.xIndex
-		const ymn = (useSD && this.yMeanName !== undefined) ? this.yMeanName : this.yIndex
+		const xmn = (useSD && this.xMeanIndex !== undefined) ? this.xMeanIndex : this.xIndex
+		const ymn = (useSD && this.yMeanIndex !== undefined) ? this.yMeanIndex : this.yIndex
 		return this.dataAsXY(data, xmn, ymn)
 	}
 

@@ -4,7 +4,7 @@ class StimulusResponse extends Chart {
 		this.participant = this.calculateParticipant(participant)
 		this.norms = (norms === undefined) ? undefined : norms.SR.data
 		this.sdFunc = Chart.logSD
-		this.xSDName = 4
+		this.xSDIndex = 4
 	}
 
 	calculateParticipant(participant) {

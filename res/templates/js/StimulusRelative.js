@@ -3,10 +3,10 @@ class StimulusRelative extends Chart {
 		super([0, 200], [0, 100])
 		this.participant = this.calculateParticipant(participant.sections.SR.data.data)
 		this.norms = (norms === undefined) ? undefined : norms.SRel.data
-		this.ySDName = undefined
-		this.yMeanName = 3
-		this.xSDName = 1
-		this.xMeanName = 0
+		this.ySDIndex = undefined
+		this.yMeanIndex = 3
+		this.xSDIndex = 1
+		this.xMeanIndex = 0
 	}
 
 	calculateParticipant(data) {
