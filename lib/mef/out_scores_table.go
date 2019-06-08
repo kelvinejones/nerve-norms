@@ -18,20 +18,20 @@ type OutScoresTable struct {
 
 var dist = stats.NormalDist{Mu: 0.0, Sigma: 1.0}
 
-func NewOutScoresTable(norm NormTable, mm *mem.Mem) OutScoresTable {
+func NewOutScoresTable(norm *NormTable, mm *mem.Mem) *OutScoresTable {
 	if norm.Values == nil {
 		// If this norm doesn't have this value, then we can't construct norms for it.
-		return OutScoresTable{}
+		return nil
 	}
 
 	lt := mm.LabelledTable(norm.sec, norm.subsec)
 	numEl := lt.Len()
 	if numEl == 0 {
 		// If this MEM doesn't have this value, then we can't construct norms for it.
-		return OutScoresTable{}
+		return nil
 	}
 
-	ost := OutScoresTable{
+	ost := &OutScoresTable{
 		Values:  norm.Values,
 		Scores:  make(mem.Column, numEl),
 		Overall: 1,
@@ -117,18 +117,18 @@ func (ost *OutScoresTable) UnmarshalJSON(value []byte) error {
 }
 
 type DoubleOutScoresTable struct {
-	YOutScores OutScoresTable
-	XOutScores OutScoresTable
+	YOutScores *OutScoresTable
+	XOutScores *OutScoresTable
 	Overall    float64
 }
 
-func NewDoubleOutScoresTable(norm1, norm2 NormTable, mm *mem.Mem) DoubleOutScoresTable {
-	dost := DoubleOutScoresTable{
+func NewDoubleOutScoresTable(norm1, norm2 *NormTable, mm *mem.Mem) *DoubleOutScoresTable {
+	dost := &DoubleOutScoresTable{
 		XOutScores: NewOutScoresTable(norm1, mm),
 		YOutScores: NewOutScoresTable(norm2, mm),
 	}
-	if dost.XOutScores.Values == nil || dost.YOutScores.Values == nil {
-		return DoubleOutScoresTable{}
+	if dost.XOutScores == nil || dost.YOutScores == nil {
+		return nil
 	}
 	dost.Overall = math.Sqrt(dost.XOutScores.Overall * dost.YOutScores.Overall)
 	return dost
@@ -165,22 +165,22 @@ func (ost *DoubleOutScoresTable) UnmarshalJSON(value []byte) error {
 }
 
 type TEOutScores struct {
-	OutScores map[string]OutScoresTable
+	OutScores map[string]*OutScoresTable
 	Overall   float64
 }
 
-func NewTEOutScores(norm map[string]NormTable, mm *mem.Mem) TEOutScores {
-	teos := TEOutScores{
-		OutScores: map[string]OutScoresTable{},
+func NewTEOutScores(norm map[string]*NormTable, mm *mem.Mem) *TEOutScores {
+	teos := &TEOutScores{
+		OutScores: map[string]*OutScoresTable{},
 		Overall:   1,
 	}
 	overall := []float64{}
 	for _, name := range []string{"h40", "h20", "d40", "d20"} {
 		ost := NewOutScoresTable(norm[name], mm)
-		if ost.Values != nil {
+		if ost != nil {
 			teos.OutScores[name] = ost
+			overall = append(overall, ost.Overall)
 		}
-		overall = append(overall, ost.Overall)
 	}
 	teos.Overall = nonZeroOverall(overall)
 	return teos

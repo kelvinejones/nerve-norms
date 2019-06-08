@@ -24,8 +24,8 @@ type NormTable struct {
 	sec, subsec string
 }
 
-func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) NormTable {
-	norm := NormTable{
+func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) *NormTable {
+	norm := &NormTable{
 		Values:   xv,
 		MeanType: mt,
 		sec:      sec,
@@ -43,7 +43,7 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) Norm
 	}
 	if numEl == 0 {
 		// If none of the MEM have this value, then we can't construct norms for it.
-		return NormTable{}
+		return nil
 	}
 
 	// Sum the values
@@ -149,8 +149,8 @@ func (norm *NormTable) UnmarshalJSON(value []byte) error {
 }
 
 type DoubleNormTable struct {
-	YNorm NormTable
-	XNorm NormTable
+	YNorm *NormTable
+	XNorm *NormTable
 }
 
 func (norm DoubleNormTable) MarshalJSON() ([]byte, error) {
