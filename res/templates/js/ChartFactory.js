@@ -6,7 +6,6 @@ class ChartFactory {
 			this.participant = name
 
 			ExVars.clearScores()
-			document.getElementById("participant-name").innerHTML = name + " (loading scores...)"
 
 			Object.values(this.plots).forEach(pl => {
 				pl.updateParticipant(currentParticipant)
@@ -15,8 +14,6 @@ class ChartFactory {
 			this.updateOutliers(this.participant)
 		}, ["CA-CR21S", "CA-WI20S", "JP-10-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "Rat on Drugs"])
 		this.participant = this.partDropDown.selection
-
-		document.getElementById("participant-name").innerHTML = this.participant + " (loading scores...)"
 
 		const queryString = Filter.asQueryString()
 		this.updateNorms(queryString)
