@@ -22,7 +22,7 @@ func (val *Column) ImputeWithValue(oldLabel, newLabel Column, eps float64, logX 
 		oldDecr := oldLabel[0] > oldLabel[1]
 		newDecr := newLabel[0] > newLabel[1]
 		if (newDecr && !oldDecr) || (!newDecr && oldDecr) {
-			newLabel.reverse()
+			oldLabel.reverse()
 			val.reverse()
 		}
 	}
