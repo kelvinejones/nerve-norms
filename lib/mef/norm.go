@@ -7,13 +7,13 @@ import (
 )
 
 type Norm struct {
-	CDNorm     *NormTable            `json:"CD"`
-	RCNorm     *NormTable            `json:"RC"`
-	SRNorm     *DoubleNormTable      `json:"SR"`
-	SRelNorm   *NormTable            `json:"SRel"`
-	IVNorm     *NormTable            `json:"IV"`
-	TENorm     map[string]*NormTable `json:"TE"`
-	ExVarsNorm *NormTable            `json:"ExVars"`
+	CDNorm     NormTable            `json:"CD"`
+	RCNorm     NormTable            `json:"RC"`
+	SRNorm     DoubleNormTable      `json:"SR"`
+	SRelNorm   NormTable            `json:"SRel"`
+	IVNorm     NormTable            `json:"IV"`
+	TENorm     map[string]NormTable `json:"TE"`
+	ExVarsNorm NormTable            `json:"ExVars"`
 }
 
 func (mef *Mef) Norm() Norm {
@@ -22,17 +22,17 @@ func (mef *Mef) Norm() Norm {
 		IVNorm:     NewNormTable(mem.IVCurrent, mef, "IV", "", ArithmeticMean),
 		RCNorm:     NewNormTable(mem.RCInterval, mef, "RC", "", ArithmeticMean),
 		ExVarsNorm: NewNormTable(mem.ExVarIndices, mef, "ExVars", "", ArithmeticMean),
-		SRNorm: &DoubleNormTable{
+		SRNorm: DoubleNormTable{
 			XNorm: NewNormTable(nil, mef, "SR", "calculatedX", GeometricMean),
 			YNorm: NewNormTable(nil, mef, "SR", "calculatedY", GeometricMean),
 		},
 		SRelNorm: NewNormTable(mem.SRPercentMax, mef, "SR", "relative", ArithmeticMean),
-		TENorm:   map[string]*NormTable{},
+		TENorm:   map[string]NormTable{},
 	}
 
 	for _, name := range []string{"h40", "h20", "d40", "d20"} {
 		nt := NewNormTable(mem.TEDelay(name), mef, "TE", name, ArithmeticMean)
-		if nt != nil {
+		if nt.Values != nil {
 			// We only add this TE type of it's not zero
 			norm.TENorm[name] = nt
 		}
@@ -42,14 +42,14 @@ func (mef *Mef) Norm() Norm {
 }
 
 type OutScores struct {
-	CDOutScores     *OutScoresTable       `json:"CD"`
-	RCOutScores     *OutScoresTable       `json:"RC"`
-	SROutScores     *DoubleOutScoresTable `json:"SR"`
-	SRelOutScores   *OutScoresTable       `json:"SRel"`
-	IVOutScores     *OutScoresTable       `json:"IV"`
-	TEOutScores     *TEOutScores          `json:"TE"`
-	ExVarsOutScores *OutScoresTable       `json:"ExVars"`
-	Overall         float64               `json:"Overall"`
+	CDOutScores     OutScoresTable       `json:"CD"`
+	RCOutScores     OutScoresTable       `json:"RC"`
+	SROutScores     DoubleOutScoresTable `json:"SR"`
+	SRelOutScores   OutScoresTable       `json:"SRel"`
+	IVOutScores     OutScoresTable       `json:"IV"`
+	TEOutScores     TEOutScores          `json:"TE"`
+	ExVarsOutScores OutScoresTable       `json:"ExVars"`
+	Overall         float64              `json:"Overall"`
 }
 
 func (norm *Norm) OutlierScores(mm *mem.Mem) OutScores {
