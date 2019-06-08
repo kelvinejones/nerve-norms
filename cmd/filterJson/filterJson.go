@@ -67,13 +67,14 @@ func main() {
 	}
 
 	jsNorm := mefData.Norm()
+	jsNormArray, err := json.Marshal(&jsNorm)
+	if err != nil {
+		panic("Could not create norm JSON due to error: " + err.Error())
+	}
+
 	if *norm == "" {
-		fmt.Println(jsNorm)
+		fmt.Println(string(jsNormArray))
 	} else {
-		jsNormArray, err := json.Marshal(&jsNorm)
-		if err != nil {
-			panic("Could not create norm JSON due to error: " + err.Error())
-		}
 		err = ioutil.WriteFile(*norm, jsNormArray, 0644)
 		if err != nil {
 			panic("Could not save norm JSON due to error: " + err.Error())
