@@ -42,7 +42,11 @@ class StimulusResponse extends Chart {
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.SR.data
+		if (norms.SR === undefined) {
+			this.norms = undefined
+		} else {
+			this.norms = norms.SR.data
+		}
 		this.animateNorms(this.norms, "sr")
 	}
 

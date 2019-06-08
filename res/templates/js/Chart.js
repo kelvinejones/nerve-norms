@@ -330,8 +330,13 @@ class Chart {
 	}
 
 	animateNorms(lineData, name, useSD = true) {
-		this.animatePath(this.normativeLimits(lineData, useSD), name, "confidenceinterval")
-		this.animatePath(this.meanLine(lineData, useSD), name, "meanline")
+		if (lineData === undefined || lineData.length == 0 || lineData.length == undefined) {
+			this.animatePathToZero(name, "confidenceinterval")
+			this.animatePathToZero(name, "meanline")
+		} else {
+			this.animatePath(this.normativeLimits(lineData, useSD), name, "confidenceinterval")
+			this.animatePath(this.meanLine(lineData, useSD), name, "meanline")
+		}
 	}
 
 	animateXYLine(lineData, name) {

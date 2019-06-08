@@ -19,7 +19,11 @@ class RecoveryCycle extends Chart {
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.RC.data
+		if (norms.RC === undefined) {
+			this.norms = undefined
+		} else {
+			this.norms = norms.RC.data
+		}
 		this.animateNorms(this.norms, "rc")
 	}
 

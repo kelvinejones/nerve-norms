@@ -33,7 +33,11 @@ class StimulusRelative extends Chart {
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.SRel.data
+		if (norms.SRel === undefined) {
+			this.norms = undefined
+		} else {
+			this.norms = norms.SRel.data
+		}
 		this.animateNorms(this.norms, "srel")
 	}
 

@@ -43,8 +43,14 @@ class ThresholdElectrotonus extends Chart {
 	}
 
 	animateUpdatedNorms(norms, useSD = true) {
-		Object.keys(norms).forEach(key => {
-			this.animateNorms(norms[key].data, key, useSD)
+		Object.keys(norms).forEach(key => {})
+
+		this.expectedKeys.forEach(key => {
+			if (this.norms === undefined || this.norms[key] === undefined || this.norms[key].data === undefined) {
+				this.animateNorms(undefined, key, useSD)
+			} else {
+				this.animateNorms(norms[key].data, key, useSD)
+			}
 		})
 	}
 }

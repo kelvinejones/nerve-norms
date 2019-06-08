@@ -19,7 +19,11 @@ class ChargeDuration extends Chart {
 	}
 
 	updateNorms(norms) {
-		this.norms = norms.CD.data
+		if (norms.CD === undefined) {
+			this.norms = undefined
+		} else {
+			this.norms = norms.CD.data
+		}
 		this.animateNorms(this.norms, "cd")
 	}
 
