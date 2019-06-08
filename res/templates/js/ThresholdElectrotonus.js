@@ -3,6 +3,7 @@ class ThresholdElectrotonus extends Chart {
 		super([0, 200], [-150, 100])
 		this.participant = participant.sections.TE
 		this.norms = (norms === undefined) ? undefined : norms.TE
+		this.expectedKeys = Object.keys(this.participant) // set the initial keys
 	}
 
 	get name() { return "Threshold Electrotonus" }
@@ -32,8 +33,12 @@ class ThresholdElectrotonus extends Chart {
 	}
 
 	animateParticipant() {
-		Object.keys(this.participant).forEach(key => {
-			this.animateXYLine(this.participant[key].data, key)
+		this.expectedKeys.forEach(key => {
+			if (this.participant === undefined || this.participant[key] === undefined || this.participant[key].data === undefined) {
+				this.animateXYLine(undefined, key)
+			} else {
+				this.animateXYLine(this.participant[key].data, key)
+			}
 		})
 	}
 

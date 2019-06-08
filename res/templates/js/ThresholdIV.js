@@ -16,7 +16,11 @@ class ThresholdIV extends Chart {
 	get yLabel() { return "Current (% Threshold)" }
 
 	updateParticipant(participant) {
-		this.participant = participant.sections.IV.data
+		if (participant.sections.IV === undefined) {
+			this.participant = undefined
+		} else {
+			this.participant = participant.sections.IV.data
+		}
 		this.animateXYLine(this.participant, "tiv")
 	}
 

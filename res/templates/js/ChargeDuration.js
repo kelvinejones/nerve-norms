@@ -10,7 +10,11 @@ class ChargeDuration extends Chart {
 	get yLabel() { return "Threshold Change (mA•ms)" }
 
 	updateParticipant(participant) {
-		this.participant = participant.sections.CD.data
+		if (participant.sections.CD === undefined) {
+			this.participant = undefined
+		} else {
+			this.participant = participant.sections.CD.data
+		}
 		this.animateXYLine(this.participant, "cd")
 	}
 

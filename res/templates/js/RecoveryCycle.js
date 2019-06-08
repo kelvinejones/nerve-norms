@@ -10,7 +10,11 @@ class RecoveryCycle extends Chart {
 	get yLabel() { return "Interstimulus Interval (ms)" }
 
 	updateParticipant(participant) {
-		this.participant = participant.sections.RC.data
+		if (participant.sections.RC === undefined) {
+			this.participant = undefined
+		} else {
+			this.participant = participant.sections.RC.data
+		}
 		this.animateXYLine(this.participant, "rc")
 	}
 
