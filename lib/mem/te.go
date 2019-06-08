@@ -60,7 +60,11 @@ func (te *ThresholdElectrotonus) LoadFromMem(mem *rawMem) error {
 }
 
 func (te *ThresholdElectrotonus) LabelledTable(subsec string) LabelledTable {
-	return (*te)[subsec]
+	lt, ok := (*te)[subsec]
+	if !ok {
+		return &emptyLT{}
+	}
+	return lt
 }
 
 func teTypeForCurrent(current Column) string {
