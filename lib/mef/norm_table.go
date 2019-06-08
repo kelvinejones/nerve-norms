@@ -33,11 +33,17 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) Norm
 	}
 	numEl := 0
 	for _, mm := range *mef {
-		lt := mm.LabelledTable(norm.sec, norm.subsec)
-		numEl = lt.Len()
-		norm.Mean = make(mem.Column, numEl)
-		norm.SD = make(mem.Column, numEl)
-		norm.Num = make(mem.Column, numEl)
+		numEl = mm.LabelledTable(norm.sec, norm.subsec).Len()
+		if numEl != 0 {
+			norm.Mean = make(mem.Column, numEl)
+			norm.SD = make(mem.Column, numEl)
+			norm.Num = make(mem.Column, numEl)
+			break // We really only need to do this once
+		}
+	}
+	if numEl == 0 {
+		// If none of the MEM have this value, then we can't construct norms for it.
+		return NormTable{}
 	}
 
 	// Sum the values

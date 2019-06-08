@@ -31,7 +31,11 @@ func (mef *Mef) Norm() Norm {
 	}
 
 	for _, name := range []string{"h40", "h20", "d40", "d20"} {
-		norm.TENorm[name] = NewNormTable(mem.TEDelay(name), mef, "TE", name, ArithmeticMean)
+		nt := NewNormTable(mem.TEDelay(name), mef, "TE", name, ArithmeticMean)
+		if nt.Values != nil {
+			// We only add this TE type of it's not zero
+			norm.TENorm[name] = nt
+		}
 	}
 
 	return norm
