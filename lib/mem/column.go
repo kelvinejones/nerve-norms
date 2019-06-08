@@ -17,6 +17,16 @@ func (val *Column) ImputeWithValue(oldLabel, newLabel Column, eps float64, logX 
 		intFunc = interpolateLog
 	}
 
+	if num >= 2 && len(newLabel) >= 2 {
+		// If new and old are in opposite directions, we need to deal with that
+		oldDecr := oldLabel[0] > oldLabel[1]
+		newDecr := newLabel[0] > newLabel[1]
+		if (newDecr && !oldDecr) || (!newDecr && oldDecr) {
+			newLabel.reverse()
+			val.reverse()
+		}
+	}
+
 	oldNum := len(*val)
 	oldInd := 0
 	for i, lab := range newLabel {
@@ -48,6 +58,17 @@ func (val *Column) ImputeWithValue(oldLabel, newLabel Column, eps float64, logX 
 		return wasImp
 	} else {
 		return Column(nil)
+	}
+}
+
+func (col Column) reverse() {
+	lateIdx := len(col) - 1
+	for idx := range col {
+		if lateIdx <= idx {
+			break
+		}
+		col[idx], col[lateIdx] = col[lateIdx], col[idx]
+		lateIdx--
 	}
 }
 
