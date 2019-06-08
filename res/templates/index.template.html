@@ -60,92 +60,63 @@
       <h2>Normative Curves for the Nerve Excitability Test</h2>
       <div>Developed by <a href="https://bellstone.ca">Bellstone Engineering</a></div>
     </div>
-    <div class="card-group">
-      <div class="card border-dark">
-        <div class="card-header bg-secondary font-weight-bold">Filter</div>
-        <form class="card-body row">
-          <div>
-            <label>Sex:</label>
+    <div class="row">
+      <div class="col-lg-8 col-md-8"><div class="card border-dark">
+        <div class="card-header bg-secondary font-weight-bold">Filter for Normative Data</div>
+        <form class="card-body"><ul class="list-group list-group-flush d-flex measures">
+          <li class="list-group-item">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active"> <input type="radio" name="sex-options" id="sex-option1" autocomplete="off" value="" checked> Any </label>
+              <label class="btn btn-secondary active"> <input type="radio" name="sex-options" id="sex-option1" autocomplete="off" value="" checked> Either Sex </label>
               <label class="btn btn-secondary"> <input type="radio" name="sex-options" id="sex-option2" autocomplete="off" value="male"> Male </label>
               <label class="btn btn-secondary"> <input type="radio" name="sex-options" id="sex-option3" autocomplete="off" value="female"> Female </label>
             </div>
-          </div>
-          &nbsp; &nbsp;
-          <div>
-            <label>Country:</label>
+          </li>
+          <li class="list-group-item">
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active"> <input type="radio" name="country-options" id="country-option1" autocomplete="off" value="" checked> Any </label>
-              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option2" autocomplete="off" value="CA"> Canada </label>
-              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option2" autocomplete="off" value="JP"> Japan </label>
-              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option3" autocomplete="off" value="PO"> Portugal </label>
-            </div>
-          </div>
-          &nbsp; &nbsp;
-          <div>
-            <label>Age:</label>
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active"> <input type="radio" name="age-options" id="age-option1" autocomplete="off" value="any" checked> Any </label>
+              <label class="btn btn-secondary active"> <input type="radio" name="age-options" id="age-option1" autocomplete="off" value="any" checked> Any Age </label>
               <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option2" autocomplete="off" value="-30"> &lt;30 </label>
               <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option3" autocomplete="off" value="31-40"> 31&ndash;40 </label>
               <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option4" autocomplete="off" value="41-50"> 41&ndash;50 </label>
               <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option5" autocomplete="off" value="51-60"> 51&ndash;60 </label>
               <label class="btn btn-secondary"> <input type="radio" name="age-options" id="age-option6" autocomplete="off" value="61-"> 60+ </label>
             </div>
-          </div>
-          &nbsp; &nbsp;
-          <div>
-            <button id="apply-filter" type="submit" class="btn btn-secondary active">Apply</button>
-          </div>
-        </form>
-      </div>
-      <div class="card border-dark">
-        <div class="card-header font-weight-bold participant-header">Participant: <span id="participant-name">None</span></div>
-        <div class="card-body">
-          <select id="select-participant-dropdown" class="btn btn-secondary float-left"></select>
-        </div>
-      </div>
+          </li>
+          <li class="list-group-item">
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary active"> <input type="radio" name="country-options" id="country-option1" autocomplete="off" value="" checked> All Countries </label>
+              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option2" autocomplete="off" value="CA"> Canada </label>
+              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option2" autocomplete="off" value="JP"> Japan </label>
+              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option3" autocomplete="off" value="PO"> Portugal </label>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <button id="apply-filter" type="submit" class="btn btn-secondary active">Apply Filter</button>
+          </li>
+        </ul></form>
+      </div></div>
 
-      <div id="participantInfo" class="card border-dark">
-        <div class="card-header font-weight-bold ExVars-header">Participant Info</div>
+      <div class="col-lg-4 col-md-4"><div id="participantInfo" class="card border-dark">
+        <div class="card-header font-weight-bold participant-header">Participant</div>
         <ul class="list-group list-group-flush d-flex measures">
-          <li id="overall-score" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Overall Nerve Health</span>: <span class="excite-value"></span></li>
+          <li class="list-group-item"><select id="select-participant-dropdown" class="btn btn-secondary"></select></li>
+          <li id="overall-score" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Overall Score</span>: <span class="excite-value"></span></li>
           <li id="qtrac-excite-9" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Temperature (&deg;C)</span>: <span class="excite-value"></span></li>
           <li id="qtrac-excite-17" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Age (years)</span>: <span class="excite-value"></span></li>
           <li id="qtrac-excite-18" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Sex</span>: <span class="excite-value"></span></li>
           <li id="qtrac-excite-19" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Latency (ms)</span>: <span class="excite-value"></span></li>
         </ul>
-      </div>
+      </div></div>
 
     </div>
     <div style="height: 10px;"> </div>
-    <div class="card-columns">
+    <div class="row">
 
-      <div id="stimulusResponse" class="card border-dark">
-        <div class="card-header font-weight-bold SR-header">Stimulus Response</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('stimulusResponse')"></svg></div>
-        <ul class="list-group list-group-flush d-flex measures">
-          <li class="list-group-item bg-light">
-            <button onclick="toggle('#stimulusResponse')" class="btn float-left">Show Discrete Measures</button>
-          </li>
-        </ul>
-        <ul class="list-group list-group-flush d-none measures">
-          <li class="list-group-item bg-light">
-            <button onclick="toggle('#stimulusResponse')" class="btn float-left">Hide Discrete Measures</button>
-          </li>
-          <li id="qtrac-excite-1" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Stimulus (mA) for 50% max response</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-6" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Peak response (mV)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-5" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Stimulus-response slope</span>: <span class="excite-value"></span></li>
-        </ul>
-      </div>
-
-      <div id="stimulusResponseRelative" class="card border-dark">
+      <div class="col-md-6 col-lg-4"><div id="stimulusResponseRelative" class="card border-dark">
         <div class="card-header font-weight-bold SRel-header">Stimulus Response (Relative)</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('stimulusResponseRelative')"></svg></div>
-      </div>
+      </div></div>
 
-      <div id="chargeDuration" class="card border-dark">
+      <div class="col-md-6 col-lg-4"><div id="chargeDuration" class="card border-dark">
         <div class="card-header font-weight-bold CD-header">Charge Duration</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('chargeDuration')"></svg></div>
         <ul class="list-group list-group-flush d-flex measures">
@@ -160,9 +131,49 @@
           <li id="qtrac-excite-3" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Strength-duration time constant (ms)</span>: <span class="excite-value"></span></li>
           <li id="qtrac-excite-4" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Rheobase (mA)</span>: <span class="excite-value"></span></li>
         </ul>
-      </div>
+      </div></div>
 
-      <div id="thresholdElectrotonus" class="card border-dark">
+      <div class="col-md-6 col-lg-4"><div id="thresholdIV" class="card border-dark">
+        <div class="card-header font-weight-bold IV-header">Threshold I/V</div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('thresholdIV')"></svg></div>
+        <ul class="list-group list-group-flush d-flex measures">
+          <li class="list-group-item bg-light">
+            <button onclick="toggle('#thresholdIV')" class="btn float-left">Show Discrete Measures</button>
+          </li>
+        </ul>
+        <ul class="list-group list-group-flush d-none measures">
+          <li class="list-group-item bg-light">
+            <button onclick="toggle('#thresholdIV')" class="btn float-left">Hide Discrete Measures</button>
+          </li>
+          <li id="qtrac-excite-7" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Resting I/V slope</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-8" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Minimum I/V slope</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-28" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Hyperpolarization I/V slope</span>: <span class="excite-value"></span></li>
+        </ul>
+      </div></div>
+
+      <div class="col-md-6 col-lg-4"><div id="recoveryCycle" class="card border-dark">
+        <div class="card-header font-weight-bold RC-header">Recovery Cycle</div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('recoveryCycle')"></svg></div>
+        <ul class="list-group list-group-flush d-flex measures">
+          <li class="list-group-item bg-light">
+            <button onclick="toggle('#recoveryCycle')" class="btn float-left">Show Discrete Measures</button>
+          </li>
+        </ul>
+        <ul class="list-group list-group-flush d-none measures">
+          <li class="list-group-item bg-light">
+            <button onclick="toggle('#recoveryCycle')" class="btn float-left">Hide Discrete Measures</button>
+          </li>
+          <li id="qtrac-excite-10" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">RRP (ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-13" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-14" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Subexcitability (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-29" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Refractoriness at 2.5ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-32" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Refractoriness at 2 ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-33" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability at 7 ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-34" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability at 5 ms (%)</span>: <span class="excite-value"></span></li>
+        </ul>
+      </div></div>
+
+      <div class="col-md-6 col-lg-4"><div id="thresholdElectrotonus" class="card border-dark">
         <div class="card-header font-weight-bold TE-header">Threshold Electrotonus</div>
         <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('thresholdElectrotonus')"></svg></div>
         <ul class="list-group list-group-flush d-flex measures">
@@ -191,47 +202,25 @@
           <li id="qtrac-excite-35" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEd20(peak)</span>: <span class="excite-value"></span></li>
           <li id="qtrac-excite-1002" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEd20(10&ndash;20ms)</span>: <span class="excite-value"></span></li>
         </ul>
-      </div>
+      </div></div>
 
-      <div id="recoveryCycle" class="card border-dark">
-        <div class="card-header font-weight-bold RC-header">Recovery Cycle</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('recoveryCycle')"></svg></div>
+      <div class="col-md-6 col-lg-4"><div id="stimulusResponse" class="card border-dark">
+        <div class="card-header font-weight-bold SR-header">Stimulus Response</div>
+        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('stimulusResponse')"></svg></div>
         <ul class="list-group list-group-flush d-flex measures">
           <li class="list-group-item bg-light">
-            <button onclick="toggle('#recoveryCycle')" class="btn float-left">Show Discrete Measures</button>
+            <button onclick="toggle('#stimulusResponse')" class="btn float-left">Show Discrete Measures</button>
           </li>
         </ul>
         <ul class="list-group list-group-flush d-none measures">
           <li class="list-group-item bg-light">
-            <button onclick="toggle('#recoveryCycle')" class="btn float-left">Hide Discrete Measures</button>
+            <button onclick="toggle('#stimulusResponse')" class="btn float-left">Hide Discrete Measures</button>
           </li>
-          <li id="qtrac-excite-10" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">RRP (ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-13" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-14" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Subexcitability (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-29" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Refractoriness at 2.5ms (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-32" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Refractoriness at 2 ms (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-33" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability at 7 ms (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-34" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability at 5 ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-1" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Stimulus (mA) for 50% max response</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-6" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Peak response (mV)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-5" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Stimulus-response slope</span>: <span class="excite-value"></span></li>
         </ul>
-      </div>
-
-      <div id="thresholdIV" class="card border-dark">
-        <div class="card-header font-weight-bold IV-header">Threshold I/V</div>
-        <div class="card-body"><svg style="background-color: white; width: 100%" viewbox="30 -30 600 300" onclick="chartFactory.drawModal('thresholdIV')"></svg></div>
-        <ul class="list-group list-group-flush d-flex measures">
-          <li class="list-group-item bg-light">
-            <button onclick="toggle('#thresholdIV')" class="btn float-left">Show Discrete Measures</button>
-          </li>
-        </ul>
-        <ul class="list-group list-group-flush d-none measures">
-          <li class="list-group-item bg-light">
-            <button onclick="toggle('#thresholdIV')" class="btn float-left">Hide Discrete Measures</button>
-          </li>
-          <li id="qtrac-excite-7" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Resting I/V slope</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-8" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Minimum I/V slope</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-28" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Hyperpolarization I/V slope</span>: <span class="excite-value"></span></li>
-        </ul>
-      </div>
+      </div></div>
 
     </div>
 

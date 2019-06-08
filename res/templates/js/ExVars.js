@@ -67,8 +67,6 @@ class ExVars {
 		ExVars._setHeaderScore(".participant-header", scores.Overall)
 		const healthLabel = ExVars._labelForScore(scores.Overall)
 		ExVars._setExcitabilityVariableValue("overall-score", healthLabel + " (" + scores.Overall.toFixed(2) + ")", false)
-		const nameSpan = document.getElementById("participant-name");
-		nameSpan.innerHTML = name + " (" + healthLabel + ")"
 
 		Object.keys(scores).forEach(function(key) {
 			ExVars._setHeaderScore("." + key + "-header", scores[key].Overall)
