@@ -59,7 +59,11 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) *Nor
 
 	// Normalize to get mean
 	for rowN := range norm.Mean {
-		norm.Mean[rowN] /= norm.Num[rowN]
+		if norm.Num[rowN] == 0 {
+			norm.Mean[rowN] = 0
+		} else {
+			norm.Mean[rowN] /= norm.Num[rowN]
+		}
 	}
 
 	// Calculate SD
@@ -74,7 +78,12 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) *Nor
 
 	// Normalize to get SD
 	for rowN := range norm.Mean {
-		norm.SD[rowN] = norm.reverse(math.Sqrt(norm.SD[rowN] / norm.Num[rowN]))
+		if norm.Num[rowN] == 0 {
+			norm.SD[rowN] = 0
+		} else {
+			norm.SD[rowN] /= norm.Num[rowN]
+		}
+		norm.SD[rowN] = norm.reverse(math.Sqrt(norm.SD[rowN]))
 		norm.Mean[rowN] = norm.reverse(norm.Mean[rowN])
 	}
 
