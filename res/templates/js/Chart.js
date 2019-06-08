@@ -256,11 +256,19 @@ class Chart {
 	}
 
 	animateGroup(typeString, newData, name) {
-		return this.group[typeString + "-" + name].selectAll(typeString)
-			.data(newData)
-			.transition()
-			.delay(this.delayTime)
-			.duration(this.transitionTime)
+		// Do the same thing with or without the new data, but don't set it if not present
+		if (newData === undefined) {
+			return this.group[typeString + "-" + name].selectAll(typeString)
+				.transition()
+				.delay(this.delayTime)
+				.duration(this.transitionTime)
+		} else {
+			return this.group[typeString + "-" + name].selectAll(typeString)
+				.data(newData)
+				.transition()
+				.delay(this.delayTime)
+				.duration(this.transitionTime)
+		}
 	}
 
 	createPath(svg, path, groupName, className) {
@@ -274,6 +282,11 @@ class Chart {
 	animatePath(path, groupName, className) {
 		this.animateGroup("path", [path], groupName + "-" + className)
 			.attr("d", this.xyPath());
+	}
+
+	animatePathToZero(groupName, className) {
+		this.animateGroup("path", undefined, groupName + "-" + className)
+			.attr("d", this.xZeroPath());
 	}
 
 	createCircles(svg, circleLocations, name) {
@@ -290,18 +303,18 @@ class Chart {
 			.style("fill", d => "black");
 	}
 
-	fillColor(pt) {
+	fillColor(pt, display = true) {
 		// If either the x or y value is undefined, then this point should be hidden
 		if (pt[this.yIndex] === undefined || pt[this.yIndex] === undefined) {
 			return "rgba(0, 0, 0, 0)"
 		}
-		return pt[this.wasImputedIndex] ? "rgba(0, 0, 0, 0)" : "black"
+		return (!display || pt[this.wasImputedIndex]) ? "rgba(0, 0, 0, 0)" : "black"
 	}
 
-	animateCircles(circleLocations, name) {
+	animateCircles(circleLocations, name, display = true) {
 		this.animateGroup("circle", circleLocations, name)
 			.attr("r", d => d[this.wasImputedIndex] ? 3 : 5)
-			.style("fill", d => this.fillColor(d))
+			.style("fill", d => this.fillColor(d, display))
 			.attr("cy", d => this.yscale(d[this.yIndex] || 0))
 			.attr("cx", d => this.xscale(d[this.xIndex] || 0))
 	}
@@ -322,8 +335,13 @@ class Chart {
 	}
 
 	animateXYLine(lineData, name) {
-		this.animatePath(this.dataAsXY(lineData, this.xIndex, this.yIndex), name, "line")
-		this.animateCircles(lineData, name)
+		if (lineData === undefined) {
+			this.animatePathToZero(name, "line")
+			this.animateCircles(lineData, name, false)
+		} else {
+			this.animatePath(this.dataAsXY(lineData, this.xIndex, this.yIndex), name, "line")
+			this.animateCircles(lineData, name)
+		}
 	}
 
 	setDelayTime(dt) {
