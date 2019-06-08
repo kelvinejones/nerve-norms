@@ -303,19 +303,19 @@ class Chart {
 			.style("fill", d => "black");
 	}
 
-	fillColor(pt, display = true) {
+	fillColor(pt, fadeToZero) {
 		// If either the x or y value is undefined, then this point should be hidden
 		if (pt[this.yIndex] === undefined || pt[this.yIndex] === undefined) {
 			return "rgba(0, 0, 0, 0)"
 		}
-		return (!display || pt[this.wasImputedIndex]) ? "rgba(0, 0, 0, 0)" : "black"
+		return (fadeToZero || pt[this.wasImputedIndex]) ? "rgba(0, 0, 0, 0)" : "black"
 	}
 
-	animateCircles(circleLocations, name, display = true) {
+	animateCircles(circleLocations, name, fadeToZero = false) {
 		this.animateGroup("circle", circleLocations, name)
 			.attr("r", d => d[this.wasImputedIndex] ? 3 : 5)
-			.style("fill", d => this.fillColor(d, display))
-			.attr("cy", d => this.yscale(d[this.yIndex] || 0))
+			.style("fill", d => this.fillColor(d, fadeToZero))
+			.attr("cy", d => this.yscale(fadeToZero ? 0 : (d[this.yIndex] || 0)))
 			.attr("cx", d => this.xscale(d[this.xIndex] || 0))
 	}
 
@@ -342,7 +342,7 @@ class Chart {
 	animateXYLine(lineData, name) {
 		if (lineData === undefined) {
 			this.animatePathToZero(name, "line")
-			this.animateCircles(lineData, name, false)
+			this.animateCircles(lineData, name, true)
 		} else {
 			this.animatePath(this.dataAsXY(lineData, this.xIndex, this.yIndex), name, "line")
 			this.animateCircles(lineData, name)
