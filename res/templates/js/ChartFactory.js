@@ -12,7 +12,7 @@ class ChartFactory {
 			})
 			ExVars.updateValues(currentParticipant)
 			this.updateOutliers(this.participant)
-		}, ["CA-WI20S", "CA-AL27H", "JP-20-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "Rat on Drugs"])
+		}, ["CA-WI20S", "CA-AL27H", "JP-20-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "CA Mean", "JP Mean", "PO Mean", "Rat Fast Axon", "Rat Slow Axon", "Rat on Drugs"])
 		this.participant = this.partDropDown.selection
 
 		const queryString = Filter.asQueryString()
