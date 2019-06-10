@@ -39,6 +39,10 @@ class ExVars {
 		if (value === undefined) {
 			row.getElementsByClassName("excite-value")[0].innerHTML = ""
 		} else {
+			// If it's anumber and if the length of the number is more than 2 decimals, truncate
+			if (Number(value) === value && (value % 1) != 0 && value.toString().split(".")[1].length > 3) {
+				value = value.toFixed(3)
+			}
 			row.getElementsByClassName("excite-value")[0].innerHTML = value
 		}
 	}
