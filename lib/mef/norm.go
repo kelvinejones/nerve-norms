@@ -33,12 +33,12 @@ func (mef *Mef) Norm() Norm {
 	return norm
 }
 
-func (mef *Mef) Mean() *mem.Mem {
+func (mef *Mef) Mean(name string) *mem.Mem {
 	norm := mef.Norm()
 	memData := &mem.Mem{
 		Header: mem.Header{
 			File: "Calculated",
-			Name: "Mean",
+			Name: name,
 		},
 		Sections: mem.Sections{
 			"CD":     norm.CDNorm.asSection(),

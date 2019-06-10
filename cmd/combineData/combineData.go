@@ -39,7 +39,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		meanData.Add(lm.prefix+"Mean", mefData.Mean())
+		meanData.Add(lm.prefix+"Mean", mefData.Mean(lm.prefix+"Mean"))
 		mefData.LabelWithSpecies(lm.species).LabelWithNerve(lm.nerve).LabelWithCountry(lm.country)
 		allData.Append(mefData)
 	}
