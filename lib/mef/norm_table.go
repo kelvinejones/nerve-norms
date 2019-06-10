@@ -202,11 +202,7 @@ func (norm SRNormTable) MarshalJSON() ([]byte, error) {
 		Data:    []mem.Column{norm.YNorm.Mean, norm.YNorm.SD, norm.YNorm.Num, norm.XNorm.Mean, norm.XNorm.SD, norm.XNorm.Num},
 	}
 
-	by, err := json.Marshal(&jt)
-	if err != nil {
-		panic("HUH")
-	}
-	return by, err
+	return json.Marshal(&jt)
 }
 
 func (norm *SRNormTable) UnmarshalJSON(value []byte) error {
