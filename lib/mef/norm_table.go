@@ -90,7 +90,7 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) Norm
 	return norm
 }
 
-func (nt NormTable) LabelledTable(string) mem.LabelledTable {
+func (nt NormTable) asLabTab() mem.LabTab {
 	wasimp := make([]float64, len(nt.Num))
 	hasimp := false
 	for i := range nt.Num {
@@ -103,6 +103,10 @@ func (nt NormTable) LabelledTable(string) mem.LabelledTable {
 		wasimp = nil
 	}
 	return mem.NewLabTab("", "", nt.Values, nt.Mean, wasimp)
+}
+
+func (nt NormTable) asSection() mem.Section {
+	return ltAsSection{nt.asLabTab()}
 }
 
 func (norm NormTable) forward(val float64) float64 {
@@ -177,7 +181,7 @@ type SRNormTable struct {
 	XNorm NormTable
 }
 
-func (snt SRNormTable) LabelledTable(string) mem.LabelledTable {
+func (snt SRNormTable) asSection() mem.Section {
 	wasimp := make([]float64, len(snt.XNorm.Num))
 	hasimp := false
 	for i := range snt.XNorm.Num {
@@ -189,7 +193,7 @@ func (snt SRNormTable) LabelledTable(string) mem.LabelledTable {
 	if !hasimp {
 		wasimp = nil
 	}
-	return mem.NewLabTab("", "", mem.SRPercentMax, snt.XNorm.Mean, wasimp)
+	return ltAsSection{mem.NewLabTab("", "", mem.SRPercentMax, snt.XNorm.Mean, wasimp)}
 }
 
 func (norm SRNormTable) MarshalJSON() ([]byte, error) {
@@ -198,7 +202,11 @@ func (norm SRNormTable) MarshalJSON() ([]byte, error) {
 		Data:    []mem.Column{norm.YNorm.Mean, norm.YNorm.SD, norm.YNorm.Num, norm.XNorm.Mean, norm.XNorm.SD, norm.XNorm.Num},
 	}
 
-	return json.Marshal(&jt)
+	by, err := json.Marshal(&jt)
+	if err != nil {
+		panic("HUH")
+	}
+	return by, err
 }
 
 func (norm *SRNormTable) UnmarshalJSON(value []byte) error {
@@ -236,6 +244,17 @@ func NewTENormTables(mef *Mef) TENormTables {
 	return norm
 }
 
-func (tent TENormTables) LabelledTable(subsec string) mem.LabelledTable {
-	return tent[subsec].LabelledTable("")
+func (tent TENormTables) asSection() mem.Section {
+	te := mem.ThresholdElectrotonus{}
+	for _, name := range []string{"h40", "h20", "d40", "d20"} {
+		lt := tent[name].asLabTab()
+		te[name] = &lt
+	}
+	return &te
+}
+
+type ltAsSection struct{ LT mem.LabelledTable }
+
+func (ltas ltAsSection) LabelledTable(string) mem.LabelledTable {
+	return ltas.LT
 }

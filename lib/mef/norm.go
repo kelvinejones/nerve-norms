@@ -38,12 +38,12 @@ func (mef *Mef) Mean() *mem.Mem {
 	memData := &mem.Mem{
 		Header: mem.Header{},
 		Sections: mem.Sections{
-			"CD":     norm.CDNorm,
-			"RC":     norm.RCNorm,
-			"SR":     norm.SRNorm,
-			"TE":     norm.TENorm,
-			"IV":     norm.IVNorm,
-			"ExVars": norm.ExVarsNorm,
+			"CD":     norm.CDNorm.asSection(),
+			"RC":     norm.RCNorm.asSection(),
+			"SR":     norm.SRNorm.asSection(),
+			"TE":     norm.TENorm.asSection(),
+			"IV":     norm.IVNorm.asSection(),
+			"ExVars": norm.ExVarsNorm.asSection(),
 		},
 	}
 	return memData
