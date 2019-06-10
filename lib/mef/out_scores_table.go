@@ -18,11 +18,6 @@ type OutScoresTable struct {
 var dist = stats.NormalDist{Mu: 0.0, Sigma: 1.0}
 
 func NewOutScoresTable(norm NormTable, mm *mem.Mem) OutScoresTable {
-	if norm.Values == nil {
-		// If this norm doesn't have this value, then we can't construct norms for it.
-		return OutScoresTable{}
-	}
-
 	lt := mm.LabelledTable(norm.sec, norm.subsec)
 	numEl := lt.Len()
 	if numEl == 0 {
@@ -86,8 +81,6 @@ func (ost OutScoresTable) MarshalJSON() ([]byte, error) {
 		jt.Data = append(jt.Data, ost.Values)
 	}
 
-	// fmt.Println(ost)
-
 	return json.Marshal(&jt)
 }
 
@@ -101,9 +94,6 @@ func NewDoubleOutScoresTable(norm1, norm2 NormTable, mm *mem.Mem) DoubleOutScore
 	dost := DoubleOutScoresTable{
 		XOutScores: NewOutScoresTable(norm1, mm),
 		YOutScores: NewOutScoresTable(norm2, mm),
-	}
-	if dost.XOutScores.Values == nil || dost.YOutScores.Values == nil {
-		return DoubleOutScoresTable{}
 	}
 	dost.Overall = math.Sqrt(dost.XOutScores.Overall * dost.YOutScores.Overall)
 	return dost
