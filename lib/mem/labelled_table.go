@@ -74,6 +74,16 @@ func (lt LabTab) IncludeOutlierScore(idx int) bool {
 	return !lt.WasImputedAt(idx)
 }
 
+func NewLabTab(xname, yname string, xcol, ycol, wasimp Column) LabTab {
+	return LabTab{
+		xname:  xname,
+		yname:  yname,
+		xcol:   xcol,
+		ycol:   ycol,
+		wasimp: wasimp,
+	}
+}
+
 type emptyLT struct{}
 
 func (lt emptyLT) XName() string                    { return "" }
