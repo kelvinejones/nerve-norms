@@ -24,9 +24,29 @@ func newSR() *StimResponse {
 			precision: 0.1,
 		},
 	}
-	sr.LT.preImputeAction = func(sec RawSection, xcol Column) {
+	sr.LT.preImputeAction = func(sec RawSection, xcol Column) Column {
 		sr.ValueType = parseValueType(sec.ExtraLines)
 		sr.MC.parseMaxCmap(sec.ExtraLines)
+
+		for i, val := range sr.LT.ycol {
+			if val < 0 {
+				// Invalid value! Delete it
+				sr.LT.ycol = append(sr.LT.ycol[:i], sr.LT.ycol[i+1:]...)
+				xcol = append(xcol[:i], xcol[i+1:]...)
+			}
+		}
+		return xcol
+	}
+	sr.LT.postImputeAction = func() {
+		for i, val := range sr.LT.ycol {
+			if val < 0 {
+				if sr.LT.wasimp == nil {
+					sr.LT.wasimp = make(Column, len(sr.LT.ycol))
+				}
+				sr.LT.wasimp[i] = 1.0
+				sr.LT.ycol[i] = 0.00001 // set to some small number so log(ycol) isn't NaN
+			}
+		}
 	}
 	return sr
 }

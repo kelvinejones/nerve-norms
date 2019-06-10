@@ -39,8 +39,8 @@ type LabTab struct {
 	altImportFunc func(*LabTab)
 
 	// This can be set to do something with the data before or after imputation.
-	// The passed Column is the raw xcol.
-	preImputeAction  func(RawSection, Column)
+	// The passed Column is the raw xcol, and the returned Column is the updated xcol.
+	preImputeAction  func(RawSection, Column) Column
 	postImputeAction func()
 
 	// precision is the float precision
@@ -182,7 +182,7 @@ func (lt *LabTab) LoadFromMem(mem *rawMem) error {
 	}
 
 	if lt.preImputeAction != nil {
-		lt.preImputeAction(sec, xcol)
+		xcol = lt.preImputeAction(sec, xcol)
 	}
 
 	lt.wasimp = lt.ycol.ImputeWithValue(xcol, lt.xcol, lt.precision, lt.logScale)
