@@ -9,7 +9,7 @@ import (
 type Norm struct {
 	CDNorm     NormTable            `json:"CD"`
 	RCNorm     NormTable            `json:"RC"`
-	SRNorm     DoubleNormTable      `json:"SR"`
+	SRNorm     SRNormTable          `json:"SR"`
 	SRelNorm   NormTable            `json:"SRel"`
 	IVNorm     NormTable            `json:"IV"`
 	TENorm     map[string]NormTable `json:"TE"`
@@ -22,7 +22,7 @@ func (mef *Mef) Norm() Norm {
 		IVNorm:     NewNormTable(mem.IVCurrent, mef, "IV", "", ArithmeticMean),
 		RCNorm:     NewNormTable(mem.RCInterval, mef, "RC", "", ArithmeticMean),
 		ExVarsNorm: NewNormTable(mem.ExVarIndices, mef, "ExVars", "", ArithmeticMean),
-		SRNorm: DoubleNormTable{
+		SRNorm: SRNormTable{
 			XNorm: NewNormTable(nil, mef, "SR", "calculatedX", GeometricMean),
 			YNorm: NewNormTable(nil, mef, "SR", "calculatedY", GeometricMean),
 		},
