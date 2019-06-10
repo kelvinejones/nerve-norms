@@ -24,7 +24,7 @@ func newSR() *StimResponse {
 			precision: 0.1,
 		},
 	}
-	sr.LT.extraImport = func(sec RawSection) {
+	sr.LT.preImputeAction = func(sec RawSection, xcol Column) {
 		sr.ValueType = parseValueType(sec.ExtraLines)
 		sr.MC.parseMaxCmap(sec.ExtraLines)
 	}

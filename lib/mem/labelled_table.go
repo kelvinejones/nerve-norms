@@ -38,8 +38,10 @@ type LabTab struct {
 	altYname      string
 	altImportFunc func(*LabTab)
 
-	// This can be set to import extra data
-	extraImport func(RawSection)
+	// This can be set to do something with the data before or after imputation.
+	// The passed Column is the raw xcol.
+	preImputeAction  func(RawSection, Column)
+	postImputeAction func()
 
 	// precision is the float precision
 	precision float64
@@ -179,14 +181,18 @@ func (lt *LabTab) LoadFromMem(mem *rawMem) error {
 		return errors.New("Could not get LT " + lt.section + " ycol: " + err.Error())
 	}
 
+	if lt.preImputeAction != nil {
+		lt.preImputeAction(sec, xcol)
+	}
+
 	lt.wasimp = lt.ycol.ImputeWithValue(xcol, lt.xcol, lt.precision, lt.logScale)
 
 	if len(lt.xcol) != len(lt.ycol) {
 		return fmt.Errorf("Mismatching LT "+lt.section+" lengths %d and %d (%v and %v)", len(lt.xcol), len(lt.ycol), lt.xcol, lt.ycol)
 	}
 
-	if lt.extraImport != nil {
-		lt.extraImport(sec)
+	if lt.postImputeAction != nil {
+		lt.postImputeAction()
 	}
 
 	return nil
