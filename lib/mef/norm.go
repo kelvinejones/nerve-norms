@@ -7,13 +7,13 @@ import (
 )
 
 type Norm struct {
-	CDNorm     NormTable            `json:"CD"`
-	RCNorm     NormTable            `json:"RC"`
-	SRNorm     SRNormTable          `json:"SR"`
-	SRelNorm   NormTable            `json:"SRel"`
-	IVNorm     NormTable            `json:"IV"`
-	TENorm     map[string]NormTable `json:"TE"`
-	ExVarsNorm NormTable            `json:"ExVars"`
+	CDNorm     NormTable    `json:"CD"`
+	RCNorm     NormTable    `json:"RC"`
+	SRNorm     SRNormTable  `json:"SR"`
+	SRelNorm   NormTable    `json:"SRel"`
+	IVNorm     NormTable    `json:"IV"`
+	TENorm     TENormTables `json:"TE"`
+	ExVarsNorm NormTable    `json:"ExVars"`
 }
 
 func (mef *Mef) Norm() Norm {
@@ -27,15 +27,7 @@ func (mef *Mef) Norm() Norm {
 			YNorm: NewNormTable(nil, mef, "SR", "calculatedY", GeometricMean),
 		},
 		SRelNorm: NewNormTable(mem.SRPercentMax, mef, "SR", "relative", ArithmeticMean),
-		TENorm:   map[string]NormTable{},
-	}
-
-	for _, name := range []string{"h40", "h20", "d40", "d20"} {
-		nt := NewNormTable(mem.TEDelay(name), mef, "TE", name, ArithmeticMean)
-		if nt.Values != nil {
-			// We only add this TE type of it's not zero
-			norm.TENorm[name] = nt
-		}
+		TENorm:   NewTENormTables(mef),
 	}
 
 	return norm

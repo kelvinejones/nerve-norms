@@ -191,3 +191,17 @@ func (norm *SRNormTable) UnmarshalJSON(value []byte) error {
 
 	return nil
 }
+
+type TENormTables map[string]NormTable
+
+func NewTENormTables(mef *Mef) TENormTables {
+	norm := TENormTables{}
+	for _, name := range []string{"h40", "h20", "d40", "d20"} {
+		nt := NewNormTable(mem.TEDelay(name), mef, "TE", name, ArithmeticMean)
+		if nt.Values != nil {
+			// We only add this TE type of it's not zero
+			norm[name] = nt
+		}
+	}
+	return norm
+}
