@@ -39,7 +39,7 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		meanData.Add(lm.prefix+"Mean", mefData.Mean(lm.prefix+"Mean"))
+		meanData.Add(lm.name, mefData.Mean(lm.name))
 		mefData.LabelWithSpecies(lm.species).LabelWithNerve(lm.nerve).LabelWithCountry(lm.country)
 		allData.Append(mefData)
 	}
@@ -90,6 +90,7 @@ type loadableMef struct {
 	country string
 	species string
 	nerve   string
+	name    string
 }
 
 func parseLoadableMefs(path string) ([]loadableMef, error) {
@@ -111,8 +112,8 @@ func parseLoadableMefs(path string) ([]loadableMef, error) {
 			}
 			return lms, err
 		}
-		if len(row) != 5 {
-			return nil, errors.New("Not enough rows in CSV")
+		if len(row) != 6 {
+			return nil, errors.New("Incorrect number of rows in CSV")
 		}
 
 		lms = append(lms, loadableMef{
@@ -121,6 +122,7 @@ func parseLoadableMefs(path string) ([]loadableMef, error) {
 			country: row[2],
 			species: row[3],
 			nerve:   row[4],
+			name:    row[5],
 		})
 	}
 }
