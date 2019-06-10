@@ -17,7 +17,7 @@ type rawMem struct {
 type Mem struct {
 	Header   `json:"header"`
 	Sections `json:"sections"`
-	Settings map[string]string `json:"settings"`
+	Settings map[string]string `json:"settings,omitempty"`
 }
 
 func (mem *Mem) LabelledTable(name, subsec string) LabelledTable {
