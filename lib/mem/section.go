@@ -7,8 +7,12 @@ import (
 	"strings"
 )
 
-type Section interface {
+type loadableSection interface {
 	LoadFromMem(mem *rawMem) error
+	Section
+}
+
+type Section interface {
 	LabelledTable(string) LabelledTable
 }
 
