@@ -2,7 +2,6 @@ package mef
 
 import (
 	"encoding/json"
-	"errors"
 	"math"
 
 	"gogs.bellstone.ca/james/jitter/lib/mem"
@@ -151,31 +150,6 @@ func (norm NormTable) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&jt)
 }
 
-func (norm *NormTable) UnmarshalJSON(value []byte) error {
-	var jt normJsonTable
-	err := json.Unmarshal(value, &jt)
-	if err != nil {
-		return err
-	}
-
-	numCol := len(jt.Columns)
-	numDat := len(jt.Data)
-
-	if numCol < 3 || numCol > 4 || numDat < 3 || numDat > 4 {
-		return errors.New("Incorrect number of NormTable columns in JSON")
-	}
-
-	norm.Mean = jt.Data[0]
-	norm.SD = jt.Data[1]
-	norm.Num = jt.Data[3]
-
-	if numCol == 4 {
-		norm.Values = jt.Data[4]
-	}
-
-	return nil
-}
-
 type SRNormTable struct {
 	YNorm NormTable
 	XNorm NormTable
@@ -203,27 +177,6 @@ func (norm SRNormTable) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(&jt)
-}
-
-func (norm *SRNormTable) UnmarshalJSON(value []byte) error {
-	var jt normJsonTable
-	err := json.Unmarshal(value, &jt)
-	if err != nil {
-		return err
-	}
-
-	if len(jt.Columns) != 6 || len(jt.Data) != 6 {
-		return errors.New("Incorrect number of SRNormTable columns in JSON")
-	}
-
-	norm.YNorm.Mean = jt.Data[0]
-	norm.YNorm.SD = jt.Data[1]
-	norm.YNorm.Num = jt.Data[3]
-	norm.XNorm.Mean = jt.Data[4]
-	norm.XNorm.SD = jt.Data[5]
-	norm.XNorm.Num = jt.Data[6]
-
-	return nil
 }
 
 type TENormTables map[string]NormTable

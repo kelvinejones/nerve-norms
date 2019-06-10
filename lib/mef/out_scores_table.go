@@ -2,7 +2,6 @@ package mef
 
 import (
 	"encoding/json"
-	"errors"
 	"math"
 
 	"gogs.bellstone.ca/james/jitter/lib/mem"
@@ -92,30 +91,6 @@ func (ost OutScoresTable) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&jt)
 }
 
-func (ost *OutScoresTable) UnmarshalJSON(value []byte) error {
-	var jt osJsonTable
-	err := json.Unmarshal(value, &jt)
-	if err != nil {
-		return err
-	}
-
-	numCol := len(jt.Columns)
-	numDat := len(jt.Data)
-
-	if numCol < 1 || numCol > 2 || numDat < 1 || numDat > 2 {
-		return errors.New("Incorrect number of OutScoresTable columns in JSON")
-	}
-
-	ost.Overall = jt.Overall
-	ost.Scores = jt.Data[0]
-
-	if numCol == 2 {
-		ost.Values = jt.Data[1]
-	}
-
-	return nil
-}
-
 type DoubleOutScoresTable struct {
 	YOutScores OutScoresTable
 	XOutScores OutScoresTable
@@ -142,26 +117,6 @@ func (ost DoubleOutScoresTable) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(&jt)
-}
-
-func (ost *DoubleOutScoresTable) UnmarshalJSON(value []byte) error {
-	var jt osJsonTable
-	err := json.Unmarshal(value, &jt)
-	if err != nil {
-		return err
-	}
-
-	if len(jt.Columns) != 4 || len(jt.Data) != 4 {
-		return errors.New("Incorrect number of DoubleOutScoresTable columns in JSON")
-	}
-
-	ost.Overall = jt.Overall
-	ost.YOutScores.Scores = jt.Data[0]
-	ost.YOutScores.Values = jt.Data[1]
-	ost.XOutScores.Scores = jt.Data[3]
-	ost.XOutScores.Values = jt.Data[4]
-
-	return nil
 }
 
 type TEOutScores struct {
