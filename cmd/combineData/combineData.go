@@ -33,14 +33,18 @@ func main() {
 	}
 
 	allData := mef.Mef{}
+	meanData := mef.Mef{}
 	for _, lm := range lms {
 		mefData, err := mef.Import(lm.prefix, lm.path)
 		if err != nil {
 			panic(err)
 		}
+		meanData.Add(lm.prefix+"Mean", mefData.Mean())
 		mefData.LabelWithSpecies(lm.species).LabelWithNerve(lm.nerve).LabelWithCountry(lm.country)
 		allData.Append(mefData)
 	}
+	meanData.LabelWithSpecies("Means").LabelWithNerve("Means").LabelWithCountry("Means") // These labels make sure this data won't match any filters
+	allData.Append(meanData)
 
 	jsArray, err := json.Marshal(&allData)
 	if err != nil {
