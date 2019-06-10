@@ -254,3 +254,7 @@ type ltAsSection struct{ LT mem.LabelledTable }
 func (ltas ltAsSection) LabelledTable(string) mem.LabelledTable {
 	return ltas.LT
 }
+
+func (ltas ltAsSection) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&ltas.LT)
+}
