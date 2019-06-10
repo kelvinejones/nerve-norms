@@ -151,8 +151,9 @@ func (norm NormTable) MarshalJSON() ([]byte, error) {
 }
 
 type SRNormTable struct {
-	YNorm NormTable
-	XNorm NormTable
+	YNorm       NormTable
+	XNorm       NormTable
+	MaxCmapNorm NormTable
 }
 
 func (snt SRNormTable) asSection() mem.Section {
@@ -167,7 +168,12 @@ func (snt SRNormTable) asSection() mem.Section {
 	if !hasimp {
 		wasimp = nil
 	}
-	return ltAsSection{mem.NewLabTab("", "", mem.SRPercentMax, snt.XNorm.Mean, wasimp)}
+	return &mem.StimResponse{
+		MC: mem.MaxCmaps{
+			Standard: snt.MaxCmapNorm.Mean[0],
+		},
+		LT: mem.NewLabTab("", "", mem.SRPercentMax, snt.XNorm.Mean, wasimp),
+	}
 }
 
 func (norm SRNormTable) MarshalJSON() ([]byte, error) {

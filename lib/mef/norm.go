@@ -23,8 +23,9 @@ func (mef *Mef) Norm() Norm {
 		RCNorm:     NewNormTable(mem.RCInterval, mef, "RC", "", ArithmeticMean),
 		ExVarsNorm: NewNormTable(mem.ExVarIndices, mef, "ExVars", "", ArithmeticMean),
 		SRNorm: SRNormTable{
-			XNorm: NewNormTable(nil, mef, "SR", "calculatedX", GeometricMean),
-			YNorm: NewNormTable(nil, mef, "SR", "calculatedY", GeometricMean),
+			XNorm:       NewNormTable(nil, mef, "SR", "calculatedX", GeometricMean),
+			YNorm:       NewNormTable(nil, mef, "SR", "calculatedY", GeometricMean),
+			MaxCmapNorm: NewNormTable(nil, mef, "SR", "CMAP", GeometricMean),
 		},
 		SRelNorm: NewNormTable(mem.SRPercentMax, mef, "SR", "relative", ArithmeticMean),
 		TENorm:   NewTENormTables(mef),
