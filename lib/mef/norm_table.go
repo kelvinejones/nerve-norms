@@ -90,6 +90,21 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) Norm
 	return norm
 }
 
+func (nt NormTable) LabelledTable(string) mem.LabelledTable {
+	wasimp := make([]float64, len(nt.Num))
+	hasimp := false
+	for i := range nt.Num {
+		if nt.Num[i] == 0 {
+			wasimp[i] = 1.0
+			hasimp = true
+		}
+	}
+	if !hasimp {
+		wasimp = nil
+	}
+	return mem.NewLabTab("", "", nt.Values, nt.Mean, wasimp)
+}
+
 func (norm NormTable) forward(val float64) float64 {
 	switch norm.MeanType {
 	case ArithmeticMean:
@@ -162,6 +177,21 @@ type SRNormTable struct {
 	XNorm NormTable
 }
 
+func (snt SRNormTable) LabelledTable(string) mem.LabelledTable {
+	wasimp := make([]float64, len(snt.XNorm.Num))
+	hasimp := false
+	for i := range snt.XNorm.Num {
+		if snt.XNorm.Num[i] == 0 {
+			wasimp[i] = 1.0
+			hasimp = true
+		}
+	}
+	if !hasimp {
+		wasimp = nil
+	}
+	return mem.NewLabTab("", "", mem.SRPercentMax, snt.XNorm.Mean, wasimp)
+}
+
 func (norm SRNormTable) MarshalJSON() ([]byte, error) {
 	jt := normJsonTable{
 		Columns: []string{"ymean", "ysd", "ynum", "xmean", "xsd", "xnum"},
@@ -204,4 +234,8 @@ func NewTENormTables(mef *Mef) TENormTables {
 		}
 	}
 	return norm
+}
+
+func (tent TENormTables) LabelledTable(subsec string) mem.LabelledTable {
+	return tent[subsec].LabelledTable("")
 }
