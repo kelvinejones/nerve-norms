@@ -202,8 +202,11 @@ func NewTENormTables(mef *Mef) TENormTables {
 func (tent TENormTables) asSection() mem.Section {
 	te := mem.ThresholdElectrotonus{}
 	for _, name := range []string{"h40", "h20", "d40", "d20"} {
-		lt := tent[name].asLabTab()
-		te[name] = &lt
+		if tent[name].Values != nil {
+			// We only add this TE type of it's not zero
+			lt := tent[name].asLabTab()
+			te[name] = &lt
+		}
 	}
 	return &te
 }
