@@ -96,12 +96,6 @@ func (lt emptyLT) WasImputedAt(idx int) bool        { return true }
 func (lt emptyLT) Len() int                         { return 0 }
 func (lt emptyLT) IncludeOutlierScore(idx int) bool { return false }
 
-type emptyJsonTableError struct{}
-
-func (ejte emptyJsonTableError) Error() string {
-	return "LabelledTable is empty"
-}
-
 // jsonTable is used to restructure LabTab data for json.
 type jsonTable struct {
 	Columns []string `json:"columns"`
@@ -133,8 +127,8 @@ func (lt *LabTab) UnmarshalJSON(value []byte) error {
 	numDat := len(jt.Data)
 
 	if numCol < 2 || numCol > 3 || numDat < 2 || numDat > 3 {
-		if numDat == 0 {
-			return emptyJsonTableError{}
+		if numCol == 0 && numDat == 0 {
+			return nil // This section is nothing
 		}
 		return fmt.Errorf("Incorrect number of LabelledTable columns in JSON %d %d", numCol, numDat)
 	}
