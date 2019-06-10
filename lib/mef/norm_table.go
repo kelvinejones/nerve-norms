@@ -105,6 +105,9 @@ func (nt NormTable) asLabTab() mem.LabTab {
 }
 
 func (nt NormTable) asSection() mem.Section {
+	if len(nt.Mean) == 0 {
+		return nil
+	}
 	return ltAsSection{nt.asLabTab()}
 }
 
