@@ -2,7 +2,7 @@ class RecoveryCycle extends Chart {
 	constructor(participant, norms) {
 		super([1, 200], [-50, 110], Chart.scaleType.LOG)
 		this.participant = participant.sections.RC.data
-		this.norms = (norms === undefined) ? undefined : norms.RC.data
+		this.norms = (norms == null) ? undefined : norms.RC.data
 	}
 
 	get name() { return "Recovery Cycle" }
@@ -10,7 +10,7 @@ class RecoveryCycle extends Chart {
 	get yLabel() { return "Interstimulus Interval (ms)" }
 
 	updateParticipant(participant) {
-		if (participant.sections.RC === undefined) {
+		if (participant.sections.RC == null) {
 			this.participant = undefined
 		} else {
 			this.participant = participant.sections.RC.data
@@ -19,7 +19,7 @@ class RecoveryCycle extends Chart {
 	}
 
 	updateNorms(norms) {
-		if (norms.RC === undefined) {
+		if (norms.RC == null) {
 			this.norms = undefined
 		} else {
 			this.norms = norms.RC.data
@@ -28,14 +28,14 @@ class RecoveryCycle extends Chart {
 	}
 
 	drawLines(svg) {
-		const useSD = (this.norms !== undefined)
-		const norms = (this.norms === undefined) ? this.participant : this.norms
+		const isNull = (this.norms == null)
+		const norms = isNull ? this.participant : this.norms
 		this.createXYLine(this.participant, "rc")
-		this.createNorms(norms, "rc", useSD)
+		this.createNorms(norms, "rc", !isNull)
 
 		this.drawHorizontalLine(this.linesLayer, 0)
 
 		this.animateXYLine(this.participant, "rc")
-		this.animateNorms(norms, "rc", useSD)
+		this.animateNorms(norms, "rc", !isNull)
 	}
 }

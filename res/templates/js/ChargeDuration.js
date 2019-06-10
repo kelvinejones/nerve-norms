@@ -2,7 +2,7 @@ class ChargeDuration extends Chart {
 	constructor(participant, norms) {
 		super([0, 1], [0, 10])
 		this.participant = participant.sections.CD.data
-		this.norms = (norms === undefined) ? undefined : norms.CD.data
+		this.norms = (norms == null) ? undefined : norms.CD.data
 	}
 
 	get name() { return "Charge Duration" }
@@ -10,7 +10,7 @@ class ChargeDuration extends Chart {
 	get yLabel() { return "Threshold Change (mA•ms)" }
 
 	updateParticipant(participant) {
-		if (participant.sections.CD === undefined) {
+		if (participant.sections.CD == null) {
 			this.participant = undefined
 		} else {
 			this.participant = participant.sections.CD.data
@@ -19,7 +19,7 @@ class ChargeDuration extends Chart {
 	}
 
 	updateNorms(norms) {
-		if (norms.CD === undefined) {
+		if (norms.CD == null) {
 			this.norms = undefined
 		} else {
 			this.norms = norms.CD.data
@@ -28,11 +28,11 @@ class ChargeDuration extends Chart {
 	}
 
 	drawLines(svg) {
-		const useSD = (this.norms !== undefined)
-		const norms = (this.norms === undefined) ? this.participant : this.norms
+		const isNull = (this.norms == null)
+		const norms = isNull ? this.participant : this.norms
 		this.createXYLine(this.participant, "cd")
 		this.animateXYLine(this.participant, "cd")
-		this.createNorms(norms, "cd", useSD)
-		this.animateNorms(norms, "cd", useSD)
+		this.createNorms(norms, "cd", !isNull)
+		this.animateNorms(norms, "cd", !isNull)
 	}
 }

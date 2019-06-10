@@ -2,7 +2,7 @@ class ThresholdIV extends Chart {
 	constructor(participant, norms) {
 		super([-400, 50], [-100, 50])
 		this.participant = participant.sections.IV.data
-		this.norms = (norms === undefined) ? undefined : norms.IV.data
+		this.norms = (norms == null) ? undefined : norms.IV.data
 		this.xIndex = 1
 		this.yIndex = 0
 		this.ySDIndex = undefined
@@ -16,7 +16,7 @@ class ThresholdIV extends Chart {
 	get yLabel() { return "Current (% Threshold)" }
 
 	updateParticipant(participant) {
-		if (participant.sections.IV === undefined) {
+		if (participant.sections.IV == null) {
 			this.participant = undefined
 		} else {
 			this.participant = participant.sections.IV.data
@@ -30,13 +30,13 @@ class ThresholdIV extends Chart {
 	}
 
 	drawLines(svg) {
-		const useSD = (this.norms !== undefined)
-		const norms = (this.norms === undefined) ? this.participant : this.norms
+		const isNull = (this.norms == null)
+		const norms = isNull ? this.participant : this.norms
 		this.createXYLine(this.participant, "tiv")
-		this.createNorms(norms, "tiv", useSD)
+		this.createNorms(norms, "tiv", !isNull)
 		this.drawHorizontalLine(this.linesLayer, 0)
 		this.drawVerticalLine(this.linesLayer, 0)
 		this.animateXYLine(this.participant, "tiv")
-		this.animateNorms(norms, "tiv", useSD)
+		this.animateNorms(norms, "tiv", !isNull)
 	}
 }

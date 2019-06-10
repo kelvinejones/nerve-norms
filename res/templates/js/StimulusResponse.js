@@ -2,14 +2,14 @@ class StimulusResponse extends Chart {
 	constructor(participant, norms) {
 		super([1, 20], [0.01, 20], Chart.scaleType.LOG, Chart.scaleType.LOG)
 		this.participant = this.calculateParticipant(participant)
-		this.norms = (norms === undefined) ? undefined : norms.SR.data
+		this.norms = (norms == null) ? undefined : norms.SR.data
 		this.sdFunc = Chart.logSD
 		this.xSDIndex = 4
 	}
 
 	calculateParticipant(participant) {
 		let peakResponse = 0;
-		if (participant.sections.ExVars === undefined || participant.sections.ExVars.data == undefined) {
+		if (participant.sections.ExVars == null || participant.sections.ExVars.data == undefined) {
 			return undefined
 		}
 		participant.sections.ExVars.data.forEach(function(exvar) {
@@ -21,7 +21,7 @@ class StimulusResponse extends Chart {
 			return undefined
 		}
 
-		if (participant.sections.SR === undefined || participant.sections.SR.data == undefined || participant.sections.SR.data.data == undefined) {
+		if (participant.sections.SR == null || participant.sections.SR.data == undefined || participant.sections.SR.data.data == undefined) {
 			return undefined
 		}
 		return participant.sections.SR.data.data.map((d, i) => {
@@ -42,7 +42,7 @@ class StimulusResponse extends Chart {
 	}
 
 	updateNorms(norms) {
-		if (norms.SR === undefined) {
+		if (norms.SR == null) {
 			this.norms = undefined
 		} else {
 			this.norms = norms.SR.data
@@ -51,11 +51,11 @@ class StimulusResponse extends Chart {
 	}
 
 	drawLines(svg) {
-		const useSD = (this.norms !== undefined)
-		const norms = (this.norms === undefined) ? this.participant : this.norms
+		const isNull = (this.norms == null)
+		const norms = isNull ? this.participant : this.norms
 		this.createXYLine(this.participant, "sr")
-		this.createNorms(norms, "sr", useSD)
+		this.createNorms(norms, "sr", !isNull)
 		this.animateXYLine(this.participant, "sr")
-		this.animateNorms(norms, "sr", useSD)
+		this.animateNorms(norms, "sr", !isNull)
 	}
 }

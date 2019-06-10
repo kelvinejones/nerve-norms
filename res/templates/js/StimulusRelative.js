@@ -2,7 +2,7 @@ class StimulusRelative extends Chart {
 	constructor(participant, norms) {
 		super([0, 200], [0, 100])
 		this.participant = this.calculateParticipant(participant.sections.SR.data.data)
-		this.norms = (norms === undefined) ? undefined : norms.SRel.data
+		this.norms = (norms == null) ? undefined : norms.SRel.data
 		this.ySDIndex = undefined
 		this.yMeanIndex = 3
 		this.xSDIndex = 1
@@ -24,7 +24,7 @@ class StimulusRelative extends Chart {
 	get yLabel() { return "Peak Response (% Max)" }
 
 	updateParticipant(participant) {
-		if (participant.sections.SR === undefined || participant.sections.SR.data === undefined) {
+		if (participant.sections.SR == null || participant.sections.SR.data == null) {
 			this.participant = this.calculateParticipant(undefined)
 		} else {
 			this.participant = this.calculateParticipant(participant.sections.SR.data.data)
@@ -33,7 +33,7 @@ class StimulusRelative extends Chart {
 	}
 
 	updateNorms(norms) {
-		if (norms.SRel === undefined) {
+		if (norms.SRel == null) {
 			this.norms = undefined
 		} else {
 			this.norms = norms.SRel.data
@@ -42,11 +42,11 @@ class StimulusRelative extends Chart {
 	}
 
 	drawLines(svg) {
-		const useSD = (this.norms !== undefined)
-		const norms = (this.norms === undefined) ? this.participant : this.norms
+		const isNull = (this.norms == null)
+		const norms = isNull ? this.participant : this.norms
 		this.createXYLine(this.participant, "srel")
-		this.createNorms(norms, "srel", useSD)
+		this.createNorms(norms, "srel", !isNull)
 		this.animateXYLine(this.participant, "srel")
-		this.animateNorms(norms, "srel", useSD)
+		this.animateNorms(norms, "srel", !isNull)
 	}
 }
