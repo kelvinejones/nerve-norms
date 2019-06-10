@@ -17,8 +17,8 @@ import (
 
 var input = flag.String("input", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/all.csv", "path to the CSV of MEF files and info")
 var output = flag.String("output", "json/all.json", "path to save the JSON; otherwise, output to stdout")
-var jsFile = flag.String("jsFile", "", "path to save the participants file")   // res/templates/data/participants.json
-var goFile = flag.String("goFile", "", "path to save a go file with the JSON") // lib/data/data.go
+var jsFile = flag.String("jsFile", "res/templates/data/participants.json", "path to save the participants file")
+var goFile = flag.String("goFile", "lib/data/data.go", "path to save a go file with the JSON")
 
 func main() {
 	flag.Parse()
