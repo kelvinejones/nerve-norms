@@ -33,6 +33,22 @@ func (mef *Mef) Norm() Norm {
 	return norm
 }
 
+func (mef *Mef) Mean() *mem.Mem {
+	norm := mef.Norm()
+	memData := &mem.Mem{
+		Header: mem.Header{},
+		Sections: mem.Sections{
+			"CD":     norm.CDNorm,
+			"RC":     norm.RCNorm,
+			"SR":     norm.SRNorm,
+			"TE":     norm.TENorm,
+			"IV":     norm.IVNorm,
+			"ExVars": norm.ExVarsNorm,
+		},
+	}
+	return memData
+}
+
 type OutScores struct {
 	CDOutScores     OutScoresTable       `json:"CD"`
 	RCOutScores     OutScoresTable       `json:"RC"`
