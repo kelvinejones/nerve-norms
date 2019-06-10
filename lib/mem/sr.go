@@ -7,7 +7,7 @@ import (
 )
 
 type StimResponse struct {
-	MC        MaxCmaps `json:"maxCmaps"`
+	MC        MaxCmaps `json:"maxCmap"`
 	ValueType string   `json:"valueType"`
 	LT        LabTab   `json:"data"`
 }
@@ -82,7 +82,7 @@ func (sr StimResponse) fullyCalculatedX() LabelledTable {
 func (sr StimResponse) fullyCalculatedY() LabelledTable {
 	col := make([]float64, len(SRPercentMax))
 	for idx, val := range sr.LT.xcol {
-		col[idx] = val / 100 * sr.MC.standard
+		col[idx] = val / 100 * sr.MC.Standard
 	}
 
 	return &LabTab{
@@ -132,18 +132,16 @@ type MaxCmaps struct {
 	// all contains all CMAP measurements
 	all []MaxCmap
 
-	// standard is the max CMAP at 1ms
-	standard float64
+	// Standard is the max CMAP at 1ms
+	Standard float64
 }
 
 func (mc MaxCmaps) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&mc.all)
+	return json.Marshal(&mc.Standard)
 }
 
 func (mc *MaxCmaps) UnmarshalJSON(value []byte) error {
-	err := json.Unmarshal(value, &mc.all)
-	mc.parseStandardCmap()
-	return err
+	return json.Unmarshal(value, &mc.Standard)
 }
 
 func (mc MaxCmaps) AsLabelledTable() LabelledTable {
@@ -151,9 +149,9 @@ func (mc MaxCmaps) AsLabelledTable() LabelledTable {
 		xname: "Time (ms)",
 		yname: "CMAP",
 		xcol:  Column{1},
-		ycol:  Column{mc.standard},
+		ycol:  Column{mc.Standard},
 	}
-	if mc.standard == 0.0 {
+	if mc.Standard == 0.0 {
 		lt.wasimp = Column{1}
 	}
 	return &lt
@@ -199,10 +197,10 @@ func (mc *MaxCmaps) parseStandardCmap() {
 		if val.Time > 0.99 && val.Time < 1.01 {
 			switch val.Units {
 			case 'u':
-				mc.standard = val.Val / 1000
+				mc.Standard = val.Val / 1000
 			case 'm':
 				// Do nothing; default is mV
-				mc.standard = val.Val
+				mc.Standard = val.Val
 			}
 		}
 	}
