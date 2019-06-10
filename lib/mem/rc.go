@@ -13,7 +13,7 @@ func newRC() *RecoveryCycle {
 		precision: 0.000001,
 		logScale:  true,
 	}}
-	rc.LabTab.extraImport = func(sec RawSection) {
+	rc.LabTab.postImputeAction = func() {
 		maxRC0 := 200.0
 		maxRC1 := 100.0
 		if rc.ycol[0] < maxRC0 && rc.ycol[1] < maxRC1 {

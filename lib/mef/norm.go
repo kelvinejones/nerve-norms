@@ -7,13 +7,13 @@ import (
 )
 
 type Norm struct {
-	CDNorm     NormTable            `json:"CD"`
-	RCNorm     NormTable            `json:"RC"`
-	SRNorm     DoubleNormTable      `json:"SR"`
-	SRelNorm   NormTable            `json:"SRel"`
-	IVNorm     NormTable            `json:"IV"`
-	TENorm     map[string]NormTable `json:"TE"`
-	ExVarsNorm NormTable            `json:"ExVars"`
+	CDNorm     NormTable    `json:"CD"`
+	RCNorm     NormTable    `json:"RC"`
+	SRNorm     SRNormTable  `json:"SR"`
+	SRelNorm   NormTable    `json:"SRel"`
+	IVNorm     NormTable    `json:"IV"`
+	TENorm     TENormTables `json:"TE"`
+	ExVarsNorm NormTable    `json:"ExVars"`
 }
 
 func (mef *Mef) Norm() Norm {
@@ -22,23 +22,35 @@ func (mef *Mef) Norm() Norm {
 		IVNorm:     NewNormTable(mem.IVCurrent, mef, "IV", "", ArithmeticMean),
 		RCNorm:     NewNormTable(mem.RCInterval, mef, "RC", "", ArithmeticMean),
 		ExVarsNorm: NewNormTable(mem.ExVarIndices, mef, "ExVars", "", ArithmeticMean),
-		SRNorm: DoubleNormTable{
-			XNorm: NewNormTable(nil, mef, "SR", "calculatedX", GeometricMean),
-			YNorm: NewNormTable(nil, mef, "SR", "calculatedY", GeometricMean),
+		SRNorm: SRNormTable{
+			XNorm:       NewNormTable(nil, mef, "SR", "calculatedX", GeometricMean),
+			YNorm:       NewNormTable(nil, mef, "SR", "calculatedY", GeometricMean),
+			MaxCmapNorm: NewNormTable(nil, mef, "SR", "CMAP", GeometricMean),
 		},
 		SRelNorm: NewNormTable(mem.SRPercentMax, mef, "SR", "relative", ArithmeticMean),
-		TENorm:   map[string]NormTable{},
-	}
-
-	for _, name := range []string{"h40", "h20", "d40", "d20"} {
-		nt := NewNormTable(mem.TEDelay(name), mef, "TE", name, ArithmeticMean)
-		if nt.Values != nil {
-			// We only add this TE type of it's not zero
-			norm.TENorm[name] = nt
-		}
+		TENorm:   NewTENormTables(mef),
 	}
 
 	return norm
+}
+
+func (mef *Mef) Mean(name string) *mem.Mem {
+	norm := mef.Norm()
+	memData := &mem.Mem{
+		Header: mem.Header{
+			File: "Calculated",
+			Name: name,
+		},
+		Sections: mem.Sections{
+			"CD":     norm.CDNorm.asSection(),
+			"RC":     norm.RCNorm.asSection(),
+			"SR":     norm.SRNorm.asSection(),
+			"TE":     norm.TENorm.asSection(),
+			"IV":     norm.IVNorm.asSection(),
+			"ExVars": norm.ExVarsNorm.asSection(),
+		},
+	}
+	return memData
 }
 
 type OutScores struct {

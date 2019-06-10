@@ -15,6 +15,12 @@ func (mef *Mef) Append(mef2 Mef) *Mef {
 	return mef
 }
 
+// Add adds a Mem to a Mef, possibly overwriting.
+func (mef *Mef) Add(key string, val *mem.Mem) *Mef {
+	(*mef)[key] = val
+	return mef
+}
+
 func (mef *Mef) Filter(filt *Filter) *Mef {
 	if filt == nil {
 		// There are no filters, so return original

@@ -38,8 +38,10 @@ type LabTab struct {
 	altYname      string
 	altImportFunc func(*LabTab)
 
-	// This can be set to import extra data
-	extraImport func(RawSection)
+	// This can be set to do something with the data before or after imputation.
+	// The passed Column is the raw xcol, and the returned Column is the updated xcol.
+	preImputeAction  func(RawSection, Column) Column
+	postImputeAction func()
 
 	// precision is the float precision
 	precision float64
@@ -72,6 +74,16 @@ func (lt LabTab) Len() int {
 func (lt LabTab) IncludeOutlierScore(idx int) bool {
 	// Don't include ones that were imputed
 	return !lt.WasImputedAt(idx)
+}
+
+func NewLabTab(xname, yname string, xcol, ycol, wasimp Column) LabTab {
+	return LabTab{
+		xname:  xname,
+		yname:  yname,
+		xcol:   xcol,
+		ycol:   ycol,
+		wasimp: wasimp,
+	}
 }
 
 type emptyLT struct{}
@@ -115,7 +127,10 @@ func (lt *LabTab) UnmarshalJSON(value []byte) error {
 	numDat := len(jt.Data)
 
 	if numCol < 2 || numCol > 3 || numDat < 2 || numDat > 3 {
-		return errors.New("Incorrect number of LabelledTable columns in JSON")
+		if numCol == 0 && numDat == 0 {
+			return nil // This section is nothing
+		}
+		return fmt.Errorf("Incorrect number of LabelledTable columns in JSON %d %d", numCol, numDat)
 	}
 
 	lt.xname = jt.Columns[0]
@@ -169,14 +184,18 @@ func (lt *LabTab) LoadFromMem(mem *rawMem) error {
 		return errors.New("Could not get LT " + lt.section + " ycol: " + err.Error())
 	}
 
+	if lt.preImputeAction != nil {
+		xcol = lt.preImputeAction(sec, xcol)
+	}
+
 	lt.wasimp = lt.ycol.ImputeWithValue(xcol, lt.xcol, lt.precision, lt.logScale)
 
 	if len(lt.xcol) != len(lt.ycol) {
 		return fmt.Errorf("Mismatching LT "+lt.section+" lengths %d and %d (%v and %v)", len(lt.xcol), len(lt.ycol), lt.xcol, lt.ycol)
 	}
 
-	if lt.extraImport != nil {
-		lt.extraImport(sec)
+	if lt.postImputeAction != nil {
+		lt.postImputeAction()
 	}
 
 	return nil

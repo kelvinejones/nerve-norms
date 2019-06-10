@@ -33,14 +33,18 @@ func main() {
 	}
 
 	allData := mef.Mef{}
+	meanData := mef.Mef{}
 	for _, lm := range lms {
 		mefData, err := mef.Import(lm.prefix, lm.path)
 		if err != nil {
 			panic(err)
 		}
+		meanData.Add(lm.name, mefData.Mean(lm.name))
 		mefData.LabelWithSpecies(lm.species).LabelWithNerve(lm.nerve).LabelWithCountry(lm.country)
 		allData.Append(mefData)
 	}
+	meanData.LabelWithSpecies("Means").LabelWithNerve("Means").LabelWithCountry("Means") // These labels make sure this data won't match any filters
+	allData.Append(meanData)
 
 	jsArray, err := json.Marshal(&allData)
 	if err != nil {
@@ -86,6 +90,7 @@ type loadableMef struct {
 	country string
 	species string
 	nerve   string
+	name    string
 }
 
 func parseLoadableMefs(path string) ([]loadableMef, error) {
@@ -107,8 +112,8 @@ func parseLoadableMefs(path string) ([]loadableMef, error) {
 			}
 			return lms, err
 		}
-		if len(row) != 5 {
-			return nil, errors.New("Not enough rows in CSV")
+		if len(row) != 6 {
+			return nil, errors.New("Incorrect number of rows in CSV")
 		}
 
 		lms = append(lms, loadableMef{
@@ -117,6 +122,7 @@ func parseLoadableMefs(path string) ([]loadableMef, error) {
 			country: row[2],
 			species: row[3],
 			nerve:   row[4],
+			name:    row[5],
 		})
 	}
 }

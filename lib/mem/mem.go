@@ -17,7 +17,7 @@ type rawMem struct {
 type Mem struct {
 	Header   `json:"header"`
 	Sections `json:"sections"`
-	Settings map[string]string `json:"settings"`
+	Settings map[string]string `json:"settings,omitempty"`
 }
 
 func (mem *Mem) LabelledTable(name, subsec string) LabelledTable {
@@ -35,22 +35,27 @@ func (mem *rawMem) AsMem() (*Mem, error) {
 		Settings: mem.ExcitabilityVariables.ExcitabilitySettings,
 	}
 
-	trueMem.Sections["CD"] = newCD()
-	trueMem.Sections["RC"] = newRC()
-	trueMem.Sections["SR"] = newSR()
-	trueMem.Sections["TE"] = newTE()
-	trueMem.Sections["IV"] = newIV()
-	trueMem.Sections["ExVars"] = newExVar()
-	for name, sec := range trueMem.Sections {
+	loadableSections := map[string]loadableSection{
+		"CD":     newCD(),
+		"RC":     newRC(),
+		"SR":     newSR(),
+		"TE":     newTE(),
+		"IV":     newIV(),
+		"ExVars": newExVar(),
+	}
+
+	for name, sec := range loadableSections {
 		if err := sec.LoadFromMem(mem); err != nil {
 			if _, ok := err.(MissingSection); ok {
-				// It's okay if a section is missing, but it should be removed
-				delete(trueMem.Sections, name)
+				// It's okay if a section is missing, but it should not be included
+				continue
 			} else {
 				return nil, err
 			}
 		}
+		trueMem.Sections[name] = sec
 	}
+
 	return trueMem, nil
 }
 

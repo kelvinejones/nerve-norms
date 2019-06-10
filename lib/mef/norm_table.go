@@ -2,7 +2,6 @@ package mef
 
 import (
 	"encoding/json"
-	"errors"
 	"math"
 
 	"gogs.bellstone.ca/james/jitter/lib/mem"
@@ -90,6 +89,28 @@ func NewNormTable(xv mem.Column, mef *Mef, sec, subsec string, mt MeanType) Norm
 	return norm
 }
 
+func (nt NormTable) asLabTab() mem.LabTab {
+	wasimp := make([]float64, len(nt.Num))
+	hasimp := false
+	for i := range nt.Num {
+		if nt.Num[i] == 0 {
+			wasimp[i] = 1.0
+			hasimp = true
+		}
+	}
+	if !hasimp {
+		wasimp = nil
+	}
+	return mem.NewLabTab("", "", nt.Values, nt.Mean, wasimp)
+}
+
+func (nt NormTable) asSection() mem.Section {
+	if len(nt.Mean) == 0 {
+		return nil
+	}
+	return ltAsSection{nt.asLabTab()}
+}
+
 func (norm NormTable) forward(val float64) float64 {
 	switch norm.MeanType {
 	case ArithmeticMean:
@@ -132,37 +153,33 @@ func (norm NormTable) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&jt)
 }
 
-func (norm *NormTable) UnmarshalJSON(value []byte) error {
-	var jt normJsonTable
-	err := json.Unmarshal(value, &jt)
-	if err != nil {
-		return err
-	}
-
-	numCol := len(jt.Columns)
-	numDat := len(jt.Data)
-
-	if numCol < 3 || numCol > 4 || numDat < 3 || numDat > 4 {
-		return errors.New("Incorrect number of NormTable columns in JSON")
-	}
-
-	norm.Mean = jt.Data[0]
-	norm.SD = jt.Data[1]
-	norm.Num = jt.Data[3]
-
-	if numCol == 4 {
-		norm.Values = jt.Data[4]
-	}
-
-	return nil
+type SRNormTable struct {
+	YNorm       NormTable
+	XNorm       NormTable
+	MaxCmapNorm NormTable
 }
 
-type DoubleNormTable struct {
-	YNorm NormTable
-	XNorm NormTable
+func (snt SRNormTable) asSection() mem.Section {
+	wasimp := make([]float64, len(snt.XNorm.Num))
+	hasimp := false
+	for i := range snt.XNorm.Num {
+		if snt.XNorm.Num[i] == 0 {
+			wasimp[i] = 1.0
+			hasimp = true
+		}
+	}
+	if !hasimp {
+		wasimp = nil
+	}
+	return &mem.StimResponse{
+		MC: mem.MaxCmaps{
+			Standard: snt.MaxCmapNorm.Mean[0],
+		},
+		LT: mem.NewLabTab("", "", mem.SRPercentMax, snt.XNorm.Mean, wasimp),
+	}
 }
 
-func (norm DoubleNormTable) MarshalJSON() ([]byte, error) {
+func (norm SRNormTable) MarshalJSON() ([]byte, error) {
 	jt := normJsonTable{
 		Columns: []string{"ymean", "ysd", "ynum", "xmean", "xsd", "xnum"},
 		Data:    []mem.Column{norm.YNorm.Mean, norm.YNorm.SD, norm.YNorm.Num, norm.XNorm.Mean, norm.XNorm.SD, norm.XNorm.Num},
@@ -171,23 +188,38 @@ func (norm DoubleNormTable) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&jt)
 }
 
-func (norm *DoubleNormTable) UnmarshalJSON(value []byte) error {
-	var jt normJsonTable
-	err := json.Unmarshal(value, &jt)
-	if err != nil {
-		return err
+type TENormTables map[string]NormTable
+
+func NewTENormTables(mef *Mef) TENormTables {
+	norm := TENormTables{}
+	for _, name := range []string{"h40", "h20", "d40", "d20"} {
+		nt := NewNormTable(mem.TEDelay(name), mef, "TE", name, ArithmeticMean)
+		if nt.Values != nil {
+			// We only add this TE type of it's not zero
+			norm[name] = nt
+		}
 	}
+	return norm
+}
 
-	if len(jt.Columns) != 6 || len(jt.Data) != 6 {
-		return errors.New("Incorrect number of DoubleNormTable columns in JSON")
+func (tent TENormTables) asSection() mem.Section {
+	te := mem.ThresholdElectrotonus{}
+	for _, name := range []string{"h40", "h20", "d40", "d20"} {
+		if tent[name].Values != nil {
+			// We only add this TE type of it's not zero
+			lt := tent[name].asLabTab()
+			te[name] = &lt
+		}
 	}
+	return &te
+}
 
-	norm.YNorm.Mean = jt.Data[0]
-	norm.YNorm.SD = jt.Data[1]
-	norm.YNorm.Num = jt.Data[3]
-	norm.XNorm.Mean = jt.Data[4]
-	norm.XNorm.SD = jt.Data[5]
-	norm.XNorm.Num = jt.Data[6]
+type ltAsSection struct{ LT mem.LabelledTable }
 
-	return nil
+func (ltas ltAsSection) LabelledTable(string) mem.LabelledTable {
+	return ltas.LT
+}
+
+func (ltas ltAsSection) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&ltas.LT)
 }
