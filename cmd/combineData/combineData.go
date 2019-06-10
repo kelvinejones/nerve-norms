@@ -1,20 +1,21 @@
 package main
 
 import (
+	"encoding/csv"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"gogs.bellstone.ca/james/jitter/lib/mef"
 )
 
-var caPath = flag.String("caPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/CA/FESmedianAPB.MEF", "path to the CA MEF")
-var jpPath = flag.String("jpPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/JP/JP.MEF", "path to the JP MEF")
-var poPath = flag.String("poPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/PO/Portugal.MEF", "path to the PO MEF")
-var legPath = flag.String("legPath", "", "path to the leg MEF") // /Users/james/Documents/Education/UofA/MSc/Research/normative-data/human/CA/FEScommonperonealTA.MEF
-var ratPath = flag.String("ratPath", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/rat/all.MEF", "path to the rat MEF")
+var input = flag.String("input", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/all.csv", "path to the CSV of MEF files and info")
 var output = flag.String("output", "json/all.json", "path to save the JSON; otherwise, output to stdout")
 var jsFile = flag.String("jsFile", "", "path to save the participants file")   // res/templates/data/participants.json
 var goFile = flag.String("goFile", "", "path to save a go file with the JSON") // lib/data/data.go
@@ -22,37 +23,24 @@ var goFile = flag.String("goFile", "", "path to save a go file with the JSON") /
 func main() {
 	flag.Parse()
 
-	caMef, err := mef.Import("CA-", *caPath)
-	if err != nil && *caPath != "" {
+	if *input == "" {
+		panic("Cannot run without an imput file")
+	}
+
+	lms, err := parseLoadableMefs(*input)
+	if err != nil {
 		panic(err)
 	}
-	caMef.LabelWithSpecies("human").LabelWithNerve("median").LabelWithCountry("CA")
 
-	jpMef, err := mef.Import("JP-", *jpPath)
-	if err != nil && *jpPath != "" {
-		panic(err)
+	allData := mef.Mef{}
+	for _, lm := range lms {
+		mefData, err := mef.Import(lm.prefix, lm.path)
+		if err != nil {
+			panic(err)
+		}
+		mefData.LabelWithSpecies(lm.species).LabelWithNerve(lm.nerve).LabelWithCountry(lm.country)
+		allData.Append(mefData)
 	}
-	jpMef.LabelWithSpecies("human").LabelWithNerve("median").LabelWithCountry("JP")
-
-	poMef, err := mef.Import("PO-", *poPath)
-	if err != nil && *poPath != "" {
-		panic(err)
-	}
-	poMef.LabelWithSpecies("human").LabelWithNerve("median").LabelWithCountry("PO")
-
-	legMef, err := mef.Import("leg-", *legPath)
-	if err != nil && *legPath != "" {
-		panic(err)
-	}
-	legMef.LabelWithSpecies("human").LabelWithNerve("CP").LabelWithCountry("CA")
-
-	ratMef, err := mef.Import("Rat ", *ratPath)
-	if err != nil && *ratPath != "" {
-		panic(err)
-	}
-	ratMef.LabelWithSpecies("rat").LabelWithCountry("CA")
-
-	allData := caMef.Append(jpMef).Append(poMef).Append(legMef).Append(ratMef)
 
 	jsArray, err := json.Marshal(&allData)
 	if err != nil {
@@ -89,5 +77,46 @@ func main() {
 		if err != nil {
 			panic("Could not save goFile due to error: " + err.Error())
 		}
+	}
+}
+
+type loadableMef struct {
+	path    string
+	prefix  string
+	country string
+	species string
+	nerve   string
+}
+
+func parseLoadableMefs(path string) ([]loadableMef, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	csvr := csv.NewReader(file)
+	dir := filepath.Dir(path)
+
+	lms := []loadableMef{}
+	for {
+		row, err := csvr.Read()
+		if err != nil {
+			if err == io.EOF {
+				err = nil
+			}
+			return lms, err
+		}
+		if len(row) != 5 {
+			return nil, errors.New("Not enough rows in CSV")
+		}
+
+		lms = append(lms, loadableMef{
+			path:    dir + "/" + row[0],
+			prefix:  row[1],
+			country: row[2],
+			species: row[3],
+			nerve:   row[4],
+		})
 	}
 }
