@@ -1,33 +1,6 @@
 class ChartFactory {
 	constructor(participants) {
-		this.url = "https://us-central1-nervenorms.cloudfunctions.net/"
-
-		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
-			this.participant = name
-
-			ExVars.clearScores()
-
-			Object.values(this.plots).forEach(pl => {
-				pl.updateParticipant(currentParticipant)
-			})
-			ExVars.updateValues(currentParticipant)
-			this.updateOutliers(this.participant)
-		}, ["CA-WI20S", "CA-AL27H", "JP-20-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "CA Mean", "JP Mean", "PO Mean", "Rat Fast Axon", "Rat Slow Axon", "Rat on Drugs"])
-		this.participant = this.partDropDown.selection
-
-		const queryString = Filter.asQueryString()
-		this.updateNorms(queryString)
-		this.updateOutliers(this.participant, queryString)
-
-		document.querySelector("form").addEventListener("submit", (event) => {
-			ExVars.clearScores()
-
-			const queryString = Filter.asQueryString()
-			this.updateNorms(queryString)
-			this.updateOutliers(this.participant, queryString)
-
-			event.preventDefault()
-		})
+		this.dataManager = new DataManager(participants, () => { return this.plots })
 
 		this.plots = {
 			"recoveryCycle": null,
@@ -45,7 +18,7 @@ class ChartFactory {
 		})
 
 		// Now set all excitability variables
-		ExVars.updateValues(this.partDropDown.data)
+		ExVars.updateValues(this.dataManager.participantData)
 	}
 
 	/**
@@ -79,49 +52,17 @@ class ChartFactory {
 	build(typeStr) {
 		switch (typeStr) {
 			case "recoveryCycle":
-				return new RecoveryCycle(this.partDropDown.data, this.norms)
+				return new RecoveryCycle(this.dataManager.participantData, this.dataManager.norms)
 			case "thresholdElectrotonus":
-				return new ThresholdElectrotonus(this.partDropDown.data, this.norms)
+				return new ThresholdElectrotonus(this.dataManager.participantData, this.dataManager.norms)
 			case "chargeDuration":
-				return new ChargeDuration(this.partDropDown.data, this.norms)
+				return new ChargeDuration(this.dataManager.participantData, this.dataManager.norms)
 			case "thresholdIV":
-				return new ThresholdIV(this.partDropDown.data, this.norms)
+				return new ThresholdIV(this.dataManager.participantData, this.dataManager.norms)
 			case "stimulusResponse":
-				return new StimulusResponse(this.partDropDown.data, this.norms)
+				return new StimulusResponse(this.dataManager.participantData, this.dataManager.norms)
 			case "stimulusResponseRelative":
-				return new StimulusRelative(this.partDropDown.data, this.norms)
+				return new StimulusRelative(this.dataManager.participantData, this.dataManager.norms)
 		}
-	}
-
-	updateOutliers(name, queryString) {
-		if (queryString === undefined) {
-			queryString = Filter.asQueryString()
-		}
-
-		fetch(this.url + "outliers" + queryString + "&name=" + name)
-			.then(response => {
-				return response.json()
-			})
-			.then(scores => {
-				this.scores = scores
-				ExVars.updateScores(this.participant, scores)
-			})
-	}
-
-	updateNorms(queryString) {
-		if (queryString === undefined) {
-			queryString = Filter.asQueryString()
-		}
-
-		fetch(this.url + "norms" + queryString)
-			.then(response => {
-				return response.json()
-			})
-			.then(norms => {
-				this.norms = norms
-				Object.values(this.plots).forEach(pl => {
-					pl.updateNorms(norms)
-				})
-			})
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -27,7 +28,7 @@ func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
 
 	name, mm, err := getMemFromRequest(r, mefData)
 	if err != nil {
-		setError(w, "Could not load Mem from request because"+err.Error())
+		setError(w, "Could not load Mem from request because "+err.Error())
 		return
 	}
 
@@ -50,12 +51,18 @@ func getMemFromRequest(r *http.Request, mefData mef.Mef) (string, *mem.Mem, erro
 			return "", nil, errors.New("could not make outlier scores for empty participant")
 		}
 
-		mm, err := mem.Import(r.Body)
+		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			return "", nil, errors.New("could not load Mem because" + err.Error())
+			return "", nil, errors.New("could not read request body because " + err.Error())
 		}
 
-		return "Uploaded MEM '" + mm.Header.Name + "'", mm, nil
+		var mm mem.Mem
+		err = json.Unmarshal(body, &mm)
+		if err != nil {
+			return "", nil, errors.New("could not unmarshal Mem because " + err.Error())
+		}
+
+		return "Uploaded MEM '" + mm.Header.Name + "'", &mm, nil
 	}
 
 	mm := mefData.MemWithKey(name)
