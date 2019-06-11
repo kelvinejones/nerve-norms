@@ -14,12 +14,6 @@ class ChartFactory {
 
 		this.filter.update().setParticipant(this.partDropDown.name).fetchNorms().fetchOutliers()
 
-		document.querySelector("form").addEventListener("submit", (event) => {
-			ExVars.clearScores()
-			this.filter.update().setParticipant(this.partDropDown.name).fetchNorms().fetchOutliers()
-			event.preventDefault()
-		})
-
 		this.plots = {
 			"recoveryCycle": null,
 			"thresholdElectrotonus": null,

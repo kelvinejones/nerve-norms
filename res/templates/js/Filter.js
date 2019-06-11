@@ -4,6 +4,12 @@ class Filter {
 	constructor(callback) {
 		this.callback = callback
 		this.queryString = Filter._queryString
+
+		document.querySelector("form").addEventListener("submit", (event) => {
+			ExVars.clearScores()
+			this.update().fetchNorms().fetchOutliers()
+			event.preventDefault()
+		})
 	}
 
 	update() {
