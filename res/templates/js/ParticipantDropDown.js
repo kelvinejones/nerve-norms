@@ -1,8 +1,8 @@
 class ParticipantDropDown {
 	// elementID is the HTML ID.
 	// data is an object indexed by the drop-down's values
-	// action is a function that receives the name name and data as its arguments
-	constructor(elementID, data, filter, callback, initialOptions) {
+	// The dataProvider is expected to provide a list of objects that implement 'updateParticipant'
+	constructor(elementID, data, filter, dataProvider, initialOptions) {
 		this.dt = data
 
 		const updateData = (ev) => {
@@ -11,7 +11,9 @@ class ParticipantDropDown {
 
 			ExVars.clearScores()
 
-			callback(participantData)
+			Object.values(dataProvider()).forEach(pl => {
+				pl.updateParticipant(participantData)
+			})
 
 			ExVars.updateValues(participantData)
 			filter.update(this.val)
