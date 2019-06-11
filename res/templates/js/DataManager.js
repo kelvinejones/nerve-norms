@@ -71,7 +71,7 @@ class DataManager {
 	_updateDropDownOptions() {
 		const selection = this.dropDown.selectedIndex
 
-		let index = 0;
+		let index = 0
 		this.participants.forEach(opt => {
 			this.dropDown.options[index++] = new Option(opt.name)
 		})
@@ -84,17 +84,17 @@ class DataManager {
 
 	_uploadMEM() {
 		// This code is modified from https://stackoverflow.com/a/40971885
-		var input = document.createElement('input');
-		input.type = 'file';
+		var input = document.createElement('input')
+		input.type = 'file'
 
 		input.onchange = e => {
-			var file = e.target.files[0];
+			var file = e.target.files[0]
 
-			var reader = new FileReader();
-			reader.readAsText(file, 'UTF-8');
+			var reader = new FileReader()
+			reader.readAsText(file, 'UTF-8')
 
 			reader.onload = readerEvent => {
-				var content = readerEvent.target.result; // this is the content!
+				var content = readerEvent.target.result // this is the content!
 				Fetch.MEM(this.queryString, content, convertedMem => {
 					if (convertedMem.error != null) {
 						console.log("Conversion error", convertedMem.error)
