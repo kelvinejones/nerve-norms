@@ -23,29 +23,21 @@ type filterParameters struct {
 }
 
 func NormHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		setError(w, "Error parsing form: "+err.Error())
-		return
-	}
-
 	mefData, err := data.AsMef()
 	if err != nil {
-		setError(w, "Error loading MEF: "+err.Error())
+		setError(w, "Error loading MEF because "+err.Error())
 		return
 	}
 
-	fp, err := parseQuery(r)
+	jsNorm, err := getFilteredNormsFromRequest(r, mefData)
 	if err != nil {
-		setError(w, "Error parsing query: "+err.Error())
+		setError(w, "Error getting filtered norms due to "+err.Error())
 		return
 	}
-	mefData.Filter(mef.NewFilter().BySex(fp.sex).ByAge(fp.minAge, fp.maxAge).ByCountry(fp.country).BySpecies(fp.species).ByNerve(fp.nerve))
 
-	jsNorm := mefData.Norm()
 	jsNormArray, err := json.Marshal(&jsNorm)
 	if err != nil {
-		setError(w, "Could not create norm JSON due to error: "+err.Error())
+		setError(w, "Could not create norm JSON due to "+err.Error())
 		return
 	}
 	log.Println("Served norms")
@@ -93,4 +85,19 @@ func parseQuery(r *http.Request) (filterParameters, error) {
 	}
 
 	return fp, nil
+}
+
+func getFilteredNormsFromRequest(r *http.Request, mefData mef.Mef) (mef.Norm, error) {
+	err := r.ParseForm()
+	if err != nil {
+		return mef.Norm{}, errors.New("error parsing form because " + err.Error())
+	}
+
+	fp, err := parseQuery(r)
+	if err != nil {
+		return mef.Norm{}, errors.New("error parsing query because " + err.Error())
+	}
+	mefData.Filter(mef.NewFilter().BySex(fp.sex).ByAge(fp.minAge, fp.maxAge).ByCountry(fp.country).BySpecies(fp.species).ByNerve(fp.nerve))
+
+	return mefData.Norm(), nil
 }
