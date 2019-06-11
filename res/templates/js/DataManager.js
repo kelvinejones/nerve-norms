@@ -43,7 +43,7 @@ class DataManager {
 		this.queryString = Filter.queryString
 		const normChanged = (lastQuery != this.queryString)
 		if (normChanged) {
-			Fetch.Norms(this.queryString, norms => {
+			this._fetchNorms(norms => {
 				this.normData = norms
 				Object.values(this.dataUsers()).forEach(pl => {
 					pl.updateNorms(norms)
@@ -58,11 +58,19 @@ class DataManager {
 
 			ExVars.clearScores()
 
-			if (participant.dataIsLocal) {
-				Fetch.OutliersFromName(this.queryString, participant.name, ExVars.updateScores)
-			} else {
-				Fetch.OutliersFromJSON(this.queryString, participant.data, ExVars.updateScores)
-			}
+			this._fetchOutliers(participant)
+		}
+	}
+
+	_fetchNorms(action) {
+		Fetch.Norms(this.queryString, action)
+	}
+
+	_fetchOutliers(participant) {
+		if (participant.dataIsLocal) {
+			Fetch.OutliersFromName(this.queryString, participant.name, ExVars.updateScores)
+		} else {
+			Fetch.OutliersFromJSON(this.queryString, participant.data, ExVars.updateScores)
 		}
 	}
 
