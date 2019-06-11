@@ -5,7 +5,6 @@ class Filter {
 		this.callback = callback
 
 		document.querySelector("form").addEventListener("submit", (event) => {
-			ExVars.clearScores()
 			this.update(this.name)
 			event.preventDefault()
 		})
@@ -19,8 +18,13 @@ class Filter {
 			this._fetchNorms()
 		}
 
+		const lastParticipant = this.name
 		this.name = name
-		this._fetchOutliers()
+		const nameChanged = (lastParticipant != this.name)
+		if (normChanged || nameChanged) {
+			ExVars.clearScores()
+			this._fetchOutliers()
+		}
 	}
 
 	static get _queryString() {
