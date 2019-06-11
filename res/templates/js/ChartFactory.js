@@ -2,7 +2,7 @@ class ChartFactory {
 	constructor(participants) {
 		this.filter = new Filter(this.updatePlotsWithNorms.bind(this))
 
-		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (participantName, participantData) => {
+		this.partDropDown = new ParticipantDropDown("select-participant-dropdown", participants, (participantName, participantData) => {
 			ExVars.clearScores()
 
 			Object.values(this.plots).forEach(pl => {
@@ -12,11 +12,11 @@ class ChartFactory {
 			this.filter.update().fetchOutliers(participantName)
 		}, ["CA-WI20S", "CA-AL27H", "JP-20-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "CA Mean", "JP Mean", "PO Mean", "Rat Fast Axon", "Rat Slow Axon", "Rat on Drugs"])
 
-		this.filter.update().fetchNorms().fetchOutliers(this.partDropDown.selection)
+		this.filter.update().fetchNorms().fetchOutliers(this.partDropDown.name)
 
 		document.querySelector("form").addEventListener("submit", (event) => {
 			ExVars.clearScores()
-			this.filter.update().fetchNorms().fetchOutliers(this.partDropDown.selection)
+			this.filter.update().fetchNorms().fetchOutliers(this.partDropDown.name)
 			event.preventDefault()
 		})
 

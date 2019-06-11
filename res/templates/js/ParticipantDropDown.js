@@ -1,7 +1,7 @@
-class DataDropDown {
+class ParticipantDropDown {
 	// elementID is the HTML ID.
 	// data is an object indexed by the drop-down's values
-	// action is a function that receives the selection name and data as its arguments
+	// action is a function that receives the name name and data as its arguments
 	constructor(elementID, data, action, initialOptions) {
 		this.elementID = elementID
 		this.dt = data
@@ -20,7 +20,7 @@ class DataDropDown {
 		this.val = dropDown.value
 	}
 
-	get selection() {
+	get name() {
 		return this.val
 	}
 
