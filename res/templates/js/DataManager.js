@@ -6,20 +6,19 @@ class DataManager {
 		this.dataUsers = dataUsers
 
 		const uploadOption = "Upload MEM..."
-		const dropDownOptions = [
-			"CA-WI20S",
-			"CA-AL27H",
-			"JP-20-1",
-			"JP-70-1",
-			"PO-00d97e84",
-			"PO-017182a5",
-			"CA Mean",
-			"JP Mean",
-			"PO Mean",
-			"Rat Fast Axon",
-			"Rat Slow Axon",
-			"Rat on Drugs",
-			uploadOption,
+		const participants = [
+			Participant.load("CA-WI20S", data),
+			Participant.load("CA-AL27H", data),
+			Participant.load("JP-20-1", data),
+			Participant.load("JP-70-1", data),
+			Participant.load("PO-00d97e84", data),
+			Participant.load("PO-017182a5", data),
+			Participant.load("CA Mean", data),
+			Participant.load("JP Mean", data),
+			Participant.load("PO Mean", data),
+			Participant.load("Rat Fast Axon", data),
+			Participant.load("Rat Slow Axon", data),
+			Participant.load("Rat on Drugs", data),
 		]
 
 		this.filter = new Filter(norms => {
@@ -41,12 +40,14 @@ class DataManager {
 			}
 		}
 
-		const dropDown = document.getElementById("select-participant-dropdown")
-		dropDown.addEventListener("change", updateData)
-		dropDownOptions.forEach(function(opt) {
-			dropDown.options[dropDown.options.length] = new Option(opt)
+		this.dropDown = document.getElementById("select-participant-dropdown")
+		this.dropDown.addEventListener("change", updateData)
+		participants.forEach(opt => {
+			this.dropDown.options[this.dropDown.options.length] = new Option(opt.name)
 		})
-		this.val = dropDown.value
+		this.dropDown.options[this.dropDown.options.length] = new Option(uploadOption)
+
+		this.val = this.dropDown.value
 
 		this.filter.update(this.val)
 	}
