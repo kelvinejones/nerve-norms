@@ -2,8 +2,15 @@ class ParticipantDropDown {
 	// elementID is the HTML ID.
 	// data is an object indexed by the drop-down's values
 	// The dataProvider is expected to provide a list of objects that implement 'updateParticipant'
-	constructor(elementID, data, filter, dataProvider, initialOptions) {
+	constructor(elementID, data, dataProvider, initialOptions) {
 		this.dt = data
+
+		const filter = new Filter(norms => {
+			this.normData = norms
+			Object.values(dataProvider()).forEach(pl => {
+				pl.updateNorms(norms)
+			})
+		})
 
 		const updateData = (ev) => {
 			this.val = ev.srcElement.value
@@ -27,6 +34,10 @@ class ParticipantDropDown {
 		this.val = dropDown.value
 
 		filter.update(this.val)
+	}
+
+	get norms() {
+		return this.normData
 	}
 
 	get name() {

@@ -1,13 +1,6 @@
 class ChartFactory {
 	constructor(participants) {
-		this.filter = new Filter(norms => {
-			this.norms = norms
-			Object.values(this.plots).forEach(pl => {
-				pl.updateNorms(norms)
-			})
-		})
-
-		this.partDropDown = new ParticipantDropDown("select-participant-dropdown", participants, this.filter, () => {
+		this.partDropDown = new ParticipantDropDown("select-participant-dropdown", participants, () => {
 			return this.plots
 		}, ["CA-WI20S", "CA-AL27H", "JP-20-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "CA Mean", "JP Mean", "PO Mean", "Rat Fast Axon", "Rat Slow Axon", "Rat on Drugs"])
 
@@ -61,17 +54,17 @@ class ChartFactory {
 	build(typeStr) {
 		switch (typeStr) {
 			case "recoveryCycle":
-				return new RecoveryCycle(this.partDropDown.data, this.norms)
+				return new RecoveryCycle(this.partDropDown.data, this.partDropDown.norms)
 			case "thresholdElectrotonus":
-				return new ThresholdElectrotonus(this.partDropDown.data, this.norms)
+				return new ThresholdElectrotonus(this.partDropDown.data, this.partDropDown.norms)
 			case "chargeDuration":
-				return new ChargeDuration(this.partDropDown.data, this.norms)
+				return new ChargeDuration(this.partDropDown.data, this.partDropDown.norms)
 			case "thresholdIV":
-				return new ThresholdIV(this.partDropDown.data, this.norms)
+				return new ThresholdIV(this.partDropDown.data, this.partDropDown.norms)
 			case "stimulusResponse":
-				return new StimulusResponse(this.partDropDown.data, this.norms)
+				return new StimulusResponse(this.partDropDown.data, this.partDropDown.norms)
 			case "stimulusResponseRelative":
-				return new StimulusRelative(this.partDropDown.data, this.norms)
+				return new StimulusRelative(this.partDropDown.data, this.partDropDown.norms)
 		}
 	}
 }
