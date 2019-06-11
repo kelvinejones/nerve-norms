@@ -46,7 +46,16 @@ func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
 func getMemFromRequest(r *http.Request, mefData mef.Mef) (string, *mem.Mem, error) {
 	name := r.FormValue("name")
 	if name == "" {
-		return "", nil, errors.New("could not make outlier scores for empty participant")
+		if r.Body == nil {
+			return "", nil, errors.New("could not make outlier scores for empty participant")
+		}
+
+		mm, err := mem.Import(r.Body)
+		if err != nil {
+			return "", nil, errors.New("could not load Mem because" + err.Error())
+		}
+
+		return "Uploaded MEM '" + mm.Header.Name + "'", mm, nil
 	}
 
 	mm := mefData.MemWithKey(name)
