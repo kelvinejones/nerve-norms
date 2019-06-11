@@ -101,7 +101,7 @@ class ChartFactory {
 			})
 			.then(scores => {
 				this.scores = scores
-				ExVars.updateScores(this.partDropDown.selection(), scores)
+				ExVars.updateScores(name, scores)
 			})
 	}
 
