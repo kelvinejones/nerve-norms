@@ -21,7 +21,7 @@ class DataManager {
 			Participant.load("Rat on Drugs", data),
 		]
 
-		Filter.setCallback(() => this.filterupdate(this.filtername))
+		Filter.setCallback(() => this._fetchUpdates(this.filtername))
 
 		this.dropDown = document.getElementById("select-participant-dropdown")
 		this.dropDown.addEventListener("change", (ev) => {
@@ -32,17 +32,17 @@ class DataManager {
 			} else {
 				this.uploadData = undefined
 				this._updateParticipant(this.dt[this.val])
-				this.filterupdate(this.val)
+				this._fetchUpdates(this.val)
 			}
 		})
 		this._updateDropDownOptions()
 
 		this.val = this.dropDown.value
 
-		this.filterupdate(this.val)
+		this._fetchUpdates(this.val)
 	}
 
-	filterupdate(name) {
+	_fetchUpdates(name) {
 		const lastQuery = this.filterqueryString
 		this.filterqueryString = Filter.queryString
 		const normChanged = (lastQuery != this.filterqueryString)
