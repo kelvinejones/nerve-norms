@@ -8,7 +8,7 @@ class ChartFactory {
 			})
 		}, ["CA-WI20S", "CA-AL27H", "JP-20-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "CA Mean", "JP Mean", "PO Mean", "Rat Fast Axon", "Rat Slow Axon", "Rat on Drugs"])
 
-		this.filter.update().setParticipant(this.partDropDown.name).fetchNorms().fetchOutliers()
+		this.filter.setParticipant(this.partDropDown.name).updateAll()
 
 		this.plots = {
 			"recoveryCycle": null,

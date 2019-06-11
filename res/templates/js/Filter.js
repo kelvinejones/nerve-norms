@@ -7,9 +7,13 @@ class Filter {
 
 		document.querySelector("form").addEventListener("submit", (event) => {
 			ExVars.clearScores()
-			this.update().fetchNorms().fetchOutliers()
+			this.updateAll()
 			event.preventDefault()
 		})
+	}
+
+	updateAll() {
+		this.update().fetchNorms().fetchOutliers()
 	}
 
 	update() {
