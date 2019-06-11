@@ -98,9 +98,12 @@ class DataManager {
 				Fetch.MEM(this.queryString, content, convertedMem => {
 					if (convertedMem.error != null) {
 						console.log("Conversion error", convertedMem.error)
-						alert("The MEM could not be converted. Please email it to jbell1@ualberta.ca for troubleshooting.")
+
 						this.dropDown.selectedIndex = this.participantIndex
+						this.participantIndex = -1 // To force an update
 						this._fetchUpdates()
+
+						alert("The MEM could not be converted. Please email it to jbell1@ualberta.ca for troubleshooting.")
 						return
 					}
 
