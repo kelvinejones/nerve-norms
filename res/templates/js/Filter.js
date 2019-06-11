@@ -1,4 +1,6 @@
 class Filter {
+	static get url() { return "https://us-central1-nervenorms.cloudfunctions.net/" }
+
 	static asQueryString() {
 		var data = new FormData(document.querySelector("form"))
 		const filter = { "species": "human", "nerve": "median" }
@@ -50,5 +52,34 @@ class Filter {
 				filter.maxAge = 200
 				break
 		}
+	}
+
+	static updateOutliers(name, queryString) {
+		if (queryString === undefined) {
+			queryString = Filter.asQueryString()
+		}
+
+		fetch(Filter.url + "outliers" + queryString + "&name=" + name)
+			.then(response => {
+				return response.json()
+			})
+			.then(scores => {
+				this.scores = scores
+				ExVars.updateScores(name, scores)
+			})
+	}
+
+	static updateNorms(queryString, callback) {
+		if (queryString === undefined) {
+			queryString = Filter.asQueryString()
+		}
+
+		fetch(Filter.url + "norms" + queryString)
+			.then(response => {
+				return response.json()
+			})
+			.then(norms => {
+				callback(norms)
+			})
 	}
 }

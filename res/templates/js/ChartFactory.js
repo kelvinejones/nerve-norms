@@ -1,7 +1,5 @@
 class ChartFactory {
 	constructor(participants) {
-		this.url = "https://us-central1-nervenorms.cloudfunctions.net/"
-
 		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (participantName, participantData) => {
 			ExVars.clearScores()
 
@@ -9,19 +7,19 @@ class ChartFactory {
 				pl.updateParticipant(participantData)
 			})
 			ExVars.updateValues(participantData)
-			this.updateOutliers(participantName)
+			Filter.updateOutliers(participantName)
 		}, ["CA-WI20S", "CA-AL27H", "JP-20-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "CA Mean", "JP Mean", "PO Mean", "Rat Fast Axon", "Rat Slow Axon", "Rat on Drugs"])
 
 		const queryString = Filter.asQueryString()
-		this.updateNorms(queryString)
-		this.updateOutliers(this.partDropDown.selection(), queryString)
+		Filter.updateNorms(queryString, this.updatePlotsWithNorms.bind(this))
+		Filter.updateOutliers(this.partDropDown.selection(), queryString)
 
 		document.querySelector("form").addEventListener("submit", (event) => {
 			ExVars.clearScores()
 
 			const queryString = Filter.asQueryString()
-			this.updateNorms(queryString)
-			this.updateOutliers(this.partDropDown.selection(), queryString)
+			Filter.updateNorms(queryString, this.updatePlotsWithNorms.bind(this))
+			Filter.updateOutliers(this.partDropDown.selection(), queryString)
 
 			event.preventDefault()
 		})
@@ -95,34 +93,5 @@ class ChartFactory {
 		Object.values(this.plots).forEach(pl => {
 			pl.updateNorms(norms)
 		})
-	}
-
-	updateOutliers(name, queryString) {
-		if (queryString === undefined) {
-			queryString = Filter.asQueryString()
-		}
-
-		fetch(this.url + "outliers" + queryString + "&name=" + name)
-			.then(response => {
-				return response.json()
-			})
-			.then(scores => {
-				this.scores = scores
-				ExVars.updateScores(name, scores)
-			})
-	}
-
-	updateNorms(queryString) {
-		if (queryString === undefined) {
-			queryString = Filter.asQueryString()
-		}
-
-		fetch(this.url + "norms" + queryString)
-			.then(response => {
-				return response.json()
-			})
-			.then(norms => {
-				this.updatePlotsWithNorms(norms)
-			})
 	}
 }
