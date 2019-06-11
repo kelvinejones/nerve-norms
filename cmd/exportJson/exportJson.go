@@ -58,6 +58,5 @@ func loadMemAsJson(path string) ([]byte, error) {
 		return nil, err
 	}
 
-	js, err := json.Marshal(&memData)
-	return js, err
+	return json.Marshal(&memData)
 }
