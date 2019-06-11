@@ -42,11 +42,6 @@ class DataManager {
 		this.filterupdate(this.val)
 	}
 
-	filtersetParticipantData(data) {
-		this.filtername = undefined
-		this.filterdata = data
-	}
-
 	filterupdate(name) {
 		const lastQuery = this.filterqueryString
 		this.filterqueryString = Filter.queryString
@@ -105,7 +100,8 @@ class DataManager {
 				Fetch.MEM(this.filterqueryString, this.filtername, content, convertedMem => {
 					this.uploadData = convertedMem.participant
 					this._updateParticipant(this.uploadData)
-					this.setParticipantData(this.uploadData)
+					this.filtername = undefined
+					this.filterdata = this.uploadData
 
 					this.uploadCount = this.uploadCount + 1
 					this.participants[this.participants.length] = new Participant(this.uploadData, "Upload " + this.uploadCount + ": " + this.uploadData.header.name)
