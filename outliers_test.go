@@ -1,13 +1,14 @@
 package jitter
 
 import (
-	"bufio"
+	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gogs.bellstone.ca/james/jitter/lib/data"
 )
 
 func TestOutliersHandlerNoParticipant(t *testing.T) {
@@ -42,10 +43,14 @@ func TestOutliersHandlerWithParticipantName(t *testing.T) {
 }
 
 func TestConvertMemHandlerWithParticipantData(t *testing.T) {
-	file, err := os.Open("res/data/FESB70821B.MEM")
+	mefData, err := data.AsMef()
 	assert.NoError(t, err)
 
-	req, err := http.NewRequest("GET", "", bufio.NewReader(file))
+	memData := mefData.MemWithKey("CA-CR21S")
+	jsMem, err := json.Marshal(memData)
+	assert.NoError(t, err)
+
+	req, err := http.NewRequest("GET", "", bytes.NewReader(jsMem))
 	if err != nil {
 		t.Fatal(err)
 	}
