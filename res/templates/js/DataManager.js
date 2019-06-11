@@ -41,10 +41,7 @@ class DataManager {
 
 		this.dropDown = document.getElementById("select-participant-dropdown")
 		this.dropDown.addEventListener("change", updateData)
-		this.participants.forEach(opt => {
-			this.dropDown.options[this.dropDown.options.length] = new Option(opt.name)
-		})
-		this.dropDown.options[this.dropDown.options.length] = new Option(DataManager.uploadOption)
+		this._updateDropDownOptions()
 
 		this.val = this.dropDown.value
 
@@ -52,6 +49,13 @@ class DataManager {
 	}
 
 	static get uploadOption() { return "Upload MEM..." }
+
+	_updateDropDownOptions() {
+		this.participants.forEach(opt => {
+			this.dropDown.options[this.dropDown.options.length] = new Option(opt.name)
+		})
+		this.dropDown.options[this.dropDown.options.length] = new Option(DataManager.uploadOption)
+	}
 
 	_uploadMEM() {
 		// This code is modified from https://stackoverflow.com/a/40971885
