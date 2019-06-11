@@ -132,10 +132,6 @@ class DataManager {
 	}
 
 	get participantData() {
-		if (this.uploadData != null) {
-			return this.uploadData
-		} else {
-			return this.dt[this.val]
-		}
+		return this.participants[this.participantIndex].data
 	}
 }
