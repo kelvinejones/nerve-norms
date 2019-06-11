@@ -3,11 +3,9 @@ class ParticipantDropDown {
 	// data is an object indexed by the drop-down's values
 	// action is a function that receives the name name and data as its arguments
 	constructor(elementID, data, filter, callback, initialOptions) {
-		this.elementID = elementID
 		this.dt = data
-		this.filter = filter
 
-		this.updateData = (ev) => {
+		const updateData = (ev) => {
 			this.val = ev.srcElement.value
 			const participantData = this.dt[this.val]
 
@@ -16,11 +14,11 @@ class ParticipantDropDown {
 			callback(participantData)
 
 			ExVars.updateValues(participantData)
-			this.filter.update().setParticipant(this.val).fetchOutliers()
+			filter.update().setParticipant(this.val).fetchOutliers()
 		}
 
-		const dropDown = document.getElementById(this.elementID)
-		dropDown.addEventListener("change", this.updateData)
+		const dropDown = document.getElementById(elementID)
+		dropDown.addEventListener("change", updateData)
 		initialOptions.forEach(function(opt) {
 			dropDown.options[dropDown.options.length] = new Option(opt)
 		})
