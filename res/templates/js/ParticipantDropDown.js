@@ -23,6 +23,8 @@ class ParticipantDropDown {
 			dropDown.options[dropDown.options.length] = new Option(opt)
 		})
 		this.val = dropDown.value
+
+		filter.update(this.val)
 	}
 
 	get name() {
