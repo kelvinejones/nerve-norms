@@ -12,14 +12,14 @@ class ChartFactory {
 
 		const queryString = Filter.asQueryString()
 		Filter.updateNorms(queryString, this.updatePlotsWithNorms.bind(this))
-		Filter.updateOutliers(this.partDropDown.selection(), queryString)
+		Filter.updateOutliers(this.partDropDown.selection, queryString)
 
 		document.querySelector("form").addEventListener("submit", (event) => {
 			ExVars.clearScores()
 
 			const queryString = Filter.asQueryString()
 			Filter.updateNorms(queryString, this.updatePlotsWithNorms.bind(this))
-			Filter.updateOutliers(this.partDropDown.selection(), queryString)
+			Filter.updateOutliers(this.partDropDown.selection, queryString)
 
 			event.preventDefault()
 		})
