@@ -43,11 +43,11 @@ class DataManager {
 	}
 
 	_fetchUpdates(name) {
-		const lastQuery = this.filterqueryString
-		this.filterqueryString = Filter.queryString
-		const normChanged = (lastQuery != this.filterqueryString)
+		const lastQuery = this.queryString
+		this.queryString = Filter.queryString
+		const normChanged = (lastQuery != this.queryString)
 		if (normChanged) {
-			Fetch.Norms(this.filterqueryString, norms => {
+			Fetch.Norms(this.queryString, norms => {
 				this.normData = norms
 				Object.values(this.dataUsers()).forEach(pl => {
 					pl.updateNorms(norms)
@@ -63,7 +63,7 @@ class DataManager {
 		const nameChanged = (lastParticipant != this.filtername)
 		if (normChanged || nameChanged) {
 			ExVars.clearScores()
-			Fetch.Outliers(this.filterqueryString, this.filtername, this.filterdata, scores => {
+			Fetch.Outliers(this.queryString, this.filtername, this.filterdata, scores => {
 				ExVars.updateScores(this.filtername, scores)
 			})
 		}
@@ -99,7 +99,7 @@ class DataManager {
 			reader.onload = readerEvent => {
 				var content = readerEvent.target.result; // this is the content!
 				this.filterlastParticipant = undefined
-				Fetch.MEM(this.filterqueryString, content, convertedMem => {
+				Fetch.MEM(this.queryString, content, convertedMem => {
 					this.uploadData = convertedMem.participant
 					this._updateParticipant(this.uploadData)
 					this.filtername = undefined
