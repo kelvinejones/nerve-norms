@@ -17,6 +17,8 @@ type memWithScores struct {
 }
 
 func ConvertMemHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	mefData, err := data.AsMef()
 	if err != nil {
 		setError(w, "Error loading MEF: "+err.Error())
@@ -50,6 +52,5 @@ func ConvertMemHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println("Served converted MEM for " + mws.Mem.Header.Name)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintln(w, string(jsOSArray))
 }

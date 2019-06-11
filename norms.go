@@ -23,6 +23,8 @@ type filterParameters struct {
 }
 
 func NormHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	mefData, err := data.AsMef()
 	if err != nil {
 		setError(w, "Error loading MEF because "+err.Error())
@@ -41,7 +43,6 @@ func NormHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println("Served norms")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintln(w, string(jsNormArray))
 }
 

@@ -14,6 +14,8 @@ import (
 )
 
 func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	mefData, err := data.AsMef()
 	if err != nil {
 		setError(w, "Error loading MEF: "+err.Error())
@@ -40,7 +42,6 @@ func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println("Served outlier scores for " + name)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintln(w, string(jsOSArray))
 }
 
