@@ -5,8 +5,7 @@ class DataManager {
 		this.dt = data
 		this.dataUsers = dataUsers
 
-		const uploadOption = "Upload MEM..."
-		const participants = [
+		this.participants = [
 			Participant.load("CA-WI20S", data),
 			Participant.load("CA-AL27H", data),
 			Participant.load("JP-20-1", data),
@@ -31,7 +30,7 @@ class DataManager {
 		const updateData = (ev) => {
 			this.val = ev.srcElement.value
 			ExVars.clearScores()
-			if (this.val == uploadOption) {
+			if (this.val == DataManager.uploadOption) {
 				this._uploadMEM()
 			} else {
 				this.uploadData = undefined
@@ -42,15 +41,17 @@ class DataManager {
 
 		this.dropDown = document.getElementById("select-participant-dropdown")
 		this.dropDown.addEventListener("change", updateData)
-		participants.forEach(opt => {
+		this.participants.forEach(opt => {
 			this.dropDown.options[this.dropDown.options.length] = new Option(opt.name)
 		})
-		this.dropDown.options[this.dropDown.options.length] = new Option(uploadOption)
+		this.dropDown.options[this.dropDown.options.length] = new Option(DataManager.uploadOption)
 
 		this.val = this.dropDown.value
 
 		this.filter.update(this.val)
 	}
+
+	static get uploadOption() { return "Upload MEM..." }
 
 	_uploadMEM() {
 		// This code is modified from https://stackoverflow.com/a/40971885
