@@ -2,53 +2,66 @@ package jitter
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 
 	"gogs.bellstone.ca/james/jitter/lib/data"
 	"gogs.bellstone.ca/james/jitter/lib/mef"
+	"gogs.bellstone.ca/james/jitter/lib/mem"
 )
 
 func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		setError(w, "Error parsing form: "+err.Error())
-		return
-	}
-	name := r.FormValue("name")
-	if name == "" {
-		setError(w, "Could not make outlier scores for empty participant")
-		return
-	}
-
 	mefData, err := data.AsMef()
 	if err != nil {
 		setError(w, "Error loading MEF: "+err.Error())
 		return
 	}
 
-	mm := mefData.MemWithKey(name)
-	if mm == nil {
-		setError(w, "Could not find participant '"+name+"'")
-		return
-	}
-
-	fp, err := parseQuery(r)
+	norm, err := getFilteredNormsFromRequest(r, mefData)
 	if err != nil {
-		setError(w, "Error parsing query: "+err.Error())
+		setError(w, "Error getting filtered norms due to "+err.Error())
 		return
 	}
-	mefData.Filter(mef.NewFilter().BySex(fp.sex).ByAge(fp.minAge, fp.maxAge).ByCountry(fp.country).BySpecies(fp.species).ByNerve(fp.nerve))
-	norm := mefData.Norm()
-	os := norm.OutlierScores(mm)
 
+	name, mm, err := getMemFromRequest(r, mefData)
+	if err != nil {
+		setError(w, "Could not load Mem from request because"+err.Error())
+		return
+	}
+
+	os := norm.OutlierScores(mm)
 	jsOSArray, err := json.Marshal(&os)
 	if err != nil {
 		setError(w, "Could not create outlier score JSON due to error: "+err.Error())
 		return
 	}
+
 	log.Println("Served outlier scores for " + name)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintln(w, string(jsOSArray))
+}
+
+func getMemFromRequest(r *http.Request, mefData mef.Mef) (string, *mem.Mem, error) {
+	name := r.FormValue("name")
+	if name == "" {
+		if r.Body == nil {
+			return "", nil, errors.New("could not make outlier scores for empty participant")
+		}
+
+		mm, err := mem.Import(r.Body)
+		if err != nil {
+			return "", nil, errors.New("could not load Mem because" + err.Error())
+		}
+
+		return "Uploaded MEM '" + mm.Header.Name + "'", mm, nil
+	}
+
+	mm := mefData.MemWithKey(name)
+	if mm == nil {
+		return "", nil, errors.New("could not find participant '" + name + "'")
+	}
+
+	return name, mm, nil
 }
