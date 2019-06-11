@@ -14,17 +14,21 @@ class Fetch {
 			})
 	}
 
-	static Outliers(queryString, name, data, callback) {
-		let query = Fetch.url + "outliers" + queryString
-		let body = undefined
-		if (name != null) {
-			query = query + "&name=" + name
-		} else if (data != null) {
-			body = { method: 'POST', body: JSON.stringify(data) }
-		} else {
-			console.log("Error in fetch", name, data)
-		}
-		fetch(query, body)
+	static OutliersFromName(queryString, name, callback) {
+		fetch(Fetch.url + "outliers" + queryString + "&name=" + name)
+			.then(response => {
+				return response.json()
+			})
+			.then(scores => {
+				callback(scores)
+			})
+	}
+
+	static OutliersFromJSON(queryString, data, callback) {
+		fetch(Fetch.url + "outliers" + queryString, {
+				method: 'POST',
+				body: JSON.stringify(data)
+			})
 			.then(response => {
 				return response.json()
 			})

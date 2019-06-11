@@ -67,7 +67,7 @@ class ExVars {
 		}
 	}
 
-	static updateScores(name, scores) {
+	static updateScores(scores) {
 		ExVars._setHeaderScore(".participant-header", scores.Overall)
 		const healthLabel = ExVars._labelForScore(scores.Overall)
 		ExVars._setExcitabilityVariableValue("overall-score", healthLabel + " (" + scores.Overall.toFixed(2) + ")", false)

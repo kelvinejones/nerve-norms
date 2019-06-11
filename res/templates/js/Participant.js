@@ -2,14 +2,10 @@ class Participant {
 	static load(name, array) {
 		return new Participant(array[name], name)
 	}
-	constructor(data, name) {
+	constructor(data, name, dataIsLocal = true) {
 		this._data = data
-		this._localData = (name != null)
-		if (this._localData) {
-			this._name = name
-		} else {
-			this._name = this._data.header.name
-		}
+		this._name = name
+		this._localData = dataIsLocal
 	}
 
 	get dataIsLocal() { return this._localData }

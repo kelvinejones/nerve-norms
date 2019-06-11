@@ -21,7 +21,7 @@ class DataManager {
 			Participant.load("Rat on Drugs", data),
 		]
 
-		Filter.setCallback(() => this._fetchUpdates(this.filtername))
+		Filter.setCallback(() => this._fetchUpdates())
 
 		this.dropDown = document.getElementById("select-participant-dropdown")
 		this.dropDown.addEventListener("change", (ev) => {
@@ -32,17 +32,17 @@ class DataManager {
 			} else {
 				this.uploadData = undefined
 				this._updateParticipant(this.dt[this.val])
-				this._fetchUpdates(this.val)
+				this._fetchUpdates()
 			}
 		})
 		this._updateDropDownOptions()
 
 		this.val = this.dropDown.value
 
-		this._fetchUpdates(this.val)
+		this._fetchUpdates()
 	}
 
-	_fetchUpdates(name) {
+	_fetchUpdates() {
 		const lastQuery = this.queryString
 		this.queryString = Filter.queryString
 		const normChanged = (lastQuery != this.queryString)
@@ -55,17 +55,18 @@ class DataManager {
 			})
 		}
 
-		if (name != undefined) {
-			this.filterdata = undefined
-		}
-		const lastParticipant = this.filtername
-		this.filtername = name
-		const nameChanged = (lastParticipant != this.filtername)
+		const nameChanged = (this.participantIndex != this.dropDown.selectedIndex)
 		if (normChanged || nameChanged) {
+			this.participantIndex = this.dropDown.selectedIndex
+			const participant = this.participants[this.participantIndex]
+
 			ExVars.clearScores()
-			Fetch.Outliers(this.queryString, this.filtername, this.filterdata, scores => {
-				ExVars.updateScores(this.filtername, scores)
-			})
+
+			if (participant.dataIsLocal) {
+				Fetch.OutliersFromName(this.queryString, participant.name, ExVars.updateScores)
+			} else {
+				Fetch.OutliersFromJSON(this.queryString, participant.data, ExVars.updateScores)
+			}
 		}
 	}
 
@@ -98,18 +99,15 @@ class DataManager {
 
 			reader.onload = readerEvent => {
 				var content = readerEvent.target.result; // this is the content!
-				this.filterlastParticipant = undefined
 				Fetch.MEM(this.queryString, content, convertedMem => {
 					this.uploadData = convertedMem.participant
 					this._updateParticipant(this.uploadData)
-					this.filtername = undefined
-					this.filterdata = this.uploadData
 
 					this.uploadCount = this.uploadCount + 1
-					this.participants[this.participants.length] = new Participant(this.uploadData, "Upload " + this.uploadCount + ": " + this.uploadData.header.name)
+					this.participants[this.participants.length] = new Participant(this.uploadData, "Upload " + this.uploadCount + ": " + this.uploadData.header.name, false)
 					this._updateDropDownOptions()
 
-					ExVars.updateScores(this.filtername, convertedMem.outlierScores)
+					ExVars.updateScores(convertedMem.outlierScores)
 				})
 			}
 		}
