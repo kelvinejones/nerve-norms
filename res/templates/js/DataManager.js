@@ -4,51 +4,82 @@ class DataManager {
 	constructor(data, dataUsers) {
 		this.dt = data
 		this.dataUsers = dataUsers
+		this.uploadCount = 0
 
-		const uploadOption = "Upload MEM..."
-		const dropDownOptions = [
-			"CA-WI20S",
-			"CA-AL27H",
-			"JP-20-1",
-			"JP-70-1",
-			"PO-00d97e84",
-			"PO-017182a5",
-			"CA Mean",
-			"JP Mean",
-			"PO Mean",
-			"Rat Fast Axon",
-			"Rat Slow Axon",
-			"Rat on Drugs",
-			uploadOption,
+		this.participants = [
+			Participant.load("CA-WI20S", data),
+			Participant.load("CA-AL27H", data),
+			Participant.load("JP-20-1", data),
+			Participant.load("JP-70-1", data),
+			Participant.load("PO-00d97e84", data),
+			Participant.load("PO-017182a5", data),
+			Participant.load("CA Mean", data),
+			Participant.load("JP Mean", data),
+			Participant.load("PO Mean", data),
+			Participant.load("Rat Fast Axon", data),
+			Participant.load("Rat Slow Axon", data),
+			Participant.load("Rat on Drugs", data),
 		]
 
-		this.filter = new Filter(norms => {
-			this.normData = norms
-			Object.values(this.dataUsers()).forEach(pl => {
-				pl.updateNorms(norms)
-			})
-		})
+		Filter.setCallback(() => this._fetchUpdates())
 
-		const updateData = (ev) => {
-			this.val = ev.srcElement.value
+		this.dropDown = document.getElementById("select-participant-dropdown")
+		this.dropDown.addEventListener("change", (ev) => {
 			ExVars.clearScores()
-			if (this.val == uploadOption) {
+			if (this.dropDown.selectedIndex >= this.participants.length) {
 				this._uploadMEM()
 			} else {
-				this.uploadData = undefined
-				this._updateParticipant(this.dt[this.val])
-				this.filter.update(this.val)
+				this._updateParticipant()
+				this._fetchUpdates()
 			}
+		})
+		this._updateDropDownOptions()
+
+		this._fetchUpdates()
+	}
+
+	_fetchUpdates() {
+		const lastQuery = this.queryString
+		this.queryString = Filter.queryString
+		const normChanged = (lastQuery != this.queryString)
+		if (normChanged) {
+			Fetch.Norms(this.queryString, norms => {
+				this.normData = norms
+				Object.values(this.dataUsers()).forEach(pl => {
+					pl.updateNorms(norms)
+				})
+			})
 		}
 
-		const dropDown = document.getElementById("select-participant-dropdown")
-		dropDown.addEventListener("change", updateData)
-		dropDownOptions.forEach(function(opt) {
-			dropDown.options[dropDown.options.length] = new Option(opt)
-		})
-		this.val = dropDown.value
+		const nameChanged = (this.participantIndex != this.dropDown.selectedIndex)
+		if (normChanged || nameChanged) {
+			this.participantIndex = this.dropDown.selectedIndex
+			const participant = this.participants[this.participantIndex]
 
-		this.filter.update(this.val)
+			ExVars.clearScores()
+
+			if (participant.dataIsLocal) {
+				Fetch.OutliersFromName(this.queryString, participant.name, ExVars.updateScores)
+			} else {
+				Fetch.OutliersFromJSON(this.queryString, participant.data, ExVars.updateScores)
+			}
+		}
+	}
+
+	static get uploadOption() { return "Upload MEM..." }
+
+	_updateDropDownOptions() {
+		const selection = this.dropDown.selectedIndex
+
+		let index = 0;
+		this.participants.forEach(opt => {
+			this.dropDown.options[index++] = new Option(opt.name)
+		})
+		this.dropDown.options[index] = new Option(DataManager.uploadOption)
+
+		if (selection >= 0) {
+			this.dropDown.selectedIndex = selection
+		}
 	}
 
 	_uploadMEM() {
@@ -64,10 +95,15 @@ class DataManager {
 
 			reader.onload = readerEvent => {
 				var content = readerEvent.target.result; // this is the content!
-				this.filter.fetchMEM(content, convertedMem => {
-					this.uploadData = convertedMem.participant
-					this._updateParticipant(this.uploadData)
-					this.filter.setParticipantData(this.uploadData)
+				Fetch.MEM(this.queryString, content, convertedMem => {
+					this.uploadCount = this.uploadCount + 1
+					const name = "Upload " + this.uploadCount + ": " + convertedMem.participant.header.name
+					this.participants[this.participants.length] = new Participant(convertedMem.participant, name, false)
+					this._updateDropDownOptions()
+
+					this._updateParticipant()
+
+					ExVars.updateScores(convertedMem.outlierScores)
 				})
 			}
 		}
@@ -75,12 +111,13 @@ class DataManager {
 		input.click();
 	}
 
-	_updateParticipant(participantData) {
+	_updateParticipant() {
+		const data = this.participantData
 		Object.values(this.dataUsers()).forEach(pl => {
-			pl.updateParticipant(participantData)
+			pl.updateParticipant(data)
 		})
 
-		ExVars.updateValues(participantData)
+		ExVars.updateValues(data)
 	}
 
 	get norms() {
@@ -88,14 +125,10 @@ class DataManager {
 	}
 
 	get participantName() {
-		return this.val
+		return this.participants[this.dropDown.selectedIndex].name
 	}
 
 	get participantData() {
-		if (this.uploadData != null) {
-			return this.uploadData
-		} else {
-			return this.dt[this.val]
-		}
+		return this.participants[this.dropDown.selectedIndex].data
 	}
 }
