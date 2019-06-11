@@ -25,9 +25,8 @@ class DataManager {
 
 		this.dropDown = document.getElementById("select-participant-dropdown")
 		this.dropDown.addEventListener("change", (ev) => {
-			this.val = ev.srcElement.value
 			ExVars.clearScores()
-			if (this.val == DataManager.uploadOption) {
+			if (this.participants[this.dropDown.selectedIndex].name == DataManager.uploadOption) {
 				this._uploadMEM()
 			} else {
 				this._updateParticipant()
@@ -35,8 +34,6 @@ class DataManager {
 			}
 		})
 		this._updateDropDownOptions()
-
-		this.val = this.dropDown.value
 
 		this._fetchUpdates()
 	}
