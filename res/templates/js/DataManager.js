@@ -21,12 +21,7 @@ class DataManager {
 			Participant.load("Rat on Drugs", data),
 		]
 
-		this.filter = new Filter(norms => {
-			this.normData = norms
-			Object.values(this.dataUsers()).forEach(pl => {
-				pl.updateNorms(norms)
-			})
-		})
+		Filter.setCallback(() => this.filterupdate(this.filtername))
 
 		this.dropDown = document.getElementById("select-participant-dropdown")
 		this.dropDown.addEventListener("change", (ev) => {
@@ -37,14 +32,44 @@ class DataManager {
 			} else {
 				this.uploadData = undefined
 				this._updateParticipant(this.dt[this.val])
-				this.filter.update(this.val)
+				this.filterupdate(this.val)
 			}
 		})
 		this._updateDropDownOptions()
 
 		this.val = this.dropDown.value
 
-		this.filter.update(this.val)
+		this.filterupdate(this.val)
+	}
+
+	filtersetParticipantData(data) {
+		this.filtername = undefined
+		this.filterdata = data
+	}
+
+	filterupdate(name) {
+		const lastQuery = this.filterqueryString
+		this.filterqueryString = Filter.queryString
+		const normChanged = (lastQuery != this.filterqueryString)
+		if (normChanged) {
+			Filter.fetchNorms(this.filterqueryString, norms => {
+				this.normData = norms
+				Object.values(this.dataUsers()).forEach(pl => {
+					pl.updateNorms(norms)
+				})
+			})
+		}
+
+		if (name != undefined) {
+			this.filterdata = undefined
+		}
+		const lastParticipant = this.filtername
+		this.filtername = name
+		const nameChanged = (lastParticipant != this.filtername)
+		if (normChanged || nameChanged) {
+			ExVars.clearScores()
+			Filter.fetchOutliers(this.filterqueryString, this.filtername, this.filterdata)
+		}
 	}
 
 	static get uploadOption() { return "Upload MEM..." }
@@ -76,10 +101,11 @@ class DataManager {
 
 			reader.onload = readerEvent => {
 				var content = readerEvent.target.result; // this is the content!
-				this.filter.fetchMEM(content, convertedMem => {
+				this.filterlastParticipant = undefined
+				this.filter.fetchMEM(this.filterqueryString, this.filtername, content, convertedMem => {
 					this.uploadData = convertedMem.participant
 					this._updateParticipant(this.uploadData)
-					this.filter.setParticipantData(this.uploadData)
+					this.setParticipantData(this.uploadData)
 
 					this.uploadCount = this.uploadCount + 1
 					this.participants[this.participants.length] = new Participant(this.uploadData, "Upload " + this.uploadCount + ": " + this.uploadData.header.name)

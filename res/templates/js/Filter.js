@@ -1,41 +1,14 @@
 class Filter {
 	static get url() { return "https://us-central1-nervenorms.cloudfunctions.net/" }
 
-	constructor(callback) {
-		this.callback = callback
-
+	static setCallback(submitCallback) {
 		document.querySelector("form").addEventListener("submit", (event) => {
-			this.update(this.name)
+			submitCallback()
 			event.preventDefault()
 		})
 	}
 
-	setParticipantData(data) {
-		this.name = undefined
-		this.data = data
-	}
-
-	update(name) {
-		const lastQuery = this.queryString
-		this.queryString = Filter._queryString
-		const normChanged = (lastQuery != this.queryString)
-		if (normChanged) {
-			Filter._fetchNorms(this.queryString, this.callback)
-		}
-
-		if (name != undefined) {
-			this.data = undefined
-		}
-		const lastParticipant = this.name
-		this.name = name
-		const nameChanged = (lastParticipant != this.name)
-		if (normChanged || nameChanged) {
-			ExVars.clearScores()
-			Filter._fetchOutliers(this.queryString, this.name, this.data)
-		}
-	}
-
-	static get _queryString() {
+	static get queryString() {
 		var data = new FormData(document.querySelector("form"))
 		const filter = { "species": "human", "nerve": "median" }
 		for (const entry of data) {
@@ -88,23 +61,21 @@ class Filter {
 		}
 	}
 
-	fetchMEM(data, callback) {
-		this.lastParticipant = undefined
+	static fetchMEM(queryString, name, data, callback) {
 		ExVars.clearScores()
 
-		const query = Filter.url + "convert" + this.queryString
+		const query = Filter.url + "convert" + queryString
 		fetch(query, { method: 'POST', body: data })
 			.then(response => {
 				return response.json()
 			})
 			.then(convertedMem => {
 				const name = callback(convertedMem)
-				ExVars.updateScores(this.name, convertedMem.outlierScores)
+				ExVars.updateScores(name, convertedMem.outlierScores)
 			})
-		return this
 	}
 
-	static _fetchOutliers(queryString, name, data) {
+	static fetchOutliers(queryString, name, data) {
 		let query = Filter.url + "outliers" + queryString
 		let body = undefined
 		if (name != null) {
@@ -121,10 +92,9 @@ class Filter {
 			.then(scores => {
 				ExVars.updateScores(name, scores)
 			})
-		return this
 	}
 
-	static _fetchNorms(queryString, callback) {
+	static fetchNorms(queryString, callback) {
 		fetch(Filter.url + "norms" + queryString)
 			.then(response => {
 				return response.json()
@@ -132,6 +102,5 @@ class Filter {
 			.then(norms => {
 				callback(norms)
 			})
-		return this
 	}
 }
