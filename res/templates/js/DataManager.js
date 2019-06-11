@@ -63,7 +63,9 @@ class DataManager {
 		const nameChanged = (lastParticipant != this.filtername)
 		if (normChanged || nameChanged) {
 			ExVars.clearScores()
-			Fetch.Outliers(this.filterqueryString, this.filtername, this.filterdata)
+			Fetch.Outliers(this.filterqueryString, this.filtername, this.filterdata, scores => {
+				ExVars.updateScores(this.filtername, scores)
+			})
 		}
 	}
 
@@ -97,7 +99,7 @@ class DataManager {
 			reader.onload = readerEvent => {
 				var content = readerEvent.target.result; // this is the content!
 				this.filterlastParticipant = undefined
-				Fetch.MEM(this.filterqueryString, this.filtername, content, convertedMem => {
+				Fetch.MEM(this.filterqueryString, content, convertedMem => {
 					this.uploadData = convertedMem.participant
 					this._updateParticipant(this.uploadData)
 					this.filtername = undefined
@@ -106,6 +108,8 @@ class DataManager {
 					this.uploadCount = this.uploadCount + 1
 					this.participants[this.participants.length] = new Participant(this.uploadData, "Upload " + this.uploadCount + ": " + this.uploadData.header.name)
 					this._updateDropDownOptions()
+
+					ExVars.updateScores(this.filtername, convertedMem.outlierScores)
 				})
 			}
 		}

@@ -1,7 +1,7 @@
 class Fetch {
 	static get url() { return "https://us-central1-nervenorms.cloudfunctions.net/" }
 
-	static MEM(queryString, name, data, callback) {
+	static MEM(queryString, data, callback) {
 		ExVars.clearScores()
 
 		const query = Fetch.url + "convert" + queryString
@@ -10,12 +10,11 @@ class Fetch {
 				return response.json()
 			})
 			.then(convertedMem => {
-				const name = callback(convertedMem)
-				ExVars.updateScores(name, convertedMem.outlierScores)
+				callback(convertedMem)
 			})
 	}
 
-	static Outliers(queryString, name, data) {
+	static Outliers(queryString, name, data, callback) {
 		let query = Fetch.url + "outliers" + queryString
 		let body = undefined
 		if (name != null) {
@@ -30,7 +29,7 @@ class Fetch {
 				return response.json()
 			})
 			.then(scores => {
-				ExVars.updateScores(name, scores)
+				callback(scores)
 			})
 	}
 
