@@ -30,8 +30,7 @@ class DataManager {
 			if (this.val == DataManager.uploadOption) {
 				this._uploadMEM()
 			} else {
-				this.uploadData = undefined
-				this._updateParticipant(this.dt[this.val])
+				this._updateParticipant()
 				this._fetchUpdates()
 			}
 		})
@@ -100,12 +99,12 @@ class DataManager {
 			reader.onload = readerEvent => {
 				var content = readerEvent.target.result; // this is the content!
 				Fetch.MEM(this.queryString, content, convertedMem => {
-					this.uploadData = convertedMem.participant
-					this._updateParticipant(this.uploadData)
-
 					this.uploadCount = this.uploadCount + 1
-					this.participants[this.participants.length] = new Participant(this.uploadData, "Upload " + this.uploadCount + ": " + this.uploadData.header.name, false)
+					const name = "Upload " + this.uploadCount + ": " + convertedMem.participant.header.name
+					this.participants[this.participants.length] = new Participant(convertedMem.participant, name, false)
 					this._updateDropDownOptions()
+
+					this._updateParticipant()
 
 					ExVars.updateScores(convertedMem.outlierScores)
 				})
@@ -115,12 +114,13 @@ class DataManager {
 		input.click();
 	}
 
-	_updateParticipant(participantData) {
+	_updateParticipant() {
+		const data = this.participantData
 		Object.values(this.dataUsers()).forEach(pl => {
-			pl.updateParticipant(participantData)
+			pl.updateParticipant(data)
 		})
 
-		ExVars.updateValues(participantData)
+		ExVars.updateValues(data)
 	}
 
 	get norms() {
@@ -128,7 +128,7 @@ class DataManager {
 	}
 
 	get participantName() {
-		return this.val
+		return this.participants[this.participantIndex].name
 	}
 
 	get participantData() {
