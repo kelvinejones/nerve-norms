@@ -5,6 +5,7 @@ class DataManager {
 		this.dt = data
 		this.dataUsers = dataUsers
 		this.uploadCount = 0
+		this.normCache = {}
 
 		this.participants = [
 			Participant.load("CA-WI20S", data),
@@ -43,12 +44,7 @@ class DataManager {
 		this.queryString = Filter.queryString
 		const normChanged = (lastQuery != this.queryString)
 		if (normChanged) {
-			this._fetchNorms(norms => {
-				this.normData = norms
-				Object.values(this.dataUsers()).forEach(pl => {
-					pl.updateNorms(norms)
-				})
-			})
+			this._fetchNorms()
 		}
 
 		const nameChanged = (this.participantIndex != this.dropDown.selectedIndex)
@@ -62,8 +58,21 @@ class DataManager {
 		}
 	}
 
-	_fetchNorms(action) {
-		Fetch.Norms(this.queryString, action)
+	_fetchNorms() {
+		const query = this.queryString
+		const norms = this.normCache[query]
+		if (norms != null) {
+			Object.values(this.dataUsers()).forEach(pl => {
+				pl.updateNorms(norms)
+			})
+		} else {
+			Fetch.Norms(query, (norms) => {
+				this.normCache[query] = norms
+				Object.values(this.dataUsers()).forEach(pl => {
+					pl.updateNorms(norms)
+				})
+			})
+		}
 	}
 
 	_fetchOutliers(participant) {
@@ -140,7 +149,7 @@ class DataManager {
 	}
 
 	get norms() {
-		return this.normData
+		return this.normCache[this.queryString]
 	}
 
 	get participantName() {
