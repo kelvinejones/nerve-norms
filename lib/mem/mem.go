@@ -56,6 +56,10 @@ func (mem *rawMem) AsMem() (*Mem, error) {
 		trueMem.Sections[name] = sec
 	}
 
+	if len(trueMem.Sections) == 0 {
+		return trueMem, errors.New("Invalid MEM did not have any sections")
+	}
+
 	return trueMem, nil
 }
 

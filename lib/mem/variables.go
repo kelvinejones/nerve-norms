@@ -56,6 +56,10 @@ func newExVar() *ExcitabilityVariablesSection {
 }
 
 func (evs *ExcitabilityVariablesSection) LoadFromMem(mem *rawMem) error {
+	if len(mem.ExcitabilityVariables.Values) == 0 {
+		return MissingSection(errors.New("ExVars are not present"))
+	}
+
 	imputedAtLeastOne := mem.ExcitabilityVariables.imputeZero()
 
 	for _, key := range expectedIndices {

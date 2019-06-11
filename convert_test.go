@@ -42,3 +42,19 @@ func TestConvertMemHandlerWithParticipant(t *testing.T) {
 	// Just make sure something somewhat long is being printed. Great test, isn't it?
 	assert.True(t, len(rr.Body.String()) > 100)
 }
+
+func TestConvertMemHandlerWithInvalidParticipant(t *testing.T) {
+	file, err := os.Open("res/data/participants.json")
+	assert.NoError(t, err)
+
+	req, err := http.NewRequest("GET", "", bufio.NewReader(file))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+
+	http.HandlerFunc(ConvertMemHandler).ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusInternalServerError, rr.Code)
+}
