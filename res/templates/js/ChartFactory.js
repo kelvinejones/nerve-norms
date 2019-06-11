@@ -90,6 +90,13 @@ class ChartFactory {
 		}
 	}
 
+	updatePlotsWithNorms(norms) {
+		this.norms = norms
+		Object.values(this.plots).forEach(pl => {
+			pl.updateNorms(norms)
+		})
+	}
+
 	updateOutliers(name, queryString) {
 		if (queryString === undefined) {
 			queryString = Filter.asQueryString()
@@ -115,10 +122,7 @@ class ChartFactory {
 				return response.json()
 			})
 			.then(norms => {
-				this.norms = norms
-				Object.values(this.plots).forEach(pl => {
-					pl.updateNorms(norms)
-				})
+				this.updatePlotsWithNorms(norms)
 			})
 	}
 }
