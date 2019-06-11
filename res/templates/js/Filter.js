@@ -2,8 +2,14 @@ class Filter {
 	static get url() { return "https://us-central1-nervenorms.cloudfunctions.net/" }
 
 	// At the time the constructor is called, the query string is calculated.
-	constructor() {
+	constructor(callback) {
+		this.callback = callback
 		this.queryString = Filter._queryString
+	}
+
+	update() {
+		this.queryString = Filter._queryString
+		return this
 	}
 
 	static get _queryString() {
@@ -71,13 +77,13 @@ class Filter {
 		return this
 	}
 
-	updateNorms(callback) {
+	updateNorms() {
 		fetch(Filter.url + "norms" + this.queryString)
 			.then(response => {
 				return response.json()
 			})
 			.then(norms => {
-				callback(norms)
+				this.callback(norms)
 			})
 		return this
 	}
