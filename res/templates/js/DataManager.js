@@ -26,7 +26,7 @@ class DataManager {
 		this.dropDown = document.getElementById("select-participant-dropdown")
 		this.dropDown.addEventListener("change", (ev) => {
 			ExVars.clearScores()
-			if (this.participants[this.dropDown.selectedIndex].name == DataManager.uploadOption) {
+			if (this.dropDown.selectedIndex >= this.participants.length) {
 				this._uploadMEM()
 			} else {
 				this._updateParticipant()
