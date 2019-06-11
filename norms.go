@@ -49,7 +49,11 @@ func NormHandler(w http.ResponseWriter, r *http.Request) {
 func setError(w http.ResponseWriter, str string) {
 	w.WriteHeader(http.StatusInternalServerError)
 	log.Println(str)
-	fmt.Fprintln(w, str)
+	output := struct {
+		string `json:"error"`
+	}{str}
+	js, _ := json.Marshal(&output)
+	fmt.Fprintln(w, js)
 }
 
 func parseSex(sex string) (mem.Sex, error) {
