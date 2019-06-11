@@ -1,7 +1,6 @@
 class Filter {
 	static get url() { return "https://us-central1-nervenorms.cloudfunctions.net/" }
 
-	// At the time the constructor is called, the query string is calculated.
 	constructor(callback) {
 		this.callback = callback
 		this.queryString = Filter._queryString
@@ -9,6 +8,11 @@ class Filter {
 
 	update() {
 		this.queryString = Filter._queryString
+		return this
+	}
+
+	setParticipant(name) {
+		this.name = name
 		return this
 	}
 
@@ -65,14 +69,14 @@ class Filter {
 		}
 	}
 
-	fetchOutliers(name) {
-		fetch(Filter.url + "outliers" + this.queryString + "&name=" + name)
+	fetchOutliers() {
+		fetch(Filter.url + "outliers" + this.queryString + "&name=" + this.name)
 			.then(response => {
 				return response.json()
 			})
 			.then(scores => {
 				this.scores = scores
-				ExVars.updateScores(name, scores)
+				ExVars.updateScores(this.name, scores)
 			})
 		return this
 	}

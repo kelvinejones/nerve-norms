@@ -9,14 +9,14 @@ class ChartFactory {
 				pl.updateParticipant(participantData)
 			})
 			ExVars.updateValues(participantData)
-			this.filter.update().fetchOutliers(participantName)
+			this.filter.update().setParticipant(participantName).fetchOutliers()
 		}, ["CA-WI20S", "CA-AL27H", "JP-20-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "CA Mean", "JP Mean", "PO Mean", "Rat Fast Axon", "Rat Slow Axon", "Rat on Drugs"])
 
-		this.filter.update().fetchNorms().fetchOutliers(this.partDropDown.name)
+		this.filter.update().setParticipant(this.partDropDown.name).fetchNorms().fetchOutliers()
 
 		document.querySelector("form").addEventListener("submit", (event) => {
 			ExVars.clearScores()
-			this.filter.update().fetchNorms().fetchOutliers(this.partDropDown.name)
+			this.filter.update().setParticipant(this.partDropDown.name).fetchNorms().fetchOutliers()
 			event.preventDefault()
 		})
 
