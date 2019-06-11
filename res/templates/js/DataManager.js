@@ -27,7 +27,8 @@ class DataManager {
 			})
 		})
 
-		const updateData = (ev) => {
+		this.dropDown = document.getElementById("select-participant-dropdown")
+		this.dropDown.addEventListener("change", (ev) => {
 			this.val = ev.srcElement.value
 			ExVars.clearScores()
 			if (this.val == DataManager.uploadOption) {
@@ -37,10 +38,7 @@ class DataManager {
 				this._updateParticipant(this.dt[this.val])
 				this.filter.update(this.val)
 			}
-		}
-
-		this.dropDown = document.getElementById("select-participant-dropdown")
-		this.dropDown.addEventListener("change", updateData)
+		})
 		this._updateDropDownOptions()
 
 		this.val = this.dropDown.value
