@@ -4,6 +4,7 @@ class DataManager {
 	constructor(data, dataUsers) {
 		this.dt = data
 		this.dataUsers = dataUsers
+		this.uploadCount = 0
 
 		this.participants = [
 			Participant.load("CA-WI20S", data),
@@ -79,7 +80,9 @@ class DataManager {
 					this.uploadData = convertedMem.participant
 					this._updateParticipant(this.uploadData)
 					this.filter.setParticipantData(this.uploadData)
-					this.participants[this.participants.length] = new Participant(this.uploadData, "Uploaded: " + this.uploadData.header.name)
+
+					this.uploadCount = this.uploadCount + 1
+					this.participants[this.participants.length] = new Participant(this.uploadData, "Upload " + this.uploadCount + ": " + this.uploadData.header.name)
 					this._updateDropDownOptions()
 				})
 			}
