@@ -1,6 +1,11 @@
 class ChartFactory {
 	constructor(participants) {
-		this.filter = new Filter(this.updatePlotsWithNorms.bind(this))
+		this.filter = new Filter(norms => {
+			this.norms = norms
+			Object.values(this.plots).forEach(pl => {
+				pl.updateNorms(norms)
+			})
+		})
 
 		this.partDropDown = new ParticipantDropDown("select-participant-dropdown", participants, this.filter, participantData => {
 			Object.values(this.plots).forEach(pl => {
@@ -72,12 +77,5 @@ class ChartFactory {
 			case "stimulusResponseRelative":
 				return new StimulusRelative(this.partDropDown.data, this.norms)
 		}
-	}
-
-	updatePlotsWithNorms(norms) {
-		this.norms = norms
-		Object.values(this.plots).forEach(pl => {
-			pl.updateNorms(norms)
-		})
 	}
 }
