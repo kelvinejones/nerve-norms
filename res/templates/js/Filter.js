@@ -20,7 +20,7 @@ class Filter {
 		this.queryString = Filter._queryString
 		const normChanged = (lastQuery != this.queryString)
 		if (normChanged) {
-			this._fetchNorms()
+			Filter._fetchNorms(this.queryString, this.callback)
 		}
 
 		if (name != undefined) {
@@ -31,7 +31,7 @@ class Filter {
 		const nameChanged = (lastParticipant != this.name)
 		if (normChanged || nameChanged) {
 			ExVars.clearScores()
-			this._fetchOutliers(this.data)
+			Filter._fetchOutliers(this.queryString, this.name, this.data)
 		}
 	}
 
@@ -104,33 +104,33 @@ class Filter {
 		return this
 	}
 
-	_fetchOutliers(data) {
-		let query = Filter.url + "outliers" + this.queryString
+	static _fetchOutliers(queryString, name, data) {
+		let query = Filter.url + "outliers" + queryString
 		let body = undefined
-		if (this.name != null) {
-			query = query + "&name=" + this.name
+		if (name != null) {
+			query = query + "&name=" + name
 		} else if (data != null) {
 			body = { method: 'POST', body: JSON.stringify(data) }
 		} else {
-			console.log("Error in fetch", this.name, data)
+			console.log("Error in fetch", name, data)
 		}
 		fetch(query, body)
 			.then(response => {
 				return response.json()
 			})
 			.then(scores => {
-				ExVars.updateScores(this.name, scores)
+				ExVars.updateScores(name, scores)
 			})
 		return this
 	}
 
-	_fetchNorms() {
-		fetch(Filter.url + "norms" + this.queryString)
+	static _fetchNorms(queryString, callback) {
+		fetch(Filter.url + "norms" + queryString)
 			.then(response => {
 				return response.json()
 			})
 			.then(norms => {
-				this.callback(norms)
+				callback(norms)
 			})
 		return this
 	}
