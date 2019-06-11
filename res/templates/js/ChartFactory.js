@@ -2,29 +2,26 @@ class ChartFactory {
 	constructor(participants) {
 		this.url = "https://us-central1-nervenorms.cloudfunctions.net/"
 
-		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (name, currentParticipant) => {
-			this.participant = name
-
+		this.partDropDown = new DataDropDown("select-participant-dropdown", participants, (participantName, participantData) => {
 			ExVars.clearScores()
 
 			Object.values(this.plots).forEach(pl => {
-				pl.updateParticipant(currentParticipant)
+				pl.updateParticipant(participantData)
 			})
-			ExVars.updateValues(currentParticipant)
-			this.updateOutliers(this.participant)
+			ExVars.updateValues(participantData)
+			this.updateOutliers(participantName)
 		}, ["CA-WI20S", "CA-AL27H", "JP-20-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "CA Mean", "JP Mean", "PO Mean", "Rat Fast Axon", "Rat Slow Axon", "Rat on Drugs"])
-		this.participant = this.partDropDown.selection
 
 		const queryString = Filter.asQueryString()
 		this.updateNorms(queryString)
-		this.updateOutliers(this.participant, queryString)
+		this.updateOutliers(this.partDropDown.selection(), queryString)
 
 		document.querySelector("form").addEventListener("submit", (event) => {
 			ExVars.clearScores()
 
 			const queryString = Filter.asQueryString()
 			this.updateNorms(queryString)
-			this.updateOutliers(this.participant, queryString)
+			this.updateOutliers(this.partDropDown.selection(), queryString)
 
 			event.preventDefault()
 		})
@@ -104,7 +101,7 @@ class ChartFactory {
 			})
 			.then(scores => {
 				this.scores = scores
-				ExVars.updateScores(this.participant, scores)
+				ExVars.updateScores(this.partDropDown.selection(), scores)
 			})
 	}
 
