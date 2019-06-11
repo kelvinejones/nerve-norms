@@ -3,6 +3,7 @@ class DataManager {
 	// The dataUsers is expected to provide a list of objects that implement 'updateParticipant' and 'updateNorms'
 	constructor(data, dataUsers) {
 		this.dt = data
+		this.dataUsers = dataUsers
 		const dropDownOptions = [
 			"CA-WI20S",
 			"CA-AL27H",
@@ -18,25 +19,16 @@ class DataManager {
 			"Rat on Drugs",
 		]
 
-		const filter = new Filter(norms => {
+		this.filter = new Filter(norms => {
 			this.normData = norms
-			Object.values(dataUsers()).forEach(pl => {
+			Object.values(this.dataUsers()).forEach(pl => {
 				pl.updateNorms(norms)
 			})
 		})
 
 		const updateData = (ev) => {
 			this.val = ev.srcElement.value
-			const participantData = this.dt[this.val]
-
-			ExVars.clearScores()
-
-			Object.values(dataUsers()).forEach(pl => {
-				pl.updateParticipant(participantData)
-			})
-
-			ExVars.updateValues(participantData)
-			filter.update(this.val)
+			this._updateParticipant()
 		}
 
 		const dropDown = document.getElementById("select-participant-dropdown")
@@ -46,7 +38,20 @@ class DataManager {
 		})
 		this.val = dropDown.value
 
-		filter.update(this.val)
+		this.filter.update(this.val)
+	}
+
+	_updateParticipant() {
+		const participantData = this.dt[this.val]
+
+		ExVars.clearScores()
+
+		Object.values(this.dataUsers()).forEach(pl => {
+			pl.updateParticipant(participantData)
+		})
+
+		ExVars.updateValues(participantData)
+		this.filter.update(this.val)
 	}
 
 	get norms() {
