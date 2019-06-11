@@ -3,7 +3,6 @@ class Filter {
 
 	constructor(callback) {
 		this.callback = callback
-		this.queryString = Filter._queryString
 
 		document.querySelector("form").addEventListener("submit", (event) => {
 			ExVars.clearScores()
@@ -13,7 +12,13 @@ class Filter {
 	}
 
 	updateAll() {
-		this.update().fetchNorms().fetchOutliers()
+		const lastQuery = this.queryString
+		this.update()
+		const normChanged = (lastQuery != this.queryString)
+		if (normChanged) {
+			this.fetchNorms()
+		}
+		this.fetchOutliers()
 	}
 
 	update() {

@@ -14,7 +14,7 @@ class ParticipantDropDown {
 			callback(participantData)
 
 			ExVars.updateValues(participantData)
-			filter.update().setParticipant(this.val).fetchOutliers()
+			filter.setParticipant(this.val).updateAll()
 		}
 
 		const dropDown = document.getElementById(elementID)
