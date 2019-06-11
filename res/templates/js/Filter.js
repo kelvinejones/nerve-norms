@@ -1,6 +1,4 @@
 class Filter {
-	static get url() { return "https://us-central1-nervenorms.cloudfunctions.net/" }
-
 	static setCallback(submitCallback) {
 		document.querySelector("form").addEventListener("submit", (event) => {
 			submitCallback()
@@ -59,48 +57,5 @@ class Filter {
 				filter.maxAge = 200
 				break
 		}
-	}
-
-	static fetchMEM(queryString, name, data, callback) {
-		ExVars.clearScores()
-
-		const query = Filter.url + "convert" + queryString
-		fetch(query, { method: 'POST', body: data })
-			.then(response => {
-				return response.json()
-			})
-			.then(convertedMem => {
-				const name = callback(convertedMem)
-				ExVars.updateScores(name, convertedMem.outlierScores)
-			})
-	}
-
-	static fetchOutliers(queryString, name, data) {
-		let query = Filter.url + "outliers" + queryString
-		let body = undefined
-		if (name != null) {
-			query = query + "&name=" + name
-		} else if (data != null) {
-			body = { method: 'POST', body: JSON.stringify(data) }
-		} else {
-			console.log("Error in fetch", name, data)
-		}
-		fetch(query, body)
-			.then(response => {
-				return response.json()
-			})
-			.then(scores => {
-				ExVars.updateScores(name, scores)
-			})
-	}
-
-	static fetchNorms(queryString, callback) {
-		fetch(Filter.url + "norms" + queryString)
-			.then(response => {
-				return response.json()
-			})
-			.then(norms => {
-				callback(norms)
-			})
 	}
 }
