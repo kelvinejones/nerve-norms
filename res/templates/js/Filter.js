@@ -1,7 +1,12 @@
 class Filter {
 	static get url() { return "https://us-central1-nervenorms.cloudfunctions.net/" }
 
-	static asQueryString() {
+	// At the time the constructor is called, the query string is calculated.
+	constructor() {
+		this.queryString = Filter._queryString
+	}
+
+	static get _queryString() {
 		var data = new FormData(document.querySelector("form"))
 		const filter = { "species": "human", "nerve": "median" }
 		for (const entry of data) {
@@ -13,7 +18,7 @@ class Filter {
 					filter.country = entry[1]
 					break
 				case "age-options":
-					Filter.setAgeOptions(filter, entry[1])
+					Filter._setAgeOptions(filter, entry[1])
 					break
 			}
 		}
@@ -25,7 +30,7 @@ class Filter {
 			}).join("&");
 	}
 
-	static setAgeOptions(filter, opts) {
+	static _setAgeOptions(filter, opts) {
 		switch (opts) {
 			case "any":
 				filter.minAge = 0
@@ -54,12 +59,8 @@ class Filter {
 		}
 	}
 
-	static updateOutliers(name, queryString) {
-		if (queryString === undefined) {
-			queryString = Filter.asQueryString()
-		}
-
-		fetch(Filter.url + "outliers" + queryString + "&name=" + name)
+	updateOutliers(name) {
+		fetch(Filter.url + "outliers" + this.queryString + "&name=" + name)
 			.then(response => {
 				return response.json()
 			})
@@ -67,19 +68,17 @@ class Filter {
 				this.scores = scores
 				ExVars.updateScores(name, scores)
 			})
+		return this
 	}
 
-	static updateNorms(queryString, callback) {
-		if (queryString === undefined) {
-			queryString = Filter.asQueryString()
-		}
-
-		fetch(Filter.url + "norms" + queryString)
+	updateNorms(callback) {
+		fetch(Filter.url + "norms" + this.queryString)
 			.then(response => {
 				return response.json()
 			})
 			.then(norms => {
 				callback(norms)
 			})
+		return this
 	}
 }

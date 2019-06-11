@@ -7,19 +7,19 @@ class ChartFactory {
 				pl.updateParticipant(participantData)
 			})
 			ExVars.updateValues(participantData)
-			Filter.updateOutliers(participantName)
+			new Filter().updateOutliers(participantName)
 		}, ["CA-WI20S", "CA-AL27H", "JP-20-1", "JP-70-1", "PO-00d97e84", "PO-017182a5", "CA Mean", "JP Mean", "PO Mean", "Rat Fast Axon", "Rat Slow Axon", "Rat on Drugs"])
 
-		const queryString = Filter.asQueryString()
-		Filter.updateNorms(queryString, this.updatePlotsWithNorms.bind(this))
-		Filter.updateOutliers(this.partDropDown.selection, queryString)
+		new Filter()
+			.updateNorms(this.updatePlotsWithNorms.bind(this))
+			.updateOutliers(this.partDropDown.selection)
 
 		document.querySelector("form").addEventListener("submit", (event) => {
 			ExVars.clearScores()
 
-			const queryString = Filter.asQueryString()
-			Filter.updateNorms(queryString, this.updatePlotsWithNorms.bind(this))
-			Filter.updateOutliers(this.partDropDown.selection, queryString)
+			new Filter()
+				.updateNorms(this.updatePlotsWithNorms.bind(this))
+				.updateOutliers(this.partDropDown.selection)
 
 			event.preventDefault()
 		})
