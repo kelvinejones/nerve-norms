@@ -65,7 +65,7 @@ class Filter {
 		}
 	}
 
-	updateOutliers(name) {
+	fetchOutliers(name) {
 		fetch(Filter.url + "outliers" + this.queryString + "&name=" + name)
 			.then(response => {
 				return response.json()
@@ -77,7 +77,7 @@ class Filter {
 		return this
 	}
 
-	updateNorms() {
+	fetchNorms() {
 		fetch(Filter.url + "norms" + this.queryString)
 			.then(response => {
 				return response.json()
