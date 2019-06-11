@@ -96,6 +96,14 @@ class DataManager {
 			reader.onload = readerEvent => {
 				var content = readerEvent.target.result; // this is the content!
 				Fetch.MEM(this.queryString, content, convertedMem => {
+					if (convertedMem.error != null) {
+						console.log("Conversion error", convertedMem.error)
+						alert("The MEM could not be converted. Please email it to jbell1@ualberta.ca for troubleshooting.")
+						this.dropDown.selectedIndex = this.participantIndex
+						this._fetchUpdates()
+						return
+					}
+
 					this.uploadCount = this.uploadCount + 1
 					const name = "Upload " + this.uploadCount + ": " + convertedMem.participant.header.name
 					this.participants[this.participants.length] = new Participant(convertedMem.participant, name, false)
@@ -108,7 +116,7 @@ class DataManager {
 			}
 		}
 
-		input.click();
+		input.click()
 	}
 
 	_updateParticipant() {
