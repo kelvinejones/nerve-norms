@@ -110,7 +110,7 @@ class Filter {
 		if (this.name != null) {
 			query = query + "&name=" + this.name
 		} else if (data != null) {
-			body = { method: 'POST', body: data }
+			body = { method: 'POST', body: JSON.stringify(data) }
 		} else {
 			console.log("Error in fetch", this.name, data)
 		}
