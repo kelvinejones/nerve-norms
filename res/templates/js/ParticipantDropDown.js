@@ -1,7 +1,7 @@
 class ParticipantDropDown {
 	// data is an object indexed by the drop-down's values
-	// The dataProvider is expected to provide a list of objects that implement 'updateParticipant'
-	constructor(data, dataProvider) {
+	// The dataUsers is expected to provide a list of objects that implement 'updateParticipant' and 'updateNorms'
+	constructor(data, dataUsers) {
 		this.dt = data
 		const dropDownOptions = [
 			"CA-WI20S",
@@ -20,7 +20,7 @@ class ParticipantDropDown {
 
 		const filter = new Filter(norms => {
 			this.normData = norms
-			Object.values(dataProvider()).forEach(pl => {
+			Object.values(dataUsers()).forEach(pl => {
 				pl.updateNorms(norms)
 			})
 		})
@@ -31,7 +31,7 @@ class ParticipantDropDown {
 
 			ExVars.clearScores()
 
-			Object.values(dataProvider()).forEach(pl => {
+			Object.values(dataUsers()).forEach(pl => {
 				pl.updateParticipant(participantData)
 			})
 
