@@ -125,10 +125,10 @@ class DataManager {
 	}
 
 	get participantName() {
-		return this.participants[this.participantIndex].name
+		return this.participants[this.dropDown.selectedIndex].name
 	}
 
 	get participantData() {
-		return this.participants[this.participantIndex].data
+		return this.participants[this.dropDown.selectedIndex].data
 	}
 }
