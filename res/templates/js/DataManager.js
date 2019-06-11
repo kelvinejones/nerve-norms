@@ -49,10 +49,17 @@ class DataManager {
 	static get uploadOption() { return "Upload MEM..." }
 
 	_updateDropDownOptions() {
+		const selection = this.dropDown.selectedIndex
+
+		let index = 0;
 		this.participants.forEach(opt => {
-			this.dropDown.options[this.dropDown.options.length] = new Option(opt.name)
+			this.dropDown.options[index++] = new Option(opt.name)
 		})
-		this.dropDown.options[this.dropDown.options.length] = new Option(DataManager.uploadOption)
+		this.dropDown.options[index] = new Option(DataManager.uploadOption)
+
+		if (selection >= 0) {
+			this.dropDown.selectedIndex = selection
+		}
 	}
 
 	_uploadMEM() {
@@ -72,6 +79,8 @@ class DataManager {
 					this.uploadData = convertedMem.participant
 					this._updateParticipant(this.uploadData)
 					this.filter.setParticipantData(this.uploadData)
+					this.participants[this.participants.length] = new Participant(this.uploadData, "Uploaded: " + this.uploadData.header.name)
+					this._updateDropDownOptions()
 				})
 			}
 		}
