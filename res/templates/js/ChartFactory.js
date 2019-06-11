@@ -18,7 +18,7 @@ class ChartFactory {
 		})
 
 		// Now set all excitability variables
-		ExVars.updateValues(this.dataManager.data)
+		ExVars.updateValues(this.dataManager.participantData)
 	}
 
 	/**
@@ -52,17 +52,17 @@ class ChartFactory {
 	build(typeStr) {
 		switch (typeStr) {
 			case "recoveryCycle":
-				return new RecoveryCycle(this.dataManager.data, this.dataManager.norms)
+				return new RecoveryCycle(this.dataManager.participantData, this.dataManager.norms)
 			case "thresholdElectrotonus":
-				return new ThresholdElectrotonus(this.dataManager.data, this.dataManager.norms)
+				return new ThresholdElectrotonus(this.dataManager.participantData, this.dataManager.norms)
 			case "chargeDuration":
-				return new ChargeDuration(this.dataManager.data, this.dataManager.norms)
+				return new ChargeDuration(this.dataManager.participantData, this.dataManager.norms)
 			case "thresholdIV":
-				return new ThresholdIV(this.dataManager.data, this.dataManager.norms)
+				return new ThresholdIV(this.dataManager.participantData, this.dataManager.norms)
 			case "stimulusResponse":
-				return new StimulusResponse(this.dataManager.data, this.dataManager.norms)
+				return new StimulusResponse(this.dataManager.participantData, this.dataManager.norms)
 			case "stimulusResponseRelative":
-				return new StimulusRelative(this.dataManager.data, this.dataManager.norms)
+				return new StimulusRelative(this.dataManager.participantData, this.dataManager.norms)
 		}
 	}
 }

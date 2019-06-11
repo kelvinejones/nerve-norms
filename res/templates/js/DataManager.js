@@ -53,11 +53,11 @@ class DataManager {
 		return this.normData
 	}
 
-	get name() {
+	get participantName() {
 		return this.val
 	}
 
-	get data() {
+	get participantData() {
 		return this.dt[this.val]
 	}
 }
