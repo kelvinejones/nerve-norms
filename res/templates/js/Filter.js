@@ -16,9 +16,9 @@ class Filter {
 		this.queryString = Filter._queryString
 		const normChanged = (lastQuery != this.queryString)
 		if (normChanged) {
-			this.fetchNorms()
+			this._fetchNorms()
 		}
-		this.fetchOutliers()
+		this._fetchOutliers()
 	}
 
 	setParticipant(name) {
@@ -79,7 +79,7 @@ class Filter {
 		}
 	}
 
-	fetchOutliers() {
+	_fetchOutliers() {
 		fetch(Filter.url + "outliers" + this.queryString + "&name=" + this.name)
 			.then(response => {
 				return response.json()
@@ -91,7 +91,7 @@ class Filter {
 		return this
 	}
 
-	fetchNorms() {
+	_fetchNorms() {
 		fetch(Filter.url + "norms" + this.queryString)
 			.then(response => {
 				return response.json()
