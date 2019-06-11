@@ -50,10 +50,16 @@ func setError(w http.ResponseWriter, str string) {
 	w.WriteHeader(http.StatusInternalServerError)
 	log.Println(str)
 	output := struct {
-		string `json:"error"`
+		String string `json:"error"`
 	}{str}
-	js, _ := json.Marshal(&output)
-	fmt.Fprintln(w, js)
+
+	js, err := json.Marshal(&output)
+	if err != nil {
+		log.Println("Could not marshal error " + err.Error())
+		fmt.Fprintln(w, str)
+	} else {
+		fmt.Fprintln(w, string(js))
+	}
 }
 
 func parseSex(sex string) (mem.Sex, error) {
