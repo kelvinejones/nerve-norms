@@ -13,17 +13,12 @@ class Filter {
 
 	updateAll() {
 		const lastQuery = this.queryString
-		this.update()
+		this.queryString = Filter._queryString
 		const normChanged = (lastQuery != this.queryString)
 		if (normChanged) {
 			this.fetchNorms()
 		}
 		this.fetchOutliers()
-	}
-
-	update() {
-		this.queryString = Filter._queryString
-		return this
 	}
 
 	setParticipant(name) {
