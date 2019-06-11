@@ -1,6 +1,6 @@
 class ChartFactory {
 	constructor(participants) {
-		this.partDropDown = new ParticipantDropDown(participants, () => { return this.plots })
+		this.dataManager = new DataManager(participants, () => { return this.plots })
 
 		this.plots = {
 			"recoveryCycle": null,
@@ -18,7 +18,7 @@ class ChartFactory {
 		})
 
 		// Now set all excitability variables
-		ExVars.updateValues(this.partDropDown.data)
+		ExVars.updateValues(this.dataManager.data)
 	}
 
 	/**
@@ -52,17 +52,17 @@ class ChartFactory {
 	build(typeStr) {
 		switch (typeStr) {
 			case "recoveryCycle":
-				return new RecoveryCycle(this.partDropDown.data, this.partDropDown.norms)
+				return new RecoveryCycle(this.dataManager.data, this.dataManager.norms)
 			case "thresholdElectrotonus":
-				return new ThresholdElectrotonus(this.partDropDown.data, this.partDropDown.norms)
+				return new ThresholdElectrotonus(this.dataManager.data, this.dataManager.norms)
 			case "chargeDuration":
-				return new ChargeDuration(this.partDropDown.data, this.partDropDown.norms)
+				return new ChargeDuration(this.dataManager.data, this.dataManager.norms)
 			case "thresholdIV":
-				return new ThresholdIV(this.partDropDown.data, this.partDropDown.norms)
+				return new ThresholdIV(this.dataManager.data, this.dataManager.norms)
 			case "stimulusResponse":
-				return new StimulusResponse(this.partDropDown.data, this.partDropDown.norms)
+				return new StimulusResponse(this.dataManager.data, this.dataManager.norms)
 			case "stimulusResponseRelative":
-				return new StimulusRelative(this.partDropDown.data, this.partDropDown.norms)
+				return new StimulusRelative(this.dataManager.data, this.dataManager.norms)
 		}
 	}
 }

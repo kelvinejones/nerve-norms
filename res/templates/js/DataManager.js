@@ -1,4 +1,4 @@
-class ParticipantDropDown {
+class DataManager {
 	// data is an object indexed by the drop-down's values
 	// The dataUsers is expected to provide a list of objects that implement 'updateParticipant' and 'updateNorms'
 	constructor(data, dataUsers) {
