@@ -6,24 +6,21 @@ class Filter {
 
 		document.querySelector("form").addEventListener("submit", (event) => {
 			ExVars.clearScores()
-			this.updateAll()
+			this.update(this.name)
 			event.preventDefault()
 		})
 	}
 
-	updateAll() {
+	update(name) {
 		const lastQuery = this.queryString
 		this.queryString = Filter._queryString
 		const normChanged = (lastQuery != this.queryString)
 		if (normChanged) {
 			this._fetchNorms()
 		}
-		this._fetchOutliers()
-	}
 
-	setParticipant(name) {
 		this.name = name
-		return this
+		this._fetchOutliers()
 	}
 
 	static get _queryString() {
