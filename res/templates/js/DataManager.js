@@ -6,6 +6,7 @@ class DataManager {
 		this.dataUsers = dataUsers
 		this.uploadCount = 0
 		this.normCache = {}
+		this.outlierCache = {}
 
 		this.participants = [
 			Participant.load("CA-WI20S", data),
@@ -76,10 +77,21 @@ class DataManager {
 	}
 
 	_fetchOutliers(participant) {
-		if (participant.dataIsLocal) {
-			Fetch.OutliersFromName(this.queryString, participant.name, ExVars.updateScores)
+		const cacheString = this.queryString + "&id=" + this.dropDown.selectedIndex
+		const scores = this.outlierCache[cacheString]
+		if (scores != null) {
+			ExVars.updateScores(scores)
 		} else {
-			Fetch.OutliersFromJSON(this.queryString, participant.data, ExVars.updateScores)
+			const updateAction = (scores) => {
+				this.outlierCache[cacheString] = scores
+				ExVars.updateScores(scores)
+			}
+
+			if (participant.dataIsLocal) {
+				Fetch.OutliersFromName(this.queryString, participant.name, updateAction)
+			} else {
+				Fetch.OutliersFromJSON(this.queryString, participant.data, updateAction)
+			}
 		}
 	}
 
