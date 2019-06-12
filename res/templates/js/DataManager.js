@@ -69,6 +69,10 @@ class DataManager {
 		} else {
 			Fetch.Norms(query, (norms) => {
 				this.normCache[query] = norms
+				if (query != this.queryString) {
+					// An update has occurred since we requested this data, so get out!
+					return
+				}
 				Object.values(this.dataUsers()).forEach(pl => {
 					pl.updateNorms(norms)
 				})
@@ -84,6 +88,10 @@ class DataManager {
 		} else {
 			const updateAction = (scores) => {
 				this.outlierCache[cacheString] = scores
+				if (cacheString != this.queryString + "&id=" + this.dropDown.selectedIndex) {
+					// An update has occurred since we requested this data, so get out!
+					return
+				}
 				ExVars.updateScores(scores)
 			}
 
