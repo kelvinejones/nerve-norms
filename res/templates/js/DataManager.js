@@ -153,7 +153,11 @@ class DataManager {
 
 					this._updateParticipant()
 
-					ExVars.updateScores(convertedMem.outlierScores)
+					this.outlierCache[cacheString] = convertedMem.outlierScores
+					if (cacheString == this._cacheString) {
+						// An update has not occurred since we requested this data, so update the display!
+						ExVars.updateScores(convertedMem.outlierScores)
+					}
 				})
 			}
 		}
