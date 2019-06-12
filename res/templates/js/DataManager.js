@@ -5,6 +5,8 @@ class DataManager {
 		this.dt = data
 		this.dataUsers = dataUsers
 		this.uploadCount = 0
+		this.normCache = {}
+		this.outlierCache = {}
 
 		this.participants = [
 			Participant.load("CA-WI20S", data),
@@ -43,12 +45,7 @@ class DataManager {
 		this.queryString = Filter.queryString
 		const normChanged = (lastQuery != this.queryString)
 		if (normChanged) {
-			Fetch.Norms(this.queryString, norms => {
-				this.normData = norms
-				Object.values(this.dataUsers()).forEach(pl => {
-					pl.updateNorms(norms)
-				})
-			})
+			this._fetchNorms()
 		}
 
 		const nameChanged = (this.participantIndex != this.dropDown.selectedIndex)
@@ -58,10 +55,50 @@ class DataManager {
 
 			ExVars.clearScores()
 
+			this._fetchOutliers(participant)
+		}
+	}
+
+	_fetchNorms() {
+		const query = this.queryString
+		const norms = this.normCache[query]
+		if (norms != null) {
+			Object.values(this.dataUsers()).forEach(pl => {
+				pl.updateNorms(norms)
+			})
+		} else {
+			Fetch.Norms(query, (norms) => {
+				this.normCache[query] = norms
+				if (query == this.queryString) {
+					// An update not has occurred since we requested this data, so update the display!
+					Object.values(this.dataUsers()).forEach(pl => {
+						pl.updateNorms(norms)
+					})
+				}
+			})
+		}
+	}
+
+	get _cacheString() { return this.queryString + "&id=" + this.dropDown.selectedIndex }
+
+	_fetchOutliers(participant) {
+		const cacheString = this._cacheString // Save this string because it's where we want to save the data
+		const scores = this.outlierCache[cacheString]
+		if (scores != null) {
+			ExVars.updateScores(scores)
+		} else {
+			const updateAction = (scores) => {
+				this.outlierCache[cacheString] = scores
+				if (cacheString == this._cacheString) {
+					// An update not has occurred since we requested this data, so update the display!
+					ExVars.updateScores(scores)
+				}
+			}
+
 			if (participant.dataIsLocal) {
-				Fetch.OutliersFromName(this.queryString, participant.name, ExVars.updateScores)
+				Fetch.OutliersFromName(this.queryString, participant.name, updateAction)
 			} else {
-				Fetch.OutliersFromJSON(this.queryString, participant.data, ExVars.updateScores)
+				Fetch.OutliersFromJSON(this.queryString, participant.data, updateAction)
 			}
 		}
 	}
@@ -95,6 +132,8 @@ class DataManager {
 
 			reader.onload = readerEvent => {
 				var content = readerEvent.target.result // this is the content!
+				const cacheString = this._cacheString // Save this string because it's where we want to save the data
+
 				Fetch.MEM(this.queryString, content, convertedMem => {
 					if (convertedMem.error != null) {
 						console.log("Conversion error", convertedMem.error)
@@ -114,7 +153,11 @@ class DataManager {
 
 					this._updateParticipant()
 
-					ExVars.updateScores(convertedMem.outlierScores)
+					this.outlierCache[cacheString] = convertedMem.outlierScores
+					if (cacheString == this._cacheString) {
+						// An update has not occurred since we requested this data, so update the display!
+						ExVars.updateScores(convertedMem.outlierScores)
+					}
 				})
 			}
 		}
@@ -132,7 +175,7 @@ class DataManager {
 	}
 
 	get norms() {
-		return this.normData
+		return this.normCache[this.queryString]
 	}
 
 	get participantName() {
