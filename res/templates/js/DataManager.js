@@ -69,30 +69,30 @@ class DataManager {
 		} else {
 			Fetch.Norms(query, (norms) => {
 				this.normCache[query] = norms
-				if (query != this.queryString) {
-					// An update has occurred since we requested this data, so get out!
-					return
+				if (query == this.queryString) {
+					// An update not has occurred since we requested this data, so update the display!
+					Object.values(this.dataUsers()).forEach(pl => {
+						pl.updateNorms(norms)
+					})
 				}
-				Object.values(this.dataUsers()).forEach(pl => {
-					pl.updateNorms(norms)
-				})
 			})
 		}
 	}
 
+	get _cacheString() { return this.queryString + "&id=" + this.dropDown.selectedIndex }
+
 	_fetchOutliers(participant) {
-		const cacheString = this.queryString + "&id=" + this.dropDown.selectedIndex
+		const cacheString = this._cacheString // Save this string because it's where we want to save the data
 		const scores = this.outlierCache[cacheString]
 		if (scores != null) {
 			ExVars.updateScores(scores)
 		} else {
 			const updateAction = (scores) => {
 				this.outlierCache[cacheString] = scores
-				if (cacheString != this.queryString + "&id=" + this.dropDown.selectedIndex) {
-					// An update has occurred since we requested this data, so get out!
-					return
+				if (cacheString == this._cacheString) {
+					// An update not has occurred since we requested this data, so update the display!
+					ExVars.updateScores(scores)
 				}
-				ExVars.updateScores(scores)
 			}
 
 			if (participant.dataIsLocal) {
@@ -132,6 +132,8 @@ class DataManager {
 
 			reader.onload = readerEvent => {
 				var content = readerEvent.target.result // this is the content!
+				const cacheString = this._cacheString // Save this string because it's where we want to save the data
+
 				Fetch.MEM(this.queryString, content, convertedMem => {
 					if (convertedMem.error != null) {
 						console.log("Conversion error", convertedMem.error)
