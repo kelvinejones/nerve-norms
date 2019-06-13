@@ -28,14 +28,43 @@ class DataManager {
 		this.dropDown = document.getElementById("select-participant-dropdown")
 		this.dropDown.addEventListener("change", (ev) => {
 			ExVars.clearScores()
-			if (this.dropDown.selectedIndex >= this.participants.length) {
-				this._uploadMEM()
-			} else {
-				this._updateParticipant()
-				this._fetchUpdates()
-			}
+			this._updateParticipant()
+			this._fetchUpdates()
 		})
 		this._updateDropDownOptions()
+
+
+		this.uploadMemInput = document.getElementById('uploadMEM')
+		uploadMemInput.onchange = e => {
+			const file = e.target.files[0]
+
+			const reader = new FileReader()
+			reader.readAsText(file, 'UTF-8')
+
+			reader.onload = readerEvent => {
+				const content = readerEvent.target.result // this is the content!
+
+				Fetch.MEM(this.queryString, content, convertedMem => {
+					if (convertedMem.error != null) {
+						console.log("Conversion error", convertedMem.error)
+						alert("The MEM could not be converted. Please email it to jbell1@ualberta.ca for troubleshooting.")
+						return
+					}
+
+					this.uploadCount = this.uploadCount + 1
+					const name = "Upload " + this.uploadCount + ": " + convertedMem.participant.header.name
+					this.participants[this.participants.length] = new Participant(convertedMem.participant, name, false)
+					this._updateDropDownOptions()
+
+					this.dropDown.selectedIndex = this.dropDown.options.length - 1
+					this.participantIndex = this.dropDown.selectedIndex
+
+					this.outlierCache[this._cacheString(this.participantIndex)] = convertedMem.outlierScores
+					this._updateParticipant()
+					ExVars.updateScores(convertedMem.outlierScores)
+				})
+			}
+		}
 
 		this._fetchUpdates()
 	}
@@ -79,17 +108,22 @@ class DataManager {
 		}
 	}
 
-	get _cacheString() { return this.queryString + "&id=" + this.dropDown.selectedIndex }
+	_cacheString(ind) {
+		if (ind == null) {
+			ind = this.dropDown.selectedIndex
+		}
+		return this.queryString + "&id=" + ind
+	}
 
 	_fetchOutliers(participant) {
-		const cacheString = this._cacheString // Save this string because it's where we want to save the data
+		const cacheString = this._cacheString() // Save this string because it's where we want to save the data
 		const scores = this.outlierCache[cacheString]
 		if (scores != null) {
 			ExVars.updateScores(scores)
 		} else {
 			const updateAction = (scores) => {
 				this.outlierCache[cacheString] = scores
-				if (cacheString == this._cacheString) {
+				if (cacheString == this._cacheString()) {
 					// An update not has occurred since we requested this data, so update the display!
 					ExVars.updateScores(scores)
 				}
@@ -103,8 +137,6 @@ class DataManager {
 		}
 	}
 
-	static get uploadOption() { return "Upload MEM..." }
-
 	_updateDropDownOptions() {
 		const selection = this.dropDown.selectedIndex
 
@@ -112,57 +144,10 @@ class DataManager {
 		this.participants.forEach(opt => {
 			this.dropDown.options[index++] = new Option(opt.name)
 		})
-		this.dropDown.options[index] = new Option(DataManager.uploadOption)
 
 		if (selection >= 0) {
 			this.dropDown.selectedIndex = selection
 		}
-	}
-
-	_uploadMEM() {
-		// This code is modified from https://stackoverflow.com/a/40971885
-		var input = document.createElement('input')
-		input.type = 'file'
-
-		input.onchange = e => {
-			var file = e.target.files[0]
-
-			var reader = new FileReader()
-			reader.readAsText(file, 'UTF-8')
-
-			reader.onload = readerEvent => {
-				var content = readerEvent.target.result // this is the content!
-				const cacheString = this._cacheString // Save this string because it's where we want to save the data
-
-				Fetch.MEM(this.queryString, content, convertedMem => {
-					if (convertedMem.error != null) {
-						console.log("Conversion error", convertedMem.error)
-
-						this.dropDown.selectedIndex = this.participantIndex
-						this.participantIndex = -1 // To force an update
-						this._fetchUpdates()
-
-						alert("The MEM could not be converted. Please email it to jbell1@ualberta.ca for troubleshooting.")
-						return
-					}
-
-					this.uploadCount = this.uploadCount + 1
-					const name = "Upload " + this.uploadCount + ": " + convertedMem.participant.header.name
-					this.participants[this.participants.length] = new Participant(convertedMem.participant, name, false)
-					this._updateDropDownOptions()
-
-					this._updateParticipant()
-
-					this.outlierCache[cacheString] = convertedMem.outlierScores
-					if (cacheString == this._cacheString) {
-						// An update has not occurred since we requested this data, so update the display!
-						ExVars.updateScores(convertedMem.outlierScores)
-					}
-				})
-			}
-		}
-
-		input.click()
 	}
 
 	_updateParticipant() {

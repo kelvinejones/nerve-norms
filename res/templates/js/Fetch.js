@@ -2,8 +2,6 @@ class Fetch {
 	static get url() { return "https://us-central1-nervenorms.cloudfunctions.net/" }
 
 	static MEM(queryString, data, callback) {
-		ExVars.clearScores()
-
 		const query = Fetch.url + "convert" + queryString
 		fetch(query, { method: 'POST', body: data })
 			.then(response => {
