@@ -50,19 +50,28 @@ class ChartFactory {
 	}
 
 	build(typeStr) {
+		let chart;
 		switch (typeStr) {
 			case "recoveryCycle":
-				return new RecoveryCycle(this.dataManager.participantData, this.dataManager.norms)
+				chart = new RecoveryCycle(this.dataManager.participantData, this.dataManager.norms)
+				break
 			case "thresholdElectrotonus":
-				return new ThresholdElectrotonus(this.dataManager.participantData, this.dataManager.norms)
+				chart = new ThresholdElectrotonus(this.dataManager.participantData, this.dataManager.norms)
+				break
 			case "chargeDuration":
-				return new ChargeDuration(this.dataManager.participantData, this.dataManager.norms)
+				chart = new ChargeDuration(this.dataManager.participantData, this.dataManager.norms)
+				break
 			case "thresholdIV":
-				return new ThresholdIV(this.dataManager.participantData, this.dataManager.norms)
+				chart = new ThresholdIV(this.dataManager.participantData, this.dataManager.norms)
+				break
 			case "stimulusResponse":
-				return new StimulusResponse(this.dataManager.participantData, this.dataManager.norms)
+				chart = new StimulusResponse(this.dataManager.participantData, this.dataManager.norms)
+				break
 			case "stimulusResponseRelative":
-				return new StimulusRelative(this.dataManager.participantData, this.dataManager.norms)
+				chart = new StimulusRelative(this.dataManager.participantData, this.dataManager.norms)
+				break
 		}
+		chart.updateScore(this.dataManager.outliers)
+		return chart
 	}
 }

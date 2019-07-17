@@ -170,6 +170,10 @@ class DataManager {
 		return this.normCache[this.queryString]
 	}
 
+	get outliers() {
+		return this.outlierCache[this._cacheString()]
+	}
+
 	get participantName() {
 		return this.participants[this.dropDown.selectedIndex].name
 	}
