@@ -6,8 +6,8 @@ class RecoveryCycle extends Chart {
 	}
 
 	get name() { return "Recovery Cycle" }
-	get xLabel() { return "Threshold Change (%)" }
-	get yLabel() { return "Interstimulus Interval (ms)" }
+	get xLabel() { return "Interstimulus Interval (ms)" }
+	get yLabel() { return "Threshold Change (%)" }
 
 	updateParticipant(participant) {
 		if (participant.sections.RC == null) {

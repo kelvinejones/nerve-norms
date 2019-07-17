@@ -7,8 +7,8 @@ class ThresholdElectrotonus extends Chart {
 	}
 
 	get name() { return "Threshold Electrotonus" }
-	get xLabel() { return "Threshold Reduction (%)" }
-	get yLabel() { return "Delay (ms)" }
+	get xLabel() { return "Delay (ms)" }
+	get yLabel() { return "Threshold Reduction (%)" }
 
 	updateParticipant(participant) {
 		this.participant = participant.sections.TE
