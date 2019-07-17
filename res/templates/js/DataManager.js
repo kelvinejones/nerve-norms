@@ -119,13 +119,13 @@ class DataManager {
 		const cacheString = this._cacheString() // Save this string because it's where we want to save the data
 		const scores = this.outlierCache[cacheString]
 		if (scores != null) {
-			ExVars.updateScores(scores)
+			this._updateOutliers(scores)
 		} else {
 			const updateAction = (scores) => {
 				this.outlierCache[cacheString] = scores
 				if (cacheString == this._cacheString()) {
 					// An update not has occurred since we requested this data, so update the display!
-					ExVars.updateScores(scores)
+					this._updateOutliers(scores)
 				}
 			}
 
@@ -135,6 +135,10 @@ class DataManager {
 				Fetch.OutliersFromJSON(this.queryString, participant.data, updateAction)
 			}
 		}
+	}
+
+	_updateOutliers(scores) {
+		ExVars.updateScores(scores)
 	}
 
 	_updateDropDownOptions() {
