@@ -1,6 +1,6 @@
 class DataManager {
 	// data is an object indexed by the drop-down's values
-	// The dataUsers is expected to provide a list of objects that implement 'updateParticipant' and 'updateNorms'
+	// The dataUsers is expected to provide a list of objects that implement 'updateParticipant', 'updateNorms', and 'updateScore'
 	constructor(data, dataUsers) {
 		this.dt = data
 		this.dataUsers = dataUsers
@@ -139,6 +139,9 @@ class DataManager {
 
 	_updateOutliers(scores) {
 		ExVars.updateScores(scores)
+		Object.values(this.dataUsers()).forEach(pl => {
+			pl.updateScore(scores)
+		})
 	}
 
 	_updateDropDownOptions() {
