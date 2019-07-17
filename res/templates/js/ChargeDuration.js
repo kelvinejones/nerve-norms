@@ -27,6 +27,12 @@ class ChargeDuration extends Chart {
 		this.animateNorms(this.norms, "cd")
 	}
 
+	updateScore(scores) {
+		if (scores != null && scores.CD != null) {
+			this.score = scores.CD.Overall
+		}
+	}
+
 	drawLines(svg) {
 		const isNull = (this.norms == null)
 		const norms = isNull ? this.participant : this.norms

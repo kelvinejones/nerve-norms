@@ -57,6 +57,7 @@ class Chart {
 
 	updateParticipant(participant) { throw new Error("A Chart must implement updateParticipant(participant)") }
 	updateNorms(norms) { throw new Error("A Chart must implement updateNorms(norms)") }
+	updateScore(norms) { throw new Error("A Chart must implement updateScore(scores)") }
 	get name() { throw new Error("A Chart must implement name()") }
 	get xLabel() { throw new Error("A Chart must implement xLabel()") }
 	get yLabel() { throw new Error("A Chart must implement yLabel()") }

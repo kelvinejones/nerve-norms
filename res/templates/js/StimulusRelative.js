@@ -41,6 +41,12 @@ class StimulusRelative extends Chart {
 		this.animateNorms(this.norms, "srel")
 	}
 
+	updateScore(scores) {
+		if (scores != null && scores.SRel != null) {
+			this.score = scores.SRel.Overall
+		}
+	}
+
 	drawLines(svg) {
 		const isNull = (this.norms == null)
 		const norms = isNull ? this.participant : this.norms

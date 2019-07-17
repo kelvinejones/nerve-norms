@@ -20,6 +20,12 @@ class ThresholdElectrotonus extends Chart {
 		this.animateUpdatedNorms(this.norms)
 	}
 
+	updateScore(scores) {
+		if (scores != null && scores.TE != null) {
+			this.score = scores.TE.Overall
+		}
+	}
+
 	drawLines(svg) {
 		const isNull = (this.norms == null)
 		const norms = isNull ? this.participant : this.norms

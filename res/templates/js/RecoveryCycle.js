@@ -27,6 +27,12 @@ class RecoveryCycle extends Chart {
 		this.animateNorms(this.norms, "rc")
 	}
 
+	updateScore(scores) {
+		if (scores != null && scores.RC != null) {
+			this.score = scores.RC.Overall
+		}
+	}
+
 	drawLines(svg) {
 		const isNull = (this.norms == null)
 		const norms = isNull ? this.participant : this.norms

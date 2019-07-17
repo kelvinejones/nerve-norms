@@ -29,6 +29,12 @@ class ThresholdIV extends Chart {
 		this.animateNorms(this.norms, "tiv")
 	}
 
+	updateScore(scores) {
+		if (scores != null && scores.IV != null) {
+			this.score = scores.IV.Overall
+		}
+	}
+
 	drawLines(svg) {
 		const isNull = (this.norms == null)
 		const norms = isNull ? this.participant : this.norms

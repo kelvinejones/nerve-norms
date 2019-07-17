@@ -50,6 +50,12 @@ class StimulusResponse extends Chart {
 		this.animateNorms(this.norms, "sr")
 	}
 
+	updateScore(scores) {
+		if (scores != null && scores.SR != null) {
+			this.score = scores.SR.Overall
+		}
+	}
+
 	drawLines(svg) {
 		const isNull = (this.norms == null)
 		const norms = isNull ? this.participant : this.norms
