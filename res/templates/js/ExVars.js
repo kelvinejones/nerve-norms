@@ -48,13 +48,15 @@ class ExVars {
 	}
 
 	static _setHeaderScore(str, score) {
-		[...document.querySelectorAll(str)].forEach(elm => {
-			if (score === undefined) {
-				elm.style.background = ''
-			} else {
-				elm.style.background = ExVars._interpolate(score)
-			}
-		})
+		[...document.querySelectorAll(str)].forEach(elm => { ExVars._setElementBackground(elm, score) })
+	}
+
+	static _setElementBackground(elm, score) {
+		if (score === undefined) {
+			elm.style.background = ''
+		} else {
+			elm.style.background = ExVars._interpolate(score)
+		}
 	}
 
 	static _labelForScore(score) {
