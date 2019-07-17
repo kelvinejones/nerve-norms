@@ -69,6 +69,11 @@ class ExVars {
 		}
 	}
 
+	static setModalHeader(title, score) {
+		document.getElementById('modal-title').innerHTML = title
+		ExVars._setElementBackground(document.getElementById('modal-header'), score)
+	}
+
 	static updateScores(scores) {
 		ExVars._setHeaderScore(".participant-header", scores.Overall)
 		const healthLabel = ExVars._labelForScore(scores.Overall)

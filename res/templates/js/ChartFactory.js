@@ -42,7 +42,7 @@ class ChartFactory {
 		const chart = this.build(typeStr)
 		chart.setDelayTime(Chart.fastDelay).setTransitionTime(Chart.fastTransition)
 
-		document.getElementById('modal-title').innerHTML = chart.name
+		ExVars.setModalHeader(chart.name, chart.score)
 		d3.selectAll("#modal svg > *").remove()
 
 		chart.draw(d3.select('#modal svg'))
