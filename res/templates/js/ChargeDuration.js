@@ -7,7 +7,7 @@ class ChargeDuration extends Chart {
 
 	get name() { return "Charge Duration" }
 	get xLabel() { return "Stimulus Width (ms)" }
-	get yLabel() { return "Threshold Change (mA•ms)" }
+	get yLabel() { return "Threshold Change (mA\u2219ms)" }
 
 	updateParticipant(participant) {
 		if (participant.sections.CD == null) {
