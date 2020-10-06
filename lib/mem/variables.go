@@ -184,7 +184,8 @@ func (extraVar *ExtraVariables) ParseLine(result []string) error {
 
 	id := idForName(strings.TrimSpace(result[1]))
 	if id < 1000 {
-		return errors.New("Invalid name '" + result[1] + "'")
+		fmt.Println("Unrecognized name '" + result[1] + "' in EXTRA VARIABLES")
+		return nil // return with no error, but don't add the line
 	}
 	extraVar.Values[id] = val
 
