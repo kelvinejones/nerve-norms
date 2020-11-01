@@ -1,6 +1,6 @@
 package mef
 
-import "gogs.bellstone.ca/james/jitter/lib/mem"
+import "github.com/GrantJLiu/nerve-norms/lib/mem"
 
 type Filter struct {
 	filters []filter

@@ -1,7 +1,7 @@
 package mef
 
 import (
-	"gogs.bellstone.ca/james/jitter/lib/mem"
+	"github.com/GrantJLiu/nerve-norms/lib/mem"
 )
 
 type Mef map[string]*mem.Mem

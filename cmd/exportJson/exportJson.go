@@ -9,8 +9,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"gogs.bellstone.ca/james/jitter/lib/mef"
-	"gogs.bellstone.ca/james/jitter/lib/mem"
+	"github.com/GrantJLiu/nerve-norms/lib/mef"
+	"github.com/GrantJLiu/nerve-norms/lib/mem"
 )
 
 var input = flag.String("input", "res/data/FESB70821B.MEM", "path to the file or folder that should be imported")

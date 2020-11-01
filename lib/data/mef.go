@@ -3,7 +3,7 @@ package data
 import (
 	"encoding/json"
 
-	"gogs.bellstone.ca/james/jitter/lib/mef"
+	"github.com/GrantJLiu/nerve-norms/lib/mef"
 )
 
 func AsMef() (mef.Mef, error) {

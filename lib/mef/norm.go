@@ -3,7 +3,7 @@ package mef
 import (
 	"math"
 
-	"gogs.bellstone.ca/james/jitter/lib/mem"
+	"github.com/GrantJLiu/nerve-norms/lib/mem"
 )
 
 type Norm struct {

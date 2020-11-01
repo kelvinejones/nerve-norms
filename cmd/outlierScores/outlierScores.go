@@ -8,8 +8,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"gogs.bellstone.ca/james/jitter/lib/mef"
-	"gogs.bellstone.ca/james/jitter/lib/mem"
+	"github.com/GrantJLiu/nerve-norms/lib/mef"
+	"github.com/GrantJLiu/nerve-norms/lib/mem"
 )
 
 var name = flag.String("name", "CA-CR21S", "name of the participant whose outlier scores are desired")

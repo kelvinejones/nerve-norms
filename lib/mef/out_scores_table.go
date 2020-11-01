@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"math"
 
-	"gogs.bellstone.ca/james/jitter/lib/mem"
+	"github.com/GrantJLiu/nerve-norms/lib/mem"
 
 	"github.com/aclements/go-moremath/stats"
 )

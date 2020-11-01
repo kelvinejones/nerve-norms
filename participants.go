@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"gogs.bellstone.ca/james/jitter/lib/data"
+	"github.com/GrantJLiu/nerve-norms/lib/data"
 )
 
 func ParticipantHandler(w http.ResponseWriter, r *http.Request) {

@@ -1,4 +1,4 @@
-module gogs.bellstone.ca/james/jitter
+module github.com/GrantJLiu/nerve-norms
 
 require (
 	github.com/aclements/go-moremath v0.0.0-20190506201756-286cc0be6f75

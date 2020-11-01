@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"gogs.bellstone.ca/james/jitter/lib/mem"
+	"github.com/GrantJLiu/nerve-norms/lib/mem"
 )
 
 type ExpectedFiles map[string]struct{}

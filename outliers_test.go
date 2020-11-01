@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gogs.bellstone.ca/james/jitter/lib/data"
+	"github.com/GrantJLiu/nerve-norms/lib/data"
 )
 
 func TestOutliersHandlerNoParticipant(t *testing.T) {

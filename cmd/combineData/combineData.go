@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"gogs.bellstone.ca/james/jitter/lib/mef"
+	"github.com/GrantJLiu/nerve-norms/lib/mef"
 )
 
 var input = flag.String("input", "/Users/james/Documents/Education/UofA/MSc/Research/normative-data/all.csv", "path to the CSV of MEF files and info")

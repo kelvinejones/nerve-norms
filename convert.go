@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"gogs.bellstone.ca/james/jitter/lib/data"
-	"gogs.bellstone.ca/james/jitter/lib/mef"
-	"gogs.bellstone.ca/james/jitter/lib/mem"
+	"github.com/GrantJLiu/nerve-norms/lib/data"
+	"github.com/GrantJLiu/nerve-norms/lib/mef"
+	"github.com/GrantJLiu/nerve-norms/lib/mem"
 )
 
 type memWithScores struct {

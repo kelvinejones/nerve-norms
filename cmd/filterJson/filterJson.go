@@ -8,8 +8,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"gogs.bellstone.ca/james/jitter/lib/mef"
-	"gogs.bellstone.ca/james/jitter/lib/mem"
+	"github.com/GrantJLiu/nerve-norms/lib/mef"
+	"github.com/GrantJLiu/nerve-norms/lib/mem"
 )
 
 var input = flag.String("input", "json/all.json", "path to the JSON that should be loaded")
