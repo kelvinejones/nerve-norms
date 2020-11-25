@@ -107,7 +107,6 @@ func (rd *Reader) parseLines(parser LineParser) error {
 			// We reached EOF
 			return nil
 		}
-
 		if parser.ParseLine(parser.ParseRegex().FindStringSubmatch(s)) != nil {
 			// The string couldn't be parsed. This isn't an error;
 			// it just means we're done parsing this regex.
