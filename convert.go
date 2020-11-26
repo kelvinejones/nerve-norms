@@ -16,6 +16,7 @@ type memWithScores struct {
 	mef.OutScores `json:"outlierScores"`
 }
 
+//ConvertMemHandler API entrypoint on backend to obtain information from MEM file
 func ConvertMemHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 

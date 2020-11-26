@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+// Contains all the info on excitibility variables and how they should be categorized
+
 type ExcitabilityVariablesSection struct{ LabTab }
 
 type ExcitabilitySettings map[string]string
@@ -183,9 +185,11 @@ func (extraVar *ExtraVariables) ParseLine(result []string) error {
 	}
 
 	id := idForName(strings.TrimSpace(result[1]))
+
+	// Usually just a new variable that we don't know of yet, rather than an error
 	if id < 1000 {
-		//fmt.Println("Unrecognized name '" + result[1] + "' in EXTRA VARIABLES")
-		//return nil // return with no error, but don't add the line
+		fmt.Println("Unrecognized name '" + result[1] + "' in EXTRA VARIABLES")
+		return nil // return with no error, but don't add the line
 	}
 	extraVar.Values[id] = val
 

@@ -100,16 +100,22 @@ func Import(data io.Reader) (*Mem, error) {
 	return mem.AsMem()
 }
 
+// Possibly most used function in the code, if there's issues in parsing start here - Grant
 func (mem *rawMem) importRawSection(reader *Reader) error {
+
+	// Cursor moves to first non-empty line
 	str, err := reader.skipEmptyLines()
 	if err != nil {
 		return err
 	}
 
+	// All section headers currently start with space. If you are reading a non-section header
+	// you are most likely reading an invalidated line, causing the cursor to backtrack
 	if len(str) < 2 || str[0] != ' ' {
 		return errors.New("Could not parse invalid section: '" + str + "'")
 	}
 
+	// Special case for final derived variables
 	if strings.Contains(str, "DERIVED EXCITABILITY VARIABLES") {
 		return mem.ExcitabilityVariables.Parse(reader)
 	}

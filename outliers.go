@@ -13,6 +13,7 @@ import (
 	"github.com/GrantJLiu/nerve-norms/lib/mem"
 )
 
+//OutlierScoreHandler API endpoint to serve data about outliers in graphs
 func OutlierScoreHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 

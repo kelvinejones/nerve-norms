@@ -22,6 +22,7 @@ type filterParameters struct {
 	nerve   string
 }
 
+// NormHandler API endpoint for requests about the normative data for applied filters
 func NormHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 

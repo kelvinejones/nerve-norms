@@ -56,6 +56,7 @@ func (secs *Sections) UnmarshalJSON(value []byte) error {
 	return nil
 }
 
+//RawSection A section of text defined by what type of variables they are
 type RawSection struct {
 	// Header is the header for the section.
 	Header string

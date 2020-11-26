@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+// Main parser that reads through the file and returns it linewise.
+
 type Reader struct {
 	reader          *bufio.Reader
 	unreadString    string

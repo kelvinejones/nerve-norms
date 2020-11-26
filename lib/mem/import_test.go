@@ -11,7 +11,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Lot's of the tests seem to be broken, unknown reason from previous code owner
+// Lot's of the tests seem to be broken, unknown reason why, checked commit history
+// it suggested that the code was broken from this file's most recent commit - Grant
 
 // For readability, all strings in this file are encoded with \n, but the code requires \r\n
 func toWindows(str string) string {
