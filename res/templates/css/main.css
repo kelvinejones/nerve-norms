@@ -1,0 +1,151 @@
+/*CSS style sheet for all standard pages*/
+#standard-header{
+    height:120px;
+    background-color: #024930;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    background-image:url('../assets/KSR-landscape-8.png');
+    background-size: contain;
+}
+.static-bottom{
+    height: 80px;
+    background-color: #024930;
+    position: relative;
+    border-width: 1px 1px 0;
+    bottom: 0;
+    width: 100%;
+}
+.navbar div{
+    max-height: 100%;
+}
+.navbar-brand img{
+    height:60px;
+    margin:5px;
+    margin-left: 75px;
+    
+}
+.navbar .actve{
+    font-weight: bold;
+    color: white;
+}
+.tooltip{
+    text-align: left;
+}
+.tooltip-inner {
+    white-space:pre-wrap;
+}
+
+
+/* form stylings ------------------------------- */
+.form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+}
+
+.form__field {
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #d2d2d2;
+    outline: 0;
+    font-size: 16px;
+    color: #212121;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+
+.form__field::placeholder {
+    color: transparent;
+}
+
+.form__field:placeholder-shown ~ .form__label {
+    font-size: 16px;
+    cursor: text;
+    top: 20px;
+}
+
+.form__label,
+.form__field:focus ~ .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 12px;
+    color: #9b9b9b;
+}
+
+.form__field:focus ~ .form__label {
+    color: #009788;
+}
+
+.form__field:focus {
+    padding-bottom: 6px;
+    border-bottom: 2px solid #009788;
+}
+
+input:invalid {
+    border-bottom:2px solid lightpink;
+}
+
+textarea:invalid{
+    border-bottom:2px solid lightpink;
+}
+
+
+
+/* button stylings*/
+.glow-hover {
+    width: 220px;
+    height: 50px;
+    border: 5px;
+    outline: #024930;
+    border-color:#024930;
+    color: #111;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+}
+
+.glow-hover:before {
+    content: '';
+    background: #024930;
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    opacity: 0.5;
+
+    border-radius: 10px;
+}
+
+.glow-hover:active {
+    color: #fff
+}
+
+.glow-hover:active:after {
+    background: transparent;
+}
+
+.glow-hover:hover:before {
+    opacity: 1;
+}
+
+.glow-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}

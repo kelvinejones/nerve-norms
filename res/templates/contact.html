@@ -1,0 +1,45 @@
+<div class="modal-content">
+  <div class="modal-header text-center">
+    <h4 class="modal-title w-100 font-weight-bold">Contact us</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!--Update this href for image link-->
+  <a href="#">
+    <img style="height: 150px; display: block; margin-left: auto; margin-right: auto;" class="bot-logo" src= "assets/lab_logo.png">
+  </a>
+  <div class="modal-body mx-3">
+    <form id="contact-form">
+      <div class="form__group">
+        <input type="text" id="contact_name" class="form__field" placeholder="Your Email">
+        <label for="text" id="name_label" class="form__label">Name</label>
+      </div>
+      <div class="form__group">
+        <input type="email" id="contact_email" class="form__field" placeholder="Your Email">
+        <label for="email" id="email_label" class="form__label">Email</label>
+      </div>
+      
+      <div class="form__group">
+        <textarea id="contact_message" class="form__field" placeholder="Your Message" rows="6"></textarea>
+        <label for="contact_message" class="form__label">Message</label>
+      </div>
+      <div class="form__group">
+        <input type="checkbox" id="email_copy" name="email_copy" checked="checked">
+        <checkbox_label for="email_copy">Send me a copy of the email</checkbox_label><br>
+      </div>
+
+    </form>
+
+  </div>
+  <div class="modal-footer d-flex justify-content-center">
+    <button class="btn btn-unique glow-hover submit" id="btn-send-email">Send <i class="fas fa-paper-plane-o ml-1"></i></button>
+  </div>
+</div>
+
+<script src="js/SendEmail.js"></script>
+<script>
+$(document).ready(function(){
+  $("#btn-send-email").click(btnSendEmail)
+});
+</script>

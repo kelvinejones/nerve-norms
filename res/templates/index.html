@@ -4,12 +4,19 @@
     <title>Nerve Norms</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Material Design-->
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     <!-- D3 -->
     <script src="https://d3js.org/d3.v5.min.js"></script>
 
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
@@ -31,6 +38,7 @@
     <script src="js/DataManager.js"></script>
     <script src="js/Participant.js"></script>
 
+
     <style type="text/css">
       .line {
         fill: none;
@@ -49,6 +57,7 @@
         background-color: grey;
       }
     </style>
+    <link rel="stylesheet" href="css/main.css">
 
     <script>
       function toggle(id) {
@@ -57,12 +66,24 @@
     </script>
   </head>
   <body class="bg-light">
+    <!-- Header -->
+    <header id="standard-header">
+      <div class="container h-100 w-100 ml-0">
+        <div class="row h-100 align-items-left ml-1">
+          <div class="col-lg-12">
+            <h1 class="display-4 text-white mt-1 mb-2 font">Nerve Norms</h1>
+            <p class="lead mb-5 text-white-50 font-weight-bold">Normative Curves for the Nerve Excitability Test</p>
+          </div>
+        </div>
+      </div>
+    </header>
+     <!-- Commented out 
     <div class="alert alert-success">
       <h1>Nerve Norms</h1>
       <h2>Normative Curves for the Nerve Excitability Test</h2>
       <div>Developed by <a href="https://bellstone.ca">Bellstone Engineering</a></div>
-    </div>
-    <div class="row">
+    </div>-->
+    <div class="row mt-3 ml-2">
       <div class="col-lg-8 col-md-8"><div class="card border-dark">
         <div class="card-header bg-secondary font-weight-bold">Filter for Normative Data</div>
         <form class="card-body"><ul class="list-group list-group-flush d-flex measures">
@@ -92,13 +113,15 @@
               <label class="btn btn-secondary active"> <input type="radio" name="country-options" id="country-option1" autocomplete="off" value="" checked> All Countries </label>
               </div><div class="btn-group btn-group-toggle">
               <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option2" autocomplete="off" value="CA"> Canada </label>
-              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option2" autocomplete="off" value="JP"> Japan </label>
-              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option3" autocomplete="off" value="PO"> Portugal </label>
+              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option3" autocomplete="off" value="JP"> Japan </label>
+              <label class="btn btn-secondary"> <input type="radio" name="country-options" id="country-option4" autocomplete="off" value="PO"> Portugal </label>
               </div>
             </div>
           </li>
           <li class="list-group-item">
             <button id="apply-filter" type="submit" class="btn btn-secondary active">Apply Filter</button>
+            <input type="checkbox" id="autoFilter" name="autoFilter">
+            <label for="autoFilter">Automatically select and apply filter</label>
           </li>
         </ul></form>
       </div></div>
@@ -111,13 +134,13 @@
           <li id="qtrac-excite-9" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Temperature (&deg;C)</span>: <span class="excite-value"></span></li>
           <li id="qtrac-excite-17" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Age (years)</span>: <span class="excite-value"></span></li>
           <li id="qtrac-excite-18" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Sex</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-19" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Latency (ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-location" class="qtrac-excite list-group-item was-not-imp"><span class="excite-name">Location</span>: <span class="excite-value"></span></li>
         </ul>
       </div></div>
 
     </div>
     <div style="height: 10px;"> </div>
-    <div class="row">
+    <div class="row ml-2">
 
       <div class="col-md-6 col-lg-4"><div id="stimulusResponseRelative" class="card border-dark">
         <div class="card-header font-weight-bold SRel-header">Relative Stimulus Response</div>
@@ -136,8 +159,8 @@
           <li class="list-group-item bg-light">
             <button onclick="toggle('#chargeDuration')" class="btn float-left">Hide Discrete Measures</button>
           </li>
-          <li id="qtrac-excite-3" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Strength-duration time constant (ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-4" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Rheobase (mA)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-3" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Strength-duration time constant (ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-4" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Rheobase (mA)</span>: <span class="excite-value"></span></li>
         </ul>
       </div></div>
 
@@ -153,9 +176,9 @@
           <li class="list-group-item bg-light">
             <button onclick="toggle('#thresholdIV')" class="btn float-left">Hide Discrete Measures</button>
           </li>
-          <li id="qtrac-excite-7" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Resting I/V slope</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-8" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Minimum I/V slope</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-28" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Hyperpolarization I/V slope</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-7" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Resting I/V slope</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-8" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Minimum I/V slope</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-28" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Hyperpolarization I/V slope</span>: <span class="excite-value"></span></li>
         </ul>
       </div></div>
 
@@ -171,13 +194,13 @@
           <li class="list-group-item bg-light">
             <button onclick="toggle('#recoveryCycle')" class="btn float-left">Hide Discrete Measures</button>
           </li>
-          <li id="qtrac-excite-10" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">RRP (ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-13" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-14" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Subexcitability (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-29" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Refractoriness at 2.5ms (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-32" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Refractoriness at 2 ms (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-33" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability at 7 ms (%)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-34" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Superexcitability at 5 ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-10" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">RRP (ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-13" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Superexcitability (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-14" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Subexcitability (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-29" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Refractoriness at 2.5ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-32" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Refractoriness at 2 ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-33" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Superexcitability at 7 ms (%)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-34" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Superexcitability at 5 ms (%)</span>: <span class="excite-value"></span></li>
         </ul>
       </div></div>
 
@@ -193,22 +216,22 @@
           <li class="list-group-item bg-light">
             <button onclick="toggle('#thresholdElectrotonus')" class="btn float-left">Hide Discrete Measures</button>
           </li>
-          <li id="qtrac-excite-11" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEh(90&ndash;100ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-22" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEh(10&ndash;20ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-24" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEh(overshoot)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-30" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEh(20&ndash;40ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-31" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEh(slope 101&ndash;140ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-1001" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEd40(Accom)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-12" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEd(10&ndash;20ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-20" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEd(40&ndash;60ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-21" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEd(90&ndash;100ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-23" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEd(undershoot)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-25" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEd(peak)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-27" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Accommodation half-time (ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-1003" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEh20(10&ndash;20ms)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-26" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">S2 accommodation</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-35" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEd20(peak)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-1002" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">TEd20(10&ndash;20ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-11" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top" title="TEST"><span class="excite-name">TEh(90&ndash;100ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-22" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEh(10&ndash;20ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-24" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEh(overshoot)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-30" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEh(20&ndash;40ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-31" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEh(slope 101&ndash;140ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-1001" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEd40(Accom)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-12" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEd(10&ndash;20ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-20" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEd(40&ndash;60ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-21" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEd(90&ndash;100ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-23" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEd(undershoot)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-25" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEd(peak)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-27" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Accommodation half-time (ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-1003" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEh20(10&ndash;20ms)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-26" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">S2 accommodation</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-35" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEd20(peak)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-1002" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">TEd20(10&ndash;20ms)</span>: <span class="excite-value"></span></li>
         </ul>
       </div></div>
 
@@ -224,9 +247,9 @@
           <li class="list-group-item bg-light">
             <button onclick="toggle('#stimulusResponse')" class="btn float-left">Hide Discrete Measures</button>
           </li>
-          <li id="qtrac-excite-1" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Stimulus (mA) for 50% max response</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-6" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Peak response (mV)</span>: <span class="excite-value"></span></li>
-          <li id="qtrac-excite-5" class="qtrac-excite list-group-item was-not-imp display-bar"><span class="excite-name">Stimulus-response slope</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-1" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Stimulus (mA) for 50% max response</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-6" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Peak response (mV)</span>: <span class="excite-value"></span></li>
+          <li id="qtrac-excite-5" class="qtrac-excite list-group-item was-not-imp display-bar" data-toggle="tooltip" data-placement="top"><span class="excite-name">Stimulus-response slope</span>: <span class="excite-value"></span></li>
         </ul>
       </div></div>
 
@@ -249,9 +272,63 @@
       </div>
     </div>
 
+    <!-- Bot Navigation -->
+    <div style="height: 10px;"></div>
+    <footer>
+      <nav class="navbar navbar-expand-lg navbar-dark static-bottom" id ="bot-nav">
+        <a class="navbar-brand d-flex mr-auto bot-logo ml-10" href="#">
+          <img class="bot-logo" src= "assets/UA-KSR-COLOUR-REVERSE.png">
+        </a>
+        <div class="container">
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Main
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./privacy-policy.html">Privacy Policy</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link modal-link" href="./contact.html" data-toggle="modal" data-target="#modalContact" data-remote = "./contact.html">Contact</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://bellstone.ca">Bellstone Engineering</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </footer>
+    <!-- Modal -->
+    <div class="modal fade" id="modalContact" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role = "document">
+        <div class="modal-content">
+        </div>
+      </div>
+    </div>
+    <script>
+      $('#modalContact').on('show.bs.modal', function(e){
+        $(this).find('.modal-content').load(e.relatedTarget.href);
+        console.log(e.relatedTarget.href)
+      });
+    </script>
+
+
 
     <script>
       const chartFactory = new ChartFactory(participants)
+    </script>
+
+    <script>
+      $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+      });
     </script>
   </body>
 </html>

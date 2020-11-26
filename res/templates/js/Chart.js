@@ -264,11 +264,13 @@ class Chart {
 				.delay(this.delayTime)
 				.duration(this.transitionTime)
 		} else {
-			return this.group[typeString + "-" + name].selectAll(typeString)
-				.data(newData)
-				.transition()
-				.delay(this.delayTime)
-				.duration(this.transitionTime)
+			try {
+				return this.group[typeString + "-" + name].selectAll(typeString)
+					.data(newData)
+					.transition()
+					.delay(this.delayTime)
+					.duration(this.transitionTime)
+			} catch (error) {}
 		}
 	}
 

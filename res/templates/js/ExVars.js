@@ -108,6 +108,7 @@ class ExVars {
 			}
 			ExVars._setExcitabilityVariableValue("qtrac-excite-" + idx, val, exind[2] == 1)
 		})
+		ExVars._setExcitabilityVariableValue("qtrac-location", values.header.srSites, true)
 	}
 
 	static clearScores() {

@@ -1,5 +1,5 @@
 class Fetch {
-	static get url() { return "https://us-central1-nervenorms.cloudfunctions.net/" }
+	static get url() { return "https://us-central1-nervenorms-294404.cloudfunctions.net/" }
 
 	static MEM(queryString, data, callback) {
 		const query = Fetch.url + "convert" + queryString
@@ -44,4 +44,6 @@ class Fetch {
 				callback(norms)
 			})
 	}
+
+	//API for email is in SendEmail.js, due to it being on multiple pages
 }

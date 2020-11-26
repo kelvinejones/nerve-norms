@@ -30,8 +30,10 @@ class ThresholdElectrotonus extends Chart {
 		const isNull = (this.norms == null)
 		const norms = isNull ? this.participant : this.norms
 		Object.keys(this.participant).forEach(key => {
-			this.createXYLine(this.participant[key].data, key)
-			this.createNorms(norms[key].data, key, !isNull)
+			if (norms[key] != null && this.participant[key] != null){
+				this.createXYLine(this.participant[key].data, key)
+				this.createNorms(norms[key].data, key, !isNull)
+			}
 		})
 		this.drawHorizontalLine(this.linesLayer, 0)
 		this.animateParticipant()
@@ -40,7 +42,7 @@ class ThresholdElectrotonus extends Chart {
 
 	animateParticipant() {
 		this.expectedKeys.forEach(key => {
-			if (this.participant == null || this.participant[key] == null || this.participant[key].data == null) {
+			if (this.participant == undefined || this.participant[key] == undefined || this.participant[key].data == undefined) {
 				this.animateXYLine(undefined, key)
 			} else {
 				this.animateXYLine(this.participant[key].data, key)
