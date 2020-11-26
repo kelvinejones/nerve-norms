@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
@@ -24,7 +25,13 @@ type EmailPackage struct {
 	CarbonCopy bool
 }
 
-var contactEmail = "grantjliu21@gmail.com"
+// List of enviroment variables used
+// CONTACT_EMAIL, The email address that the contact form is being sent to
+// AUTOMAIL_ADDRESS, the email address that the automated mailing system is using
+//		The password of this is stored in an secret
+// SECRET_PATH, The path where the secret is stored, path is case sensitive
+//		projects/<project-id>/secrets/<secret name>/versions/latest
+var contactEmail = os.Getenv("CONTACT_EMAIL")
 
 //ContactEmailHandler Entry point for Contact email
 func ContactEmailHandler(w http.ResponseWriter, r *http.Request) {
@@ -61,7 +68,7 @@ func SendContactMail(pack EmailPackage) bool {
 	m := gomail.NewMessage()
 
 	// Set E-Mail sender
-	m.SetHeader("From", "nervenorms@gmail.com")
+	m.SetHeader("From", os.Getenv("AUTOMAIL_ADDRESS"))
 
 	// Set E-Mail receivers
 	if pack.CarbonCopy {
@@ -80,13 +87,14 @@ func SendContactMail(pack EmailPackage) bool {
 	m.SetBody("text/plain", "From: "+pack.Name+"("+pack.Sender+")\n\n"+pack.Message)
 
 	// Settings for SMTP server
-	secret := "projects/nervenorms-294404/secrets/automated-password/versions/latest"
+	// secret := "projects/nervenorms-294404/secrets/automated-password/versions/latest"
+	secret := os.Getenv("SECRET_PATH")
 	password, err := getPassword(secret)
 	if err != nil {
 		panic(err)
 	}
 	//log.Println(password)
-	d := gomail.NewDialer("smtp.gmail.com", 587, "nervenorms@gmail.com", password)
+	d := gomail.NewDialer("smtp.gmail.com", 587, os.Getenv("AUTOMAIL_ADDRESS"), password)
 
 	// This is only needed when SSL/TLS certificate is not valid on server.
 	// In production this should be set to false.

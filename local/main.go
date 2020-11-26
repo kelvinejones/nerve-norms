@@ -9,6 +9,7 @@ import (
 	jitter "github.com/GrantJLiu/nerve-norms"
 )
 
+// Function/file used for local testing. APP IS SERVERLESS, THIS IS NOT A REAL MAIN FILE
 func main() {
 	ctx := context.Background()
 	if err := funcframework.RegisterHTTPFunctionContext(ctx, "/contact", jitter.ContactEmailHandler); err != nil {
