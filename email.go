@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"regexp"
 
@@ -30,7 +31,7 @@ func ContactEmailHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	var eP EmailPackage
 	err := json.NewDecoder(r.Body).Decode(&eP)
-	fmt.Printf("%+v\n", eP)
+	//fmt.Printf("%+v\n", eP)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -60,7 +61,7 @@ func SendContactMail(pack EmailPackage) bool {
 	m := gomail.NewMessage()
 
 	// Set E-Mail sender
-	m.SetHeader("From", "NerveNorms@gmail.com")
+	m.SetHeader("From", "nervenorms@gmail.com")
 
 	// Set E-Mail receivers
 	if pack.CarbonCopy {
@@ -79,12 +80,13 @@ func SendContactMail(pack EmailPackage) bool {
 	m.SetBody("text/plain", "From: "+pack.Name+"("+pack.Sender+")\n\n"+pack.Message)
 
 	// Settings for SMTP server
-	secret := "projects/NerveNorms/secrets/automated-password/versions/latest"
+	secret := "projects/nervenorms-294404/secrets/automated-password/versions/latest"
 	password, err := getPassword(secret)
-	if err == nil {
+	if err != nil {
 		panic(err)
 	}
-	d := gomail.NewDialer("smtp.gmail.com", 587, "NerveNorms@gmail.com", password)
+	//log.Println(password)
+	d := gomail.NewDialer("smtp.gmail.com", 587, "nervenorms@gmail.com", password)
 
 	// This is only needed when SSL/TLS certificate is not valid on server.
 	// In production this should be set to false.
@@ -116,6 +118,6 @@ func getPassword(name string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to access secret version: %v", err)
 	}
-
+	log.Println(string(result.Payload.Data))
 	return string(result.Payload.Data), nil
 }
