@@ -126,6 +126,6 @@ func getPassword(name string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to access secret version: %v", err)
 	}
-	log.Println(string(result.Payload.Data))
+	//log.Println(string(result.Payload.Data))
 	return string(result.Payload.Data), nil
 }
